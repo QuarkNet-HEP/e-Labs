@@ -1,0 +1,197 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc
+END
+sanitize_html.inc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/sanitize_html.inc
+END
+credit.inc
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/credit.inc
+END
+uotd.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/uotd.inc
+END
+countries.inc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/countries.inc
+END
+news.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/news.inc
+END
+text_transform.inc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/text_transform.inc
+END
+prefs.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/prefs.inc
+END
+forum.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/forum.inc
+END
+forum_show.inc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/forum_show.inc
+END
+news_ops.inc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/news_ops.inc
+END
+db_forum.inc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/db_forum.inc
+END
+profile.inc
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/profile.inc
+END
+xml.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/xml.inc
+END
+team_types.inc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/team_types.inc
+END
+util.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/util.inc
+END
+result.inc
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/result.inc
+END
+user.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/user.inc
+END
+subscribe.inc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/subscribe.inc
+END
+image.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/image.inc
+END
+kses.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/kses.php
+END
+db.inc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/db.inc
+END
+team.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/team.inc
+END
+forum_moderators.inc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/forum_moderators.inc
+END
+email.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/email.inc
+END
+time.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/time.inc
+END
+translation.inc
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/translation.inc
+END
+util_ops.inc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/util_ops.inc
+END
+gallery.inc
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/gallery.inc
+END
+geoip.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/geoip.inc
+END
+cache.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/cache.inc
+END
+stats_sites.inc
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/stats_sites.inc
+END
+db_ops.inc
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/inc/db_ops.inc
+END

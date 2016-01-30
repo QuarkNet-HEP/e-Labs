@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HTML Javascript Adder\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-30 19:40+0530\n"
+"PO-Revision-Date: 2011-11-30 19:43+0530\n"
+"Last-Translator: Aakash Chakravarthy <aakash.19493@gmail.com>\n"
+"Language-Team: Aakash Chakravarthy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../html-javascript-adder.php:32
+msgid "Insert HTML, Javascripts, shortcodes and other codes in the sidebar"
+msgstr "إدراج HTML ، Javascripts، الهاتفية القصيرة ورموز أخرى في الشريط الجانبي"
+
+#: ../html-javascript-adder.php:36
+msgid "HTML Javascript Adder"
+msgstr "HTML Javascript Adder"
+
+#: ../html-javascript-adder.php:232
+msgid "Title"
+msgstr "العنوان"
+
+#: ../html-javascript-adder.php:238
+msgid "Content :"
+msgstr "المحتوى :"
+
+#: ../html-javascript-adder.php:275
+msgid "Settings"
+msgstr "إعدادات"
+
+#: ../html-javascript-adder.php:277
+msgid "Show in all pages"
+msgstr "تظهر في جميع صفحات"
+
+#: ../html-javascript-adder.php:279
+msgid "Show only in specific pages"
+msgstr "تظهر فقط في صفحات محددة"
+
+#: ../html-javascript-adder.php:283
+#: ../html-javascript-adder.php:303
+msgid "Post ID / name / title seperated by comma"
+msgstr "آخر رقم / اسم / عنوان مفصولة بفواصل"
+
+#: ../html-javascript-adder.php:287
+msgid "Hide only in specific pages"
+msgstr "إخفاء فقط في صفحات محددة"
+
+#: ../html-javascript-adder.php:291
+msgid "Don't display in Posts page"
+msgstr "لا يتم عرض في صفحة المشاركات"
+
+#: ../html-javascript-adder.php:293
+msgid "Don't display in Archive or Tag page"
+msgstr "لا تعرض في الأرشيف أو العلامة الصفحة"
+
+#: ../html-javascript-adder.php:295
+msgid "Don't display in Home page"
+msgstr "لا تعرض في الصفحة الرئيسية"
+
+#: ../html-javascript-adder.php:297
+msgid "Don't display in Pages"
+msgstr "لا تعرض في صفحات"
+
+#: ../html-javascript-adder.php:299
+msgid "Don't display in Search page"
+msgstr "لا يتم عرض في صفحة البحث"
+
+#: ../html-javascript-adder.php:301
+msgid "Don't show in posts"
+msgstr "لا تظهر في وظائف"
+
+#: ../html-javascript-adder.php:308
+msgid "Automatically add paragraphs"
+msgstr "أضف الفقرات تلقائيا"
+
+#: ../html-javascript-adder.php:310
+msgid "Don't display to admin"
+msgstr "لا تعرض على الادارة"
+
+#: ../html-javascript-adder.php:343
+msgid "Added with HTML Javascript Adder Wordpress plugin"
+msgstr "واضاف مع الأفعى أتش تي أم أل جافا سكريبت وورد البرنامج المساعد"
+
+#: ../html-javascript-adder.php:384
+msgid "Make Donations"
+msgstr "التبرع"
+
+#~ msgid "Link"
+#~ msgstr "رابط"
+
+#~ msgid "Image"
+#~ msgstr "صورة"
+
+#~ msgid "Code"
+#~ msgstr "رمز"
+
+#~ msgid "Preview"
+#~ msgstr "معاينة"
+
+#~ msgid "Documentation"
+#~ msgstr "توثيق"
+
+#~ msgid "Visit Author site"
+#~ msgstr "زيارة موقع المؤلف"
+
+#~ msgid "Support Forum"
+#~ msgstr "دعم المنتدى"
+
+#~ msgid "Subscribe"
+#~ msgstr "اشترك"
+
+#~ msgid "Promote"
+#~ msgstr "تعزيز"
+
+#~ msgid "Disable HTML Javascript Adder link back"
+#~ msgstr "تعطيل HTML Javascript Adder ربط العودة"
+
+#~ msgid "Save"
+#~ msgstr "التحديث"
+
+#~ msgid "Subscribe to Updates"
+#~ msgstr "اشترك في المستجدات"
+
+#~ msgid "Follow on Twitter"
+#~ msgstr "اتبع على Twitter"
+
+#~ msgid "Home Page"
+#~ msgstr "الصفحة الرئيسية"
+
+#~ msgid "AW Latest Updates"
+#~ msgstr "AW  ʼĀkhr at-Tḩdythāt"

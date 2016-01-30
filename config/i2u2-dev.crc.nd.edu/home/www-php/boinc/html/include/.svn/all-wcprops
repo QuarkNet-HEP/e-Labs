@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/i2u2/!svn/ver/3646/branches/2.0/boinc/html/include
+END
+forum_attach.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/forum_attach.php
+END
+forum_keyword.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/forum_keyword.php
+END
+util.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/util.php
+END
+forum_extras.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/forum_extras.php
+END
+recaptchalib.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/i2u2/!svn/ver/3646/branches/2.0/boinc/html/include/recaptchalib.php
+END
+roles.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/roles.php
+END
+transclude.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/transclude.php
+END
+debug.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/debug.php
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/include/README
+END

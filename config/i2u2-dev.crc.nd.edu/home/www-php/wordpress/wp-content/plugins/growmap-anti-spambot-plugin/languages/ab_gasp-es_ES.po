@@ -1,0 +1,167 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Growmap Anti Spambot Plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-01 08:47-0000\n"
+"PO-Revision-Date: 2013-09-05 17:44+0100\n"
+"Last-Translator: Ramon <marketing@apasionados.es>\n"
+"Language-Team: Ramón <info@apasionados.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"Language: es_ES\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../growmap-anti-spambot-plugin.php:70
+msgid "Settings"
+msgstr "Ajustes"
+
+#: ../growmap-anti-spambot-plugin.php:83
+msgid "Please check the box to confirm that you are NOT a spammer"
+msgstr ""
+"Por favor selecciona la casilla antes de comentar para confirmar que eres "
+"humano. Gracias por ayudarnos a mantener este blog libre de spam."
+
+#: ../growmap-anti-spambot-plugin.php:84
+msgid ""
+"You may have disabled javascript. Please enable javascript before leaving a "
+"comment on this site."
+msgstr ""
+"Para que puedas dejar un comentario, tienes que tener activado Javascript"
+
+#: ../growmap-anti-spambot-plugin.php:85
+msgid ""
+"You appear to be a spambot. Contact admin another way if you feel this "
+"message is in error"
+msgstr ""
+"Pareces ser un robot que envía spam. En caso de que no sea así, por favor "
+"contacta con el administrador"
+
+#: ../growmap-anti-spambot-plugin.php:86
+msgid "Confirm you are NOT a spammer"
+msgstr "Por favor confirma que eres humano antes de comentar"
+
+#: ../growmap-anti-spambot-plugin.php:193
+msgid "Checkbox Label"
+msgstr "Etiqueta de la casilla de comprobación"
+
+#: ../growmap-anti-spambot-plugin.php:197
+msgid "Checkbox Name"
+msgstr "Nombre de la casilla de comprobación"
+
+#: ../growmap-anti-spambot-plugin.php:199
+msgid ""
+"You can change this if you find that bots have started to target your blog "
+"again"
+msgstr ""
+"Puedes cambiar esto si los robots han vuelto a poner tu blog en su punto de "
+"mira"
+
+#: ../growmap-anti-spambot-plugin.php:203
+msgid "Allow Trackbacks?"
+msgstr "¿Permitir  notificaciones de enlace desde otros sitios (trackbacks)?"
+
+#: ../growmap-anti-spambot-plugin.php:205
+msgid "Unchecking the box will prevent ALL trackbacks"
+msgstr "Si desmarcas esta casilla, no se permitirá ningún trackback."
+
+#: ../growmap-anti-spambot-plugin.php:206
+msgid ""
+"See this plugin if you want a trackback validation plugin that works well "
+"with GASP"
+msgstr ""
+"Mira este plugin si estás buscando uno que valide trackbacks y funcione bien "
+"con GASP"
+
+#: ../growmap-anti-spambot-plugin.php:210
+msgid ""
+"These are the messages you will show the user if they forget to check the "
+"checkbox or if the comment looks like it was submitted by a spambot"
+msgstr ""
+"Estos son los mensajes que se van a mostrar si el usuario ha olvidado marcar "
+"la casilla o si el comentario parece ser enviado por un robot de envío de "
+"comentarios spam"
+
+#: ../growmap-anti-spambot-plugin.php:212
+#: ../growmap-anti-spambot-plugin.php:222
+msgid "There is only 1 situation where this can happen"
+msgstr "Solo hay una situación en la que pueda pasar esto"
+
+#: ../growmap-anti-spambot-plugin.php:214
+msgid "The user forgot to check the checkbox"
+msgstr "El usuario olvidó marcar la casilla"
+
+#: ../growmap-anti-spambot-plugin.php:217
+msgid "Checkbox not checked alert"
+msgstr "Alerta cuando la casilla de comprobación no está seleccionada"
+
+#: ../growmap-anti-spambot-plugin.php:224
+msgid "The user does not have javascript enabled"
+msgstr "El usuario no tiene javascript activado"
+
+#: ../growmap-anti-spambot-plugin.php:227
+msgid "No checkbox"
+msgstr "No hay casilla"
+
+#: ../growmap-anti-spambot-plugin.php:232
+msgid "There is only one situation where this would happen"
+msgstr "Solo hay una situación en la que pueda pasar esto"
+
+#: ../growmap-anti-spambot-plugin.php:234
+msgid ""
+"The form has a hidden field added with a label that has a name value with "
+"the word \"email\" in it. A spam bot will usually try to fill in all fields "
+"on a form, if this field has been filled in then something is wrong"
+msgstr ""
+"Este formulario tiene un campo oculto con una etiqueta que contiene el "
+"texto  \"email\". Un robot que deja comentarios spam normalmente rellena "
+"todos los campos y por tanto si este campo oculto se ha rellenado, pasa algo "
+"extraño."
+
+#: ../growmap-anti-spambot-plugin.php:237
+msgid "Hidden email field completed"
+msgstr "Campo oculto de email rellenado"
+
+#: ../growmap-anti-spambot-plugin.php:244
+msgid "Heuristics (optional spam detection)"
+msgstr "Heurística (detección opcional de spam)"
+
+#: ../growmap-anti-spambot-plugin.php:245
+msgid ""
+"You can have more advanced spam detection by setting these options. Many "
+"thanks to @dragonblogger for these suggestions"
+msgstr ""
+"Puedes tener una detección de spam más avanzada si configuras estas "
+"opciones. Muchas gracias a @dragonblogger por las sugerencias."
+
+#: ../growmap-anti-spambot-plugin.php:248
+msgid "Maximum number of URLs allowed in comment text"
+msgstr "Número máximo de URLs permitidos en el texto del comentario"
+
+#: ../growmap-anti-spambot-plugin.php:250
+#: ../growmap-anti-spambot-plugin.php:256
+msgid "Use 0 (zero) to disable check"
+msgstr "Usa 0 (cero) para deshabilitar la comprobación"
+
+#: ../growmap-anti-spambot-plugin.php:254
+msgid "Maximum number of words allowed in name field"
+msgstr "Número máximo de palabras permitidas en el campo nombre"
+
+#: ../growmap-anti-spambot-plugin.php:260
+msgid "Where to send suspicious comments?"
+msgstr "¿Qué hacemos con los comentarios que son sospechosos?"
+
+#: ../growmap-anti-spambot-plugin.php:263
+msgid "spam"
+msgstr "spam"
+
+#: ../growmap-anti-spambot-plugin.php:264
+msgid "pending"
+msgstr "pendiente"
+
+#: ../growmap-anti-spambot-plugin.php:273
+msgid "Save Changes"
+msgstr "Guardar cambios"

@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: hja-fa_IR\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-30 19:50+0530\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Aakash Chakravarthy <aakash.19493@gmail.com>\n"
+"Language-Team: S & S Group     www.zavarzadeh.org <sushyant@zavarzadeh.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: _;__;_e;gettext\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../html-javascript-adder.php:32
+#, fuzzy
+msgid "Insert HTML, Javascripts, shortcodes and other codes in the sidebar"
+msgstr "برای بهره گیری کدهای اچ تی ام ال، کدهای جاوا اسکریپت، جاسازی فلش در ستون کنار تارنما و دیگر چیزهای همانند "
+
+#: ../html-javascript-adder.php:36
+msgid "HTML Javascript Adder"
+msgstr "افزودن اچ تی ام ال و جاوا اسکریپت"
+
+#: ../html-javascript-adder.php:232
+#, fuzzy
+msgid "Title"
+msgstr "نام:"
+
+#: ../html-javascript-adder.php:238
+msgid "Content :"
+msgstr "درون مایه (محتوا)"
+
+#: ../html-javascript-adder.php:275
+msgid "Settings"
+msgstr "گزینه ها"
+
+#: ../html-javascript-adder.php:277
+msgid "Show in all pages"
+msgstr "نمایش در تمام صفحات"
+
+#: ../html-javascript-adder.php:279
+msgid "Show only in specific pages"
+msgstr "فقط نمایش در صفحات خاص"
+
+#: ../html-javascript-adder.php:283
+#: ../html-javascript-adder.php:303
+#, fuzzy
+msgid "Post ID / name / title separated by comma"
+msgstr "شماره ی نوشته ها (آیدی) /نام/ با ویرگول (،) از هم جدا کنید."
+
+#: ../html-javascript-adder.php:287
+msgid "Hide only in specific pages"
+msgstr "ویرایشهای فقط در صفحات خاص"
+
+#: ../html-javascript-adder.php:291
+msgid "Don't display in Posts page"
+msgstr "در بخش نوشته ها نمایش نده"
+
+#: ../html-javascript-adder.php:293
+msgid "Don't display in Archive or Tag page"
+msgstr "در بخش بایگانی و برچسب نمایش نده"
+
+#: ../html-javascript-adder.php:295
+msgid "Don't display in Home page"
+msgstr "در خانه نمایش نده"
+
+#: ../html-javascript-adder.php:297
+msgid "Don't display in Pages"
+msgstr "در برگه ها نمایش نده"
+
+#: ../html-javascript-adder.php:299
+msgid "Don't display in Search page"
+msgstr "در جست و جوها نمایش نده"
+
+#: ../html-javascript-adder.php:301
+msgid "Don't show in posts"
+msgstr "در نوشته ها نمایش نده"
+
+#: ../html-javascript-adder.php:308
+msgid "Automatically add paragraphs"
+msgstr "افزودن خودکار بندها (پاراگراف ها)"
+
+#: ../html-javascript-adder.php:310
+msgid "Don't display to admin"
+msgstr "برای سرپرست نمایش نده"
+
+#: ../html-javascript-adder.php:343
+msgid "Added with HTML Javascript Adder Wordpress plugin"
+msgstr "افزوده شده با افزونه ی وردپرس اچ تی ام ال و جاوا اسکریپت"
+
+#: ../html-javascript-adder.php:384
+msgid "Make Donations"
+msgstr "کمک پولی کردن"
+
+#~ msgid "Link"
+#~ msgstr "پیوند"
+
+#~ msgid "Image"
+#~ msgstr "نگاره (عکس)"
+
+#~ msgid "Code"
+#~ msgstr "کد"
+
+#~ msgid "Preview"
+#~ msgstr "پیش نمایش"
+
+#~ msgid "Documentation"
+#~ msgstr "مستندها"
+
+#~ msgid "Visit Author site"
+#~ msgstr "از تارنمای نویسنده ی افزونه دیدن کنید"
+
+#~ msgid "Support Forum"
+#~ msgstr "انجمن پشتیبانی"
+
+#~ msgid "Subscribe"
+#~ msgstr "آبونه شدن"
+
+#~ msgid "Promote"
+#~ msgstr "گسترش"
+
+#~ msgid "Disable HTML Javascript Adder link back"
+#~ msgstr "از کار انداختن پیوند اچ تی ام ال و جاوا اسکریپت"
+
+#~ msgid "Save"
+#~ msgstr "نگه داری"
+
+#~ msgid "Subscribe to Updates"
+#~ msgstr "آبونه شدن برای به روز رسانی ها"
+
+#~ msgid "Follow on Twitter"
+#~ msgstr "دنبال کردن در توییتر"
+
+#~ msgid "Home Page"
+#~ msgstr "خانه"
+
+#~ msgid "AW Latest Updates"
+#~ msgstr "تازه ترین به روز رسانی های آ دبلیو"
