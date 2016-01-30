@@ -1,0 +1,225 @@
+/**
+  * HTML Javascript Adder - Wordpress plugin widget styles
+  * v3.0 - Since 3.0
+  * http://www.aakashweb.com/
+**/
+
+.section{
+	margin: 0px 0px 10px;
+}
+.alignLeft{
+	float: left;
+	padding: 0px 10px 0px 0px;
+}
+.smallText{
+	font-size: 10px;
+	color: #666666;
+}
+.hjaAccord{
+	margin: 0px -10px -1px;
+	padding: 5px 10px;
+	border-top: 1px solid #dfdfdf;
+	border-bottom: 1px solid #dfdfdf;
+	display: block;
+	background-color: #fff;
+	background-image: -ms-linear-gradient(top,#f9f9f9,#fff);
+	background-image: -moz-linear-gradient(top,#f9f9f9,#fff);
+	background-image: -o-linear-gradient(top,#f9f9f9,#fff);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#fff));
+	background-image: -webkit-linear-gradient(top,#f9f9f9,#fff);
+	background-image: linear-gradient(top,#f9f9f9,#fff);
+}
+.hjaAccord:hover{
+	background: #F6F6F6;
+}
+.hjaAccordWrap{
+	margin: 10px 0px;
+}
+.hjaAccordWrap label{
+	display: block;
+	margin-bottom: 5px;
+}
+.hjaContent{
+	width: 100%;
+	font: 11.5px/2em "Courier New", Courier, monospace;
+	resize: vertical;
+}
+/**
+.hjaContent{
+	width: 100%;
+	font: 13px "Courier New", Courier, monospace;
+	resize: vertical;
+	background-image: url(images/line-numbers.png);
+	background-color: #FFFFFF;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    padding-top: 10px;
+    border-color:#ccc;
+	height: 255px;
+}
+**/
+.hjaOtherOpts{
+	margin: 10px 0px 0px;
+}
+.hjaWindow{
+	background: url(./images/overlay.png) repeat;
+	padding: 15px;
+	-webkit-box-shadow: 0px 0px 10px 2px #ccc;
+	-moz-box-shadow: 0px 0px 10px 2px #ccc;
+	box-shadow: 0px 0px 10px 2px #ccc;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #999999;
+	z-index: 9999;
+	width: 460px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -260px;
+	margin-left: -225px;
+	display: none;
+	color: white;
+}
+.hjaWindow a{
+	color: white;
+}
+.hjaWinHead{
+	color: #FFFFFF;
+	margin: 0px 0px 10px;
+}
+.hjaOverlayClose{
+	background: url(./images/close-bt.png);
+	float: right;
+	background: url(./images/close-bt.png) repeat;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+	margin: -10px 0px 0px;
+}
+#hjaIframe{
+	width: 460px;
+	height: 430px;
+	background: #FFFFFF;
+}
+
+.hjaToolbar{
+	margin: 5px 0px;
+}
+.hjaToolbar > li{
+	background: url(./images/tb-bg.png) repeat-x;
+	border: 1px solid #dfdfdf;
+	padding: 3px 6px;
+	margin: 0px -3px 0px 2px;
+	cursor: pointer;
+	float: left;
+}
+.hjaToolbar > li:hover{
+	background: #E9E9E9;
+	-moz-box-shadow:inset 0 0 5px #ccc;
+   -webkit-box-shadow:inset 0 0 5px #ccc;
+   box-shadow:inset 0 0 5px #ccc;
+}
+.hjaToolbar li ul{
+	background: #FFFFFF;
+	border: 1px solid #dfdfdf;
+	margin: 2px 0px 0px -7px;
+	display: none;
+	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+	-moz-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+}
+.hjaToolbar li:hover > ul{
+	display: block;
+	position: absolute;
+}
+.hjaToolbar li:hover li{
+	float: none;
+	margin: 0px 0px -1px;
+	padding: 7px;
+	border-bottom: 1px solid #dfdfdf;
+	cursor: auto;
+}
+.hjaToolbar img{
+	margin: 0px 3px 0px 0px;
+}
+.hjaToolbar hr{
+	border-style: solid;
+	border-color: #f2f2f2;
+	border-top-width: 0px;
+}
+.hjaShare span {
+	display:none;
+	padding:10px;
+	margin: -15px 0px 0px -50px;
+	position:absolute;
+	background:#ffffff;
+	border:1px solid #cccccc;
+	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+	-moz-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.09);
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.hjaShare:hover span{
+	display:inline;
+}
+.hjaSupport{
+	float: right !important;
+}
+.hjaSupport img{
+	margin: 0 0 -3px 0;
+}
+
+.hjaPostsList{
+	position: absolute;
+	z-index: 9999;
+	background: white;
+	padding: 10px 10px 0 10px;
+	border-radius: 3px;
+	box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.07);
+	border: 1px solid #E0E0E0;
+	margin-left: -10px;
+	display: none;
+}
+.hjaPostsList h4{
+	margin: -10px -10px 5px -10px;
+	padding: 10px 10px 10px;
+	border-bottom: 1px solid #666;
+	background: #333;
+	color: #dfdfdf;
+	border-radius: 3px 3px 0 0;
+}
+
+.hjaTb{
+	background: #FFFFFF url(./images/tb-bg.png) repeat-x;
+	padding: 2px 8px;
+	border: 1px solid #dfdfdf;
+	margin: 0px -4px -1px 0px;
+	display: inline-block;
+	cursor: pointer;
+}
+.hjaTb:hover{
+	background: #666666;
+	color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+}
+.hjaTbSpace{
+	margin: 0px 7px 0px 0px;
+}
+.hjaDonate{
+	color: #FF6600;
+}
+.hjaSocialWrap{
+	background: none repeat scroll 0 0 #FFFFFF;
+	margin-left: 90px;
+	padding: 5px;
+	position: absolute;
+}
+.clearer{
+	clear:both;
+}
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+.clearfix { display: inline-block; }
+.clearfix { display: block; zoom: 1; }

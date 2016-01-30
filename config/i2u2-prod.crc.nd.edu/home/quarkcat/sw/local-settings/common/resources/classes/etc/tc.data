@@ -1,0 +1,140 @@
+#This is the transformation catalog.
+#
+#It comes pre-configured with a number of simple transformations with
+#paths that are likely to work on a linux box. However, on some systems,
+#the paths to these executables will be different (for example, sometimes
+#some of these programs are found in /usr/bin rather than in /bin)
+#
+#NOTE WELL: fields in this file must be separated by tabs, not spaces; and
+#there must be no trailing whitespace at the end of each line.
+#
+# sitename  transformation  path   INSTALLED  platform  profiles
+
+
+# Cosmic
+
+localhost	ThresholdTimes	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl	INSTALLED       INTEL64::LINUX null
+localhost	WireDelay		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/WireDelay.pl		INSTALLED       INTEL64::LINUX null
+localhost	Combine			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Combine.pl		INSTALLED       INTEL64::LINUX null
+localhost	SingleChannel	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/SingleChannel.pl	INSTALLED       INTEL64::LINUX null
+localhost	Sort			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Sort.pl			INSTALLED       INTEL64::LINUX null
+localhost	Flux			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Flux.pl			INSTALLED       INTEL64::LINUX null
+localhost	Plot			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Plot.pl			INSTALLED       INTEL64::LINUX null
+localhost	Lifetime		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Lifetime.pl		INSTALLED       INTEL64::LINUX null
+localhost	Frequency		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Frequency.pl		INSTALLED       INTEL64::LINUX null
+localhost	ExtraFunctions	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ExtraFunctions.pl	INSTALLED       INTEL64::LINUX null
+localhost	EventSearch		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/EventSearch.pl	INSTALLED       INTEL64::LINUX null
+localhost	EventChoice		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/EventChoice.pl	INSTALLED       INTEL64::LINUX null
+localhost	RawAnalyze		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/RawAnalyze.pl		INSTALLED       INTEL64::LINUX null
+localhost	SVG2PNG			/usr/bin/rsvg							INSTALLED		INTEL64::LINUX null
+
+teraport	ThresholdTimes	/home/hategan/i2u2/apps/ThresholdTimes.pl	INSTALLED       INTEL32::LINUX null
+teraport	WireDelay		/home/hategan/i2u2/apps/WireDelay.pl		INSTALLED       INTEL32::LINUX null
+teraport	Combine			/home/hategan/i2u2/apps/Combine.pl		INSTALLED       INTEL32::LINUX null
+teraport	SingleChannel	/home/hategan/i2u2/apps/SingleChannel.pl	INSTALLED       INTEL32::LINUX null
+teraport	Sort			/home/hategan/i2u2/apps/Sort.pl			INSTALLED       INTEL32::LINUX null
+teraport	Flux			/home/hategan/i2u2/apps/Flux.pl			INSTALLED       INTEL32::LINUX null
+teraport	Plot			/home/hategan/i2u2/apps/Plot.pl			INSTALLED       INTEL32::LINUX null
+teraport	Lifetime		/home/hategan/i2u2/apps/Lifetime.pl		INSTALLED       INTEL32::LINUX null
+teraport	Frequency		/home/hategan/i2u2/apps/Frequency.pl		INSTALLED       INTEL32::LINUX null
+teraport	ExtraFunctions	/home/hategan/i2u2/apps/ExtraFunctions.pl	INSTALLED       INTEL32::LINUX null
+teraport	EventSearch		/home/hategan/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
+teraport	EventChoice		/home/hategan/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
+
+aux			SVG2PNG			/usr/bin/rsvg							INSTALLED		INTEL32::LINUX null
+
+# LIGO
+
+teraport 	plot1Chan		/home/myers/i2u2/tla_dev/root/plot1Chan.sh					INSTALLED		INTEL32::LINUX null
+
+node1           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node1           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node1           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node1           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node1           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node1           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node1           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node1           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node1           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node1           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node1           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node1           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node2           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node2           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node2           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node2           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node2           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node2           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node2           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node2           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node2           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node2           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node2           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node2           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node3           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node3           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node3           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node3           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node3           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node3           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node3           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node3           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node3           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node3           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node3           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node3           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node4           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node4           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node4           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node4           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node4           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node4           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node4           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node4           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node4           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node4           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node4           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node4           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node5           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node5           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node5           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node5           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node5           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node5           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node5           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node5           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node5           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node5           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node5           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node5           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node6           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node6         WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node6           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node6           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node6           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node6           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node6           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node6           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node6           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node6           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node6           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node6           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+
+node7           ThresholdTimes  /home/quarkcat/sw/perl/cosmic/ThresholdTimes.pl     INSTALLED               INTEL32::LINUX null
+node7           WireDelay               /home/quarkcat/sw/perl/cosmic/WireDelay.pl          INSTALLED       INTEL32::LINUX null
+node7           Combine                 /home/quarkcat/sw/perl/cosmic/Combine.pl            INSTALLED       INTEL32::LINUX null
+node7           SingleChannel   /home/quarkcat/sw/perl/cosmic/SingleChannel.pl      INSTALLED       INTEL32::LINUX null
+node7           Sort                    /home/quarkcat/sw/perl/cosmic/Sort.pl                       INSTALLED       INTEL32::LINUX null
+node7           Flux                    /home/quarkcat/sw/perl/cosmic/Flux.pl                       INSTALLED       INTEL32::LINUX null
+node7           Plot                    /home/quarkcat/sw/perl/cosmic/Plot.pl                       INSTALLED       INTEL32::LINUX null
+node7           Lifetime                /home/quarkcat/sw/perl/cosmic/Lifetime.pl           INSTALLED       INTEL32::LINUX null
+node7           Frequency               /home/quarkcat/sw/perl/cosmic/Frequency.pl          INSTALLED       INTEL32::LINUX null
+node7           ExtraFunctions  /home/quarkcat/sw/perl/cosmic/ExtraFunctions.pl     INSTALLED       INTEL32::LINUX null
+node7           EventSearch             /home/quarkcat/sw/perl/cosmic/EventSearch.pl        INSTALLED       INTEL32::LINUX null
+node7           EventChoice             /home/quarkcat/sw/perl/cosmic/EventChoice.pl        INSTALLED       INTEL32::LINUX null
+

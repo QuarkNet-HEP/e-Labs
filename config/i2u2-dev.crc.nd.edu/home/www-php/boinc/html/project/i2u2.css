@@ -1,0 +1,548 @@
+/* I2U2 Discussion Site style sheet.
+ * @(#) $Id: i2u2.css,v 1.13 2009/06/24 17:44:31 myers Exp $
+ */
+
+/* Import rules must be the first rules in a style sheet */
+
+@import "bugrpt.css" ;
+@import "new_forum.css" ;
+
+
+body {
+     color: black;
+     background-color: white;
+}
+
+img {
+    border: 0px;
+}
+
+body , table , input , select {
+	font-family: Verdana, Arial, Sans Serif;
+	font-size: small;
+}
+
+
+/* Genera property classes */
+
+.right { float: right; }	
+.left {	float: left; }	
+
+
+
+/** Tables **/
+
+
+.noborder {
+    border: 0px;		/* normal use */
+    /** border: 1px solid black;   /* for testing */
+}
+
+
+table.bordered {
+      border: 1px solid black;
+}
+
+th {
+	background-color: #ffccff;
+	font-weight: bold;
+}
+
+
+td {
+    border: 1px solid white;
+}
+
+
+td.bordered {
+        border: 1px solid grey;
+}
+
+td.indent {
+         border-left: 4px solid white;
+}
+
+
+th.heading, table.thread th  {
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+
+td.heading {
+        color: white; 
+        background-color: black;
+        font-weight: bold;
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+td.fieldname {
+        background-color: rgb(237,237,237);
+}
+
+td.category {
+        border: 1px solid black;
+}
+
+
+
+tr.row0 {
+        background-color: rgb(247,247,247);
+}
+
+tr.row1 {
+        background-color: rgb(247,255,247);
+}
+
+tr.subtitle {
+	background-color: white;
+	color: black;
+	font-weight: bold;
+}
+
+
+tr.message {
+    background-color:#E0E0EF;
+}
+
+
+/** Links **/
+
+
+a:link {
+	color: blue;
+}
+
+a:visited {
+	color: blue;
+}
+
+a:active {
+	text-decoration: none;
+}
+
+
+
+/** Headings **/
+
+h1 , h2 {
+	color: black;
+	font-size: x-large;
+	font-variant: small-caps;
+	font-weight: normal;
+	margin-top: 10px;
+	font-family: Verdana, Arial, Sans Serif;
+}
+
+h3 , h4 {
+	color: black;
+	font-size: small;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-family: Verdana, Arial, Sans Serif;
+}
+
+h3 {
+   padding-top: 0.5em;
+}
+
+.title {
+	font-size: small;
+	font-weight: bold;
+}
+
+.description {
+	font-size: 80%;
+	font-weight: normal;
+}
+
+
+
+
+/* front page description */
+
+table.overview {
+   border: 7px;
+   border-style: solid;
+   border-color: #ccccff;
+   padding: 2px;
+   margin: 5px;
+   background-color: #ffffff;
+}
+
+
+.frontpage ul,
+.frontpage ol {
+   margin-top: -1.0em;
+} 
+
+.frontpage ul ul {
+   margin-top: 0em;
+} 
+
+td.frontpage_news {
+    border: 3px;
+    border-style: outset;
+    background-color: #e0e0ff;
+    min-width: 250px;
+}
+
+
+td.frontpage_status {
+    border: 3px;
+    border-style: outset;
+    /* background-color: #ffe0e0; /*  */
+    background-color: #ffaa55;
+    min-width: 250px;
+}
+
+
+/************** New stuff from BOINC 5.2.15 *****************/
+
+td.heading2 {
+    color: white;
+    background-color:black;
+    font-weight: bold;
+}
+
+td.fieldname {
+    background-color: #eeeeee;
+    text-align: right;
+    vertical-align: top;
+}
+
+td.fieldvalue {
+    vertical-align: top;
+    font-weight: bold;
+}
+
+td.category {
+	background-color: #dddddd;
+}
+
+
+/** Navigation Bar **/ 
+
+
+td.navbar {
+    border: 0px;
+    text-align: center;
+}
+
+a.navbar:link {
+    color: #ff9711;
+    text-decoration: none;
+}
+a.navbar:visited {
+    color: #ff9711;
+    text-decoration: none;
+}
+a.navbar:hover {
+    color: #ffc060;
+    text-decoration: underline;
+}
+
+
+/* Input forms */
+
+input.required, textarea.required {
+   background-color: #ffffee;
+}
+
+input , select {
+	vertical-align: middle;
+}
+
+
+
+/** Discussion Forums **/
+
+
+.authorcol {
+	width: 120px;
+	overflow: hidden;
+}
+
+.cellwrap{
+	width: 100%;
+	overflow: auto;
+}
+
+.sigdelim {
+	width: 60%;
+	height: 1px;
+	background-color: black;
+	color: black;
+	border: 0;
+	margin-right: 100%;
+}
+
+blockquote.postbody {
+	border-left: 2px solid blue;
+	border-right: 1px solid blue;
+	border-top:   1px solid blue;
+	border-bottom: 1px solid blue;
+	background: rgb(240,240,255);
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	margin-bottom: 0px;
+	margin-left: 15px;
+	margin-right: 120px;
+	font-style: italic;
+}
+
+#thread table {
+	width: 100%;
+	table-layout: fixed;
+}
+
+
+td.postheader{
+        background-color: rgb(220,210,210);
+        border-bottom: 1px solid rgb(190,190,200);
+        height:1px;
+}
+td.postfooter{
+        background-color: rgb(220,210,210);
+        border-top: 1px solid rgb(190,190,200);
+        height:1px;
+}
+tr.helpdeskseperator{
+        height:15px;
+}
+tr.postseperator{
+        background-color: rgb(200,200,200);
+        height:4px;
+}
+tr.postseperator td{
+        border-top: 1px solid rgb(170,170,170);
+        border-bottom: 1px      solid rgb(170,170,170);
+}
+
+
+p/** RSS News display on front page **/
+
+.news_date {
+     color: rgb(100,100,100);
+     font-size: 0.8em;
+}
+
+.news_title {
+    color: black;
+    font-size: 107%;
+    font-weight: bold;
+}
+
+.news_description {
+    font-size: 100%;
+}
+
+.news_link {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+
+
+/* List of calendars */
+
+dl.calendars {
+	margin-left: 2em;
+}
+
+dl.calendars dt {
+    font-weight: bold;  
+}
+
+
+
+/*** e-Lab Selector on main page ***/
+
+table.e-labs_main {
+   border: 0px;
+   border-style: solid;
+   font-weight: bold;     
+    
+}
+
+
+table.e-labs_main td {
+   padding: 2px;
+   border: 1px;
+   border-style: solid;
+   border-color: black;
+
+   margin-left: 3px;
+   margin-right: 3px;
+}
+
+table.e-labs_main td:hover {
+   padding: 1px;
+   border: 2px;
+   border-style: solid;
+   border-color: blue;
+
+   margin-left: 3px;
+   margin-right: 3px;
+}
+
+/**  Help Desk link **/
+
+.help_link {
+   color: grey;
+   font-size: x-small;
+}
+
+.help_link a {
+   color: black;
+   text-decoration: none;
+}
+
+
+.help_link a:hover {
+  color: blue;
+  text-decoration: underline; 
+}
+
+
+
+/** wiki page transclusion **/
+
+.editsection,
+.printfooter {
+  display: none;
+}
+
+.wikibody ul li {
+        list-style-type: square;
+        list-style-image: url( /images/blast_icon.gif );
+}
+
+.wikibody ul li a {
+   text-decoration: none;
+}
+
+.edit_link {
+   color: grey;
+   font-size: x-small;
+}
+
+.edit_link a {
+   color: grey;
+   text-decoration: none;
+}
+
+.edit_link a:hover {
+   color: grey;
+   text-decoration: underline;
+}
+
+.edit_link ul li {
+   display: inline;
+   margin-right: 1em;
+}
+
+
+
+/* e-Lab Page style */
+
+.header-title {
+  color: white;
+  font-size: 2em;
+  font-weight: bolder;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.header-subtitle {
+  color: white;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.second-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: right;
+  vertical-align: top;
+}
+
+
+.third-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: left;
+  vertical-align: top;
+}
+
+
+/* General Masthead  and Menu Bar */
+
+.masthead,
+.masthead tr, .masthead tr td {
+    color: white;
+    background-color: black;
+    border: 0px;
+}
+
+
+table.masthead {
+    width: 100%; 
+}
+
+
+
+
+.masthead tr td a {
+	   color: white;
+	   text-decoration: none;
+}
+
+.masthead tr td a:hover {
+	   text-decoration: underline;
+}
+
+
+a.masthead:visited,
+.masthead tr td a:visited {
+	   color: white;
+	   text-decoration: none;
+}
+
+table.menu_bar {
+    width: 100%; 
+    background-color: black;
+    color: white;
+    border: 0px;
+}
+
+.menu_bar,
+.menu_bar tr td {
+    border: 0px;
+}
+
+.menu_bar tr td {
+    text-align: center;
+}
+
+.menu_bar tr td a {
+     color: white; 
+     text-decoration: none;
+}
+
+.menu_bar tr td a:hover {
+     color: white; 
+     text-decoration: underline;
+}
+
+
+
+/*EOF*/

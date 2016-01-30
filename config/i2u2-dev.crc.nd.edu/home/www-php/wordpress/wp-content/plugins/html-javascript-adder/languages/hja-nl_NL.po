@@ -1,0 +1,138 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HTML Javascript Adder\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-30 19:54+0530\n"
+"PO-Revision-Date: 2011-11-30 19:56+0530\n"
+"Last-Translator: Aakash Chakravarthy <aakash.19493@gmail.com>\n"
+"Language-Team: Aakash Chakravarthy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../html-javascript-adder.php:32
+msgid "Insert HTML, Javascripts, shortcodes and other codes in the sidebar"
+msgstr "Insert HTML, Javascripts, shortcodes en andere codes in de zijbalk"
+
+#: ../html-javascript-adder.php:36
+msgid "HTML Javascript Adder"
+msgstr "HTML Javascript Adder"
+
+#: ../html-javascript-adder.php:232
+msgid "Title"
+msgstr "Titel"
+
+#: ../html-javascript-adder.php:238
+msgid "Content :"
+msgstr "Inhoud:"
+
+#: ../html-javascript-adder.php:275
+msgid "Settings"
+msgstr "Instellingen"
+
+#: ../html-javascript-adder.php:277
+msgid "Show in all pages"
+msgstr "Show in alle pagina's"
+
+#: ../html-javascript-adder.php:279
+msgid "Show only in specific pages"
+msgstr "Toon alleen in specifieke pagina's"
+
+#: ../html-javascript-adder.php:283
+#: ../html-javascript-adder.php:303
+msgid "Post ID / name / title separated by comma"
+msgstr "Post-ID / naam / titel gescheiden door een komma"
+
+#: ../html-javascript-adder.php:287
+msgid "Hide only in specific pages"
+msgstr "Verberg alleen in specifieke pagina's"
+
+#: ../html-javascript-adder.php:291
+msgid "Don't display in Posts page"
+msgstr "Niet weergegeven in de pagina Berichten"
+
+#: ../html-javascript-adder.php:293
+msgid "Don't display in Archive or Tag page"
+msgstr "Niet weergegeven in Archief of Tag pagina"
+
+#: ../html-javascript-adder.php:295
+msgid "Don't display in Home page"
+msgstr "Niet weergeven in Home pagina"
+
+#: ../html-javascript-adder.php:297
+msgid "Don't display in Pages"
+msgstr "Niet weergegeven in Pages"
+
+#: ../html-javascript-adder.php:299
+msgid "Don't display in Search page"
+msgstr "Niet weergegeven in Zoekpagina"
+
+#: ../html-javascript-adder.php:301
+msgid "Don't show in posts"
+msgstr "Niet weergeven in berichten"
+
+#: ../html-javascript-adder.php:308
+msgid "Automatically add paragraphs"
+msgstr "Automatisch toe te voegen punten"
+
+#: ../html-javascript-adder.php:310
+msgid "Don't display to admin"
+msgstr "Niet tonen van admin"
+
+#: ../html-javascript-adder.php:343
+msgid "Added with HTML Javascript Adder Wordpress plugin"
+msgstr "Toegevoegd met HTML Javascript Adder Wordpress-plugin"
+
+#: ../html-javascript-adder.php:384
+msgid "Make Donations"
+msgstr "Donaties"
+
+#~ msgid "Link"
+#~ msgstr "Link"
+
+#~ msgid "Image"
+#~ msgstr "Afbeelding"
+
+#~ msgid "Code"
+#~ msgstr "Code"
+
+#~ msgid "Preview"
+#~ msgstr "Preview"
+
+#~ msgid "Documentation"
+#~ msgstr "Documentatie"
+
+#~ msgid "Visit Author site"
+#~ msgstr "Bezoek Auteur site"
+
+#~ msgid "Support Forum"
+#~ msgstr "Support Forum"
+
+#~ msgid "Subscribe"
+#~ msgstr "Abonneer"
+
+#~ msgid "Promote"
+#~ msgstr "Steun ter bevordering"
+
+#~ msgid "Disable HTML Javascript Adder link back"
+#~ msgstr "Schakel HTML Javascript Adder link terug"
+
+#~ msgid "Save"
+#~ msgstr "Update"
+
+#~ msgid "Subscribe to Updates"
+#~ msgstr "Abonneren op updates"
+
+#~ msgid "Follow on Twitter"
+#~ msgstr "Volg op Twitter"
+
+#~ msgid "Home Page"
+#~ msgstr "Home Page"
+
+#~ msgid "AW Latest Updates"
+#~ msgstr "AW Laatste Updates"

@@ -1,0 +1,155 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops
+END
+forum_repair.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/forum_repair.php
+END
+db_modify.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/db_modify.php
+END
+create_forums.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/create_forums.php
+END
+bbcode_convert_signature.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/bbcode_convert_signature.php
+END
+list_new_users.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/list_new_users.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/index.php
+END
+mass_email.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/mass_email.php
+END
+update_uotd.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/update_uotd.php
+END
+bbcode_convert_response1.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/bbcode_convert_response1.php
+END
+update_forum_activities.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/update_forum_activities.php
+END
+bbcode_convert.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/bbcode_convert.php
+END
+bbcode_convert_response2.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/bbcode_convert_response2.php
+END
+update_profile_pages.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/update_profile_pages.php
+END
+news_frontpage.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/news_frontpage.php
+END
+db_action.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/db_action.php
+END
+list_table.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/list_table.php
+END
+profile_screen_form.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/profile_screen_form.php
+END
+manage_forums.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/manage_forums.php
+END
+watchdogs.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/watchdogs.php
+END
+list_all_users.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/list_all_users.php
+END
+news_admin.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/news_admin.php
+END
+list_uotd_candidates.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/list_uotd_candidates.php
+END
+manage_user.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/manage_user.php
+END
+db_update.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/db_update.php
+END
+db_update_i2u2.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/i2u2/!svn/ver/3355/branches/2.0/boinc/html/ops/db_update_i2u2.php
+END
