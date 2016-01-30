@@ -1,0 +1,144 @@
+#<VirtualHost *:80>
+        #ServerName i2u2-dev.crc.nd.edu
+        #ServerAlias i2u2-dev.crc.nd.edu
+
+        # Logging Directives
+        #SetEnvIfNoCase Request_URI "/elab/dwr/exec/UploadMonitor.getUploadInfo" dontlog
+        #SetEnvIfNoCase Request_URI "/elab/cosmic/include" dontlog
+        #SetEnvIfNoCase Request_URI "/elab/cosmic/notifications" dontlog
+        #CustomLog /var/log/apache2/i2u2-dev.crc.nd.edu.log common env=!dontlog
+
+        #Redirect / http://i2u2-dev.crc.nd.edu/
+#</VirtualHost>
+
+<VirtualHost *:80>
+        # Server Name
+        ServerName i2u2-dev.crc.nd.edu
+        ServerAdmin help@i2u2.org
+
+        # Logging Directives
+        SetEnvIfNoCase Request_URI "/elab/dwr/exec/UploadMonitor.getUploadInfo" dontlog
+        SetEnvIfNoCase Request_URI "/elab/cosmic/include" dontlog
+        SetEnvIfNoCase Request_URI "/elab/cosmic/notifications" dontlog
+        CustomLog /var/log/apache2/i2u2-dev.crc.nd.edu.log common env=!dontlog
+
+        # Tomcat proxy Information
+        ProxyRequests Off
+        #ProxyPass	  /		ajp://localhost:8009/
+	ProxyPassReverse  /             ajp://localhost:8009/
+
+        # Self-hosted Ganglia proxy (needs to be first)
+        ProxyPass               /ganglia        http://vm7.i2u2.org/ganglia
+        ProxyPassReverse        /ganglia        http://vm7.i2u2.org/ganglia
+
+        ProxyPass       /tla            !
+        ProxyPass       /ligo/tla       !
+        ProxyPass       /data           !
+        ProxyPass       /library        !
+        ProxyPass       /glossary       !
+        ProxyPass       /cosmic/library !
+        ProxyPassMatch  /elab/.*/teacher/library !
+        ProxyPass       /images         !
+        ProxyPass       /img            !
+        ProxyPass       /stats          !
+        ProxyPass       /user_profile   !
+        ProxyPass       /view           !
+        ProxyPassMatch  ^/elab/.*/forum  !
+        ProxyPass       /cms/cima       !
+        ProxyPassMatch  ^/elab/.*/cima  !
+        ProxyPass       /ops            !
+        ProxyPass       /plan           !
+        ProxyPassMatch ^(/.*\.php)$     !
+        ProxyPass         /elab         ajp://localhost:8009/elab
+        ProxyPass         /ilab         ajp://localhost:8009/ilab
+        ProxyPass         /css          ajp://localhost:8009/css
+        ProxyPass         /graphics     ajp://localhost:8009/graphics
+        ProxyPass         /ROOT         ajp://localhost:8009/ROOT
+        ProxyPass         /tests        ajp://localhost:8009/tests
+        ProxyPassMatch ^/(.*)\.jsp$     ajp://localhost:8009/$1.jsp
+        ProxyPassMatch ^/$      ajp://localhost:8009/
+
+        # Forum
+        DocumentRoot "/home/quarkcat/sw/www-php/boinc/html/user"
+        DirectoryIndex index.php index.html index.htm index.shtml
+
+        AliasMatch ^/elab/(.*)/forum/user_profile/(.*)$  /home/quarkcat/sw/www-php/boinc/html/user_profile/$2
+        AliasMatch ^/elab/(.*)/forum/(.*)$               /home/quarkcat/sw/www-php/boinc/html/user/$2
+        Alias   /user_profile   "/home/quarkcat/sw/www-php/boinc/html/user_profile"
+        Alias   /ops    "/home/quarkcat/sw/www-php/boinc/html/ops"
+
+        ScriptAlias  /cgi-bin /home/quarkcat/sw/www-php/boinc/cgi-bin
+
+        <Directory "/home/quarkcat/sw/www-php/boinc/html/user">
+                Options FollowSymlinks MultiViews IncludesNoExec
+                AllowOverride Limit Indexes
+
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        <Directory "/home/quarkcat/sw/www-php/boinc/html/user_profile">
+                Options IncludesNoExec
+                AllowOverride AuthConfig Limit FileInfo
+
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        <Directory "/home/quarkcat/sw/www-php/boinc/html/ops">
+                Options Indexes FollowSymlinks MultiViews IncludesNoExec
+                AllowOverride FileInfo AuthConfig Limit Indexes
+
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        # QuarkNet Library
+        Alias   /teacher/library    "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+        Alias   /cosmic/library     "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+        Alias   /ligo/library       "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+        Alias   /cms/library        "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+        AliasMatch ^/elab/(.*)/teacher/library/(.*)$    /home/quarkcat/sw/www-php/quarknet-fellows-library/$2
+
+        <Directory "/home/quarkcat/sw/www-php/quarknet-fellows-library" >
+                Options FollowSymlinks IncludesNoExec
+                AllowOverride AuthConfig Limit
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        # Glossary
+        Alias      /glossary             "/home/quarkcat/sw/www-php/i2u2-library"
+        Alias      /library              "/home/quarkcat/sw/www-php/i2u2-library"
+
+        <Directory "/home/quarkcat/sw/www-php/i2u2-library">
+                Options FollowSymlinks MultiViews IncludesNoExec
+                AllowOverride Limit Indexes
+
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        # Blog
+        Alias   /blog   "/home/quarkcat/sw/www-php/wordpress"
+
+        <Directory "/home/quarkcat/sw/www-php/wordpress/wp-content">
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        # Cima
+        DocumentRoot "/home/quarkcat/sw/www-php/cima"
+        Alias       /cms/cima    "home/quarkcat/sw/www-php/cima"
+        AliasMatch  ^/elab/(.*)/cima/(.*)$      /home/quarkcat/sw/www-php/cima/$2
+
+
+        <Directory "/home/quarkcat/sw/www-php/cima">
+                Options Indexes FollowSymlinks MultiViews
+                AllowOverride none
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+
+</VirtualHost>

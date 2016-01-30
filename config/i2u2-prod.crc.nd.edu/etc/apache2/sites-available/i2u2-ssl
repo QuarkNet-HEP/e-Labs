@@ -1,0 +1,136 @@
+<VirtualHost *:443>
+	# Server Name
+	ServerName www.i2u2.org
+	ServerAlias i2u2-prod.crc.nd.edu i2u2.org
+	ServerAdmin help@i2u2.org
+	
+	# Logging Directives
+	SetEnvIfNoCase Request_URI "/elab/dwr/exec/UploadMonitor.getUploadInfo" dontlog
+	SetEnvIfNoCase Request_URI "/elab/cosmic/include" dontlog
+	SetEnvIfNoCase Request_URI "/elab/cosmic/notifications" dontlog
+	CustomLog /var/log/apache2/www.i2u2.org.log common env=!dontlog
+
+	# SSL
+        SSLEngine On 
+        SSLCertificateFile      /home/quarkcat/sw/www-apache/ssl/server.crt
+        SSLCertificateKeyFile   /home/quarkcat/sw/www-apache/ssl/server.key
+        SSLCertificateChainFile /home/quarkcat/sw/www-apache/ssl/server-intermediate.ca
+	SSLCACertificateFile /home/quarkcat/sw/www-apache/ssl/server.ca
+
+	<IfModule mod_headers.c>
+		# This domain should only be contacted in HTTPS for the next 6 months
+		Header add Strict-Transport-Security "max-age=15768000"
+	</IfModule>
+
+	# Tomcat proxy Information
+	ProxyRequests Off
+	ProxyPassReverse  /		ajp://localhost:8009/
+	ProxyPass	/tla		!
+	ProxyPass	/ligo/tla	!
+	ProxyPass	/data		!
+	ProxyPass	/library	!
+	ProxyPass	/glossary	!
+	ProxyPass	/cosmic/library	!
+	ProxyPassMatch  /elab/.*/teacher/library !
+	ProxyPass	/images		!
+	ProxyPass	/img		!
+	ProxyPass	/stats		!
+	ProxyPass	/user_profile	!
+	ProxyPass	/view		!
+	ProxyPassMatch  ^/elab/.*/forum  !
+	ProxyPass	/cms/cima	!
+	ProxyPassMatch 	^/elab/.*/cima	!
+	ProxyPass	/ops		!
+	ProxyPass	/plan		!
+	ProxyPassMatch ^(/.*\.php)$	!
+	ProxyPass	  /elab		ajp://localhost:8009/elab
+	ProxyPass	  /ilab		ajp://localhost:8009/ilab
+	ProxyPass	  /css		ajp://localhost:8009/css
+	ProxyPass	  /graphics	ajp://localhost:8009/graphics
+	ProxyPass	  /ROOT		ajp://localhost:8009/ROOT
+	ProxyPass	  /tests	ajp://localhost:8009/tests
+	ProxyPassMatch ^/(.*)\.jsp$	ajp://localhost:8009/$1.jsp
+	ProxyPassMatch ^/$	ajp://localhost:8009/
+
+	# Forum
+	DocumentRoot "/home/quarkcat/sw/www-php/boinc/html/user"
+	DirectoryIndex index.php index.html index.htm index.shtml
+	
+	AliasMatch ^/elab/(.*)/forum/user_profile/(.*)$  /home/quarkcat/sw/www-php/boinc/html/user_profile/$2
+	AliasMatch ^/elab/(.*)/forum/(.*)$	         /home/quarkcat/sw/www-php/boinc/html/user/$2
+	Alias	/user_profile	"/home/quarkcat/sw/www-php/boinc/html/user_profile"
+	Alias	/ops	"/home/quarkcat/sw/www-php/boinc/html/ops"
+	
+	ScriptAlias  /cgi-bin /home/quarkcat/sw/www-php/boinc/cgi-bin
+
+	<Directory "/home/quarkcat/sw/www-php/boinc/html/user">
+		Options FollowSymlinks MultiViews IncludesNoExec
+		AllowOverride Limit Indexes
+
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	<Directory "/home/quarkcat/sw/www-php/boinc/html/user_profile">
+		Options IncludesNoExec
+		AllowOverride AuthConfig Limit FileInfo
+
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	<Directory "/home/quarkcat/sw/www-php/boinc/html/ops">
+		Options Indexes FollowSymlinks MultiViews IncludesNoExec
+		AllowOverride FileInfo AuthConfig Limit Indexes
+
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	# QuarkNet Library
+	Alias	/teacher/library    "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+	Alias	/cosmic/library     "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+	Alias	/ligo/library       "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+	Alias	/cms/library        "/home/quarkcat/sw/www-php/quarknet-fellows-library"
+	AliasMatch ^/elab/(.*)/teacher/library/(.*)$	/home/quarkcat/sw/www-php/quarknet-fellows-library/$2 
+
+	<Directory "/home/quarkcat/sw/www-php/quarknet-fellows-library" >
+		Options FollowSymlinks IncludesNoExec
+		AllowOverride AuthConfig Limit
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	# Glossary
+	Alias      /glossary             "/home/quarkcat/sw/www-php/i2u2-library"
+	Alias      /library              "/home/quarkcat/sw/www-php/i2u2-library"
+
+	<Directory "/home/quarkcat/sw/www-php/i2u2-library">
+        	Options FollowSymlinks MultiViews IncludesNoExec
+	        AllowOverride Limit Indexes
+
+        	Order allow,deny
+	        Allow from all
+	</Directory>
+
+	# Blog
+	Alias	/blog	"/home/quarkcat/sw/www-php/wordpress" 
+
+	<Directory "/home/quarkcat/sw/www-php/wordpress/wp-content">
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	# Cima
+        DocumentRoot "/home/quarkcat/sw/www-php/cima"
+        Alias       /cms/cima    "home/quarkcat/sw/www-php/cima"
+	AliasMatch  ^/elab/(.*)/cima/(.*)$      /home/quarkcat/sw/www-php/cima/$2
+
+        <Directory "/home/quarkcat/sw/www-php/cima/">
+                Options Indexes FollowSymlinks MultiViews
+                AllowOverride none
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+</VirtualHost>
