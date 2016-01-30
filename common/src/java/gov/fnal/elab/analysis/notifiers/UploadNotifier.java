@@ -1,6 +1,7 @@
 /*
  * Created on Feb 27, 2010
  */
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 package gov.fnal.elab.analysis.notifiers;
 
 import gov.fnal.elab.Elab;
@@ -26,30 +27,6 @@ public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
         if (status == AnalysisRun.STATUS_FAILED || status == AnalysisRun.STATUS_COMPLETED) {
             boolean failed = AnalysisRun.STATUS_FAILED == status;
             Elab elab = run.getAnalysis().getElab();
-		    //EP-send an email when an analysis fails
-            if (AnalysisRun.STATUS_FAILED == status) {
-            	Throwable e = run.getException();
-            	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailureTO");
-            	if (to == null) {
-            		to="help@i2u2.org";
-            	}
-            	String cc = elab.getProperty(elab.getName() + ".notifyAnalysisFailureCC");
-
-			    String emailmessage = "", subject = "Job Id: " + run.getId()+" - Cosmic Analysis failed to complete properly";
-			    String emailBody =  "MESSAGE: "+e.getMessage()+"\n" +
-	    				   			"ERROR: "+run.getSTDERR() +"\n" +
-	    				   			"STACK TRACE: "+e.getStackTrace().toString() + "\n" +
-	    				   			"DEBUGGING INFO: "+run.getDebuggingInfo() + "\n";
-			    try {
-			    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-	            	if (cc != null) {
-	            		result = elab.getUserManagementProvider().sendEmail(cc, subject, emailBody);
-	            	}
-			    } catch (Exception ex) {
-	                System.err.println("Failed to send email");
-	                ex.printStackTrace();
-			    }
-            }
             ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
             Notification n = new Notification();
             n.setCreatorGroupId(run.getAnalysis().getUser().getId());

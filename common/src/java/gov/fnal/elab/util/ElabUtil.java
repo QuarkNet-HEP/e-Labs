@@ -2,6 +2,7 @@
  * Created on Mar 5, 2007
  */
 package gov.fnal.elab.util;
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 import gov.fnal.elab.*;
 import gov.fnal.elab.datacatalog.*;
@@ -838,22 +839,6 @@ public class ElabUtil {
 	    				errorMessages = (String) iterator.next() + ",";
 	    			}
 	    			cleanInput = as.scan(cleanInput, policy).getCleanHTML();
-			    	//send email with warning
-			    	//String to = elab.getProperty("notifyDirtyInput");
-			    	//if (to == null) {
-			    	//	to = "help@i2u2.org";
-			    	//}
-		    		//String emailmessage = "", subject = where + ": user sent dirty input";
-		    		//String emailBody =  "User input: "+userInput+"\n" +
-					//	   			"Number of errors: "+String.valueOf(errors)+"\n" +
-				   	//				"Error messages: "+ errorMessages + "\n" +
-				   	//				"Validated input: "+cleanInput + "\n";
-				    //try {
-				    //	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-				    //} catch (Exception ex) {
-		            //    System.err.println("Failed to send email");
-		            //    ex.printStackTrace();
-				   // }		    		
 		    	}//end of checking dirty input
 		   }//end of checking policy for null
     	} catch (Exception e) {

@@ -73,7 +73,6 @@ public class EventCandidates {
                     	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
                     							"at line: "+line+"\n"+
                     							em.getMemoryDetails();
-                    	em.notifyAdmin(elab, emailMessage);
                     	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
                     				   "Please select fewer files or files with fewer events.";
                     	throw e;
