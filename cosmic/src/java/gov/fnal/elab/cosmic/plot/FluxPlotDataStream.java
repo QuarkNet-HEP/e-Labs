@@ -164,7 +164,6 @@ public class FluxPlotDataStream {
 	                	String emailMessage = 	"The code stopped processing the sort.out file in FluxPlotDataStream\n"+
 	                							"at line: "+String.valueOf(i)+"\n"+
 	                							em.getMemoryDetails();
-	                	em.notifyAdmin(elab, emailMessage);
 	                   	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
 	                                   				"We stopped processing the sort.out file at line: <br />"+String.valueOf(i)+".<br/>" +
 	                                   				"Please select fewer files or files with fewer events.");
@@ -297,7 +296,6 @@ public class FluxPlotDataStream {
             	String emailMessage = 	"The code stopped processing the bless files in FluxPlotDataStream\n"+
             							"at line: "+String.valueOf(i)+"\n"+
             							em.getMemoryDetails();
-            	em.notifyAdmin(elab, emailMessage);
                	ElabException e = new ElabException("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
                                				"We stopped processing the bless files at: <br />"+files[i]+".<br/>" +
                                				"Please select fewer files or files with fewer events.");

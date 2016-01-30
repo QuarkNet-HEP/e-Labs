@@ -26,9 +26,9 @@ public class ThresholdTimesProcessDebug {
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
-    private int lastGPSDay, jd;
+    private int lastGPSDay, jd, startJd, nextJd;
     private String lastSecString;
-    private double lastEdgeTime, lastjdplustime;
+    private double lastEdgeTime, lastjdplustime, firstRE;
     private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
@@ -40,7 +40,8 @@ public class ThresholdTimesProcessDebug {
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     public static final NumberFormat TIME_FORMAT;
     public final int detectorSeriesChange = 6000;
-    
+    public final double upperFirstHalfDay = 0.9999999999999999;
+    public final double lowerFirstHalfDay = 0.5;    
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
         TIME_FORMAT.setMaximumFractionDigits(3);
@@ -71,6 +72,7 @@ public class ThresholdTimesProcessDebug {
         starttime = System.currentTimeMillis();
         lineCount = 0;
         printLineCount = 0;
+
         try {
         	//File report = new File("/users/edit/showertest/threshcreation.txt");
         	//if (!report.exists()) {
@@ -92,6 +94,9 @@ public class ThresholdTimesProcessDebug {
 		        lastRePPSTime = 0;
 		        lastRePPSCount = 0;
 		        lastjdplustime = 0;
+		        startJd = 0;
+		        nextJd = 0;
+		        firstRE = -1.0;
 		    	try {
 		    		//check if the .thresh exists, if so, do not overwrite it
 		    		File tf = new File(outputFiles[i]);
@@ -102,7 +107,7 @@ public class ThresholdTimesProcessDebug {
 		    		
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
-			        BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_cpldfrequencies/threshcreation.txt"));
+			        BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_cosmic_thresh_rollover/threshcreation.txt"));
 			        			        
 			        bw.write("#$md5\n");
 			        bw.write("#md5_hex(0)\n");
@@ -141,6 +146,7 @@ public class ThresholdTimesProcessDebug {
 			        }
 			        bw.close();
 			        br.close();
+			        checkFileTiming(outputFiles[i]);
 			        report.close();
 			        lineCount++;
 		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
@@ -155,6 +161,28 @@ public class ThresholdTimesProcessDebug {
         endtime = System.currentTimeMillis();
         System.out.println("The Threshold Time process took: " + formatTime(endtime - starttime) + " for " + String.valueOf(lineCount) + " files\n");
     }
+    
+    public void checkFileTiming(String threshfile) throws IOException {
+    	try {
+	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
+	        String line = br.readLine();
+	        Double priortime = 0.0;
+	        while (line != null) {
+	            String[] parts = line.split("\\s");
+	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
+	            if (newtime < priortime) {
+	            	System.out.println(threshfile + " has a time problem: "+String.valueOf(priortime)+" before "+String.valueOf(newtime)+"\n");
+	            }
+	            priortime = newtime;
+	            line = br.readLine();
+	        }
+	        br.close();
+    		
+    	} catch (Exception e) {
+    		
+    	}
+    }//end of checkFileTiming
+    
     public String formatTime(long time) {
         return TIME_FORMAT.format((double) time / 1000);
     }
@@ -227,7 +255,7 @@ public class ThresholdTimesProcessDebug {
     }
 
     private void printData(int channel, String[] parts, String detector, BufferedWriter wr, BufferedWriter report) throws IOException {
-        boolean computeJD = true;
+        boolean computeJD = true;						   
 
         int currGPSDay = Integer.parseInt(parts[11]);
         double currEdgeTime = 0;
@@ -237,6 +265,9 @@ public class ThresholdTimesProcessDebug {
             if ((currEdgeTime >= lastEdgeTime && lastEdgeTime != 0) || currEdgeTime < 0) {
                 computeJD = false;
             }
+        }
+        if (printLineCount > 48143) {
+        	report.write("trapping error");
         }
  
         if (computeJD) {
@@ -254,9 +285,16 @@ public class ThresholdTimesProcessDebug {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempdiff < 1.0) {
-                    jd = currLineJD(offset, parts, report);           		
-            	}
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts, report);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts, report)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts, report) + 1;
+                    }
+            	} 
             } else {
                 jd = currLineJD(offset, parts, report);           		            	
             }
@@ -264,12 +302,31 @@ public class ThresholdTimesProcessDebug {
             lastEdgeTime = retime[channel];
         }
 
+        if (startJd == 0) {
+        	startJd = jd;
+        	nextJd = jd+1;
+        }
+
+        if (firstRE == -1.0) {
+        	firstRE = retime[channel];
+        }
+        
+        if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
+        	jd = startJd;
+        } else {
+        	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
+        		jd = nextJd;
+        	} else {
+        		jd = startJd;
+        	}
+        }
+        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
-    	//if (printLineCount > 967540){
-    		//report.write("nanodiff (fetime[channel] - retime[channel]) * 1e9 * 86400: "+String.valueOf(nanodiff)+"\n");
+        //if (printLineCount == 77068){
+    	//	report.write("nanodiff (fetime[channel] - retime[channel]) * 1e9 * 86400: "+String.valueOf(nanodiff)+"\n");
     	//}								   
         String id = detector + "." + (channel + 1);
-        if (nanodiff >= 0 && nanodiff < 10000) {
+        if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];
         	printLineCount = printLineCount + 1;
             wr.write(id);
@@ -298,9 +355,12 @@ public class ThresholdTimesProcessDebug {
     }
 
     private double calctime(int channel, int edge, String[] parts, BufferedWriter report) {
-        int tmc = edge & 0x1f;
+    	int tmc = edge & 0x1f;
         try {
         	report.write("In calc time\n");
+            if (printLineCount >= 48143){
+        		report.write("Trapping problem\n");
+        	}								   
             report.write("Channel calc: " + String.valueOf(channel) + " edge: " + String.valueOf(edge) + "\n");
         	StringBuilder sb = new StringBuilder();
         	for (int i = 0; i < parts.length; i++) {
@@ -473,6 +533,9 @@ public class ThresholdTimesProcessDebug {
         }
         double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset, report);
         jd = Math.rint(jd * 86400);
+        double jd0 = Math.round(jd) * 86400;
+        double jd1 = Math.floor(jd / 86400);
+        double jd2 = jd / 86400;
         try{
         	report.write("jd: "+String.valueOf(jd / 86400)+"\n");
         	report.write("jd: "+String.valueOf(Math.rint(jd * 86400))+"\n");

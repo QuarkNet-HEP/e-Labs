@@ -837,23 +837,7 @@ public class ElabUtil {
 	    			while (iterator.hasNext()) {
 	    				errorMessages = (String) iterator.next() + ",";
 	    			}
-	    			cleanInput = as.scan(cleanInput, policy).getCleanHTML();
-			    	//send email with warning
-			    	//String to = elab.getProperty("notifyDirtyInput");
-			    	//if (to == null) {
-			    	//	to = "help@i2u2.org";
-			    	//}
-		    		//String emailmessage = "", subject = where + ": user sent dirty input";
-		    		//String emailBody =  "User input: "+userInput+"\n" +
-					//	   			"Number of errors: "+String.valueOf(errors)+"\n" +
-				   	//				"Error messages: "+ errorMessages + "\n" +
-				   	//				"Validated input: "+cleanInput + "\n";
-				    //try {
-				    //	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-				    //} catch (Exception ex) {
-		            //    System.err.println("Failed to send email");
-		            //    ex.printStackTrace();
-				   // }		    		
+	    			cleanInput = as.scan(cleanInput, policy).getCleanHTML();    		
 		    	}//end of checking dirty input
 		   }//end of checking policy for null
     	} catch (Exception e) {
