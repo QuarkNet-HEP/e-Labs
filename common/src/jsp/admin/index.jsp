@@ -59,12 +59,8 @@
             <td>Reports for uploads, posters and plots.</td>
           </tr>
 					<tr>
-						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
-						<td>Add e-Lab users.</td>
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users NEW</a></td>
-						<td>Add e-Lab users - NEW.</td>
+						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users</a></td>
+						<td>Add e-Lab users</td>
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
