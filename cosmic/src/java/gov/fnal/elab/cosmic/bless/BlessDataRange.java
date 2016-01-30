@@ -121,7 +121,6 @@ public class BlessDataRange {
                 	String emailMessage = 	"The code stopped processing the bless files in Flux Data Range\n"+
                 							"at: "+file[i]+"\n"+
                 							em.getMemoryDetails();
-                	em.notifyAdmin(elab, emailMessage);
                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
                                    				"We stopped processing the bless files.<br/>" +
                                    				"Please select fewer files or files with fewer events.");
