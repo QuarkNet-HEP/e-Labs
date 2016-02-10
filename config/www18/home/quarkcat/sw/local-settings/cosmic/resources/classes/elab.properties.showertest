@@ -1,0 +1,9 @@
+elab.formal.name=UNITTEST
+
+data.dir = /disks/i2u2-dev/cosmic/data/unittest/shower
+
+#override the default user management provider
+provider.usermanagement = gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider
+provider.notifications = gov.fnal.elab.notifications.DatabaseNotificationsProvider
+analysis.runtime.estimator.set=gov.fnal.elab.cosmic.estimation.CosmicAnalysisRunTimeEstimatorSet
+

@@ -1,0 +1,15 @@
+vds.db.vdc.schema        AnnotationSchema
+vds.db.ptc.schema        InvocationSchema
+vds.db.*.driver          Postgres
+vds.db.*.driver.url      jdbc:postgresql://
+vds.db.*.driver.user     
+vds.db.*.driver.password 
+
+vds.rls.url              rls://sheveled.mcs.anl.gov
+vds.replica.mode         rls
+vds.exitcode.mode        all
+vds.sc			 xml
+vds.sc.file		 /home/quarkcat/sw/sites.xml
+vds.tc			 File
+vds.tc.file		 /home/quarkcat/sw/tc.data
+vds.rc			 ElabRC
