@@ -168,7 +168,7 @@
 							</li>
  -->
 							<li>
-								<a href="mailto:adams@fnal.gov">Mark Adams </a>- Fermilab
+								<a href="mailto:adams@fnal.gov">Mark Adams</a> - Fermilab
 							</li>
 							<li>
 								<a href="mailto:randal.c.ruchti.1@nd.edu">Randy Ruchti</a> - Notre Dame University

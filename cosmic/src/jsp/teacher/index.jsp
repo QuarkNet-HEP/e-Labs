@@ -286,7 +286,7 @@
 				
 						<p>To obtain a detector, pending funding, contact:</p>
 						<ul>
-							<li><a href="mailto:adams@fnal.gov">Mark Adams </a>if you area member of QuarkNet.</li>
+							<li><a href="mailto:adams@fnal.gov">Mark Adams</a> if you area member of QuarkNet.</li>
 							<li><a href="mailto:hoppert@fnal.gov">Dave Hoppert</a> if you are not a member of QuarkNet and want to purchase a detector.</li>
 						</ul>
 						<p>Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.</p>
