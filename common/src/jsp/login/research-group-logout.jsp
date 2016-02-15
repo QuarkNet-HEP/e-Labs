@@ -15,6 +15,8 @@ String un = request.getParameter("un");
 ArrayList activeSessions = SessionListener.getTotalSessionUsers();
 activeSessions.removeAll(Collections.singleton(null));
 boolean unLoggedin = false;
+int loggedOutCount = 0;
+
 if (un != null && un.equals(user.getName())) {
     message = "Please use the log out link on the top right corner to log yourself out.";	
 } else {
@@ -36,10 +38,10 @@ if (un != null && un.equals(user.getName())) {
 		      Elab e = (Elab) s.getAttribute("elab");
 		      if (eu != null && e != null) {
 		    	  if (eu.getName().equals(un)) {
+		    		  loggedOutCount++;
 		    		  unLoggedin = true;
 		    		  //log user out
 		    		  s.invalidate();
-		    		  message = "Username <strong>"+un+"</strong> has been logged out successfully.";
 		    	  }
 		      }
 		    }//end of validSession
@@ -50,6 +52,7 @@ if (un != null && un.equals(user.getName())) {
 		if (!unLoggedin) {
 		    message = "Username <strong>"+un+"</strong> is not logged in.";
 		}
+    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" times.";
 	}
 }
 request.setAttribute("message",message);  
