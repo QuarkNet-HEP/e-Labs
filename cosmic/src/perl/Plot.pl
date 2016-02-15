@@ -153,7 +153,7 @@ elsif($plot_type == 7){ # Hist w/ color (used for performance study)
     push @options, $plot;
     @label = split(/\\n/, $caption);
     $y = .95 - (($#label + 1)*.035); # sets the key placement to be dynamic based on how many lines the caption is
-    splice(@options, 3, 1, "set key graph .88,$y");
+    splice(@options, 3, 1, "set key at graph .88,$y");
 }
 else{
 	die "Must choose a plot type (0, 1, 2, 3, 4, 5, 6, or 7)\n";
