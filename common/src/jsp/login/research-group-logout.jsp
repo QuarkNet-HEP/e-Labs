@@ -42,6 +42,7 @@ if (un != null && un.equals(user.getName())) {
 		    		  unLoggedin = true;
 		    		  //log user out
 		    		  s.invalidate();
+		    		  request.logout();
 		    	  }
 		      }
 		    }//end of validSession
@@ -52,7 +53,7 @@ if (un != null && un.equals(user.getName())) {
 		if (!unLoggedin) {
 		    message = "Username <strong>"+un+"</strong> is not logged in.";
 		}
-    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" times.";
+    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" time(s).";
 	}
 }
 request.setAttribute("message",message);  
