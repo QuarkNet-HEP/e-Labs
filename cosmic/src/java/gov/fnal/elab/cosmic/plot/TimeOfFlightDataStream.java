@@ -52,6 +52,7 @@ public class TimeOfFlightDataStream {
 	ArrayList<String> channelRequire = new ArrayList<String>();
 	ArrayList<String> channelVeto = new ArrayList<String>();
 	DecimalFormat f = new DecimalFormat("##.00");
+	Integer customIndex = 0;
 	
 	public TimeOfFlightDataStream (String analysisDir, String chanRequire, String chanVeto) throws Exception {
 		long starttime = System.currentTimeMillis();
@@ -95,7 +96,9 @@ public class TimeOfFlightDataStream {
 			//BufferedWriter bw = new BufferedWriter(new FileWriter(debuggingfile));
 			addObjectsToArray();
 			analyzeEventFile(br);
+			customIndex = 0;
 			saveFileHistogramData(writer);
+			customIndex = 0;
 			saveIndividualFileHistogramData(wr1,0);
 			saveIndividualFileHistogramData(wr2,1);
 			saveIndividualFileHistogramData(wr3,2);
@@ -270,6 +273,7 @@ public class TimeOfFlightDataStream {
 			for (int i = 0; i < tdGroup.size(); i++) {
 				if (tdGroup.get(i).getSize() > 0) {
 					saveTimeDifference(writer, tdGroup.get(i));
+					customIndex++;
 				}
 			}
 			writer.endObject();
@@ -296,7 +300,11 @@ public class TimeOfFlightDataStream {
 			writer.beginObject();
 			writer.name("label").value("Time Difference "+td.getLabel());
 			writer.name("toggle").value(true);
-			writer.name("idx").value(Integer.parseInt(td.getNdx()));
+			if (String.valueOf(customIndex).equals(td.getNdx())) {
+				writer.name("idx").value(Integer.parseInt(td.getNdx()));
+			} else {
+				writer.name("idx").value(String.valueOf(customIndex));				
+			}
 			writer.name("data");			
 			writer.beginArray();
 			//for (int i = 0; i < td.getTimeDifference().size(); i++) {
