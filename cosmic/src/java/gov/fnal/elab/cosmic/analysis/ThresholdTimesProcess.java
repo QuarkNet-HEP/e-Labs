@@ -159,11 +159,6 @@ public class ThresholdTimesProcess {
 	            }
 	            linecount++;
 	            lastjd = Double.valueOf(parts[1]);
-	            if (newtime < priortime) {
-	            	System.out.println(threshfile + " has a time problem: "+String.valueOf(priortime)+" before "+String.valueOf(newtime)+"\n");
-	            }
-	            priortime = newtime;
-	            line = br.readLine();
 	        }
 	        if (lastjd - beginjd > 1) {
             	System.out.println(threshfile + " has a julian day problem: "+String.valueOf(beginjd)+" to "+String.valueOf(lastjd)+"\n");
