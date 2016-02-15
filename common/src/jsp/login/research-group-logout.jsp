@@ -18,6 +18,55 @@ boolean unLoggedin = false;
 int loggedOutCount = 0;
 int sessionUsers = 0;
 ArrayList sessionsToInvalidate = new ArrayList();
+String submit = request.getParameter("submitButton");
+
+if (submit != null && submit.equals("Log Research Group Out")) {
+	if (un != null && un.equals(user.getName())) {
+	    message = "Please use the log out link on the top right corner to log yourself out."; 
+	} else {
+	  if (un != null) {
+	    for (int i = 0; i < activeSessions.size(); i++) {
+	      HttpSession s = (HttpSession) activeSessions.get(i);
+	      //get user
+	        try {
+	        boolean validSession = false;
+	        Enumeration att_names = s.getAttributeNames();
+	        while (att_names.hasMoreElements()) {
+	          String attr = (String) att_names.nextElement();
+	          if (attr.equals("elab")) {
+	            validSession = true;
+	          }
+	        }
+	        if (validSession) {
+	          ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
+	          Elab e = (Elab) s.getAttribute("elab");
+	          if (eu != null && e != null) {
+	            if (eu.getName().equals(un)) {
+	              unLoggedin = true;
+	              sessionsToInvalidate.add(s);
+	              //log user out
+	              //s.invalidate();
+	            }
+	          }
+	        }//end of validSession
+	      } catch (Exception e) {
+	          message = "Exception in research-group-logout.jsp: " + e.getMessage();      
+	      }
+	    }
+	    if (!unLoggedin) {
+	        message = "Username <strong>"+un+"</strong> is not logged in.";
+	    }
+	    if (!sessionsToInvalidate.isEmpty()) {
+	      for (int i = 0; i < sessionsToInvalidate.size(); i++) {
+	        loggedOutCount++;
+	        HttpSession s = (HttpSession) sessionsToInvalidate.get(i);
+	        s.invalidate();
+	      }
+	    }
+	    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" time(s).";
+	  }
+	}	
+}
 
 //now create the local TreeMap
 TreeMap<String, String> sessionDetails = new TreeMap<String, String>();
@@ -61,53 +110,7 @@ for (int i = 0; i < activeSessions.size(); i++) {
   }
   request.setAttribute("sessionUsers", sessionUsers);
   request.setAttribute("sessionDetails",sessionDetails);  
-
-if (un != null && un.equals(user.getName())) {
-    message = "Please use the log out link on the top right corner to log yourself out.";	
-} else {
-	if (un != null) {
-		for (int i = 0; i < activeSessions.size(); i++) {
-		  HttpSession s = (HttpSession) activeSessions.get(i);
-		  //get user
-		    try {
-		    boolean validSession = false;
-		    Enumeration att_names = s.getAttributeNames();
-		    while (att_names.hasMoreElements()) {
-		      String attr = (String) att_names.nextElement();
-		      if (attr.equals("elab")) {
-		        validSession = true;
-		      }
-		    }
-		    if (validSession) {
-		      ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
-		      Elab e = (Elab) s.getAttribute("elab");
-		      if (eu != null && e != null) {
-		    	  if (eu.getName().equals(un)) {
-		    		  unLoggedin = true;
-		    		  sessionsToInvalidate.add(s);
-		    		  //log user out
-		    		  //s.invalidate();
-		    	  }
-		      }
-		    }//end of validSession
-		  } catch (Exception e) {
-		      message = "Exception in research-group-logout.jsp: " + e.getMessage();      
-		  }
-		}
-		if (!unLoggedin) {
-		    message = "Username <strong>"+un+"</strong> is not logged in.";
-		}
-		if (!sessionsToInvalidate.isEmpty()) {
-			for (int i = 0; i < sessionsToInvalidate.size(); i++) {
-				loggedOutCount++;
-				HttpSession s = (HttpSession) sessionsToInvalidate.get(i);
-				s.invalidate();
-			}
-		}
-    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" time(s).";
-	}
-}
-request.setAttribute("message",message);  
+  request.setAttribute("message",message);  
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -133,6 +136,9 @@ request.setAttribute("message",message);
       </div>
       <div id="content">
         <h1>Research Group Log Out</h1>
+        <p>If any of your research groups has exceeded the maximum number of logins
+           and they are not able to log out themselves you will need to log them out using this tool. 
+        </p>
         <ul>
            <li>Check your research groups that are logged in.</li>
            <li>Choose the research group username you wish to log out and submit your request.</li>
