@@ -52,7 +52,7 @@
 		
 	// Generate the list of submitted response ids
 	List<Integer> answers = new ArrayList<Integer>(); 
-	Map<String, String> responses = request.getParameterMap();
+	Map<String, String[]> responses = request.getParameterMap();
 	for (String i : responses.keySet()) {
 		String thisParameter = i; 
 		Integer thisAnswer; 
