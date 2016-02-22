@@ -45,23 +45,33 @@
 	 					</tr><tr>
  			<td colspan=3>
  			
-			    <p>1.  Place counter 2 in between 1 and 4.  Require all three counters to reject 2-muon background.  Measure &Delta;t between 1 and 4 (and 4 and 1).<br></br>  
+			    <p>1.  Place counter 2 in between 1 and 4.  Measure &Delta;t between 1 and 4 (and 4 and 1).<br></br>  
 				<img src="../graphics/tryPerf/ToF_3_counters_124and421.png"/> <br></br>
-				Sample Results (from 1-2-4 setup?):<br></br>
-				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.tiff"/><br></br>
+				Sample Results (from 1-4 setup?):<br></br>
+				
 				</p>
 				
-				<p>2.  Set up the following configuration to measure muons coming in at an angle.   <br></br>
-				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> <br></br>
-				Explain...<br></br>
-				Results:<br></br>
+				<p>2.  Counters at an angle.<br>
+				
+				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
+				<img src="../graphics/tryPerf/ToF_2_counters_41A.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_14_all_4dec.tiff"/><br></br>
+				
+				b.)  Set up the configuration above with counter 2 between 1 and 4. <br></br>
+				<img src="../graphics/tryPerf/ToF_3_counters_421A.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.tiff"/><br></br>
+				As you can see from the graph, the addition of counter 2 does not make much difference.<br></br>
+				
+				c.)  Reverse the setup in b.) (reverse counters 1 and 4).   <br></br>
+				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.tiff"/><br></br>
+				Notice that this graph is basically the mirror image of the graph in b.).<br></br>
 				</p>
 				
 				<p>3.  The following configuration will also measure muons coming in at an angle.  We include a 
 				veto counter (2).  <br></br>
-				<img src="../graphics/tryPerf/ToF_3_counters_veto.png"/> <br></br>
-				Explain...<br></br>
-				Results:<br></br>
+				<img src="../graphics/tryPerf/ToF_3_counters_14AVeto.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142v_all_4dec.tiff"/><br></br>
 				</p>
 				
 			</td>

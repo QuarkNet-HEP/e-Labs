@@ -47,9 +47,7 @@
  				<p>
  				1.  Use a third counter so that your muon has to pass through all three counters.  
  				This will reduce the two-muon background noise due to the two counters being too far apart.<br></br>
- 				<img src="../graphics/tryPerf/ToF_3_counters_124.png"/> <br></br>
- 				Here is a sample result:
- 				
+ 				<img src="../graphics/tryPerf/ToF_3_counters_124.png"/>			
  				</p>
 			    
 			    <p>2.  Alternatively, you can use a third counter that will not be fired by your muon passing through the original two counters, 
@@ -61,8 +59,8 @@
 			    </p>	    		    
 				
 				<p>3.  Remember:  Not all muons go exactly vertically.  Those who travel at an angle travel a longer path.  This is a systemic error that you should estimate. 
-				How does a longer path affect muon travel time between counters 1 and 4?  <e:popup href="explain_longer_path.html" target="Explain Longer Path" width="450" height="200">Click here for explanation of effects of longer paths</e:popup>.
-				<br></br>
+				What are the <e:popup href="explain_longer_path.html" target="Explain Longer Path" width="450" height="200">effects of a longer path</e:popup> 
+				on muon travel time between counters 1 and 4? <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_124VA.png"/> 
 				</p>
 				
