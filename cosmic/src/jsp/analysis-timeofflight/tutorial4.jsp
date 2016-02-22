@@ -50,7 +50,7 @@
 				2.  Search for upward going muons from interactions of neutrinos travelling through the Earth.<br>
 				3.  &Delta;t of pairs of counters can help calibrate relative timing of counters in a large array set up.<br>
 				4.  &Delta;t of parallel muons from one cosmic ray air shower to measure the longitudinal width of the shower.<br>								
-				5.  Pointing with a narrow aperture (cos(&thetasym;) of <a href="https://en.wikipedia.org/wiki/Azimuth" target="_blank">azimuthal angle</a> 
+				5.  Pointing with a narrow aperture (cos(&thetasym;) of <a HREF="javascript:glossary('azimuth',200)">azimuthal angle</a> 
 				or Shadow of Sun) to help remove 2-muon backgrounds.<br>
 				6.  &Delta;t in horizontal large array setups can identify possible flux asymmetries possible caused by an asymmetric overburden.<br>
 				
