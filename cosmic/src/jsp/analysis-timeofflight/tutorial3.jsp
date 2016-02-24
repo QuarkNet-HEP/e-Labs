@@ -67,11 +67,6 @@
 				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.tiff"/><br></br>
 				Notice that this graph is basically the mirror image of the graph in b.).<br></br>
 
-				<p>2.  
-				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
-				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> <br></br>
-				Explain...<br></br>
-				Results:<br></br>
 				</p>
 				
 				<p>3.  The following configuration will also measure muons coming in at an angle.  We include a 
