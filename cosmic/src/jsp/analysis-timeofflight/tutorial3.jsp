@@ -51,7 +51,6 @@
 				
 				</p>
 				
-<<<<<<< Updated upstream
 				<p>2.  Counters at an angle.<br>
 				
 				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
@@ -67,25 +66,22 @@
 				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
 				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.tiff"/><br></br>
 				Notice that this graph is basically the mirror image of the graph in b.).<br></br>
-=======
+
 				<p>2.  
 				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
 				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> <br></br>
 				Explain...<br></br>
 				Results:<br></br>
->>>>>>> Stashed changes
 				</p>
 				
 				<p>3.  The following configuration will also measure muons coming in at an angle.  We include a 
 				veto counter (2).  <br></br>
-<<<<<<< Updated upstream
 				<img src="../graphics/tryPerf/ToF_3_counters_14AVeto.png"/> 
 				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142v_all_4dec.tiff"/><br></br>
-=======
+
 				<img src="../graphics/tryPerf/ToF_3_counters_14AVeto.png"/> <br></br>
 				Explain...<br></br>
 				Results:<br></br>
->>>>>>> Stashed changes
 				</p>
 				
 			</td>
