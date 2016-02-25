@@ -124,8 +124,8 @@ ispy.loadEvent = function() {
 
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 
-  console.log(ispy.current_event.Types);
-  console.log(ispy.current_event.Collections.Products_V1);
+  //console.log(ispy.current_event.Types);
+  //console.log(ispy.current_event.Collections.Products_V1);
 };
 
 ispy.nextEvent = function() {
@@ -210,8 +210,6 @@ ispy.selectFile = function(filename) {
   var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
   ispy.file_name = new_file_name;
 
-  $('#progress').modal('show');
-
   var xhr = new XMLHttpRequest();
   xhr.open("GET", filename, true);
   xhr.overrideMimeType("text/plain; charset=x-user-defined");
@@ -220,17 +218,24 @@ ispy.selectFile = function(filename) {
   var ecell = document.getElementById("browser-events").insertRow(0).insertCell(0);
   ecell.innerHTML = 'Loading events...';
 
+  $('#progress').modal('show');
+
   xhr.onprogress = function(evt) {
     if ( evt.lengthComputable ) {
      var percentComplete = Math.round((evt.loaded / evt.total)*100);
      $('.progress-bar').attr('style', 'width:'+percentComplete+'%;');
      $('.progress-bar').html(percentComplete+'%');
-   }
+   } else {
+     $('#progress').modal('hide');
+     $('#loading').modal('show');
+  }
  };
 
-  xhr.onreadystatechange = function () {
+  xhr.onreadystatechange = function (evt) {
     if (this.readyState === 4){
       $('#progress').modal('hide');
+      $('#loading').modal('hide');
+
       $('.progress-bar').attr('style', 'width:0%;');
       $('.progress-bar').html('0%');
     }

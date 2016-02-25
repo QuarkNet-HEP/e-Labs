@@ -114,7 +114,7 @@ ispy.onWindowResize = function() {
     d.height = window.innerHeight;
     d.width = window.innerWidth;
   } else {
-    $('#display').removeAttr('style')
+    $('#display').removeAttr('style');
   }
 
   var w = $('#display').innerWidth();
