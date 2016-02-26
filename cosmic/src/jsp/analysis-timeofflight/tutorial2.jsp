@@ -37,7 +37,7 @@
 								<center>
 									<font color="#0a5ca6" size=+3>
 										<b>
-	 										Time of Flight Study (2)
+	 										Time of Flight Study - Improvements (2)
 	 									</b>
 	 								</font>
 	 							</center>
@@ -50,24 +50,24 @@
  				<img src="../graphics/tryPerf/ToF_3_counters_124.png"/>			
  				</p>
 			    
-			    <p>2.  Alternatively, you can use a third counter that will not be fired by your muon passing through the original two counters, 
-			    but background muons (from other directions) will hit.  Require that this new <q>veto</q> counter does not fire in the events you select.
-			    One can also intentionally set up the <q>14</q> direction so that the background 2-muon events (mainly vertical) fire the 
+			    <p>2.  Alternatively, we can use a third counter that will not be fired by a muon passing through the original two counters, 
+			    but background muons (from other directions) will hit.  Require that this new <q>veto</q> counter does not fire in the events we select.
+			    We can also intentionally set up the <q>1-4</q> direction so that the background 2-muon events (mainly vertical) fire the 
 			    counters with a different &Delta;t than those single muons that actually travel between 1 and 4.  Use the &Delta;t shape of the 2-muon background to 
 			    subtract the background from the normal 1-muon &Delta;t distribution.  <br></br>
 			    <img src="../graphics/tryPerf/ToF_2_counters_14Veto.png"/> 
 			    </p>	    		    
 				
-				<p>3.  Remember:  Not all muons go exactly vertically.  Those who travel at an angle travel a longer path.  This is a systemic error that you should estimate. 
+				<p>3.  Remember:  Not all muons go exactly vertically.  Those that travel at an angle travel a longer path.  This is a systemic error that we should estimate. 
 				What are the <e:popup href="explain_longer_path.html" target="Explain Longer Path" width="450" height="200">effects of a longer path</e:popup> 
 				on muon travel time between counters 1 and 4? <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_124VA.png"/> 
 				</p>
 				
 				<p><font size="3" color="red">Just get started!</font>
-				Clearly, you could keep improving your measurement by addressing each of these effects, but do not be too concerned.  Just get started.  
-				Make a first measure of the muon speed by setting up the detectors in your first, best guess and see which of these effects you want to 
-				attack later to make your result more accurate.<br></br>
+				Clearly, we could keep improving our measurement by addressing each of these effects, but we should not be too concerned.  Just get started.  
+				We can make a first measure of the muon speed by setting up the detectors in our first, best guess and see which of these effects we want to 
+				attack later to make our result more accurate.<br></br>
 				Click on page 3 to see some results from three counter setup.
 				</p>
 				
