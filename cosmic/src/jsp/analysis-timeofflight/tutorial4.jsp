@@ -37,7 +37,7 @@
 								<center>
 									<font color="#0a5ca6" size=+3>
 										<b>
-	 										Time of Flight Study (4)
+	 										Muon Speed Using Time of Flight - Further Ideas (4)
 	 									</b>
 	 								</font>
 	 							</center>

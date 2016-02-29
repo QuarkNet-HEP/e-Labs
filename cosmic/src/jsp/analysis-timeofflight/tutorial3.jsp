@@ -37,47 +37,51 @@
 								<center>
 									<font color="#0a5ca6" size=+3>
 										<b>
-	 										Time of Flight Study (3)
+	 										Muon Speed Using Time of Flight - Advanced Studies (3)
 	 									</b>
 	 								</font>
 	 							</center>
 	 						</td>
 	 					</tr><tr>
  			<td colspan=3>
- 			
-			    <p>1.  Place counter 2 in between 1 and 4.  Measure &Delta;t between 1 and 4 (and 4 and 1).<br></br>  
-				<img src="../graphics/tryPerf/ToF_3_counters_124and421.png"/> <br></br>
-				Sample Results (from 1-4 setup?):<br></br>
 				
-				</p>
-				
-				<p>2.  Counters at an angle.<br>
+				<p>1.  Use time of flight to distinguish one-muon signals from two-muon background.<br>
 				
 				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
-				<img src="../graphics/tryPerf/ToF_2_counters_41A.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-650cm_14_all_4dec.tiff"/><br></br>
+				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_14_all_4dec.png"/><br></br>
 				
 				b.)  Set up the configuration above with counter 2 between 1 and 4. <br></br>
-				<img src="../graphics/tryPerf/ToF_3_counters_421A.png"/> 
+				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
 				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.tiff"/><br></br>
-				As you can see from the graph, the addition of counter 2 does not make much difference.<br></br>
+				As you can see from the graph, the addition of counter 2 does not make much difference.  We hoped that the two-muon peak would
+				be reduced, but we've also lost some one-muon events.  So, perhaps counter 2 was not well aligned.<br></br>
 				
 				c.)  Reverse the setup in b.) (reverse counters 1 and 4).   <br></br>
-				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
+				<img src="../graphics/tryPerf/ToF_3_counters_421A.png"/> 
 				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.tiff"/><br></br>
 				Notice that this graph is basically the mirror image of the graph in b.).<br></br>
-
 				</p>
 				
-				<p>3.  The following configuration will also measure muons coming in at an angle.  We include a 
-				veto counter (2).  <br></br>
+				
+				<p>2.  The following series will use counter 2 in a different position.
+				a.)  We shall start with a basic setup of just counters 1 and 4.   <br>
+				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-630cm_14_16dec.tiff"/>
+				
+				<br></br>
+				
+				b.)  The following configuration will also measure muons coming in at an angle.  We include counter 2 (veto) below counter 4.  
+				Note that the two-muon peak has been reduced.<br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_14AVeto.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142v_all_4dec.tiff"/><br></br>
+				<img src="../graphics/tryPerf/TOF_4-1_-630cm_14v2_16dec.png"/><br></br>
 
-				<img src="../graphics/tryPerf/ToF_3_counters_14AVeto.png"/> <br></br>
-				Explain...<br></br>
-				Results:<br></br>
+				c.)  If we require all three counters, a single muon cannot satisfy the trigger.  
+				We see that the two-muon peak is greatly enhanced.<br></br>
+				<img src="../graphics/tryPerf/ToF_3_counters_14ARequired.png"/> 
+				<img src="../graphics/tryPerf/TOF_4-1_-630cm_142_16dec.tiff"/>				
 				</p>
+				
 				
 			</td>
 		</tr>

@@ -43,7 +43,7 @@
 								<center>
 									<font color="#0a5ca6" size=+3>
 										<b>
-	 										Time of Flight Study (1)
+	 										Muon Speed Using Time of Flight (1)
 	 									</b>
 	 								</font>
 	 							</center>
@@ -63,19 +63,19 @@
  				Measure from the top of counter 1 to the top of counter 4 to estimate the distance the muon travels (d).  
  				Create a histogram similar to the one below, and find the mean time for the muon to travel between counters.   <br></br>
 			    <img src="../graphics/tryPerf/ToF_2_counters_together.png"/> 			    
-			    <img src="../graphics/tryPerf/TOF_4-1_03cm_23nov15.tiff"/> <br></br>
+			    <img src="../graphics/tryPerf/TOF_4-1_03cm_23nov15.png"/> <br></br>
 			    Find the mean using the advanced controls.  In this case, we find the mean to be -1.74ns and the standard deviation to be 2.59ns.
 			    Notice that the mean is slightly negative.  
 			    <e:popup href="explain_neg_mean.html" target="Explain negative mean" width="450" height="200">What does this mean?</e:popup><br></br>
 			    </p>
 			    
 			    <p>2.  The distance between counters, muon's speed, PMT response time, and length of signal cables all affect the time measured between two counters.
-			    We must measure the time of flight that doesn't include those other experimental effects.
+			    We must measure the time of flight of the muon that doesn't include those other experimental effects.
 			    This requires another data run.  Collect data with a larger distance between the counters.  
 			    <e:popup href="explain_sep_dist.html" target="Good separation distance" width="450" height="250">How far apart should they be</e:popup>?  
 			    Recommended:  d ~ 2m to begin with.  Once again, create a histogram, and find the mean time for muon to travel between the counters.<br><br> 
 			    <img src="../graphics/tryPerf/ToF_2_counters_14.png"/> 		    
-			    <img src="../graphics/tryPerf/TOF_4-1_240cm_24nov15.tiff"/> 
+			    <img src="../graphics/tryPerf/TOF_4-1_240cm_24nov15.png"/> 
 			    </p>
 			    
 			    <p>3.  Using the results from steps 1 and 2, we can populate the following table:
@@ -86,18 +86,21 @@
    						<th>x:  Separation (m)</th>
    						<th>y:  Mean Traversal Time (mtt) (ns)</th>
    						<th>Std. dev. of mtt (ns)</th>
+   						<th>Error on Mean(ns)</th>
  					</tr>
  					<tr align="center">
    						<td style="border:1px solid black;">1</td>
-   						<td style="border:1px solid black;">0.3</td>
+   						<td style="border:1px solid black;">0.03</td>
    						<td style="border:1px solid black;">-1.74</td>
    						<td style="border:1px solid black;">2.59</td>
+   						<td style="border:1px solid black;">0.03</td>
  					</tr>
  					<tr align="center">
  						<td style="border:1px solid black;">2</td>
    						<td style="border:1px solid black;">2.4</td>
    						<td style="border:1px solid black;">6.31</td>
    						<td style="border:1px solid black;">2.82</td>
+   						<td style="border:1px solid black;">0.07</td>
  					</tr>
 				</table><br>
 				
@@ -106,17 +109,18 @@
 				
 				We now have 2 data points.  The x axis represents separation distance, and the y axis represents mean traversal time.  
 				We can graph them on paper, use the <a href="http://www.shodor.org/interactivate/activities/scatterplot/" target="_blank">ScatterPlot</a> 
-				tool, or Excel and calculate the slope of the line connecting them.  This is 1/(muon speed). Q:  What are the units?<br></br>
-				<center>&Delta;y / &Delta;x = (6.31 - -1.74)ns/(2.4 - 0.3)m</center><br>
-				<center>Therefore, we can say that muon speed = 2.1m/8.05ns = 0.261m/ns = 2.61*10^8m/s</center><br>
-			        
-			    <img src="../graphics/tryPerf/ToF_2pt_graph.jpg" width="300px" height="auto"/> <br>
+				tool, or Excel and calculate the slope of the line connecting them.  Remember to draw the error bars using <e:popup href="explain_error_mean.html" target="Explain Mean Error" width="500" height="250">mean error</e:popup>.  This is 1/(muon speed). Q:  What are the units?<br></br>
+				<center>&Delta;y / &Delta;x = (6.31 - -1.74)ns/(2.4 - 0.03)m</center><br>
+				<center>Therefore, we can say that muon speed = 2.37m/8.05ns = 0.294m/ns = 2.94*10^8m/s.  </center><br>
+				<img src="../graphics/tryPerf/ToF_2pt_graph.jpg" width="300px" height="auto"/> <br></br>
+				Q:  What is the <e:popup href="explain_error_speed.html" target="Explain Speed Error" width="500" height="250">error estimate of muon speed</e:popup>?  
 			    </p>
 			    
 			    <p>4.  One can measure muon speed better with more data points representing different separation distances.
 			    For example, to generate a third data point, swap the two counters.  Now, the separation distance d = -2.4m because the muon travels 
 			    from counter 4 to counter 1.<br></br> 
 			    <img src="../graphics/tryPerf/ToF_2_counters_41.png"/> 
+			    <img src="../graphics/tryPerf/TOF_4-1_-240cm_24nov15.png"/> <br></br>
 			      		
 				<table border="1" align="center">
  					<tr align="center">
@@ -124,37 +128,42 @@
    						<th>x:  Separation (m)</th>
    						<th>y:  Mean Traversal Time (mtt) (ns)</th>
    						<th>Std. dev. of mtt (ns)</th>
+   						<th>Error on Mean(ns)</th>
  					</tr>
  					<tr align="center">
    						<td style="border:1px solid black;">1</td>
    						<td style="border:1px solid black;">0.3</td>
    						<td style="border:1px solid black;">-1.74</td>
    						<td style="border:1px solid black;">2.59</td>
+   						<td style="border:1px solid black;">0.03</td>
  					</tr>
  					<tr align="center">
  						<td style="border:1px solid black;">2</td>
    						<td style="border:1px solid black;">2.4</td>
    						<td style="border:1px solid black;">6.31</td>
    						<td style="border:1px solid black;">2.82</td>
+   						<td style="border:1px solid black;">0.07</td>
  					</tr>
  					<tr align="center">
  						<td style="border:1px solid black;">3</td>
    						<td style="border:1px solid black;">-2.4</td>
    						<td style="border:1px solid black;">-9.98</td>
    						<td style="border:1px solid black;">2.94</td>
+   						<td style="border:1px solid black;">0.07</td>
  					</tr>
 				</table>
 					
-				<br>We now have 3 data points.  We can graph them and put error bars around each point using    
-				<e:popup href="explain_error_mean.html" target="Explain Mean Error" width="500" height="250">mean error</e:popup>.  
+				<br>We now have 3 data points.   
 				Eyeball it, and draw the best fit line.  Then, calculate the slope of the line to get a better value for muon speed.  <br></br>
-			    <center>&Delta;y / &Delta;x = 17ns/5m</center><br>
-				<center>Therefore, we can say that muon speed = 2.94*10^8m/s </center><br>
-			    <img src="../graphics/tryPerf/ToF_3pt_graph.jpg" width="300px" height="auto"/> <br></br>
+			    <center>&Delta;y / &Delta;x = 17.0ns/5.0m</center><br>
+				<center>Therefore, we find:  muon speed = 2.94*10^8m/s </center><br>
+				Q:  Is this speed close to one that is recognizable?  <br></br>
+			    <img src="../graphics/tryPerf/ToF_3pt_graph.jpg" width="300px" height="auto"/> 
+			    
 			    </p>	    
 			      
 				<p>You are now able to measure the average muon speed.  You can <font color="red">STOP</font> here, or you can investigate further.<br></br>
-				To improve your measurement, here is another effect to think about.  If you use a large separation, 
+				To further improve your measurement, here is another effect to think about.  If you use a large separation, 
 				the rate of muons going through both counters may be so low that the trigger rate is dominated by the rate of two different muons, 
 				neither going through both counters nor traveling the path length we think we are measuring. 
 				We do not want to use the times from <font color="red">two different muons</font> since that tells us nothing about the speed of 
