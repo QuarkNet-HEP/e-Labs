@@ -37,7 +37,7 @@
 								<center>
 									<font color="#0a5ca6" size=+3>
 										<b>
-	 										Time of Flight Study - Improvements (2)
+	 										Muon Speed Using Time of Flight - Improvements (2)
 	 									</b>
 	 								</font>
 	 							</center>
@@ -47,14 +47,16 @@
  				<p>
  				1.  Use a third counter so that your muon has to pass through all three counters.  
  				This will reduce the two-muon background noise due to the two counters being too far apart.<br></br>
- 				<img src="../graphics/tryPerf/ToF_3_counters_124.png"/>			
+ 				<img src="../graphics/tryPerf/ToF_3_counters_431.png"/>	
+ 				<img src="../graphics/tryPerf/TOF_25nov_-240cm_143.png"/><br></br>
+ 				<img src="../graphics/tryPerf/ToF_3_counters_431v.png"/>
+ 				<img src="../graphics/tryPerf/TOF_25nov_-240cm_143v.png"/><br></br>
+ 				Notice:  The width of the second distribution is wider because two muons can come at more horizontal angles.  
+ 				The two muons traveling at an angle in the second case are more horizontal than the "single muons" traveling at an angle in the first case.			
  				</p>
 			    
-			    <p>2.  Alternatively, we can use a third counter that will not be fired by a muon passing through the original two counters, 
-			    but background muons (from other directions) will hit.  Require that this new <q>veto</q> counter does not fire in the events we select.
-			    We can also intentionally set up the <q>1-4</q> direction so that the background 2-muon events (mainly vertical) fire the 
-			    counters with a different &Delta;t than those single muons that actually travel between 1 and 4.  Use the &Delta;t shape of the 2-muon background to 
-			    subtract the background from the normal 1-muon &Delta;t distribution.  <br></br>
+			    <p>2.  Alternatively, to limit the two muon background, we can use a third counter that will not be fired by a muon passing through the original two counters, 
+			    but background muons (from other directions) will hit.    <br></br>
 			    <img src="../graphics/tryPerf/ToF_2_counters_14Veto.png"/> 
 			    </p>	    		    
 				
