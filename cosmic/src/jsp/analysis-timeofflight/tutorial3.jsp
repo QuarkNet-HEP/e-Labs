@@ -53,21 +53,44 @@
 				
 				b.)  Set up the configuration above with counter 2 between 1 and 4. <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.tiff"/><br></br>
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.png"/><br></br>
 				As you can see from the graph, the addition of counter 2 does not make much difference.  We hoped that the two-muon peak would
 				be reduced, but we've also lost some one-muon events.  So, perhaps counter 2 was not well aligned.<br></br>
 				
 				c.)  Reverse the setup in b.) (reverse counters 1 and 4).   <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_421A.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.tiff"/><br></br>
-				Notice that this graph is basically the mirror image of the graph in b.).<br></br>
+				<img src="../graphics/tryPerf/TOF_4-1_650cm_14_all_3dec.png"/><br></br>
+				Notice that this graph is basically the mirror image of the graph in b.).  Q:  Why does this make sense?<br></br>
 				</p>
 				
+				<table border="1" align="center">
+ 					<tr align="center">
+   						<th>Run</th>
+   						<th>Peak Mean Traversal Time (mtt) (ns)</th>
+   						<th>Std. dev. of mtt (ns)</th>
+   						<th>&radic;n</th>
+   						<th>Error on Mean=std.dev/&radic;n(ns)</th>
+ 					</tr>
+ 					<tr align="center">
+   						<td style="border:1px solid black;">(a) 1-2-4</td>
+   						<td style="border:1px solid black;">-23.87</td>
+   						<td style="border:1px solid black;">2.58</td>
+   						<td style="border:1px solid black;">9</td>
+   						<td style="border:1px solid black;">0.29</td>
+ 					</tr>
+ 					<tr align="center">
+ 						<td style="border:1px solid black;">(b) 4-2-1</td>
+   						<td style="border:1px solid black;">+19.82</td>
+   						<td style="border:1px solid black;">2.46</td>
+   						<td style="border:1px solid black;">10.7</td>
+   						<td style="border:1px solid black;">0.22</td>
+ 					</tr>
+				</table><br>
 				
-				<p>2.  The following series will use counter 2 in a different position.
-				a.)  We shall start with a basic setup of just counters 1 and 4.   <br>
+				<p>2.  The following series will use counter 2 in a different position.<br>
+				a.)  We shall start with a basic setup of just counters 1 and 4.   <br></br>
 				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-630cm_14_16dec.tiff"/>
+				<img src="../graphics/tryPerf/TOF_4-1_-630cm_14_16dec.png"/>
 				
 				<br></br>
 				
@@ -79,7 +102,7 @@
 				c.)  If we require all three counters, a single muon cannot satisfy the trigger.  
 				We see that the two-muon peak is greatly enhanced.<br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_14ARequired.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-630cm_142_16dec.tiff"/>				
+				<img src="../graphics/tryPerf/TOF_4-1_-630cm_142_16dec.png"/>				
 				</p>
 				
 				

@@ -45,17 +45,20 @@
 	 					</tr><tr>
  			<td colspan=3>
  			
-			    <p>ToF analysis tool can be used for:<br>
-				1.  Speed of Muon.<br>				
-				2.  Search for upward going muons from interactions of neutrinos travelling through the Earth.<br>
-				3.  &Delta;t of pairs of counters can help calibrate relative timing of counters in a large array set up.<br>
-				4.  &Delta;t of parallel muons from one cosmic ray air shower to measure the longitudinal width of the shower.<br>								
+			    <p>ToF analysis tool can be used for:<br></br>	
+				1.  Average speed of muons.  Measure the dependence of speed on direction.<br></br>				
+				2.  Measure the speed of individual muons to search for upward-going muons from neutrinos that traverse the Earth and interact below our feet.<br></br>	
+				3.  &Delta;t of pairs of stacked counters can be used to calibrate the relative timing of counters in a Large Shower Array setup, using single muons.<br></br>	
+				4.  &Delta;t of parallel muons from one cosmic ray air shower to measure the longitudinal width of the shower.<br></br>									
 				5.  Pointing with a narrow aperture (cos(&thetasym;) of <a HREF="javascript:glossary('azimuth',200)">azimuthal angle</a> 
-				or Shadow of Sun) to help remove 2-muon backgrounds.<br>
-				6.  &Delta;t in horizontal large array setups can identify possible flux asymmetries possible caused by an asymmetric overburden.<br>
-				
+				or Shadow of Sun) to help remove 2-muon backgrounds.<br></br>	
+				6.  &Delta;t in horizontal large array setups can identify possible flux asymmetries possible caused by an asymmetric overburden.<br></br>	
+				7.  Horizontally distributed counters can be used to search for muon flux differences in different directions.  The direction can be measured by the &Delta;t between counter pairs. 
+				If the counters lie along a line, the flux along that direction may exhibit an asymmetry as a function of angle due to material lying along the muons path.  
+				Perhaps a tall building is located on one side of the detector, but not on the opposite side.<br></br>	
+				8.  Shower directional reconstruction techniques can be compared between arrays that point due to their geometric setup using single muon paths and those horizontal 
+				arrays that use timing of parallel muons.
 				</p>	
-			    
 			    
 			</td>
 		</tr>
