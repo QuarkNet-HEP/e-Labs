@@ -49,13 +49,15 @@
 				
 				a.)  Set up the following configuration to measure muons coming in at an angle.   <br></br>
 				<img src="../graphics/tryPerf/ToF_2_counters_14A.png"/> 
-				<img src="../graphics/tryPerf/TOF_4-1_-650cm_14_all_4dec.png"/><br></br>
+				<img src="../graphics/tryPerf/TOF_4-1_-650cm_14_all_4dec_draw.png"/><br>
+				Make note of the curves representing the <font color="blue">one-muon</font> peak and the <font color="red">two-muon</font> peak.  
+				<br></br>
 				
 				b.)  Set up the configuration above with counter 2 between 1 and 4. <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_124A.png"/> 
 				<img src="../graphics/tryPerf/TOF_4-1_-650cm_142_all_4dec.png"/><br></br>
-				As you can see from the graph, the addition of counter 2 does not make much difference.  We hoped that the two-muon peak would
-				be reduced, but we've also lost some one-muon events.  So, perhaps counter 2 was not well aligned.<br></br>
+				As you can see from the graph, the addition of counter 2 does not make much difference.  We hoped that the <font color="red">two-muon</font> peak would
+				be reduced, but we've also lost some <font color="blue">one-muon</font> events.  So, perhaps counter 2 was not well aligned.<br></br>
 				
 				c.)  Reverse the setup in b.) (reverse counters 1 and 4).   <br></br>
 				<img src="../graphics/tryPerf/ToF_3_counters_421A.png"/> 
