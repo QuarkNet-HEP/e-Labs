@@ -17,6 +17,7 @@
 		<script src="../include/highcharts/js/highcharts.js"></script>
 		<script src="../include/highcharts/js/highcharts-3d.js"></script>
 		<script src="../include/highcharts/js/modules/exporting.js"></script>
+		<title>Visualize Geometry</title>
 	</head>
 
 	<body>
