@@ -59,7 +59,12 @@
           details.add((String) entry.getTupleValue("city"));
           details.add((String) entry.getTupleValue("state"));
           details.add((String) entry.getTupleValue("project"));
-          reportLines.put((String) entry.getTupleValue("name"), details);
+    /// entry.getTupleValue("name") seems to throw null on the new servers for some reason
+    /// Stopgap fix to allow code to run until underlying problem fixed
+    ///          reportLines.put((String) entry.getTupleValue("name"), details);
+          if (entry.getTupleValue("name") != null && details != null) {
+	         reportLines.put((String) entry.getTupleValue("name"), details);
+	  }
     } 
   }//end of submit
   
