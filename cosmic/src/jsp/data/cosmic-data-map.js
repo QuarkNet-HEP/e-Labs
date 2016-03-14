@@ -73,6 +73,15 @@ function initialize() {
                    title: daq[i].trim(),
                    clickable: true
                });
+               
+               
+               //Code added by SB, 9Mar2016, to make (0,0) points invisible 
+               if (latitude[i]==0 && longitude[i]==0) {
+               		marker.setVisible(false);
+               }
+               //End code for (0,0) point 
+               
+               
                var header = "<br />Latest data uploaded by:<br />";
                var content =  '<div id="daqContent" style="text-align: left;">'+
                               daqForm + latestInfo + uploadsInfo + header + teacherInfo + schoolForm + cityForm + stateForm + stackedForm +
