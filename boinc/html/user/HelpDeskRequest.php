@@ -39,12 +39,14 @@ set_debug_level(0);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "help@i2u2.org"; /*hategan@mcs.anl.gov, myers@fnal.gov"; */
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 17Mar2016 JG
+$Email_List = "e-labs-help@fnal.gov"; /*hategan@mcs.anl.gov, myers@fnal.gov"; */
 
 
 // Return address for e-mail sent from this form:
 //
-$Email_From = "help@i2u2.org";
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 17Mar2016 JG
+$Email_From = "e-labs-help@fnal.gov";
 
 // BCC the following people 
 //

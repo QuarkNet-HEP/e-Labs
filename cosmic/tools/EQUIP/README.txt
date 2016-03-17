@@ -36,7 +36,7 @@
 	  Java lib Version   = RXTX-2.1-7
     *******************************************
     
-    If you get any other output, please copy/paste it in an email to help@i2u2.org.
+    If you get any other output, please copy/paste it in an email to e-labs-help@fnal.gov.
      
 6 - You need at least Java 6 in your machine for this to work.
 	  To test, open a terminal window (MAC) or a cmd window (PC) and: 
@@ -69,6 +69,5 @@
 	  Then, go to the folder where you downloaded and extracted EQUIP and run EQUIP by using this command:
 	  java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. -jar EQUIP_xxx.jar
 	
-8 - If you are using any other OS and are not able to get EQUIP to run, please send an email to help@i2u2.org. Other users that have successfully
-    installed EQUIP using other OS may be able to help you with your questions.
+8 - If you are using any other OS and are not able to get EQUIP to run, please send an email to e-labs-help@fnal.gov. Other users that have successfully installed EQUIP using other OS may be able to help you with your questions.
     

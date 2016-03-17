@@ -81,8 +81,12 @@ $wgCookiePath = '/';		// whole site
 $wgEnableEmail      = true;
 $wgEnableUserEmail  = true;
 
-$wgPasswordSender   = "help@i2u2.org";
-$wgEmergencyContact = "myers@spy-hill.net";
+/// replaced 17Mar2016 JG
+//$wgPasswordSender   = "help@i2u2.org";
+//$wgEmergencyContact = "myers@spy-hill.net";
+$wgPasswordSender   = "e-labs-help@fnal.gov";
+$wgEmergencyContact = "jgriffi8@nd.edu";
+
 
 
 /***********************************************************************
