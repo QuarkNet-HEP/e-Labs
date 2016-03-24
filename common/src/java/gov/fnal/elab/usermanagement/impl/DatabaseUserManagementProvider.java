@@ -1193,7 +1193,8 @@ public class DatabaseUserManagementProvider implements
 	//Setup mail server
 	// If using static Transport.send() (we are), need to specify which host to send it to
 	//properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
-	properties.put("mail.smtp.host", "smtp.fnal.gov");
+	/// Does not work: properties.put("mail.smtp.host", "smtp.fnal.gov");
+	properties.put("mail.smtp.host", "localhost");
 	properties.put("mail.smtp.port", "25");
 	properties.put("mail.smtp.auth", "true");
 	properties.put("mail.smtp.starttls.enable", "true");			    
