@@ -1196,10 +1196,10 @@ public class DatabaseUserManagementProvider implements
 	/// Does not work: properties.put("mail.smtp.host", "smtp.fnal.gov");
 	properties.put("mail.smtp.host", "localhost");
 	properties.put("mail.smtp.port", "25");
-	//properties.put("mail.smtp.auth", "true");
-	//properties.put("mail.smtp.starttls.enable", "true");			    
-	properties.put("mail.smtp.auth", "false");
-	properties.put("mail.smtp.starttls.enable", "false");			    
+	properties.put("mail.smtp.auth", "true");
+	properties.put("mail.smtp.starttls.enable", "true");			    
+	//properties.put("mail.smtp.auth", "false");
+	//properties.put("mail.smtp.starttls.enable", "false");			    
 
 	//Get the default Session object.
 	//Session mailSession = Session.getDefaultInstance(properties);
