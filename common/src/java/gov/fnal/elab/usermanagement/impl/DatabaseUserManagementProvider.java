@@ -1191,15 +1191,14 @@ public class DatabaseUserManagementProvider implements
 	Properties properties = System.getProperties();
 
 	//Setup mail server
-	// If using static Transport.send() (we are), need to specify which host to send it to
-	//properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
-	/// Does not work: properties.put("mail.smtp.host", "smtp.fnal.gov");
+	/// Settings from ANL had to be changed to run @CRC - 25Mar2016 JG
+	///properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
 	properties.put("mail.smtp.host", "localhost");
 	properties.put("mail.smtp.port", "25");
-	properties.put("mail.smtp.auth", "true");
-	properties.put("mail.smtp.starttls.enable", "true");			    
-	//properties.put("mail.smtp.auth", "false");
-	//properties.put("mail.smtp.starttls.enable", "false");			    
+	///properties.put("mail.smtp.auth", "true");
+	///properties.put("mail.smtp.starttls.enable", "true");			    
+	properties.put("mail.smtp.auth", "false");
+	properties.put("mail.smtp.starttls.enable", "false");			    
 
 	//Get the default Session object.
 	//Session mailSession = Session.getDefaultInstance(properties);

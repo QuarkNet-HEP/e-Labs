@@ -18,8 +18,14 @@ import java.util.Iterator;
 import java.util.List;
 
 public class VDSCatalogEntry extends CatalogEntry {
+    // tuples is declared as a List<> object
+    // GriPhyN or griphyn.org appears to be a defunct NSF-funded Scientific Grid Computing endeavor
+    // Worked with QuarkNet at Summer Grid Workshop 2004-2005
+    // Associated names: Ian Foster (UChi), Mike Wilde (ANL), Yong Zhao,
+    // Jens Voeckler (UChi), maybe Paul Avery (UFL)
+    // Associated systems: Pegasus, Chimera, the Globus Alliance (www.globus.org)
     private List<org.griphyn.vdl.annotation.Tuple> tuples;
-    
+
     protected void setTuples(List<org.griphyn.vdl.annotation.Tuple> tuples) {
         this.tuples = tuples; 
     }
