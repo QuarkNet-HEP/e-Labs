@@ -117,9 +117,11 @@ if ("Reset Password".equals(submit) && continueRequest) {
 			message = rpoError;
 		}
 	} else {
-		if (userid != null && !userid.equals("")) {
-			message = "Username is blank.<br />";
-		}
+            // I think the original line here was a C&P error.  JG 28Mar2016
+	    //if (userid != null && !userid.equals("")) {
+            if (userid != null && userid.equals("")) {
+		message = "Username is blank.<br />";
+	    }
 	}
 }//end of checking password reset
 
@@ -145,8 +147,10 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 			message = runError + email;
 		}
     } else {
-    	if (email != null && !email.equals("")) {
-	    	message = "Email address is blank.<br />";
+        // I think the original line here was a C&P error.  JG 28Mar2016
+        //if (email != null && !email.equals("")) {
+    	if (email != null && email.equals("")) {
+            message = "Email address is blank.<br />";
     	}
     }
 }//end of checking retrieve username	
