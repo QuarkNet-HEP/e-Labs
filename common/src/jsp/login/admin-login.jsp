@@ -4,7 +4,6 @@
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-/// added 29Mar2016 JG for allDaqs block
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%
     String adminUsername = request.getParameter("adminuser"); 
@@ -41,15 +40,10 @@
 	/// Defining "allDaqs" allows the logged-in user, in this case "admin",
 	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
 	/// the map with all the detectors
+	/// This block requires the import statement
+	/// <%@ page import="gov.fnal.elab.usermanagement.*" %> above
 	if (elab.getName().equals("cosmic")) {
-            //DataCatalogProvider dcp = elab.getDataCatalogProvider();
-            //int fileCount = dcp.getUniqueCategoryCount("split");
-	    //int schoolCount = dcp.getUniqueCategoryCount("school");
-	    //int stateCount = dcp.getUniqueCategoryCount("state");		
-	    //session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
-	    //session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
-	    //session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
-	    ElabUserManagementProvider p = elab.getUserManagementProvider();
+ 	    ElabUserManagementProvider p = elab.getUserManagementProvider();
 	    CosmicElabUserManagementProvider cp = null;
 	    if (p instanceof CosmicElabUserManagementProvider) {
 	        cp = (CosmicElabUserManagementProvider) p;
