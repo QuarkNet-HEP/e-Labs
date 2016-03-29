@@ -22,8 +22,9 @@
      daqUploadDetails = DataTools.getDAQLatestUploadData(elab);
      String message = "";
      
-     for (Iterator i = allDaqs.iterator(); i.hasNext();) {
-    	   String detectorid = (String) i.next();
+//     for (Iterator i = allDaqs.iterator(); i.hasNext();) {
+     for (Iterator<String> i = allDaqs.iterator(); i.hasNext();) {
+     String detectorid = (String) i.next();
     	   try {
 		         Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
 		         Iterator it = g.getDescendingGeoEntries();
