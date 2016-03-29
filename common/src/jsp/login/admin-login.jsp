@@ -4,6 +4,8 @@
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+/// added 29Mar2016 JG for allDaqs block
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%
     String adminUsername = request.getParameter("adminuser"); 
     String username = request.getParameter("user");
