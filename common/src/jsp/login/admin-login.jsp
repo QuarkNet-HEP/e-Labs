@@ -34,29 +34,6 @@
         //login successful
     	ElabGroup.setUser(session, user);
     	String prevPage = request.getParameter("prevPage");
-
-	/// Copied from login.jsp 29Mar2016 JG
-	/// This block is necessary to define the session attribute "allDaqs"
-	/// Defining "allDaqs" allows the logged-in user, in this case "admin",
-	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
-	/// the map with all the detectors
-	/// This block requires the import statement
-	/// <%@ page import="gov.fnal.elab.usermanagement.*" %> above
-	if (elab.getName().equals("cosmic")) {
- 	    ElabUserManagementProvider p = elab.getUserManagementProvider();
-	    CosmicElabUserManagementProvider cp = null;
-	    if (p instanceof CosmicElabUserManagementProvider) {
-	        cp = (CosmicElabUserManagementProvider) p;
-	    }
-	    else {
-	        throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
-	        "Either this e-Lab does not use DAQs or it was improperly configured.");
-	    }
-	    Collection allDaqs = cp.getAllDetectorIds();
-      	    session.setAttribute("allDaqs", allDaqs);
-	}
-	/// end copied block
-
 	String redirect = prevPage; 
 	if(prevPage == null) {
 	    prevPage = elab.getProperties().getLoggedInHomePage();
@@ -94,35 +71,32 @@
         if (!request.getParameterMap().isEmpty()) {
        	    request.setAttribute("pmap", request.getParameterMap());
 	    %>
-  	    <html>
-    	      <head>
-    	        <title>Log-in redirect page</title>
-    	      </head>
-
-	      <body>
-	        <form name="redirect" method="post" action="${param.prevPage}">
-	  	  <c:forEach var="e" items="${pmap}">
-	    	    <c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
-	      	      <c:forEach var="v" items="${e.value}">
-	                <input type="hidden" name="${e.key}" value="${v}" />
-	      	      </c:forEach>
-	   	    </c:if>
-	  	  </c:forEach>
-
-	  	  If you are not redirected automatically, please click the following button:
-	  	  <input type="submit" name="loginredirsubmit" value="Redirect" />
-		</form>
-
-		<script language="JavaScript">
-	  	  document.redirect.submit();
-		</script>
-    	      </body>
-  	    </html>
-	    <%
+        		<html>
+        			<head>
+        				<title>Log-in redirect page</title>
+        			</head>
+        			<body>
+        				<form name="redirect" method="post" action="${param.prevPage}">
+        					<c:forEach var="e" items="${pmap}">
+        						<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
+        							<c:forEach var="v" items="${e.value}">
+        								<input type="hidden" name="${e.key}" value="${v}" />
+        							</c:forEach>
+        						</c:if>
+        					</c:forEach>
+        					If you are not redirected automatically, please click the following button:
+        					<input type="submit" name="loginredirsubmit" value="Redirect" />
+        				</form>
+        				<script language="JavaScript">
+        					document.redirect.submit();
+        				</script>
+        			</body>
+        		</html>
+        	<%
         }
         else {
-	  response.sendRedirect(prevPage);
-	}
+			response.sendRedirect(prevPage);
+		}
 
         // Forum authentication the quick-N-dirty way.
         // To allow a teacher to seamlessly access the forums after
@@ -149,7 +123,7 @@
        	response.sendRedirect(redirect);
 	}
 	else {
-	     %>
+%>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
