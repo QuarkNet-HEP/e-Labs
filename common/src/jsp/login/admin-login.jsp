@@ -42,7 +42,7 @@
 	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
 	/// the map with all the detectors
 	/// This block requires the import statement
-	/// <%@ page import="gov.fnal.elab.usermanagement.*" %> above
+
 	if (elab.getName().equals("cosmic")) {
 	    ElabUserManagementProvider p = elab.getUserManagementProvider();
 	    CosmicElabUserManagementProvider cp = null;
