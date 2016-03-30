@@ -41,8 +41,7 @@
 	/// Defining "allDaqs" allows the logged-in user, in this case "admin",
 	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
 	/// the map with all the detectors
-	/// This block requires the import statement
-
+	/// This block requires the import of gov.fnal.elab.usermanagement.*
 	if (elab.getName().equals("cosmic")) {
 	    ElabUserManagementProvider p = elab.getUserManagementProvider();
 	    CosmicElabUserManagementProvider cp = null;
