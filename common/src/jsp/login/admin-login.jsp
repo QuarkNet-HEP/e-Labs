@@ -4,41 +4,66 @@
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%
-	String adminUsername = request.getParameter("adminuser"); 
-	String username = request.getParameter("user");
-	String password = request.getParameter("adminpass");
-	String message  = request.getParameter("message");
-	if (message == null) {
-		message = "Please log in to proceed";
-	}
+    String adminUsername = request.getParameter("adminuser"); 
+    String username = request.getParameter("user");
+    String password = request.getParameter("adminpass");
+    String message  = request.getParameter("message");
+    if (message == null) {
+	message = "Please log in to proceed";
+    }
 	
-	AuthenticationException exception = null;
-	boolean success = false;
+    AuthenticationException exception = null;
+    boolean success = false;
 	
-	ElabGroup user = null;
-	if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password) && StringUtils.isNotBlank(adminUsername)) {
-		adminUsername = adminUsername.trim(); 
-		username = username.trim();
+    ElabGroup user = null;
+    if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password) && StringUtils.isNotBlank(adminUsername)) {
+    	adminUsername = adminUsername.trim(); 
+	username = username.trim();
 		
-		try {
-			user = elab.adminAuthenticateAsOther(adminUsername, password, username); 
-		}
-		catch (AuthenticationException e) {
-		    request.setAttribute("exception", e);
-			e.printStackTrace();
-		}
+	try {
+	    user = elab.adminAuthenticateAsOther(adminUsername, password, username); 
 	}
-	if (user != null) {
-		//login successful
-		ElabGroup.setUser(session, user);
-		String prevPage = request.getParameter("prevPage");
-		String redirect = prevPage; 
-		if(prevPage == null) {
-    		prevPage = elab.getProperties().getLoggedInHomePage();
-		}
-		prevPage = URLDecoder.decode(prevPage);
-		// I finally found the solution to the double login problem, and it's this
+	catch (AuthenticationException e) {
+	    request.setAttribute("exception", e);
+	    e.printStackTrace();
+	}
+    }
+
+    if (user != null) {
+        //login successful
+	ElabGroup.setUser(session, user);
+	String prevPage = request.getParameter("prevPage");
+
+	/// Copied from login.jsp 30Mar2016 JG
+	/// This block defines the session attribute "allDaqs" upon login
+	/// Defining "allDaqs" allows the logged-in user, in this case "admin",
+	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
+	/// the map with all the detectors
+	/// This block requires the import of gov.fnal.elab.usermanagement.*
+	if (elab.getName().equals("cosmic")) {
+	    ElabUserManagementProvider p = elab.getUserManagementProvider();
+	    CosmicElabUserManagementProvider cp = null;
+	    if (p instanceof CosmicElabUserManagementProvider) {
+	        cp = (CosmicElabUserManagementProvider) p;
+	    }
+	    else {
+	        throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+	        "Either this e-Lab does not use DAQs or it was improperly configured.");
+	    }
+	   Collection allDaqs = cp.getAllDetectorIds();
+	   session.setAttribute("allDaqs", allDaqs);
+	}
+	/// End of copied block
+
+	String redirect = prevPage; 
+	if(prevPage == null) {
+    	    prevPage = elab.getProperties().getLoggedInHomePage();
+	}
+	prevPage = URLDecoder.decode(prevPage);
+
+	// I finally found the solution to the double login problem, and it's this
         // one line.  :)  Please don't remove.
         //
         // [Mihael] Seems like it depends where this page is included from
