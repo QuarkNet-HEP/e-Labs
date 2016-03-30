@@ -22,39 +22,38 @@
      daqUploadDetails = DataTools.getDAQLatestUploadData(elab);
      String message = "";
      
-//     for (Iterator i = allDaqs.iterator(); i.hasNext();) {
-     for (Iterator<String> i = allDaqs.iterator(); i.hasNext();) {
-     String detectorid = (String) i.next();
-    	   try {
-		         Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
-		         Iterator it = g.getDescendingGeoEntries();
-		         if (it.hasNext()) {
-		        	  GeoEntryBean geb = (GeoEntryBean) it.next();
-		        	  String latitude = geb.getFormattedLatitude();
-		        	  String longitude = geb.getFormattedLongitude();
-		        	  String[] latParts = latitude.split("(:)|(\\.)");
-		        	  String[] lonParts = longitude.split("(:)|(\\.)");
-		        	  latParts[2] = String.format("%1$-6s", latParts[2]).replace(' ', '0');
-		        	  lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');  
-		        	  Double latPos = 0.0;
-		        	  Double lonPos = 0.0;
-		        	  if (Double.parseDouble(latParts[0]) > 0) {
-		        		    latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
-		        	  } else {
-		                latPos = Double.parseDouble(latParts[0])-(Double.parseDouble(latParts[1])/60)-(Double.parseDouble(latParts[2])/1000000/60);        		  
-		        	  }
-		        	  if (Double.parseDouble(lonParts[0]) > 0) {
-		        		    lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
-		        	  } else {
-		                lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);        		  
-		        	  }
-		        	  if (daqUploadDetails.get(detectorid) != null) {
-		        		       daqLatLong.put(detectorid, latPos+","+lonPos+","+daqUploadDetails.get(detectorid));   
-		        	  }
-		         }
-    	   } catch (Exception e) {
-    		    message += detectorid + ": " + e.getMessage()+"<br />";
-    	   }
+     for (Iterator i = allDaqs.iterator(); i.hasNext();) {
+         String detectorid = (String) i.next();
+     	 try {
+	     Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
+             Iterator it = g.getDescendingGeoEntries();
+             if (it.hasNext()) {
+	         GeoEntryBean geb = (GeoEntryBean) it.next();
+		 String latitude = geb.getFormattedLatitude();
+		 String longitude = geb.getFormattedLongitude();
+		 String[] latParts = latitude.split("(:)|(\\.)");
+	  	 String[] lonParts = longitude.split("(:)|(\\.)");
+		 latParts[2] = String.format("%1$-6s", latParts[2]).replace(' ', '0');
+		 lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');  
+		 Double latPos = 0.0;
+		 Double lonPos = 0.0;
+		 if (Double.parseDouble(latParts[0]) > 0) {
+		    latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
+		 } else {
+		    latPos = Double.parseDouble(latParts[0])-(Double.parseDouble(latParts[1])/60)-(Double.parseDouble(latParts[2])/1000000/60);
+		 }
+		 if (Double.parseDouble(lonParts[0]) > 0) {
+		    lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
+		 } else {
+	            lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);
+	 	 }
+		 if (daqUploadDetails.get(detectorid) != null) {
+   	            daqLatLong.put(detectorid, latPos+","+lonPos+","+daqUploadDetails.get(detectorid));   
+	    	 }
+	     }
+    	 } catch (Exception e) {
+    	     message += detectorid + ": " + e.getMessage()+"<br />";
+    	 }
      }
      SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
      DATEFORMAT.setLenient(false);
