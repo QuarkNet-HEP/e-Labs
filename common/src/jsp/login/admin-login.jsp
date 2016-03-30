@@ -34,6 +34,32 @@
         //login successful
     	ElabGroup.setUser(session, user);
     	String prevPage = request.getParameter("prevPage");
+
+
+		//get these numbers now and save them to the session
+	 	if (elab.getName().equals("cosmic")) {
+	            //DataCatalogProvider dcp = elab.getDataCatalogProvider();
+	            //int fileCount = dcp.getUniqueCategoryCount("split");
+		    //int schoolCount = dcp.getUniqueCategoryCount("school");
+		    //int stateCount = dcp.getUniqueCategoryCount("state");		
+		    //session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
+		    //session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
+		    //session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
+		    ElabUserManagementProvider p = elab.getUserManagementProvider();
+		    CosmicElabUserManagementProvider cp = null;
+		    if (p instanceof CosmicElabUserManagementProvider) {
+		      cp = (CosmicElabUserManagementProvider) p;
+		    }
+		    else {
+		      throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+		        "Either this e-Lab does not use DAQs or it was improperly configured.");
+		    }
+		    Collection allDaqs = cp.getAllDetectorIds();
+	      	    session.setAttribute("allDaqs", allDaqs);
+		}
+
+
+
 	String redirect = prevPage; 
 	if(prevPage == null) {
 	    prevPage = elab.getProperties().getLoggedInHomePage();
