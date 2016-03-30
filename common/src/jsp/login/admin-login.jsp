@@ -30,35 +30,33 @@
 	    e.printStackTrace();
 	}
     }
+
     if (user != null) {
         //login successful
     	ElabGroup.setUser(session, user);
     	String prevPage = request.getParameter("prevPage");
 
-
-		//get these numbers now and save them to the session
-	 	if (elab.getName().equals("cosmic")) {
-	            //DataCatalogProvider dcp = elab.getDataCatalogProvider();
-	            //int fileCount = dcp.getUniqueCategoryCount("split");
-		    //int schoolCount = dcp.getUniqueCategoryCount("school");
-		    //int stateCount = dcp.getUniqueCategoryCount("state");		
-		    //session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
-		    //session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
-		    //session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
-		    ElabUserManagementProvider p = elab.getUserManagementProvider();
-		    CosmicElabUserManagementProvider cp = null;
-		    if (p instanceof CosmicElabUserManagementProvider) {
-		      cp = (CosmicElabUserManagementProvider) p;
-		    }
-		    else {
-		      throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
-		        "Either this e-Lab does not use DAQs or it was improperly configured.");
-		    }
-		    Collection allDaqs = cp.getAllDetectorIds();
-	      	    session.setAttribute("allDaqs", allDaqs);
-		}
-
-
+	/// Copied from login.jsp 30Mar2016 JG
+	/// This block defines the session attribute "allDaqs" upon login
+	/// Defining "allDaqs" allows the logged-in user, in this case "admin",
+	/// to access cosmic/src/jsp/data/cosmic-data-map.jsp, which shows
+	/// the map with all the detectors
+	/// This block requires the import statement
+	/// <%@ page import="gov.fnal.elab.usermanagement.*" %> above
+	if (elab.getName().equals("cosmic")) {
+	    ElabUserManagementProvider p = elab.getUserManagementProvider();
+	    CosmicElabUserManagementProvider cp = null;
+	    if (p instanceof CosmicElabUserManagementProvider) {
+	      cp = (CosmicElabUserManagementProvider) p;
+	    }
+	    else {
+	      throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+	      "Either this e-Lab does not use DAQs or it was improperly configured.");
+	    }
+	    Collection allDaqs = cp.getAllDetectorIds();
+	    session.setAttribute("allDaqs", allDaqs);
+	}
+	/// End of copied block
 
 	String redirect = prevPage; 
 	if(prevPage == null) {
