@@ -242,7 +242,10 @@
 								<a href="mailto:lantonel@nd.edu">Jamie Antonelli</a> - Ohio State
 							</li>
 							<li>
-								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
+								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - University of Notre Dame
+							</li>
+							<li>
+								<a href="mailto:thomas.mccauley@cern.ch">Tom McCauley</a> - CERN
 							</li>
 						</ul>
 						<h2>Staff</h2>
