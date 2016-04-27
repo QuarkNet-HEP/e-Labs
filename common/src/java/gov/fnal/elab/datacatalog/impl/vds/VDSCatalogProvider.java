@@ -51,20 +51,16 @@ public abstract class VDSCatalogProvider {
             dbschema = connect.connectDatabase(schemaName);
 
 	/// added for debugging 27Apr2016 JG
-        if (! (dbschema instanceof Annotation)) {
-	    System.out.println("Debugging works: dbschema is not an instance of Annotation");
+        if (!(dbschema instanceof Annotation)) {
 	    throw new ElabException("The debugging block works");
         }
 	if (schemaName==null) {
-	    System.out.println("variable schemaName is null");
             throw new ElabException("schemaName is null");	
 	}
 	if (connect==null) {
-	    System.out.println("variable connect is null");
             throw new ElabException("connect is null");	
 	}
 	if (dbschema==null) {
-	    System.out.println("variable dbschema is null");
             throw new ElabException("dbschema is null");	
 	}
 	/// end debug block
