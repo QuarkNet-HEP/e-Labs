@@ -1086,25 +1086,6 @@ public static ArrayList getLFNsAndMeta(String query)
         Connect connect = new Connect();
         dbschema = connect.connectDatabase(schemaName);
 
-	/// added for debugging 27Apr2016 JG
-        if (! (dbschema instanceof Annotation)) {
-	    out.write("Debugging works: dbschema is not an instance of Annotation")
-	    throw new ElabException("The debugging block works");
-        }
-	if (schemaName==null) {
-	    out.write("variable schemaName is null")
-            throw new ElabException("schemaName is null");	
-	}
-	if (connect==null) {
-	    out.write("variable connect is null")
-            throw new ElabException("connect is null");	
-	}
-	if (dbschema==null) {
-	    out.write("variable dbschema is null")
-            throw new ElabException("dbschema is null");	
-	}
-	/// end debug block
-
         if (! (dbschema instanceof Annotation)) {
             throw new ElabException("The database does not support metadata!");
         }
