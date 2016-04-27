@@ -841,7 +841,7 @@ public static java.util.List getLFNs(JspWriter out, String query)
   * @see                Tuple
   * @see                AnnotationSchema
   */
-public static java.util.List getMeta(String lfn) throws ElabException{
+public static java.util.List getMetaString lfn) throws ElabException{
     int kind = Annotation.CLASS_FILENAME;   //searching on lfn's
     java.util.List metaTuples = null;     //list of metadata Tuples for this lfn
 
@@ -1074,9 +1074,9 @@ public static Tuple getMetaKey(JspWriter out, String lfn, String key)
   */
 public static ArrayList getLFNsAndMeta(String query)
     throws ElabException {
-    int kind = Annotation.CLASS_FILENAME;   //searching on lfn's
-    ArrayList pairs = null;     //list of lfn-metadata_Tuple pairs to return
-    java.util.List lfns = null;     //list of filenames from this query
+    int kind = Annotation.CLASS_FILENAME;  //searching on lfn's
+    ArrayList pairs = null;    		   //list of lfn-metadata_Tuple pairs to return
+    java.util.List lfns = null;     	   //list of filenames from this query
     DatabaseSchema dbschema = null;
 
     // Connect to the database.
@@ -1085,6 +1085,21 @@ public static ArrayList getLFNsAndMeta(String query)
 
         Connect connect = new Connect();
         dbschema = connect.connectDatabase(schemaName);
+
+	/// added for debugging 27Apr2016 JG
+	if (schemaName==null) {
+	    out.write("variable schemaName is null")
+            throw new ElabException("schemaName is null");	
+	}
+	if (connect==null) {
+	    out.write("variable connect is null")
+            throw new ElabException("connect is null");	
+	}
+	if (dbschema==null) {
+	    out.write("variable dbschema is null")
+            throw new ElabException("dbschema is null");	
+	}
+	/// end debug block
 
         if (! (dbschema instanceof Annotation)) {
             throw new ElabException("The database does not support metadata!");
