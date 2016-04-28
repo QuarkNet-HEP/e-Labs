@@ -51,9 +51,9 @@ public abstract class VDSCatalogProvider {
             dbschema = connect.connectDatabase(schemaName);
 
 	/// added for debugging 27Apr2016 JG
-        if (!(dbschema instanceof Annotation)) {
-	    throw new ElabException("The debugging block works");
-        }
+        //if (!(dbschema instanceof Annotation)) {
+	//    throw new ElabException("The debugging block works");
+        //}
 	if (schemaName==null) {
             throw new ElabException("schemaName is null");	
 	}
