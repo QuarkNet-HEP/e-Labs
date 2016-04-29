@@ -50,10 +50,10 @@ public abstract class VDSCatalogProvider {
             Connect connect = new Connect();
             dbschema = connect.connectDatabase(schemaName);
 
-            if (!(dbschema instanceof org.griphyn.vdl.dbschema.Annotation)) {
+            if (! (dbschema instanceof Annotation)) {
                 throw new ElabException(
-//                        "The database does not support metadata!");
-                        "The database has metadata it doesn't like");
+                        "The database does not support metadata!");
+//                        "The database has metadata it doesn't like");
             }
         }
         catch (Exception e) {
