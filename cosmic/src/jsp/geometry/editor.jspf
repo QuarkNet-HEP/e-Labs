@@ -17,7 +17,7 @@
 			: <e:trselect name="minute" valueList="00..59" labelList="00..59"/>
 			<a href="javascript:glossary('UTC')">UTC</a>
 	 	</c:if>
-		
+		<font size="3"><i>Detector Geometry</i></font>
 		<div class="subtitle">
 			<table border="0">	
 				<tr>
@@ -38,7 +38,7 @@
 				<tr>
 					<td align="center">
 						<c:if test="${!ro}">
-							Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank" >tutorial</a>.
+							Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank" >Geometry Tutorial</a>.
 						</c:if>	
 					</td>
 				</tr>	
@@ -126,9 +126,19 @@
             </a>
         </div>
 --%>
-		
+        <br>
+        
+        <font size="3"><i>GPS Coordinates</i></font>
 		<div id="gps">
+        	    	  
             <table border="0" cellspacing="3">
+                <tr>
+                   <td colspan="2">
+                      <center><span style="font-size: 120%">
+ 	                  <a href="gps_tutorial.jsp" target="_blank" >GPS Coordinates Tutorial</a>
+	                  </span></center>
+                   </td>
+                </tr>
                 <tr valign="top">
                     <td>
                       <span style="font-size: 120%">
