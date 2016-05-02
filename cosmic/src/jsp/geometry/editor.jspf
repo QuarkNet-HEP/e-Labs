@@ -38,7 +38,7 @@
 				<tr>
 					<td align="center">
 						<c:if test="${!ro}">
-							Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+							Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank" >tutorial</a>.
 						</c:if>	
 					</td>
 				</tr>	
@@ -108,40 +108,61 @@
 			<table border="0">	
 				<tr>
 					<td  valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)"><img src="../graphics/glasses_gray.jpg" ></a>
+						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank"><img src="../graphics/glasses_gray.jpg" ></a>
 					</td>
 					<td valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)">Visualize geometry.</a> 	
+						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">Visualize geometry</a> 	
 					</td>
 				</tr>
 			</table>
 		</div>   
 		
 <%-- end visualization code --%>		
-		             
+
+<%--		             
         <div class="subtitle">GPS Location 
             <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map">
               <img border="0" src="../graphics/world.png" height="15px" width="15px" />
             </a>
         </div>
+--%>
+		
 		<div id="gps">
             <table border="0" cellspacing="3">
+                <tr valign="top">
+                    <td>
+                      <span style="font-size: 120%">
+                      <a href="http://www.gpsvisualizer.com/geocode" title="Find GPS coordinates" target="_blank">Find GPS Coordinates</a>
+                      <a href="http://www.gpsvisualizer.com/geocode" title="Find GPS coordinates" target="_blank">
+                      <img border="0" src="../graphics/latlong.png" height="15px" width="15px" /></a>
+                      </span>
+                    </td>
+                    <td>
+                      <span style="font-size: 120%">
+                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
+                      Map GPS Coordinates</a>
+                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
+                      <img border="0" src="../graphics/world.png" height="15px" width="15px" /></a>        
+                      </span>                    
+                    </td>
+                </tr>
                 <tr valign="top">
                     <td>
                         <span style="font-size: 120%">Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" /></span>
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 100%">e.g., 47:39.234736 N</font>
+                        	<span style="font-size: 120%">e.g., 47:39.234736 N</font>
                         </c:if>
                     </td>
                     <td>
                         <span style="font-size: 120%">Longitude: <e:trinput type="text" name="longitude" size="15" disabled="${ro}" /></span>
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 100%">e.g., 122:18.68 W</span>
+                        	<span style="font-size: 120%">e.g., 122:18.68 W</span>
                         </c:if>
                     </td>
                 </tr>
+                
                 <tr valign="top">
                     <td>
                         <span style="font-size: 120%">Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" /></span>
