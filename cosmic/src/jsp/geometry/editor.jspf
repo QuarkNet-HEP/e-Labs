@@ -133,13 +133,16 @@
         	    	  
             <table border="0" cellspacing="3">
                 <tr>
-                   <td colspan="2">
-                      <center><span style="font-size: 120%">
- 	                  <a href="gps_tutorial.jsp" target="_blank" >GPS Coordinates Tutorial</a>
-	                  </span></center>
-                   </td>
+                   
                 </tr>
                 <tr valign="top">
+                	<td>
+                	   <span style="font-size: 120%">
+                	   <a href="gps_tutorial.jsp" target="_blank" >GPS Coordinates Tutorial</a>
+                	   <a href="gps_tutorial.jsp" title="Find GPS coordinates" target="_blank">
+                       <img border="0" src="../graphics/compass.jpg" height="15px" width="15px" /></a>
+                	   </span>
+	                </td>
                     <td>
                       <span style="font-size: 120%">
                       <a href="http://www.gpsvisualizer.com/geocode" title="Find GPS coordinates" target="_blank">Find GPS Coordinates</a>
@@ -147,14 +150,7 @@
                       <img border="0" src="../graphics/latlong.png" height="15px" width="15px" /></a>
                       </span>
                     </td>
-                    <td>
-                      <span style="font-size: 120%">
-                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
-                      Map GPS Coordinates</a>
-                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
-                      <img border="0" src="../graphics/world.png" height="15px" width="15px" /></a>        
-                      </span>                    
-                    </td>
+                    
                 </tr>
                 <tr valign="top">
                     <td>
@@ -171,6 +167,17 @@
                         	<span style="font-size: 120%">e.g., 122:18.68 W</span>
                         </c:if>
                     </td>
+                </tr>
+                
+                <tr>
+                <td colspan="2">
+                      <center><span style="font-size: 120%">
+                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
+                      Map GPS Coordinates</a>
+                      <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map" target="_blank">
+                      <img border="0" src="../graphics/world.png" height="15px" width="15px" /></a>        
+                      </span></center>                    
+                </td> 
                 </tr>
                 
                 <tr valign="top">
