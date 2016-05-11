@@ -135,7 +135,7 @@
                   -->
                   <input type="checkbox" class="logx" />Log X
                   <input type="checkbox" class="logy" />Log Y
-                  <input type="button" class="reset-selection" value="Reset Selection" />
+                  <input type="button" class="reset-selection" disabled value="Reset XY Selection" />
                 </td>
                 <td class="group-title">
                   Plot
@@ -414,8 +414,9 @@
       var ymax = plot.getAxes().yaxis.max;
 
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
-        console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
-        console.log(data[0].data.length);
+        //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
+        //console.log(data[0].data.length);
+        $('.reset-selection').removeAttr('disabled');
         $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}, yaxis:{ min: ranges.yaxis.from, max: ranges.yaxis.to}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
