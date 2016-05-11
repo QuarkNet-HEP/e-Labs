@@ -49,6 +49,16 @@
     bottom: -24px;
   }
 
+  .ylabel {
+    position: absolute;
+    left: 0px;
+    top: 200px;
+    writing-mode: tb-rl;
+    filter: flipV flipH;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+  }
+
   #plot-container {
     margin-top: 20px;
   }
@@ -157,7 +167,7 @@
         <div class="placeholder"></div>
         <div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
         <div class="xlabel"></div>
-        <div class="ylabel" style="position: absolute; left: -50px; top: 200px;writing-mode: tb-rl; filter: flipV flipH; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);"></div>
+        <div class="ylabel"></div>
       </div>
     </div>
 
@@ -292,7 +302,8 @@
           {name:"phiMET", unit:"radians", description:"The &phi; angle [radians] of the missing transverse energy"},
           {name:"eta", unit:null, description:"The pseudorapidity of the lepton (electron or muon)"},
           {name:"phi", unit:"radians", description:"The &phi; angle [radians] of the lepton (electron or muon) direction"},
-          {name:"pt", unit:"GeV", description:"The transverse momentum [GeV] of the lepton (electron or muon)"}
+          {name:"pt", unit:"GeV", description:"The transverse momentum [GeV] of the lepton (electron or muon)"},
+          {name:"Mt", unit:"GeV", description:"The transverse mass [GeV]"}
         ]
     };
 
