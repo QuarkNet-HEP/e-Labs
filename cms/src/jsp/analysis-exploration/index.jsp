@@ -135,7 +135,7 @@
                   -->
                   <input type="checkbox" class="logx" />Log X
                   <input type="checkbox" class="logy" />Log Y
-                  <input type="button" class="reset-selection" disabled value="Reset XY Selection" />
+                  <input type="button" class="reset-selection" disabled autocomplete="off" value="Reset XY Selection" />
                 </td>
                 <td class="group-title">
                   Plot
