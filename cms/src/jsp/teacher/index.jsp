@@ -103,25 +103,25 @@ function showAll(start, finish)
 				   (CMS) experiment to produce a student-led, teacher-guided project. We have authentic data from 
 				   well over 200,000 proton-proton collision events in CMS. By using the web, students are able to 
 			       analyze and share these data with fellow students and other researchers. Students write a 
-				   researchable question and analyze data in much the same way as professional scientists. e-Lab tools 
+				   researchable question and analyze data in much the same way as professional scientists. Tools from the e-Lab  
 				   facilitate collaboration among students as they develop their investigations and report their 
 				   results.
 				</p>
 				
 				<p>Students begin their investigation by watching a Cool Science video to get some insight into the 
 				   context of their project. They can then use a variety of data exploration tools to perform studies 
-			       and develop their own investigation . They can use the project milestones to gain some necessary 
-				   background and guide their research, and can record their work and reflect on their progress in 
+			       and develop their own investigation. They can use the project milestones to gain some necessary 
+				   background and guide their research.  Also, they can record their work and reflect on their progress in 
 				   their e-Logbook. Students post the results of their studies as online posters. The real scientific 
 				   collaboration follows. Students can review the results of other studies online, comparing data and 
 				   analyses. Using online tools, they can correspond with other research groups, post comments and 
-				   questions and, in general, participate in the part of scientific research that is often left out of 
+				   questions, and participate in the part of scientific research that is often left out of 
 				   classroom experiments.
 				</p>
 
-				<p>These two posters, one that <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data">meets expectations</a> and one that 
-				   <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data">exceeds expectations</a>, are to help guide 
-				   teacher to set expectations for their own students and understand what students can accomplish.
+				<p>These two posters, one that <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data" target="_blank">meets expectations</a>, and one that 
+				   <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data" target="_blank">exceeds expectations</a>, can help guide 
+				   teachers to set expectations for their own students and understand what students can accomplish.
 				</p>
 				
 				</div>
