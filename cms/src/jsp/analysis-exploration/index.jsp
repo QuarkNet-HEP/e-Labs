@@ -135,13 +135,13 @@
                   -->
                   <input type="checkbox" class="logx" />Log X
                   <input type="checkbox" class="logy" />Log Y
-                  <input type="button" class="reset-selection" disabled autocomplete="off" value="Reset XY Selection" />
+                  <input type="button" class="reset-selection" disabled autocomplete="off" value="Reset X Selection" />
                 </td>
                 <td class="group-title">
                   Plot
                 </td>
                 <td class="toolbox-group">
-                  Bin Width: <input type="text" class="binwidth" value="0.1" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
+                  Bin Width: <input type="text" class="binwidth" value="1.0" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
                 </td>
               </tr>
                 <tr>
@@ -375,12 +375,11 @@
           legend: { noColumns: 1 },
           xaxis: { tickDecimals: 0 },
           yaxis: { autoscaleMargin: 0.1 },
-          y2axis: { autoscaleMargin: 0.1 },
           crosshair: { mode: "xy" },
-          selection: { mode: "xy", color: "yellow" }
+          selection: { mode: "x", color: "yellow" }
       };
 
-      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), 0.1);
+      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), 1.0);
       var nevents = original_data.length;
       $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
       $('#'+parId).append($('#plot-template').html());
@@ -410,14 +409,12 @@
       plot.draw();
       var xmin = plot.getAxes().xaxis.min;
       var xmax = plot.getAxes().xaxis.max;
-      var ymin = plot.getAxes().yaxis.min;
-      var ymax = plot.getAxes().yaxis.max;
 
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
         //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
         //console.log(data[0].data.length);
         $('.reset-selection').removeAttr('disabled');
-        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}, yaxis:{ min: ranges.yaxis.from, max: ranges.yaxis.to}});
+        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
