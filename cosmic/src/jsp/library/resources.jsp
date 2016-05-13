@@ -94,19 +94,21 @@
 								- Learn how to understand the results of a <b>Time of Flight Study </b>. 
 							</li>
 							
-							
-							
 							<c:if test="${user.upload}">
-					            <li>
+					        <li>
 									<a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
 									 - Learn how to properly input the layout of your detector.
-								</li>
-								<li>
+							</li>
+							<li>
+									<a href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
+									 - Find your GPS Coordinates.
+							</li>    
+							<li>
 									Data Blessing Tutorials<br />
 									<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
 									<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
 									<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
-								</li>
+							</li>
 							</c:if>
 							
 							<li>
