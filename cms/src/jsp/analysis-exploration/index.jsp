@@ -419,7 +419,7 @@
       });
 
       $('#'+parId+' .reset-selection').bind('click', function() {
-         $.extend(true, options, {xaxis:{min: xmin, max: xmax}, yaxis:{min: ymin, max:ymax}});
+         $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
          $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
