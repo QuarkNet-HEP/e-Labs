@@ -90,7 +90,7 @@
 															</ul>
 														</li>
 														<li><a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a></li>
-														<li><a href="../geometry/gps_tutorial.jsp">GPS Tutorial</a></li>		
+														<li><a href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a></li>		
 													</ul>
 												</li>
 												<li>
@@ -120,6 +120,7 @@
 									<ul>
 										<li><a href="../geometry/tutorial.jsp">Geometry</a></li>
 										<li><a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Data Blessing</a></li>
+										<li><a href="../geometry/gps_tutorial.jsp">GPS Coordinates</a></li>
 									</ul>
 								</ul>
 							</td>
