@@ -101,9 +101,6 @@
                 <li>
                 	The <b><i>GPS Coordinates</i></b> area allows you to input the location of your 
                 	GPS antenna and the length of the cable connecting it to the DAQ board.
-                	If you link to the geometry page from the "Upload Successful!" page, 
-                	the latitude, longitude, and altitude will automatically be filled in 
-                	(as long as the "DG" command was used during the data run).
                 </li>
             </ul>
             
