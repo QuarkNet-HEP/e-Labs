@@ -120,7 +120,7 @@ function showAll(start, finish)
 				</p>
 
 				<p>These two posters, one that <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data" target="_blank">meets expectations</a>, and one that 
-				   <a href="../posters/display.jsp?name=zboson_decay-cms-gagnon-michael_cartwright-mounds_view_high_school-arden_hills-mn-2015.0421.data" target="_blank">exceeds expectations</a>, can help guide 
+				   <a href="../posters/display.jsp?name=poster_muonetavspt-cms-khendrix-kurt_hendrix-dundalk_high_school-dundalk-md-2015.0724.data" target="_blank">exceeds expectations</a>, can help guide 
 				   teachers to set expectations for their own students and understand what students can accomplish.
 				</p>
 				
