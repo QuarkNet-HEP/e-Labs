@@ -1,7 +1,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<%	String ptr = response.encodeRedirectURL(elab.nonSecure("home/")); 
+<%	String ptr = response.encodeRedirectURL(elab.nonSecure("home/index.jsp?justLoggedIn=yes")); 
 	
 	if (user.isTeacher() || user.isAdmin()) {
 		ptr = response.encodeRedirectURL("../teacher");
@@ -33,4 +33,6 @@
 	}
 	
 	response.sendRedirect(ptr);
+	
 %>
+    
