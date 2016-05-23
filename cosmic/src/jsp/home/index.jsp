@@ -61,6 +61,11 @@
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
 						
+						<%--code for debugging:
+						<%String jLIstring = request.getParameter("justLoggedIn"); %>
+						jLI is <%out.println(jLIstring); %>
+						--%>
+						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
 						
 						<c:choose>
