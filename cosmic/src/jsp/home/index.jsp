@@ -61,15 +61,17 @@
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
 						
-						<%--code for debugging:
+						<%--code for debugging:--%>
 						<%String jLIstring = request.getParameter("justLoggedIn"); %>
 						jLI is <%out.println(jLIstring); %>
-						--%>
+						
+						
 						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
 						
 						<c:choose>
 						<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
+							NO
 							<div id="newsbox-v" style="visibility:visible; display"> 
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						    </div>
@@ -81,6 +83,7 @@
 						</c:when>
 					 	
 				        <c:otherwise> <%--Show newsbox because user has just logged in--%>
+				        YES
 						<div id="newsbox-v" style="visibility:hidden; display: none">					   
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						</div>
