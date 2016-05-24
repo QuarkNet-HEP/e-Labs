@@ -17,6 +17,7 @@
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/d3.min.js"></script>
   <script type="text/javascript" src="../include/crossfilter.min.js"></script>
+  <script type="text/javascript" src="../include/html2canvas.js"></script>
 
    <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 
@@ -142,6 +143,9 @@
                 </td>
                 <td class="toolbox-group">
                   Bin Width: <input type="text" class="binwidth" value="1.0" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
+                </td>
+                <td>
+                  <input type="button" class="save" value="Save plot"/>
                 </td>
               </tr>
                 <tr>
@@ -452,6 +456,13 @@
         histogram = buildHistogram(current_data.map(function(d) {return +d[parameter];}), value);
         data = [{data:histogram, label:parameter}];
         $.plot($('#'+parId+ ' .placeholder'), data, options);
+      });
+
+      $('#'+parId+' .save').bind('click', function() {
+        html2canvas($('#'+parId)).then(function(canvas) {
+          image = canvas.toDataURL("image/png");
+          window.open(image, "toDataURL() image", "width=800, height=400");
+        });
       });
 
       $('#'+parId+' input.selector').bind('change', function() {
