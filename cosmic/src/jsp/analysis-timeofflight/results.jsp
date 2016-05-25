@@ -56,7 +56,7 @@
 					<div id="right">
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
-							<input type="submit" name="action" value="Run TofF study"/>
+							<input type="submit" name="action" value="Run TOF study"/>
 						</div>
 						<%@ include file="help.jsp" %>
 						<%@ include file="../data/legend.jsp" %>

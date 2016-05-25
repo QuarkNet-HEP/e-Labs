@@ -45,7 +45,7 @@
 	 					</tr><tr>
  			<td colspan=3>
  			
-			    <p>ToF analysis tool can be used for:<br></br>	
+			    <p>TOF analysis tool can be used for:<br></br>	
 				1.  Average speed of muons.  Measure the dependence of speed on direction.<br></br>				
 				2.  Measure the speed of individual muons to search for upward-going muons from neutrinos that traverse the Earth and interact below our feet.<br></br>	
 				3.  &Delta;t of pairs of stacked counters can be used to calibrate the relative timing of counters in a Large Shower Array setup, using single muons.<br></br>	
