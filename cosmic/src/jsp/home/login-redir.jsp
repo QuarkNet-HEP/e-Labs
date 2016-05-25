@@ -1,7 +1,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<%
+<% 
 	
 	if (user.isGuest()) {
 		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp")));
@@ -40,7 +40,7 @@
 	}
 
 	if (!user.isFirstTime()) {
-		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/")));
+		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp?justLoggedIn=yes")));
 	}
 	else {
 		user.resetFirstTime();
