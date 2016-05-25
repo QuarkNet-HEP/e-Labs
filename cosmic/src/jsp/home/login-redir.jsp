@@ -8,7 +8,7 @@
 		return; 
 	}
 	else if (user.isTeacher() || user.isAdmin()) {
-		response.sendRedirect(response.encodeRedirectURL("../teacher"));
+		response.sendRedirect(response.encodeRedirectURL("../teacher/index.jsp?justLoggedIn=yes"));
 		return; 
     }
 	else if (user.isNewSurvey()) { // New survey overrides the old one
