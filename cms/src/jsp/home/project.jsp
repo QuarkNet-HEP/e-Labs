@@ -23,9 +23,9 @@
 					<div id="nav">
 						<%@ include file="../include/nav-project.jsp" %>
 					</div>
-				</div>		
+				</div>
 			</div>
-			
+
 			<div id="content">
 
 <h1>High school students use cutting-edge tools to do scientific investigations.</h1>
@@ -35,10 +35,10 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/CMS-sidebar.jpg"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
+				<img src="../graphics/CMS-sidebar2.png"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Real Event<br>Superimposed on Detector</div>
 			</div>
 		</td>
-		
+
 		<td>
 			<div id="center">
 				<p>
@@ -55,24 +55,24 @@
                     and participate in discovery science (as particle physicists do). Calibrating the detector to
                     "rediscover" previous measured results is an important part of the early scientific activity at
                     CMS. Later students will probe data where physicists expect to find answers to questions at
-                    the heart of 21st century particle physics. The CMS e-Lab addresses ALL science practices in 
+                    the heart of 21st century particle physics. The CMS e-Lab addresses ALL science practices in
                     the Next Generation Science Standards.</p>
                    <p>
                     Join our learning community. Go to the teacher pages to find learner objectives and assessment
                     tools, standards, classroom notes and more. Your students begin the e-Lab at the Student Home
                     and cannot access this page or teacher pages from the student pages.</p>
-                    
+
 				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a><br />
 				<a href="../library/resources.jsp<%=viewOnly %>" ><strong>Check out our online resources</strong></a>
 				<br/><br/><br/><br/><br/><br/><br/><br/>
 				<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
-						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+						<td class="annotPict"><img src="../graphics/dimuon_logo.png" border="1"><br>Event in CMS with two muons</td>
 						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
-						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
+						<td class="annotPict"><img src="../graphics/eemm_run195099_evt137440354_ispy_3d.png" border="1"><br>Higgs candidate detected by CMS</td>
 						</td></tr></table>
 			</div>
 		</td>
-		
+
 	</tr>
 </table>
 
@@ -82,19 +82,19 @@
 			<div id="footer">
 				<div id="footertext">
 					<p>
-						This project is supported in part by the National Science Foundation and 
-						the Office of High Energy Physics in the Office of Science , U.S. 
-						Department of Energy. Opinions expressed are those of the authors and 
+						This project is supported in part by the National Science Foundation and
+						the Office of High Energy Physics in the Office of Science , U.S.
+						Department of Energy. Opinions expressed are those of the authors and
 						not necessarily those of the Foundation or Department.
 					</p>
 				</div>
-	
+
 				<div class="logogroup">
 					<img src="../graphics/logo1sm.gif"/>
 					<img src="../graphics/seal.gif"/>
 				</div>
 			</div>
-		
+
 		</div>
 		<!-- end container -->
 	</body>
