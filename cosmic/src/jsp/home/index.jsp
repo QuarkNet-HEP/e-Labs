@@ -61,7 +61,7 @@
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
 						
-						
+					<%-- Newsbox --%>	
 						<%String jLIstring = request.getParameter("justLoggedIn"); %>
 						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
@@ -89,6 +89,7 @@
 						</div>
 					    </c:otherwise>
 					    </c:choose>
+					<%-- End Newsbox --%>
 
 						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</h3>
 						<div style="text-align: center;">
