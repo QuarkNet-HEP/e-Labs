@@ -13,12 +13,12 @@
 		<script type="text/javascript">
 		window.onload=function(){
 			if (document.getElementById("newsbox-h") != null  && document.getElementById("newsbox-v") != null) {
-				hideObj = document.getElementById("newsbox-h").style;
+<%-- 			hideObj = document.getElementById("newsbox-h").style;
 				showObj = document.getElementById("newsbox-v").style;
 				hideObj.visibility = "hidden";
 				hideObj.display = "none";
 				showObj.visibility = "visible";
-				showObj.display = "";
+				showObj.display = "";--%>
 			}
 		}
 	
@@ -49,7 +49,6 @@
 					 			</td>
 						 		<td>
 									<div id="right">
-										<%@ include file="../include/newsbox.jsp" %>
 										<jsp:include page="../login/login-control.jsp">
 											<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 										</jsp:include>
@@ -61,7 +60,26 @@
 					
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
-						<div id="newsbox-v" style="visibility:hidden; display: none">
+						
+					<%-- Newsbox --%>	
+						<%String jLIstring = request.getParameter("justLoggedIn"); %>
+						
+						<c:set var="jLI" value="${param.justLoggedIn}"/>
+						
+						<c:choose>
+						<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
+							<div id="newsbox-v" style="visibility:visible; display"> 
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+						    </div>
+						    
+						    <div id="newsbox-h" style="visibility:hidden; display: none">
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+						    <%@ include file="../include/newsbox.jsp" %>
+						   </div>
+						</c:when>
+					 	
+				        <c:otherwise> <%--Show newsbox because user has just logged in--%>
+				        <div id="newsbox-v" style="visibility:hidden; display: none">					   
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						</div>
 						
@@ -69,8 +87,11 @@
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
 							<%@ include file="../include/newsbox.jsp" %>
 						</div>
-						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.
-						</h3>
+					    </c:otherwise>
+					    </c:choose>
+					<%-- End Newsbox --%>
+
+						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</h3>
 						<div style="text-align: center;">
 						<c:choose>
 						 	<c:when test='${user.role == "teacher" }'>
@@ -82,9 +103,12 @@
 							    <br />
 							</c:otherwise>
 						</c:choose>
+
 	   					<a href="../library/milestones.jsp">Milestones (text version)</a>
 				 		</div>
 				 		<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results.</h4>
+					    
+					    
 					</c:otherwise>
 				</c:choose>
 			</div>
