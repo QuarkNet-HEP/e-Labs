@@ -168,7 +168,7 @@
 							<li>
 								<a href="mailto:barnett@lbl.gov">Michael Barnett</a> - Lawrence Berkeley National Laboratory
 							</li>
- -->
+ --%>
 							<li>
 								<a href="mailto:adams@fnal.gov">Mark Adams</a> - Fermilab
 							</li>
