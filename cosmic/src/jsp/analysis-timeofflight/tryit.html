@@ -7,17 +7,15 @@
 <link rel="stylesheet"  href="../css/styletut.css" type="text/css">
 <center><h2>Step-by-Step Instructions:  Time of Flight Study</h2>
 <h4><a href="#data_button">Data Button</a> -
-<a href="#flux_button">Shower Button</a> -
+<a href="#tof_button">T of F Button</a> -
 <a href="#search_data">Searching Data Files</a> -
 <a href="#select_data">Selecting Data</a> -
 <a href="#analyzing">Analyzing</a><BR>
-<a href="#candidates">Shower Candidates</a> -
-<a href="#plot_controls">View Plot Controls</a> -
-<a href="#plot_controls2">Change Caption</a> -
+<a href="#in-progress">In Progress</a> -
+<a href="#analysis-links">Analysis Links</a> -
+<a href="#adv_controls">Advanced Controls</a> -
+<a href="#refit_x">Refit X</a> -
 <a href="#plot">The Plot</a> -
-<a href="#saving_plot">Save Plot</a> -
-<a href="#finishing">Done</a>
-
 
 </h4></center>
 <center>
@@ -108,11 +106,11 @@ help you if you encounter an error in your analysis.</td></tr>
 <tr><td valign="top" width="50">Step 5.3:</td><td>When your job is done, you will see an entry on the Analysis List like this. You can click on the link and see the plot.<br></td></tr>
 <tr><td colspan="2"><IMG src="../graphics/tryPerf/tof_analysis-list.png" border="1"></td></tr>
 
-<tr><td colspan="2" height="16"><A Name="candidates"> </A></td></tr>
+<tr><td colspan="2" height="16"><A Name="adv_controls"> </A></td></tr>
 <tr><td valign="top" width="50">Step 6:</td><td>On the Time Difference ch4-ch1 plot, click <b>Advanced Controls</b>.</td></tr>
 <tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_plot_controls.png"></td></tr>
 
-<tr><td colspan="2" height="16"><A Name="plot_controls2"> </A></td></tr>
+<tr><td colspan="2" height="16"><A Name="refit_x"> </A></td></tr>
 <tr><td valign="top" width="50">Step 7.1:</td><td>Limit the interval of the x-axis where the fit is applied.  This step can be used to eliminate tails or background.  <br>
 a) Change the Min X to -15 and Max X to 10.  <br>
 b) Keep the other settings (X-axis & Y-axis scale and Bin Width).  Changing the bin width is not compatible with refitting the x-values.<br>
@@ -120,7 +118,7 @@ c) Click Refit X. <br>
 d) Notice:  Mean and standard deviation may change for the new internal.<br></td></tr>
 <tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_adv_cntrls1.png"></td></tr>
  
- <tr><td colspan="2" height="16"><A Name="refitx"> </A></td></tr>
+ <tr><td colspan="2" height="16"><A Name="plot"> </A></td></tr>
 <tr><td valign="top" width="50">Step 7.2:</td><td>Result of Refit X: <br>
 <tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_refitx.png"></td></tr>
 <tr><td>Notice:  Data seems to jump up and down.  Because the DAQ measures in 1.25ns steps, there can be odd correlations between the two counters, leading to a ragged plot.  <br></td></tr>
