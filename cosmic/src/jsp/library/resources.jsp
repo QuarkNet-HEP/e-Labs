@@ -117,27 +117,27 @@
 								Series "6000" CRMD Users Manual 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
 								</a>
 							</li>
 							<li>
 								Learn how to assemble the CRMD<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 								Series "6000" CRMD Assembly Instructions 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
 								Series "5000" CRMD Assembly Instructions
 								</a>
 							</li>
 							<li>
 								Series "6000" CRMD Plateauing Instructions<br />
-								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
+								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
 								"6000" HOWTO PowerPoint 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
+								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
 								"6000" SpreadSheet Form
 								</a>
 							</li>
@@ -164,11 +164,11 @@
 							<li>
 								<a href="mailto:glass@fnal.gov">Henry Glass</a> - Fermilab/Auger
 							</li>
-<!-- 
+<%-- 
 							<li>
 								<a href="mailto:barnett@lbl.gov">Michael Barnett</a> - Lawrence Berkeley National Laboratory
 							</li>
- -->
+ --%>
 							<li>
 								<a href="mailto:adams@fnal.gov">Mark Adams</a> - Fermilab
 							</li>
@@ -236,12 +236,18 @@
 <li><a href="http://www.deakin.edu.au/~agoodman/sci101/chap12.php#RTFToC12">
   3D Graphs</a> - Examples from an individual at Deakin University</li>
   
-  <li><a href="http://www.teacherschoice.com.au/images/scientific_plot.gif">
-  Scientific Plot</a> - A line graph with error bars on
-  points and best fit line</li>
+ <li><a href="http://www.teacherschoice.com.au/images/scientific_plot.gif">
+   Scientific Plot</a> - A line graph with error bars on
+   points and best fit line
+</li>
 
- <li><a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University
- 	<a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough</li>
+<li>
+   <a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University
+</li>
+
+<li>
+   <a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough
+</li>
 
 						</ul>
 						</div>		
@@ -269,7 +275,7 @@
 
 							<li>
 								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
-								- Excellent cosmic ray overview rom Columbia University (pdf file)
+								- Excellent cosmic ray overview from Columbia University (pdf file)
 							</li>
 							
 							 
@@ -398,8 +404,9 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
   							</li>
 							
 							<li>
-							Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
-							<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+							  Research Citation (Purdue University):  </br>
+								&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> &</br>
+					  		&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
 							</li>
 								
 						</ul>

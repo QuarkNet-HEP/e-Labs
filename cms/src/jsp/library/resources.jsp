@@ -165,8 +165,9 @@
 								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN
 							</li>
 							<li>
-								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
-								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+								Research Citation (Purdue University):  </br>
+								&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> &</br> 
+								&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
 							</li>
 								
 						</ul>
