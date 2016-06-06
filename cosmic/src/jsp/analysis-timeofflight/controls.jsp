@@ -77,7 +77,7 @@
 								</tr>
 								<tr>
 									<td class="form-label">
-										<e:trlabel for="gate" name="Event Gate" label="Event Gate">Event Gate (ns):</e:trlabel>
+										<e:trlabel for="gate" name="Event Gate">Event Gate (ns):</e:trlabel>
 									</td>
 									<td class="form-control">
 										<e:trinput type="text" name="gate" size="8" default="500"
