@@ -47,6 +47,7 @@
 %>
 <script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
 <script type="text/javascript" src="../analysis-timeofflight/controls.js"></script>		
+<script type="text/javascript" src="../include/elab.js"></script>	
 
 <c:choose>
 	<c:when test="${availableChannelsSize > 1 }">
@@ -94,12 +95,17 @@
 									</td>
 								</tr>
 								<tr>
+								   <td><a href="javascript:glossary('soft_triggers',350)"><img src="../graphics/question.gif"></a>Define Soft Triggers</td>
+								<%-- 
 									<td class="form-label">
 										<e:trlabel for="softTriggers" name="Soft Triggers">Define Soft Triggers?</e:trlabel>
 									</td>
+								--%>	
 									<td></td>
+								
 								</tr>
 								<tr>
+									
 									<td class="form-label">
 										<label for="softTriggersRequireControls" name="RequireChannelLabel">Require Channels:</label>
 									</td>
