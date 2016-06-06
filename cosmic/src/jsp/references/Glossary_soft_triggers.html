@@ -1,0 +1,5 @@
+<h3>Define Soft Trigger:  Require Channels</h3>
+<p>Allows user to define the exact combination of channels required to be hit in each event, in order to appear in the final TOF histograms.  If no channels are selected, the software trigger is ignored.  Can be used in combination with Veto.</p>
+
+<h3>Define Soft Trigger:  Veto Channels</h3>
+<p>Allows user to require that certain channels are NOT present in the events used to create the TOF histograms.  For example in data with three live channels (1, 2, and 3), if the user selects channel 3 in Veto Channels and channels 1 and 2 in Require Channels, only events with hits in channels 1 and 2, but not channel 3 are passed to histograms.  If no Veto selection is made, events with hits in both channel combinations of 12 and 123 are passed to histograms.</p>
