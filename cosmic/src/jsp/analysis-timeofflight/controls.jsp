@@ -68,7 +68,7 @@
 							<table>
 								<tr>
 									<td class="form-label">
-										<e:trlabel for="zeroZeroZeroID" name="Center of graph view">Center of graph view:</e:trlabel>
+										<e:trlabel for="zeroZeroZeroID" name="Center of graph view">Location:</e:trlabel>
 									</td>
 									<td class="form-control">
 										<e:trselect name="zeroZeroZeroID" 
