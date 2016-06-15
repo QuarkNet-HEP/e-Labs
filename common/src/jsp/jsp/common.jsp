@@ -841,7 +841,7 @@ public static java.util.List getLFNs(JspWriter out, String query)
   * @see                Tuple
   * @see                AnnotationSchema
   */
-public static java.util.List getMetaString lfn) throws ElabException{
+public static java.util.List getMeta(String lfn) throws ElabException{
     int kind = Annotation.CLASS_FILENAME;   //searching on lfn's
     java.util.List metaTuples = null;     //list of metadata Tuples for this lfn
 
@@ -1074,9 +1074,9 @@ public static Tuple getMetaKey(JspWriter out, String lfn, String key)
   */
 public static ArrayList getLFNsAndMeta(String query)
     throws ElabException {
-    int kind = Annotation.CLASS_FILENAME;  //searching on lfn's
-    ArrayList pairs = null;    		   //list of lfn-metadata_Tuple pairs to return
-    java.util.List lfns = null;     	   //list of filenames from this query
+    int kind = Annotation.CLASS_FILENAME;   //searching on lfn's
+    ArrayList pairs = null;     //list of lfn-metadata_Tuple pairs to return
+    java.util.List lfns = null;     //list of filenames from this query
     DatabaseSchema dbschema = null;
 
     // Connect to the database.
