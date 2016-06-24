@@ -131,8 +131,7 @@ function showAll(start, finish)
 									</div><div id="vsId2-h" style="visibility:visible; display:">
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
 				
-				<p>Situated in the LHC, the CMS detector is studying proton-proton collisions in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass and other crucial physics questions. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. By exploring the various subdetectors arrayed to detect this myriad of collision products and by attending to the crucial roles played by conservation of mass, momentum and charge in event analysis, students are able to make sense of the same plots which particle physicists use in analyzing collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
-				
+				<p>The CMS detector studies proton-proton collisions from the LHC in search of new physics.  Myriad particles are produced from these collisions and subsequent decays.  By exploring the various subdetectors arrayed to detect these collision products and by attending to the crucial roles played by conservation of mass-energy, momentum and charge in event analysis, students are able to make sense of the plots particle physicists use to analyze collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
 				<p>Visit the <a href="http://cms.web.cern.ch/" target="cms">CMS</a> website to get more background.
 
 					</div>
