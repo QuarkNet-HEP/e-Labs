@@ -226,6 +226,7 @@ function showAll(start, finish)
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 					<p>Students can start with simple studies and then increase the sophistication. Initial investigations might include finding the mass of the Z boson and seeing how many particle &#34;bumps&#34; they can find in the dimuon and dielectron mass spectra. They can then see the effects of various cuts on the data. How is the J/Psi mass plot affected by including only events with two &#34;global&#34; muon tracks? How does a high transverse momentum cut affect the results of a plot? How about varying eta, the pseudorapidity?</p>
 				    <p>Students can also probe the performance of the detector. Are the distribution momenta and energies uniform as angle phi around the beampipe is varied? At what value of eta do they maximize, and where do they disappear? Why?</p>
+	                <p>Finally, students and teachers alike should browse the posters in the e-Lab for research ideas. How can you follow up on an interesting study? Do you trust the conclusions of the poster, and can you test them in new ways?  Most importantly, what someone else has studied can give an idea about how to pursue what that person did not. </p>			
 				</div>
 				
 				<p>
