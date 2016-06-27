@@ -31,9 +31,7 @@ function loadJSON1(callback) {
 
 function onDataLoadChart1(json) {	
 	//var start = new Date().getTime();
-	if (json.td1) {
-		buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
-	}
+	buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 1: "+time);
@@ -63,9 +61,7 @@ function loadJSON2(callback) {
 
 function onDataLoadChart2(json) {	
 	//var start = new Date().getTime();
-	if (json.td2) {
-		buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
-	}
+	buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 2: "+time);
@@ -95,9 +91,7 @@ function loadJSON3(callback) {
 
 function onDataLoadChart3(json) {	
 	//var start = new Date().getTime();
-	if (json.td3) {
-		buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
-	}
+	buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 3: "+time);
@@ -127,9 +121,7 @@ function loadJSON4(callback) {
 
 function onDataLoadChart4(json) {	
 	//var start = new Date().getTime();
-	if (json.td4) {
-		buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
-	}
+	buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 4: "+time);
@@ -159,9 +151,7 @@ function loadJSON5(callback) {
 
 function onDataLoadChart5(json) {	
 	//var start = new Date().getTime();
-	if (json.td5) {
-		buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
-	}
+	buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 4: "+time);
@@ -196,9 +186,7 @@ function onDataLoadChart6(json) {
 	//buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	//buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	//buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
-	if (json.td6) {
-		buildIndividualDataSets(json.td6, "6", 5, document.getElementById("chart6"));
-	}
+	buildIndividualDataSets(json.td6, "6", 5, document.getElementById("chart6"));
 	//var end = new Date().getTime();
 	//var time = end - start;
 	//console.log("Chart 6: "+time);
@@ -468,6 +456,12 @@ resetAll = function(ndx) {
 }//end of resetAll
 
 function saveToFChart(ndx, name_id, div_id, run_id) {
+	document.write('ndx:  '+ndx);
+	document.write('name_id:  '+name_id);
+	document.write('div_id:  '+div_id);
+	document.write('run_id:  '+run_id);
+		
+	
 	var filename = document.getElementById(name_id);
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
