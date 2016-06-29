@@ -13,7 +13,7 @@
 
 				<%@ include file="../plots/view-saved-plot-names.jsp" %>
 			</div><br />(View your saved names)<br />
-			<input type="button" name="save" onclick='return validatePlotName("chartName<%= request.getParameter("chartIndex")%>"); return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", "msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>); alert("Hi");' value="Save Chart"></input>     
+			<input type="button" name="save" onclick='return validatePlotName("chartName<%= request.getParameter("chartIndex")%>"); return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", "msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>); window.open("http://www.i2u2.org/", "window", "height=300,width=300" );' value="Save Chart"></input>     
 
 			<div id="msg<%= request.getParameter("chartIndex")%>">&nbsp;</div>  
 	<% } %>
