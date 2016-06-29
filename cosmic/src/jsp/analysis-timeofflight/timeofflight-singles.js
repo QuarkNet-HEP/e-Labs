@@ -468,7 +468,6 @@ resetAll = function(ndx) {
 }//end of resetAll
 
 function saveToFChart(ndx, name_id, div_id, run_id) {
-	document.write("ndx: "+ndx);
 	var filename = document.getElementById(name_id);
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
