@@ -13,10 +13,12 @@
   <link rel="stylesheet" type="text/css" href="../css/data.css"/>
   <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
   <link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
+  <link rel="stylesheet" type="text/css" href="../css/dc.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/d3.min.js"></script>
   <script type="text/javascript" src="../include/crossfilter.min.js"></script>
+  <script type="text/javascript" src="../include/dc.min.js"></script>
   <script type="text/javascript" src="../include/html2canvas.js"></script>
 
    <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
@@ -119,6 +121,9 @@
   </div>
 
     <div id="plot-container">
+    </div>
+
+    <div id="chart-container">
     </div>
 
     <div id="plot-template" style="display: none">
@@ -324,7 +329,7 @@
   var dataset_id;
   var dataset_type;
   var dataset_descr;
-  var cfdata;
+  var cfdata, all;
 
   function getDataset(id) {
     for ( var i = 0; i < csv_files.length; i++ ) {
@@ -336,20 +341,22 @@
   }
 
   function buildHistogram(data, bw) {
-     var minx = d3.min(data),
-     maxx = d3.max(data),
-     nbins = Math.floor((maxx-minx) / bw);
+    var minx = Math.floor(d3.min(data)),
+    maxx = Math.ceil(d3.max(data)),
+    nbins = Math.floor((maxx-minx) / bw);
 
-     var histogram = d3.layout.histogram();
-     histogram.bins(nbins);
-     data = histogram(data);
+    //console.log('minx, maxx', minx, maxx);
 
-     var output = [];
-     for ( var i = 0; i < data.length; i++ ) {
-       output.push([data[i].x, data[i].y]);
-       output.push([data[i].x + data[i].dx, data[i].y]);
-     }
-     return output;
+    var histogram = d3.layout.histogram();
+    histogram.bins(nbins);
+    data = histogram(data);
+
+    var output = [];
+    for ( var i = 0; i < data.length; i++ ) {
+      output.push([data[i].x, data[i].y]);
+      output.push([data[i].x + data[i].dx, data[i].y]);
+    }
+    return output;
   }
 
   ln = function(v) { return v > 0 ? Math.log(v) : 0; }
@@ -368,7 +375,7 @@
     if ( active ) {
       $(this).removeClass('active');
       $('#'+parId).remove();
-
+      $('#'+parId+'-chart').remove();
     } else {
       $(this).addClass('active');
 
@@ -383,10 +390,31 @@
           selection: { mode: "x", color: "yellow" }
       };
 
-      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), 1.0);
+      var dimension = cfdata.dimension(function(d) {return +d[parameter];});
+
+      var xmin = dimension.bottom(1)[0][parameter];
+      var xmax = dimension.top(1)[0][parameter];
+
+      xmin = Math.floor(xmin);
+      xmax = Math.ceil(xmax);
+
+      var binw = (xmax - xmin) / 100;
+      if ( binw > 1.0 ) {
+        binw = Math.floor(binw);
+      } else {
+        binw = 1.0;
+      }
+
+      var group = dimension.group(function(d) {return Math.floor(d/binw)*binw;});
+
+      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), binw);
       var nevents = original_data.length;
+
       $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
       $('#'+parId).append($('#plot-template').html());
+      $('#'+parId+' input.binwidth').attr('value', binw);
+
+      $('#chart-container').append("<div class=\"chart\" id=\"" + parId+"-chart" + "\"></div>");
 
       $('#'+parId+' .selector').hide();
       var dataset = getDataset(dataset_id);
@@ -407,18 +435,33 @@
       var plot = $.plot($('#'+parId+ ' .placeholder'), data, options);
 
       $('#'+parId+ ' .xlabel').html(title);
-      $('#'+parId+ ' .ylabel').html('Number of events');
+      //$('#'+parId+ ' .ylabel').html('Number of events');
       $('#'+parId+ ' .plottitle').html(dataset_descr+': '+parameter+' : '+nevents+' entries');
 
       plot.draw();
-      var xmin = plot.getAxes().xaxis.min;
-      var xmax = plot.getAxes().xaxis.max;
+
+      //var xmin = plot.getAxes().xaxis.min;
+      //var xmax = plot.getAxes().xaxis.max;
+
+      var chart = dc.barChart('#'+parId+'-chart')
+        .width(768)
+        .height(480)
+        .x(d3.scale.linear().domain([xmin,xmax]))
+        .brushOn(true)
+        .centerBar(false)
+        .xAxisLabel(title)
+        .yAxisLabel('Number of events')
+        .dimension(dimension)
+        .group(group);
+
+      chart.render();
 
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
         //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
         //console.log(data[0].data.length);
         $('.reset-selection').removeAttr('disabled');
-        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        //$.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
@@ -523,6 +566,7 @@
         original_data = data;
         current_data = original_data;
         cfdata = crossfilter(data);
+        all = cfdata.groupAll();
       }
     );
   }
@@ -531,6 +575,7 @@
     $('#parameters').hide();
     $('#parameter-table').empty();
     $('#plot-container').empty();
+    $('#chart-container').empty();
 
     var expr = $('select option:selected').attr('value');
     var type;
