@@ -1,32 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
-
-<script type="text/javascript">
-function validatePlotName2(plotNameId) {
-	alert("In local function validatePlotName");        
-	var newName = document.getElementById(plotNameId);
-	alert (newName.value);
-	var existingNames = document.getElementById("existingPlotNames");
-	var validName = true;
-    for (var i = 0; i < existingNames.length; i++) {
-        if (newName.value == existingNames.options[i].value) {
-        	validName = false;
-        }
-    }
-    if (validName) {
-	alert("This is a valid name.");
-    	return true;
-    	window.open('',this.target,'width=500,height=200,resizable=1');
-    } else {
-    	alert("There is an existing plot with this name. Please choose a different name.");
-    	return false;
-    }
-}
-</script>
-
-
+      
 <div class="left">
 	<div id="chartTitle<%= request.getParameter("chartIndex")%>">&nbsp;</div>
 	<div id="placeholder<%= request.getParameter("chartIndex")%>" class="graph-placeholder" style="width:250px; height:250px;"></div>
@@ -39,7 +14,8 @@ function validatePlotName2(plotNameId) {
 				<%@ include file="../plots/view-saved-plot-names.jsp" %>
 			</div><br />(View your saved names)<br />
                         
-<!--			<input type="button" name="save" onclick='validatePlotName2("chartName<%= request.getParameter("chartIndex")%>"); alert("Hi"); 
+<!--			Edit's version, which wasn't saving plots because of multiple function calls with return in onclick section:
+			<input type="button" name="save" onclick='validatePlotName2("chartName<%= request.getParameter("chartIndex")%>"); alert("Hi"); 
 			                                              return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", 
 			"msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>); ' value="Save Chart"></input>
 -->     

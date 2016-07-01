@@ -510,7 +510,7 @@ function saveToFChart(ndx, name_id, div_id, run_id) {
 }//end of saveTOFChart
 
 function validateAndSaveTOFChart(ndx, name_id, div_id, run_id) {
-	if (validatePlotName2(name_id)){
+	if (validatePlotName(name_id)){
 		saveToFChart(ndx, name_id, div_id, run_id); return true;
 	}else {
   	return false;
