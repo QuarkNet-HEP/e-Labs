@@ -55,6 +55,10 @@
 							<a href="../analysis-lifetime">Lifetime Study</a>
 							- How long before muons decay? Combine a lifetime study with flux studies to determine whether you live in Newton's or Einstein's world.
 						</p>
+                                                <p>
+                                                        <a href="../analysis-timeofflight">Time of Flight Study</a>
+                                                        - Using the TOF analysis module, one can measure the average time muons take to travel between two counters. Then, we can calculate the average speed.
+						</p>
 					</div>
 				</div>		
 			</div>
