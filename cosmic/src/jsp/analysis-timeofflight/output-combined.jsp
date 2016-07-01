@@ -147,7 +147,10 @@
 			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>
 			<%@ include file="../plots/view-saved-plot-names.jsp" %>
 		</div>(View your saved plot names)<br />
-		<input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
+<!--This was Edit's original code.  Many functions in onclick (with return) caused problems.              
+                <input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>
+-->
+		<input type="button" name="save" onclick=' validateAndSaveCombChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
 		<div id="chartMsg"></div>  
 		<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
