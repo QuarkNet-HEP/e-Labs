@@ -2,11 +2,12 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+<%--
 <script type="text/javascript">
 function validatePlotName(plotNameId) {
-	alert("In local function validatePlotName");
-        alert("request.getParameter("plotNameId")");
+	alert("In local function validatePlotName");        
 	var newName = document.getElementById(plotNameId);
+	alert (newName.value);
 	var existingNames = document.getElementById("existingPlotNames");
 	var validName = true;
     for (var i = 0; i < existingNames.length; i++) {
@@ -15,6 +16,7 @@ function validatePlotName(plotNameId) {
         }
     }
     if (validName) {
+	alert("This is a valid name.");
     	return true;
     	window.open('',this.target,'width=500,height=200,resizable=1');
     } else {
@@ -23,6 +25,7 @@ function validatePlotName(plotNameId) {
     }
 }
 </script>
+--%>
 
 <div class="left">
 	<div id="chartTitle<%= request.getParameter("chartIndex")%>">&nbsp;</div>
