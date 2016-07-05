@@ -147,11 +147,13 @@
 			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>
 			<%@ include file="../plots/view-saved-plot-names.jsp" %>
 		</div>(View your saved plot names)<br />
-<!--This was Edit's original code.  Many functions in onclick (with return) caused problems.              
+<!--This was Edit's original code.  Many functions in onclick (with return) caused problems. Also, chartMsg needed code.        
                 <input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>
+				<div id="chartMsg"></div> 
 -->
-		<input type="button" name="save" onclick=' validateAndSaveCombChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
-		<div id="chartMsg"></div>  
+		<input type="button" name="save" onclick=' validateAndSaveCombChart(<%= request.getParameter("onOffPlot")%>, "name", "chartMsg", "${results.id}");' value="Save"></input>    
+		<div id="chartMsg">&nbsp;</div> 
+		 
 		<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
 		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::TimeOfFlight"/>

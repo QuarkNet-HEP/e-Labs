@@ -435,6 +435,7 @@ function intToFloat(num, decPlaces) {
 	}
 
 function validateAndSaveCombChart(plot_to_save, name_id, div_id, run_id){
+	alert("Hi!");
 	if (validatePlotName(name_id)){
 		saveChart(plot_to_save, name_id, div_id, run_id); return true;
 	}else {
