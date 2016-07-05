@@ -1,4 +1,4 @@
-var tofCollection = [];
+var tofCollection = [,,,,,,];
 var onOffPlot;
 var overviewPlot;
 var data = []; //data that will be sent to the chart
@@ -38,18 +38,30 @@ function loadJSON(callback) {
  }//end of loadJSON
 
 function onDataLoad(json) {	
-	buildTimeDiff(json,json.td1,data);
-	buildTimeDiff(json,json.td2,data);
-	buildTimeDiff(json,json.td3,data);
-	buildTimeDiff(json,json.td4,data);
-	buildTimeDiff(json,json.td5,data);
-	buildTimeDiff(json,json.td6,data);
+	if (json.td1) {
+		buildTimeDiff(json,json.td1,0,data);
+	}
+	if (json.td2) {
+		buildTimeDiff(json,json.td2,1,data);
+	}
+	if (json.td3) {
+		buildTimeDiff(json,json.td3,2,data);
+	}
+	if (json.td4) {
+		buildTimeDiff(json,json.td4,3,data);
+	}
+	if (json.td5) {
+		buildTimeDiff(json,json.td5,4,data);
+	}
+	if (json.td6) {
+		buildTimeDiff(json,json.td6,5,data);
+	}
 	bindEverything(json);
 	original_data = data;
 	spinnerOff();
 }//end of onDataLoad	
 
-function buildTimeDiff(json, timediff, data) {
+function buildTimeDiff(json, timediff, ndx, data) {
 	if (timediff != null) {
 		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
 		data.push(timediff);
@@ -63,7 +75,7 @@ function buildTimeDiff(json, timediff, data) {
 			maxBins = timediff.maxBins;
 		}
 		binValue = timediff.binValue;
-		tofCollection.push({timeDiff: timediff});
+		tofCollection[ndx] = {timeDiff: timediff};
 	}
 }
 
@@ -422,3 +434,10 @@ function intToFloat(num, decPlaces) {
 	return num + '.' + Array(decPlaces + 1).join('0'); 
 	}
 
+function validateAndSaveCombChart(plot_to_save, name_id, div_id, run_id){
+	if (validatePlotName(name_id)){
+		saveChart(plot_to_save, name_id, div_id, run_id); return true;
+	}else {
+  	return false;
+	}
+}//end of validateAndSaveCombChart
