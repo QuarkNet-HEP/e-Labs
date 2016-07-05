@@ -151,7 +151,8 @@
                 <input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>
 				<div id="chartMsg"></div> 
 -->
-		<input type="button" name="save" onclick=' validateAndSaveCombChart("onOffPlot", "name", "chartMsg", "${results.id}");' value="Save"></input>    
+		
+		<input type="button" name="save" onclick=' validateAndSaveCombChart("onOffPlot", "newPlotName", "chartMsg", "${results.id}");' value="Save"></input>    
 		<div id="chartMsg">&nbsp;</div> 
 		 
 		<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
