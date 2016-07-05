@@ -69,6 +69,37 @@
   .plot {
     border: 1px dashed #cccccc;
   }
+
+  ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+
+  ul.tab li {float: left;}
+
+  ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  ul.tab li a:hover {background-color: #ddd;}
+  ul.tab li a:focus, .active {background-color: #ccc;}
+
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
   </style>
 
 </head>
@@ -89,9 +120,6 @@
   <div id="content">
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
-    <script>
-      console.log(d3.version);
-    </script>
     <p>
       Explore data from the CMS experiment at the LHC. Many particles can be produced in the proton-proton
       collisions recorded by CMS, such as J/&psi; particles, 	&Upsilon; particles, and W and Z bosons. These
@@ -120,10 +148,15 @@
     </table>
   </div>
 
-    <div id="plot-container">
+    <ul class="tab">
+      <li><a href="#" class="tablinks plot active">Histograms</a></li>
+      <li><a href="#" class="tablinks chart">Correlated charts</a></li>
+    </ul>
+
+    <div id="plot-container" class="tabcontent">
     </div>
 
-    <div id="chart-container">
+    <div id="chart-container" class="tabcontent">
     </div>
 
     <div id="plot-template" style="display: none">
@@ -214,8 +247,25 @@
   <script type="text/javascript">
   $(function() {
 
+    $('.tablinks').bind('click', function() {
+      $('.tablinks').removeClass('active');
+      $(this).addClass('active');
+
+      if ($(this).hasClass('plot')) {
+        $('#chart-container').hide();
+        $('#plot-container').show();
+      }
+
+      if ($(this).hasClass('chart')) {
+        $('#plot-container').hide();
+        $('#chart-container').show();
+      }
+    });
+
     $('#parameters').hide();
-    //$('.plot').hide();
+
+    // show plot container div by default
+    $('#plot-container').show();
 
     var csv_files = [
       {
