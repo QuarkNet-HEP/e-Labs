@@ -97,8 +97,16 @@
   .tabcontent {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #ccc;
+    border: none;
     border-top: none;
+  }
+
+  .tab::before {
+    content: none;
+  }
+
+  .data .tab {
+    padding-top: 0;
   }
   </style>
 
