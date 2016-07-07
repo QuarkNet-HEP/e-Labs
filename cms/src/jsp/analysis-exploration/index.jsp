@@ -498,9 +498,6 @@
 
       plot.draw();
 
-      //var xmin = plot.getAxes().xaxis.min;
-      //var xmax = plot.getAxes().xaxis.max;
-
       var chart = dc.barChart('#'+parId+'-chart')
         .width(768)
         .height(480)
@@ -514,12 +511,15 @@
 
       chart.render();
 
+      xmin = plot.getAxes().xaxis.min;
+      xmax = plot.getAxes().xaxis.max;
+
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
         //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
         //console.log(data[0].data.length);
         $('.reset-selection').removeAttr('disabled');
-        //$.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
-        $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
+        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        //$.extend(true, options, {xaxis:{min: xmin, max: xmax}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
