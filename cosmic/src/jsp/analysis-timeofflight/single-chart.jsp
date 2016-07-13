@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+      
 <div class="left">
 	<div id="chartTitle<%= request.getParameter("chartIndex")%>">&nbsp;</div>
 	<div id="placeholder<%= request.getParameter("chartIndex")%>" class="graph-placeholder" style="width:250px; height:250px;"></div>
@@ -13,7 +13,16 @@
 
 				<%@ include file="../plots/view-saved-plot-names.jsp" %>
 			</div><br />(View your saved names)<br />
-			<input type="button" name="save" onclick='return validatePlotName("chartName<%= request.getParameter("chartIndex")%>"); return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", "msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>);' value="Save Chart"></input>     
+                        
+<!--			Edit's version, which wasn't saving plots because of multiple function calls with return in onclick section:
+			<input type="button" name="save" onclick='validatePlotName2("chartName<%= request.getParameter("chartIndex")%>"); alert("Hi"); 
+			                                              return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", 
+			"msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>); ' value="Save Chart"></input>
+-->     
+                        
+			<input type="button" name="save" onclick='validateAndSaveTOFChart(<%= request.getParameter("chartIndex")%>,"chartName<%= request.getParameter("chartIndex")%>",
+			"msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>); ' value="Save Chart"></input>
+			
 
 			<div id="msg<%= request.getParameter("chartIndex")%>">&nbsp;</div>  
 	<% } %>
