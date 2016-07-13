@@ -35,7 +35,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/CMS-sidebar.jpg"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
+				<img src="../graphics/CMS-sidebar2.png"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
 			</div>
 		</td>
 		
@@ -72,9 +72,9 @@
 				<table width="700">
 				        <tr>
 				        <td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
-						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+						<td class="annotPict"><img src="../graphics/dimuon_logo.png" border="1"><br>Event in CMS with two muons</td>
 						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
-						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
+						<td class="annotPict"><img src="../graphics/eemm_run195099_evt137440354_ispy_3d.png" border="1"><br>Higgs candidate detected by CMS</td>
 						</tr>
 				</table>
 			</div>
