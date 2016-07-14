@@ -35,7 +35,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/CMS-sidebar2.png"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
+				<img src="../graphics/CMS-sidebar2.png"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Real Event<br>Superimposed on Detector</div>
 			</div>
 		</td>
 		
