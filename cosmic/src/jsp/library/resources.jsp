@@ -117,27 +117,27 @@
 								Series "6000" CRMD Users Manual 
 								</a>
 								<br />
-								<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
+								<a href="quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
 								</a>
 							</li>
 							<li>
 								Learn how to assemble the CRMD<br />
-								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
+								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 								Series "6000" CRMD Assembly Instructions 
 								</a>
 								<br />
-								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
+								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
 								Series "5000" CRMD Assembly Instructions
 								</a>
 							</li>
 							<li>
 								Series "6000" CRMD Plateauing Instructions<br />
-								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
+								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
 								"6000" HOWTO PowerPoint 
 								</a>
 								<br />
-								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
+								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
 								"6000" SpreadSheet Form
 								</a>
 							</li>
@@ -164,11 +164,11 @@
 							<li>
 								<a href="mailto:glass@fnal.gov">Henry Glass</a> - Fermilab/Auger
 							</li>
-<%-- 
+<!-- 
 							<li>
 								<a href="mailto:barnett@lbl.gov">Michael Barnett</a> - Lawrence Berkeley National Laboratory
 							</li>
- --%>
+ -->
 							<li>
 								<a href="mailto:adams@fnal.gov">Mark Adams</a> - Fermilab
 							</li>
@@ -240,8 +240,8 @@
   Scientific Plot</a> - A line graph with error bars on
   points and best fit line</li>
 
- <li><a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University</li>
- <li><a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough</li>
+ <li><a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University
+ 	<a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough</li>
 
 						</ul>
 						</div>		
@@ -269,7 +269,7 @@
 
 							<li>
 								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
-								- Excellent cosmic ray overview from Columbia University (pdf file)
+								- Excellent cosmic ray overview rom Columbia University (pdf file)
 							</li>
 							
 							 
@@ -289,7 +289,7 @@
 								from SLAC, Stanford University
 							</li>
 							<li>
-								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
+								<a href="http://www-numi.fnal.gov/" target="activity">MINOS</a>
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
 						  <li>
@@ -302,9 +302,9 @@
 								- Cosmic rays and upper atmospheric temperatures from Symmetry Magazine
 							</li>
 							<li><a href="http://ed.fnal.gov/pdf/leo.pdf">Leo's Logbook</a> - Tips for keeping a logbook</il>
-						    <li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/SKY.aspx">The SKY experiment</a>, from Denmark.</li>
-							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/CLOUD.aspx">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
-							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate.aspx">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
+						    <li><a href="http://www.dtu.dk/english/News/2013/09/Danish-experiment-suggests-unexpected-magic-by-cosmic-rays-in-cloud-formation/">The SKY experiment</a>, from Denmark.</li>
+							<li><a href="https://home.cern/about/experiments/cloud/">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
+							<li><a href="http://www.space.dtu.dk/english/Research/Climate_and_Environment/">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
 							<li><a href="https://wiki.iac.isu.edu/index.php/Cosmics_for_High_School_Teachers">Cosmic Ray overview for students</a></il>
 							<li><a href="http://cosray.phys.uoa.gr/nmdb-barometric/nmdb-barometric.htm">How to calculate barometric pressure correction</a></il>
 							<li><a href="http://neutronm.bartol.udel.edu/">Bartol Research Institute neutron monitor</a></il>
@@ -375,7 +375,7 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
 								from Microsoft Learning.
 							</li>
-						</ul>
+								</ul>
 					</div>
 							
 							
@@ -395,19 +395,13 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
   
 							<li><a href="http://undsci.berkeley.edu/article/howscienceworks_16">
   							Scrutinizing science: Peer review</a>, from Understanding Science (University of California), explains the process.
-  						</li>
-<%--							
+  							</li>
+							
 							<li>
-								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
-								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+							Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
+							<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
 							</li>
---%>
-							<li>
-								Research Citation (Purdue University):  </br>
-    						&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> &</br>
-    						&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
- 							</li>
-
+								
 						</ul>
 					</div>
 				
