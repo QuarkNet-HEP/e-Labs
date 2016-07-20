@@ -289,7 +289,7 @@
 								from SLAC, Stanford University
 							</li>
 							<li>
-								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
+								<a href="http://www-numi.fnal.gov/" target="activity">MINOS</a>
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
 						  <li>
@@ -302,9 +302,9 @@
 								- Cosmic rays and upper atmospheric temperatures from Symmetry Magazine
 							</li>
 							<li><a href="http://ed.fnal.gov/pdf/leo.pdf">Leo's Logbook</a> - Tips for keeping a logbook</il>
-						    <li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/SKY.aspx">The SKY experiment</a>, from Denmark.</li>
-							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/CLOUD.aspx">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
-							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate.aspx">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
+						    <li><a href="http://www.dtu.dk/english/News/2013/09/Danish-experiment-suggests-unexpected-magic-by-cosmic-rays-in-cloud-formation/">The SKY experiment</a>, from Denmark.</li>
+							<li><a href="https://home.cern/about/experiments/cloud/">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
+							<li><a href="http://www.space.dtu.dk/english/Research/Climate_and_Environment/">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
 							<li><a href="https://wiki.iac.isu.edu/index.php/Cosmics_for_High_School_Teachers">Cosmic Ray overview for students</a></il>
 							<li><a href="http://cosray.phys.uoa.gr/nmdb-barometric/nmdb-barometric.htm">How to calculate barometric pressure correction</a></il>
 							<li><a href="http://neutronm.bartol.udel.edu/">Bartol Research Institute neutron monitor</a></il>
