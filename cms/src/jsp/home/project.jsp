@@ -92,7 +92,7 @@
 						This project is supported in part by the National Science Foundation and 
 						the Office of High Energy Physics in the Office of Science , U.S. 
 						Department of Energy. Opinions expressed are those of the authors and 
-						not necessarily those of the Foundation or Department.
+						not necessarily those of the Foundation or Department. 
 					</p>
 				</div>
 	
