@@ -89,6 +89,13 @@
 																<a href="../analysis-lifetime/tryit.html">Step-by-Step Instructions</a></li>
 															</ul>
 														</li>
+														<li>
+															TOF Study
+															<ul>
+																<li><a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a> &amp;
+																<a href="../analysis-timeofflight/tryit.html">Step-by-Step Instructions</a></li>
+															</ul>
+														</li>
 														<li><a href="../geometry/tutorial.jsp">Geometry Tutorial</a></li>
 														<li><a href="../geometry/gps_tutorial.jsp">GPS Tutorial</a></li>		
 													</ul>
