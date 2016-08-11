@@ -117,27 +117,27 @@
 								Series "6000" CRMD Users Manual 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
 								</a>
 							</li>
 							<li>
 								Learn how to assemble the CRMD<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 								Series "6000" CRMD Assembly Instructions 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
+								<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
 								Series "5000" CRMD Assembly Instructions
 								</a>
 							</li>
 							<li>
 								Series "6000" CRMD Plateauing Instructions<br />
-								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
+								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
 								"6000" HOWTO PowerPoint 
 								</a>
 								<br />
-								<a href="quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
+								<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
 								"6000" SpreadSheet Form
 								</a>
 							</li>
