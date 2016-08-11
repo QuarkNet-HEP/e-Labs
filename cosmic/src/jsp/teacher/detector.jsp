@@ -72,13 +72,17 @@ auxiliary GPS data, and environmental sensor data (temperature and pressure).
 <a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a>
 </p>
 <p>
-User Manuals: <a href="https://www.i2u2.org/cosmic/library/upload/b/ba/6000CRMDUserManual.pdf" title="6000CRMDUserManual.pdf">Series "6000"</a> - <a href="http://quarknet.fnal.gov/toolkits/ati/det-user.pdf" class="external text" rel="nofollow">Series "200" &amp; "5000"</a>
+User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">Series "6000"</a> - 
+<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
+Series "200" &amp; "5000"</a>
 </p>
 <p>
-Assembly Instructions: <a href="https://www.i2u2.org/cosmic/library/upload/6/60/6000CRMDAssemblyInstructions.pdf" title="6000CRMDAssemblyInstructions.pdf">Series "6000"</a> - <a href="https://www.i2u2.org/cosmic/library/upload/b/bd/CRMDAssemblyInstructionsV1.3.pdf" title="CRMDAssemblyInstructionsV1.3.pdf">Series "5000"</a>
+Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">Series "6000"</a> - 
+<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a>
 </p>
 <p>
-Series "6000" CRMD Plateauing Instructions: <a href="https://www.i2u2.org/cosmic/library/upload/3/3f/6000CRMD_How_to_Plateau.ppt" title="6000CRMD How to Plateau.ppt">PowerPoint HOWTO</a> - <a href="https://www.i2u2.org/cosmic/library/upload/1/1b/6000Plateau_Template.xls" title="6000Plateau Template.xls">Spreadsheet</a>
+Series "6000" CRMD Plateauing Instructions:<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
+<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">Spreadsheet</a>
 </p>
 <p>
 "6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
