@@ -6,15 +6,14 @@ such as gluon to gluon which produces short-lived quark-antiquark pair, which ma
 Thus pairs of muons can have different parentage. Below are Feynman diagrams depicting gluon - gluon interactions resulting in dimuon decay products, 
 the J-Psi and Upsilon particles.
 
-J-Psi
-File:J-psi.png
+<p>J-Psi</p><br/>
+<img src="../graphics/J-Psi.png" alt="J-Psi"><br />
 
-<p>Upsilon</p><br />
+<p>Upsilon</p><br/>
 <img src="../graphics/Upsilon.png" alt="Upsilon"><br />
+
 <p>Feynman diagrams can be combined to generate a map of primary collision to detected decay products: this one represents one of the sought-after Higgs signatures!</p><br />
 <img src="../graphics/Higgs.jpg"><br />
 
 <p>Image source: www.lhc-closer.es/img/subidas/6_5_1_3.jpg.</p>
 
-<p><strong>To Explore Further</strong></p>
-<p>Follow these links for a guided tour of the symbols, meaning and use of Feynman Diagrams. (<a href="https://www.youtube.com/watch?v=HaWhWeBxQRQ">basic</a>)</p>
