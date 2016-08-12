@@ -4,7 +4,7 @@
 which decays after a very short lifetime into a net neutral combination of muons, mu+, mu-.  <br/>
 <img src="../graphics/Zmumu.png" alt="Zmumu">
 
-<p>Other collision types also produce net-zero-charged collision products, such as gluon to gluon.  This creates a short-lived quark-antiquark pair, 
+<p>Other collision types, such as gluon to gluon, also produce net-zero-charged collision products.  This interaction creates a short-lived quark-antiquark pair, 
 which may interact to produce a photon, which in turn decays into a pair of muons.  Thus, pairs of muons can have different parentage.</p> 
 
 <p>Below are Feynman diagrams depicting gluon - gluon interactions resulting in dimuon decay products, the J-Psi and Upsilon particles.</p>
