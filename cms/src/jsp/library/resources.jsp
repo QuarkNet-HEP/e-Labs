@@ -293,11 +293,8 @@
 							</li>
 							<li>
 								EDC's <e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet (pdf)</e:popup>
-							</li>
-							<li>
-								Vocational information Center's <A href="http://www.khake.com/page17.html" target="_blank">Computer Science Career Guide</a>
-							</li>
-							</ul>
+							</li>	
+						</ul>
 					</div>			
 				
 	             </div>			
