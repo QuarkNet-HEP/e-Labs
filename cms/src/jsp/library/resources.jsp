@@ -285,11 +285,14 @@
 								ACM's <A href="http://computingcareers.acm.org">Computing Degrees & Careers</a>
 							</li>
 							<li>
-								<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>,
+								<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>
 								from Microsoft Learning
 							</li>
 							<li>
-								EDC's<e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet (pdf)</e:popup>
+								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html">Training & Certifications</a> from Cisco
+							</li>
+							<li>
+								EDC's <e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet (pdf)</e:popup>
 							</li>
 							<li>
 								Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
