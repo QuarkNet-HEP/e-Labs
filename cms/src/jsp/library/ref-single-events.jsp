@@ -17,7 +17,8 @@
 	    		<td>
    		    		<p>
 						<p>
-						<table><tr><td> <a href="javascript:showRefLink('../graphics/single-event.png',641,641)"><img src="../graphics/single-event-tn.png"></a></td><td><p> <b>2-D single event displays</b> tell the story of what happened in one collision. This is an example of what it looks like when a Z boson decays into two muons at CMS. Click on it to see a larger image.</td></tr></table>
+						<table><tr><td> <a href="javascript:showRefLink('../graphics/single-event.png',641,641)"><img src="../graphics/single-event-tn.png"></a></td><td><p> <b>2-D single event displays</b> tell the story of what happened in one collision. 
+						This is an example of what it looks like when a Z boson decays into two muons at CMS. Click on it to see a larger image.</td></tr></table>
 </p>
 
 						Watch a <a href="
@@ -27,8 +28,9 @@
 						<p><a href="
 						javascript:showRefLink('../games/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
 						
-						<p>Try a  <a href="javascript:showRefLink('../event-display/',1150,775)">3-D</a> view? (non-Internet Explorer browsers only) Need help?
-						<a href="javascript:showRefLink('http://screencast.com/t/X2WGL5ru8wMX',775,625)">Intro</a> - <a href="javascript:showRefLink('http://screencast.com/t/7wFGMWXVpdOM',775,625)">More Features</a></p>
+						<p>Try a  <a href="javascript:showRefLink('../ispy-webgl/',1150,775)">3-D</a> view (non-Internet Explorer browsers only). Need help?
+						<a href="javascript:showRefLink('https://www.youtube.com/watch?v=Cnf2cBSgS8M&feature=youtu.be',625,675)">View 3-D screencast.</a>
+						</p>
 
 						
 						<p>The 3-D view is complex! Try rotating and turning parts of the detector and event off and on. You should become more familiar with the detector and the events. Pretty cool!</p>
