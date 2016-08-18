@@ -291,9 +291,6 @@
 							<li>
 								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
 							</li>
-							<li>
-								EDC's <e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet (pdf)</e:popup>
-							</li>	
 						</ul>
 					</div>			
 				
