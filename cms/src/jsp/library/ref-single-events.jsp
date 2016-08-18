@@ -29,12 +29,12 @@
 						javascript:showRefLink('../games/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
 						
 						<p>Try a  <a href="javascript:showRefLink('../ispy-webgl/',1150,775)">3-D</a> view (non-Internet Explorer browsers only). Need help?
-						<a href="javascript:showRefLink('https://www.youtube.com/watch?v=Cnf2cBSgS8M&feature=youtu.be',625,675)">View 3-D screencast.</a>
+						<a href="javascript:showRefLink('https://www.youtube.com/watch?v=Cnf2cBSgS8M&feature=youtu.be',865,675)">View 3-D screencast</a>.
 						</p>
 
 						
 						<p>The 3-D view is complex! Try rotating and turning parts of the detector and event off and on. You should become more familiar with the detector and the events. Pretty cool!</p>
-						<p>What can physicists learn when they combine lots of events? Read about taking a <a href="						javascript:showRefLink('ref-combined-events.jsp',641,641)">statistical approach</a>.</p>
+						<p>What can physicists learn when they combine lots of events? Read about taking a <a href="javascript:showRefLink('ref-combined-events.jsp',641,641)">statistical approach</a>.</p>
    			 	</p>
    			 	
 					
