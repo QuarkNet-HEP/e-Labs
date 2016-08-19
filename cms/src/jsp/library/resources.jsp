@@ -165,9 +165,8 @@
 								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN
 							</li>
 							<li>
-								Research Citation (Purdue University):  </br>
-								&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> &</br> 
-								&#160;&#160;<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
+								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
 							</li>
 								
 						</ul>
@@ -283,18 +282,21 @@
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
 							<li>
-								<e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet</e:popup>,
-								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+								ACM's <A href="http://computingcareers.acm.org" target="_blank">Computing Degrees & Careers</a>
+							</li>
+							<li><A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>, 
+								from Microsoft Learning.
 							</li>
 							<li>
-								<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>,
-								from Microsoft Learning
+								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
 							</li>
-							</ul>
+							<li>
+								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education								
+							</li>
+						</ul>
 					</div>			
 				
 	             </div>			
-
 
 
 							<div class="tab" id="tab-grid-computing">
