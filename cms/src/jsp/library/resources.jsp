@@ -291,6 +291,9 @@
 							<li>
 								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
 							</li>
+							<li>
+								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education								
+							</li>
 						</ul>
 					</div>			
 				
