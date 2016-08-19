@@ -340,8 +340,8 @@
 						<li>ACM's <A href="http://computingcareers.acm.org" target="_blank">Computing Degrees & Careers</a>
 						</li>
 						<li>
-							<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>
-							from Microsoft Learning
+							<A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>, 
+							from Microsoft Learning.
 						</li>
 						<li>
 							<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
