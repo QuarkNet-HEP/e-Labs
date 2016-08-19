@@ -202,14 +202,22 @@
 								 </DL>
 								<h2>IT Careers</h2>
 								<DL>
-								<DT><h3> <A target="_blank" href="http://nde.ne.gov/NCE/careerclusters/ITCC%20BRO.pdf">Career Cluster Pamphlet</a>
+								<DT><h3> <A target="_blank" href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf">Career Cluster Pamphlet</a>
 									<img src='/glossary/skins/monobook/external.png'>
 								      </H3> 
-								<DD> Read a pamphlet from Vocational Information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+								<DD> Read a pamphlet from Nebraska Department of Education.
 								<DT><h3> <A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>
 									<img src='/glossary/skins/monobook/external.png'>
 								      </H3> 
 								<DD> Read Microsoft Learning's suggestions for preparing for an IT Career.
+								<DT><h3> <A target="_blank" href="http://computingcareers.acm.org" target="_blank">Computing Degrees & Careers</a>
+									<img src='/glossary/skins/monobook/external.png'>
+								      </H3> 
+								<DD> from Association for Computing Machinery (ACM).
+								<DT><h3> <A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> 
+								      </H3> 
+								<DD> from Cisco.
+								
 								
 								</DL>
 								<h2>Grid Computing</h2>
