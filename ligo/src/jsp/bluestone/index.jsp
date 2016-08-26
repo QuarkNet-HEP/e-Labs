@@ -90,6 +90,11 @@
 						</td>
 					</tr>
 				</table>
+				
+				<p  style="color:red; font-size:  15px; font-style:  italic;">
+							LIGO's nine seismic detectors collect data continuously and deliver it to the I2U2 e-Lab daily.  
+							Occasionally this process is interrupted, which may lead to gaps or flat lines on plots caused by missing data.
+				</p>
 				<%-- <button id="plotButtonTop" class="plotButton" value="Plot">Plot</button> --%>
 				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
 				<table class="toolbox">
@@ -201,13 +206,6 @@
 					<tr>
 						<td><button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button></td>
 						<td><div id="messages" name="messages"></div></td>
-					</tr>
-					<tr>
-						<td style="font-size:15px; font-style:italic; color:red;">
-							<br></br>
-							LIGO's nine seismic detectors collect data continuously and deliver it to the I2U2 e-Lab daily.  
-							Occasionally this process is interrupted, which may lead to gaps or flat lines on plots caused by missing data.
-						</td>
 					</tr>
 				</table>
 				<% if (!user.isGuest())  { %>
