@@ -92,7 +92,7 @@
 					</tr>
 				</table>
 				
-				<p  style="color:red; font-size:  15px; font-style:  italic;">
+				<p  style="color:orange; font-size:  15px; font-style:  italic;">
 							LIGO's nine seismic detectors collect data continuously and deliver it to the I2U2 e-Lab daily.  
 							Occasionally this process is interrupted, which may lead to gaps or flat lines on plots caused by missing data.
 				</p>
