@@ -96,7 +96,7 @@
 				</td>
 				<td id="center">
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
-					<br />
+					<br><br />
 						<%-- Newsbox --%>	
 						<%String jLIstring = request.getParameter("justLoggedIn"); %>
 						
