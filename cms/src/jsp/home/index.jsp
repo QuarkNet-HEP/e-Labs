@@ -34,7 +34,7 @@
 				 	 			</td>
 				 	 			<td>
 									<div id="right">
-										<%@ include file="../include/newsbox.jsp" %>
+										<!-- <%@ include file="../include/newsbox.jsp" %> -->
 										<div align="center"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></div>
 										<jsp:include page="../login/login-control.jsp">
 											<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
