@@ -97,7 +97,7 @@
 				<td id="center">
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br />
-					<%-- Newsbox --%>	
+						<%-- Newsbox --%>	
 						<%String jLIstring = request.getParameter("justLoggedIn"); %>
 						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
@@ -105,28 +105,28 @@
 						<c:choose>
 						<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
 							<div id="newsbox-v" style="visibility:visible; display"> 
-							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</a>
 						    </div>
 						    
 						    <div id="newsbox-h" style="visibility:hidden; display: none">
-							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</a>
 						    <%@ include file="../include/newsbox.jsp" %>
 						   </div>
 						</c:when>
 					 	
 				        <c:otherwise> <%--Show newsbox because user has just logged in--%>
 				        <div id="newsbox-v" style="visibility:hidden; display: none">					   
-							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</a>
 						</div>
 						
 						<div id="newsbox-h" style="visibility:visible; display">
-							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</a>
 							<%@ include file="../include/newsbox.jsp" %>
 						</div>
 					    </c:otherwise>
 					    </c:choose>
 						<%-- End Newsbox --%>
-					<br />
+					
 					<p>Project Map: To navigate the LIGO e-Lab, follow the path; complete the milestones. Hover over each colored dot to preview; click to open. Along the main line are <a href="#" onclick="javascript:glossary('milestone_seminar',300);return false;"><b>milestone seminars</b></a>, opportunities to discuss how your work is going. Project <a href="#" onclick="javascript:glossary('milestone',300);return false;"><b>milestones</b></a> are on the four branch lines. <e:popup href="../video/intro-interface.html" target="tryit" width="800" height="590">e-Lab Intro Video</e:popup></p>
 					<center>
 						<c:choose>
