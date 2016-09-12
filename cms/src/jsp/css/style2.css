@@ -375,7 +375,8 @@ a > img {
 }
 
 #news-box-header {
-	background-color: #c0c0c0;
+	/* background-color: #c0c0c0; */
+	background-color: #FFCC00;
 	padding: 4px;
 	font-weight: bold;
 }
