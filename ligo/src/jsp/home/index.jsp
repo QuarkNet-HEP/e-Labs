@@ -98,7 +98,7 @@
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br><br />
 						<%-- Newsbox --%>	
-						/* <%String jLIstring = request.getParameter("justLoggedIn"); %> */
+						<%-- <%String jLIstring = request.getParameter("justLoggedIn"); %> --%>
 						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
 						
