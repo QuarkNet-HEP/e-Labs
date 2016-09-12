@@ -62,7 +62,7 @@
 						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
 						
 					<%-- Newsbox --%>	
-						<%String jLIstring = request.getParameter("justLoggedIn"); %>
+						<%-- <%String jLIstring = request.getParameter("justLoggedIn"); %> --%>
 						
 						<c:set var="jLI" value="${param.justLoggedIn}"/>
 						
