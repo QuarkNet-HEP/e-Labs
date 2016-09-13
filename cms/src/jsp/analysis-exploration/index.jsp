@@ -191,7 +191,7 @@
                   Bin Width: <input type="text" class="binwidth" value="1.0" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
                 </td>
                 <td>
-                  <input type="button" class="save" value="Save plot"/>
+                  <input type="button" class="save" value="Print plot"/>
                 </td>
               </tr>
                 <tr>
@@ -498,6 +498,8 @@
 
       plot.draw();
 
+      $('#'+parId+'-chart').append('<input type="button" class="save" value="Print plot"/>');
+
       var chart = dc.barChart('#'+parId+'-chart')
         .width(768)
         .height(480)
@@ -566,6 +568,28 @@
         });
       });
 
+      $('#'+parId+'-chart .save').bind('click', function() {
+
+        var svg = document.querySelector('#'+parId+'-chart > svg');
+        var serializer = new XMLSerializer();
+        var source = serializer.serializeToString(svg);
+        var imgsrc = 'data:image/svg+xml;base64,'+ btoa(source);
+
+        var img = '<img src="'+imgsrc+'">';
+        var image = new Image;
+        image.src = imgsrc;
+
+        image.onload = function() {
+          var canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          var context = canvas.getContext('2d');
+          context.drawImage(image, 0, 0);
+          var canvasdata = canvas.toDataURL("image/png");
+          window.open(canvasdata, "toDataURL() image", "width=800, height=400");
+        };
+      });
+      
       $('#'+parId+' input.selector').bind('change', function() {
         var bw = $('input.binwidth').val();
         var hist;
