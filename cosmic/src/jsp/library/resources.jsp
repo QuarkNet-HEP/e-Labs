@@ -247,7 +247,7 @@
 							</li>
 							<li>
 								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
-								- Excellent cosmic ray overview rom Columbia University (pdf file)
+								- Excellent cosmic ray overview from Columbia University (pdf file)
 							</li>
 							<li>
 								<a href="http://quarknet.fnal.gov/resources/QN_CloudChamberV1_4.pdf">Build a Cosmic Ray Cloud Chamber</a>
