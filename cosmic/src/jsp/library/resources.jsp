@@ -147,6 +147,9 @@
 						<li>
 							"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
 						</li>
+						<li>
+							<a href="http://quarknet.i2u2.org/page/equip-raspberry-pi">EQUIP on Raspberry Pi </a>
+						</li>
 					</ul>					
 				</div>
 			</div>		
