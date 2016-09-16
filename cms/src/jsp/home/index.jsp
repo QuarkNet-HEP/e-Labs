@@ -34,7 +34,7 @@
 				 	 			</td>
 				 	 			<td>
 									<div id="right">
-										<%@ include file="../include/newsbox.jsp" %>
+										<!-- <%@ include file="../include/newsbox.jsp" %> -->
 										<div align="center"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></div>
 										<jsp:include page="../login/login-control.jsp">
 											<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
@@ -46,8 +46,40 @@
 					</c:when>
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join an international collaboration of high school students to study CMS data.</h1>
-						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines. 	<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup>
-</h3>
+						
+						<%-- Newsbox --%>	
+						
+						<c:set var="jLI" value="${param.justLoggedIn}"/>
+						
+						<c:choose>
+						<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
+							<div id="newsbox-v" style="visibility:visible; display"> 
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+						    </div>
+						    
+						    <div id="newsbox-h" style="visibility:hidden; display: none">
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+						    <%@ include file="../include/newsbox.jsp" %>
+						   </div>
+						</c:when>
+					 	
+				        <c:otherwise> <%--Show newsbox because user has just logged in--%>
+				        <div id="newsbox-v" style="visibility:hidden; display: none">					   
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+						</div>
+						
+						<div id="newsbox-h" style="visibility:visible; display">
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<%@ include file="../include/newsbox.jsp" %>
+						</div>
+					    </c:otherwise>
+					    </c:choose>
+						<%-- End Newsbox --%>
+						
+						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, 
+						opportunities to check how your work is going. Project milestones are on the four branch lines. 	
+						<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup>
+						</h3>
 
 						<div style="text-align: center;">
 							<c:choose>
