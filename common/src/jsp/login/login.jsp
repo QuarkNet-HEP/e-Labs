@@ -71,7 +71,8 @@
 	 	if (elab.getName().equals("cosmic")) {
         DataCatalogProvider dcp = elab.getDataCatalogProvider();
         //int fileCount = dcp.getUniqueCategoryCount("split");
-		    int schoolCount = dcp.getUniqueCategoryCount("school");
+				int fileCount = 10;
+				int schoolCount = dcp.getUniqueCategoryCount("school");
 		    int stateCount = dcp.getUniqueCategoryCount("state");		
 		    session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
 		    session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
