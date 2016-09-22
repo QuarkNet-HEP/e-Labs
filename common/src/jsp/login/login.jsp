@@ -70,8 +70,7 @@
 		//get these numbers now and save them to the session
 	 	if (elab.getName().equals("cosmic")) {
         DataCatalogProvider dcp = elab.getDataCatalogProvider();
-        //int fileCount = dcp.getUniqueCategoryCount("split");
-				int fileCount = 10;
+        int fileCount = dcp.getUniqueCategoryCount("split");
 				int schoolCount = dcp.getUniqueCategoryCount("school");
 		    int stateCount = dcp.getUniqueCategoryCount("state");		
 		    session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
