@@ -47,7 +47,10 @@ public abstract class VDSCatalogProvider {
         try {
             String schemaName = ChimeraProperties.instance().getVDCSchemaName();
 						//
-						//throw new ElabException("Everything fine until here");
+						if (true) {
+								throw new ElabException(
+																		"Everything fine until here");
+						}
 						//
             Connect connect = new Connect();
             dbschema = connect.connectDatabase(schemaName);
