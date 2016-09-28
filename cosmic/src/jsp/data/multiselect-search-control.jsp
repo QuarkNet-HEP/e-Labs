@@ -59,7 +59,7 @@ $(window).scroll(function(){
 });
 </script>
 
-<div class="search-quick-links">Quick Searches: 
+<div class="search-quick-links">Quick Search: 
 
     <!--  SB, 5/25/16:  We decided to only display city and state
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
