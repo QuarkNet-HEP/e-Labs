@@ -61,7 +61,7 @@ $(window).scroll(function(){
 
 <div class="search-quick-links">Quick Searches: 
 
-    <%--  SB, 5/25/16:  We decided to only display city and state
+    <!--  SB, 5/25/16:  We decided to only display city and state
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="group" />
 		<input type="hidden" name="value" value="${user.name}" />
@@ -92,7 +92,7 @@ $(window).scroll(function(){
 		-->
 		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.school}</a>,
 	</form>
-	--%>
+	-->
 	
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="city" />
