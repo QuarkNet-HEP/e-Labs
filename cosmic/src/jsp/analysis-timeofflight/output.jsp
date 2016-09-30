@@ -137,7 +137,8 @@
 				$(document).ready(function() {	
 					$.when(ajax1(), ajax2(), ajax3(), ajax4(), ajax5(), ajax6())
 				     .done(function (response1, response2, response3, response4, response5, response6) {
-				    	    var feedback = document.getElementById("feedback");
+				    	    alert("All 6 passed!");
+					    var feedback = document.getElementById("feedback");
 				    	    feedback.innerHTML = "";
 				     });
 				    return deferred.promise();
