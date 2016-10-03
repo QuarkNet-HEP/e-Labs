@@ -132,15 +132,22 @@
             });
         }
 
+		var TotloadCount = 0;
+		if (json.td1) {TotloadCount++;}
+		if (json.td2) {TotloadCount++;}
+		if (json.td3) {TotloadCount++;}
+		if (json.td4) {TotloadCount++;}
+		if (json.td5) {TotloadCount++;}
+		if (json.td6) {TotloadCount++;}	
+		alert("TotloadCount = "+TotloadCount);	
+		
         var deferred = $.Deferred();
         
 				$(document).ready(function() {	
 					$.when(ajax1(), ajax2(), ajax3(), ajax4(), ajax5(), ajax6())
 				     .done(function (response1, response2, response3, response4, response5, response6) {
-				    	    alert("All 6 passed!");
 					    var feedback = document.getElementById("feedback");
-				    	    feedback.innerHTML = "All charts loaded.";
-				    	    alert("Blanked out!");
+				    	    feedback.innerHTML = "";
 				     });
 				    return deferred.promise();
         }); 	
