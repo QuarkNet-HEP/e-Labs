@@ -225,7 +225,7 @@ function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
 function buildTimeDiff(timediff, diffNum) {
     var feedback = document.getElementById("feedback");
     feedback.innerHTML = "<strong>Chart "+diffNum+" is loading...</strong>";
-    //loadCount++;
+    //loadCount++;--SB, 10/3/16, put this in each onDataLoadChart# instead.
 	data = [];
 	if (timediff != null) {
 		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.bins);
@@ -256,7 +256,7 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
-    //alert ("loadCount = "+loadCount);
+    alert ("loadCount = "+loadCount);
     if (loadCount == 6) {
     	feedback.innerHTML = "";
     }
