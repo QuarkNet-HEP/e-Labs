@@ -139,7 +139,7 @@
 				     .done(function (response1, response2, response3, response4, response5, response6) {
 				    	    alert("All 6 passed!");
 					    var feedback = document.getElementById("feedback");
-				    	    feedback.innerHTML = "";
+				    	    feedback.innerHTML = "All charts loaded.";
 				    	    alert("Blanked out!");
 				     });
 				    return deferred.promise();
