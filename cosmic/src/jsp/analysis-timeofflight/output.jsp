@@ -132,14 +132,6 @@
             });
         }
 
-		var TotloadCount = 0;
-		if (json.td1) {TotloadCount++;}
-		if (json.td2) {TotloadCount++;}
-		if (json.td3) {TotloadCount++;}
-		if (json.td4) {TotloadCount++;}
-		if (json.td5) {TotloadCount++;}
-		if (json.td6) {TotloadCount++;}	
-		alert("TotloadCount = "+TotloadCount);	
 		
         var deferred = $.Deferred();
         
