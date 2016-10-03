@@ -253,8 +253,12 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
+    alert("loadCount = "+loadCount+" TotloadCount = "+TotloadCount);
     if (loadCount == TotloadCount) {
-    	feedback.innerHTML = "";
+        alert("loadCount = TotloadCount");
+    	feedback.innerHTML = "";}    	
+    else { 
+    	alert("loadCount != TotloadCount");
     }
 }//end of generic buildTimeDiff
 
