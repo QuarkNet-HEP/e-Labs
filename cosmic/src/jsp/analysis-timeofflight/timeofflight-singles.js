@@ -254,7 +254,7 @@ function buildTimeDiff(timediff, diffNum) {
     });    
     writeLegend(diffNum);
     alert("loadCount = "+loadCount+" TotloadCount = "+TotloadCount);
-    if (loadCount == TotloadCount) {
+    if (loadCount == TotloadCount+1) {
         alert("loadCount = TotloadCount");
     	feedback.innerHTML = "";}    	
     else { 
