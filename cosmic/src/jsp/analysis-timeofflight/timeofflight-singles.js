@@ -195,13 +195,13 @@ function loadJSON6(callback) {
 }//end of loadJSON6
 
 function onDataLoadChart6(json) {	
-	loadCount++;
 	//var start = new Date().getTime();
 	//buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
 	//buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
 	//buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	//buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	//buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
+	loadCount++;
 	if (json.td6) {
 		buildIndividualDataSets(json.td6, "6", 5, document.getElementById("chart6"));
 	}
@@ -220,7 +220,6 @@ function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
 		tofCollection[arrayndx] = "";
 		div.style.display="none";
 	}
-	
 }//end of buildIndividualDataSets
 
 function buildTimeDiff(timediff, diffNum) {
@@ -257,10 +256,10 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
-    alert("loadCount = "+loadCount);
-    if (loadCount == 6) {        
-    	feedback.innerHTML = "";}    	
-    
+    alert ("loadCount = "+loadCount);
+    if (loadCount == 6) {
+    	feedback.innerHTML = "";
+    }
 }//end of generic buildTimeDiff
 
 function setDataStats(ndx) {
