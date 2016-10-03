@@ -31,6 +31,7 @@ function loadJSON1(callback) {
 
 function onDataLoadChart1(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td1) {
 		buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
 	}
@@ -63,6 +64,7 @@ function loadJSON2(callback) {
 
 function onDataLoadChart2(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td2) {
 		buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
 	}
@@ -95,6 +97,7 @@ function loadJSON3(callback) {
 
 function onDataLoadChart3(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td3) {
 		buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	}
@@ -127,6 +130,7 @@ function loadJSON4(callback) {
 
 function onDataLoadChart4(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td4) {
 		buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	}
@@ -159,6 +163,7 @@ function loadJSON5(callback) {
 
 function onDataLoadChart5(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td5) {
 		buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
 	}
@@ -190,6 +195,7 @@ function loadJSON6(callback) {
 }//end of loadJSON6
 
 function onDataLoadChart6(json) {	
+	loadCount++;
 	//var start = new Date().getTime();
 	//buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
 	//buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
@@ -220,7 +226,7 @@ function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
 function buildTimeDiff(timediff, diffNum) {
     var feedback = document.getElementById("feedback");
     feedback.innerHTML = "<strong>Chart "+diffNum+" is loading...</strong>";
-    loadCount++;
+    //loadCount++;
 	data = [];
 	if (timediff != null) {
 		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.bins);
@@ -251,13 +257,10 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
-    alert("loadCount = "+loadCount+" TotloadCount = "+TotloadCount);
-    if (loadCount == TotloadCount) {
-        alert("loadCount = TotloadCount");
+    alert("loadCount = "+loadCount);
+    if (loadCount == 6) {        
     	feedback.innerHTML = "";}    	
-    else { 
-    	alert("loadCount != TotloadCount");
-    }
+    
 }//end of generic buildTimeDiff
 
 function setDataStats(ndx) {
