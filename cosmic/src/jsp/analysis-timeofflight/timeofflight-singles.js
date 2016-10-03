@@ -6,6 +6,7 @@ var xAxisLabel = "relative time between channels (ns)";
 var currentBinValue = 1.25;
 var chartNum = 0;
 var loadCount = 0;
+var TotloadCount = 0;
 
 function onDataLoad1() {
 	loadJSON1(function(response) {
@@ -214,6 +215,8 @@ function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
 		tofCollection[arrayndx] = "";
 		div.style.display="none";
 	}
+	TotloadCount = loadCount;
+	alert("Total load Count is "+TotloadCount);
 }//end of buildIndividualDataSets
 
 function buildTimeDiff(timediff, diffNum) {
@@ -250,7 +253,7 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
-    if (loadCount == 6) {
+    if (loadCount == TotloadCount) {
     	feedback.innerHTML = "";
     }
 }//end of generic buildTimeDiff
