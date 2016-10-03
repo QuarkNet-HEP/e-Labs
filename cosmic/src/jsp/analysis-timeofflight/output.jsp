@@ -140,6 +140,7 @@
 				    	    alert("All 6 passed!");
 					    var feedback = document.getElementById("feedback");
 				    	    feedback.innerHTML = "";
+				    	    alert("Blanked out!");
 				     });
 				    return deferred.promise();
         }); 	
