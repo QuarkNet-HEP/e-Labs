@@ -256,7 +256,7 @@ function buildTimeDiff(timediff, diffNum) {
         }
     });    
     writeLegend(diffNum);
-    alert ("loadCount = "+loadCount);
+    //alert ("loadCount = "+loadCount);
     if (loadCount == 6) {
     	feedback.innerHTML = "";
     }
