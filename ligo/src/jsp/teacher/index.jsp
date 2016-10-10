@@ -85,36 +85,6 @@ function showAll(start, finish)
 <h1>Teacher Home - Bookmark It!</h1>
 				<%@ include file="../include/check-javascript.jsp" %>
 
-<%--Newsbox --%>
-<%String jLIstring = request.getParameter("justLoggedIn"); %>
-			<c:set var="jLI" value="${param.justLoggedIn}"/>
-						
-			<c:choose>
-			<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
-				<div id="newsbox-v" style="visibility:visible; display"> 
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
-			    </div>
-						    
-			    <div id="newsbox-h" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-			    <%@ include file="../include/newsbox.jsp" %>
-	   		    </div>
-			</c:when>
-				
-	        <c:otherwise> <%--Show newsbox because user has just logged in--%>
-			    <div id="newsbox-v" style="visibility:hidden; display: none">					   
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
-				</div>
-						
-     			<div id="newsbox-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-				<%@ include file="../include/newsbox.jsp" %>
-				</div>
-			</c:otherwise>
-			</c:choose>				
-<%-- End Newsbox --%>
-
-
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -391,7 +361,7 @@ Review students' evidence of what they know/understand and reflections on their 
 		</td>
 		<td>
 			<div id="right">
-				<!-- <%@ include file="../include/newsbox.jsp" %> -->
+				<%@ include file="../include/newsbox.jsp" %>
 				<jsp:include page="../login/login-control.jsp">
 					<jsp:param name="login_as" value="teacher" />
 				</jsp:include>
