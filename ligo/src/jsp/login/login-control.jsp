@@ -4,6 +4,7 @@
 
 <%
 if (!ElabGroup.isUserLoggedIn(session)) {
+	String guestlogin = elab.getGuestLoginLink(request);
 %>
 	<!-- not logged in -->
 	<div id="login-form">
@@ -15,7 +16,7 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 		</div>
 		<div id="login-form-text">
 			<p>
-				To explore our website, <br /><a href="<%= elab.getGuestLoginLink(request) %>">log in as guest</a>.
+				To explore our website, <br /><a href="<%= elab.getGuestLoginLink(request) %>">log in as guest</a>
 			</p>
 			
 			<h2>Need a student login?</h2>
@@ -35,7 +36,7 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 						%>
 			<h2>Need a teacher login?</h2>
 			<p>Contact 
-			<a href="<%= mailURL %>">e-labs@fnal.gov</a>.
+			<a href="<%= mailURL %>">e-labs@fnal.gov</a>
 			</p>
 		</div>
 	</div>
@@ -44,17 +45,17 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 	else {
 %>
 	<!-- yes logged in -->
-	<!--<div id="login-form">
-		<div id="login-form-header"> 
+<!--  For new home page with study guide - we don't want to display the logout
+	<div id="login-form">
+		<div id="login-form-header">
 			<h2>Logout</h2>
 		</div>
-
 		<div id="login-form-contents">
 			<form method="post" action="../login/logout.jsp">
 				<table>
 					<tr>
 						<td class="form-label">
-							If you are not<br> 
+							If you are not 
 							<span class="username"><%=ElabGroup.getUser(session).getName()%></span>,
 						</td>
 					</tr>
@@ -66,7 +67,8 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 				</table>
 			</form>
 		</div>
-	</div>-->
+	</div>
+ -->
 <%
 	}
 %>
