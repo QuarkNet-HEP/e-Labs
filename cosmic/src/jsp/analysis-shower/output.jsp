@@ -11,7 +11,6 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
-	long startTime = System.currentTimeMillis();
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
 	
@@ -109,18 +108,6 @@
 	}
 	int	pageStart = (eventNdx / pageLength) * pageLength;
 	int totalPages = rows.size() / 30;
-	long endTime = System.currentTimeMillis();
-	long totalTime = endTime - startTime;
-
-	ElabMemory em = new ElabMemory();
-    em.refresh();
-	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
-			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
-			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
-			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
-	request.setAttribute("memory", memory);
-
-	
 	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("totalPages", totalPages);	
 	request.setAttribute("message", message);
@@ -132,7 +119,6 @@
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
-	request.setAttribute("totalTime", totalTime);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -198,8 +184,8 @@
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-						Read <e:popup href="eventInfoDef.html" target=:Event Info Def" width="400" height="700">Event Information Definitions</e:popup>.
-				</tr>
+                                        Read <e:popup href="eventInfoDef.html" target=:Event Info Def" width="400" height="700">Event Information Definitions</e:popup>.
+	                        </tr>
 				<tr>
 					<th width="40%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
@@ -319,9 +305,7 @@
 	</tr>
 </table>
 <p>
-	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
-	EventCandidates Time: ${totalTime }<br />
-	${memory }
+	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
