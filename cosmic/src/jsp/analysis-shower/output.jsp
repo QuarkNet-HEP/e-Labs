@@ -184,7 +184,7 @@
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-                                        Read <e:popup href="eventInfoDef.html" target=:Event Info Def" width="400" height="700">Event Information Definitions</e:popup>.
+                                        Read <e:popup href="eventInfoDef.html" target="Event Info Def" width="400" height="700">Event Information Definitions</e:popup>.
 	                        </tr>
 				<tr>
 					<th width="40%">
