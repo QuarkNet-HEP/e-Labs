@@ -83,7 +83,7 @@
 				displayMultiplicity = "block";
 			} else {
 				if (sortCol == 3) {
-					displayMultiplicity = "block";
+					displayMultiplicity = "block";		
 					if (mFilter.equals("")) {
 						mFilter = "0";
 					}
@@ -103,7 +103,7 @@
 	    			eventNdx = i;
 	    			break;
 	    		}
-	    	}
+	    	}		
 		}
 	}
 	int	pageStart = (eventNdx / pageLength) * pageLength;
@@ -158,7 +158,7 @@
 			if (viewMultiplicity.checked) {
 				link.href += "&viewAdvanced=yes"
 			}
-		}
+		}		
 		</script>
 	</head>
 	
@@ -216,207 +216,63 @@
 					<td style="display: ${displayMultiplicity};" name="advanced">
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
-			  <c:choose>
-				<c:when test="${not empty rows}">
-				<h1><%= rows.size()%> shower study candidates
-				  <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}"				style="font-size: small; font-style: italic;">
-					 Event List References
-				  </a>
-				</h1>
-				<c:if test='${message != "" }'>
-					<div>${message }</div>
-				</c:if>
-				<table id="shower-results">
-				  <tr>
-					  <td valign="top" width="70%">
-
-							<table id="shower-events">
-								<!-- Column header row -->
-								<tr>
-									<!-- Column 1: Event Date -->
-									<th width="40%">
-										<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >
-											Event Date
-										</a>
-									</th>
-				  				<!-- Column 2: Hit Coincidence -->
-									<th width="10%">
-										<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >
-						  				Hit Coincidence
-										</a>
-									</th>
-				  				<!-- Column 3: Detector Coincidence -->
-									<!--<th width="40%">-->
-									<th width="30%">
-									<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >
-										  Detector Coincidence<br />
-										</a>
-										[Channel Multiplicity]			
-									</th>
-									<!-- Column 3.5: Test -->
-									<th width="10%"><!-- 10% removed from 3 -->
-										&Delta;t
-									</th>
-									<!-- Column 4: Multiplicity Totals -->
-									<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
-										<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >
-											Multiplicity Totals
-										</a> 
-									</th>
-								</tr>
-
-								<!-- Subheader row -->
-								<tr>
-									<!-- Columns 1 & 2: nothing -->
-									<td colspan="2"></td>
-									<!-- Column 3: "View Multiplicity Totals" checkbox -->
-									<td>
-										<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}">
-										</input>
-										<c:choose>
-											<c:when test='${mFilter != null && mFilter != "" }'>
-												<input type="checkbox" name="viewAdvanced" id="viewAdvanced" checked>
-													View Multiplicity Totals
-												</input>
-											</c:when>
-											<c:otherwise>
-												<input type="checkbox" name="viewAdvanced" id="viewAdvanced" >
-													View Multiplicity Totals
-												</input>
-											</c:otherwise>
-										</c:choose>					
-									</td>
-									<!-- Column 3.5: nothing -->
-									<td colspan="1"></td>
-									<!-- Optional Column 4: Multiplicity Totals -->
-									<td style="display: ${displayMultiplicity};" name="advanced">
-										<c:if test='${not empty multiplicityFilter }'>
-											<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
-												<c:choose>
-													<c:when test='${param.mFilter != null && param.mFilter== "" }'>
-														<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>
-															All
-														</option>
-													</c:when>
-													<c:otherwise>
-														<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">
-															All
-														</option>
-													</c:otherwise>
-												</c:choose>
-												<c:forEach items="${multiplicityFilter }" var="filter">
-													<c:choose>
-														<c:when test='${mFilter != null && mFilter == filter}'>
-															<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>
-																${filter }
-															</option>
-														</c:when>
-														<c:otherwise>
-															<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">
-																${filter }
-															</option>
-														</c:otherwise>
-													</c:choose>
-												</c:forEach>
-											</select>
-										</c:if>					
-									</td>
-								</tr>
-
-								<!-- Table data rows (JSP preamble) -->
 								<c:choose>
-									<c:when test="${pageStart != null && param.start == null}">
-										<c:set var="start" value="${pageStart}"/>
-										<c:set var="end" value="${pageStart + 30}"/>
+									<c:when test='${param.mFilter != null && param.mFilter== "" }'>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
 									</c:when>
 									<c:otherwise>
-										<c:choose>
-											<c:when test="${param.start != null}">
-												<c:set var="start" value="${param.start}"/>
-												<c:set var="end" value="${param.start + 30}"/>
-											</c:when>
-											<c:otherwise>
-												<c:set var="start" value="0"/>
-												<c:set var="end" value="30"/>
-											</c:otherwise>
-										</c:choose>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">All</option>
 									</c:otherwise>
 								</c:choose>
-
-								<!-- Table data rows (actual HTML) -->
-								<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
-									<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
-
-										<!-- Column 1: Event Date -->
-										<td>
-											<c:if test="${row.eventNum == eventNum}">
-												<img src="../graphics/Tright.gif"></img>
-											</c:if>
-											<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">
-												 ${row.dateF}
-											</a>
-										</td>
-
-										<!-- Column 2: Hit Coincidence -->
-										<td>${row.eventCoincidence}</td>
-
-										<!-- Column 3: Detector Coincidence -->
-										<td>
-											${row.numDetectors}
-											(<c:forEach items="${row.idsMult}" var="detectorId">
-						  					<e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">
-						  						${detectorId.key}
-												</e:popup>
-												[${detectorId.value }]
-											</c:forEach>)
-										</td>
-
-										<!-- Column 3.5: Test -->
-										<td>
-										  Ahoy
-										</td>
-										
-										<!-- Column 4: Multiplicity Totals -->
-										<td style="display: ${displayMultiplicity};" name="advanced">
-											${row.multiplicityCount }
-										</td>
-									</tr>
+								<c:forEach items="${multiplicityFilter }" var="filter">
+									<c:choose>
+										<c:when test='${mFilter != null && mFilter == filter}'>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>${filter }</option>
+										</c:when>
+										<c:otherwise>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">${filter }</option>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
-
-								<!-- Footer row for page navigation -->
-								<!-- Always 3 columns -->
-								<tr>
-									<td colspan="3">
-										Page <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />  of <fmt:formatNumber pattern="#####0" value="${totalPages + 1}" />
-									</td>
-								</tr>
-								<tr>
-									<td colspan="3">
-										<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
-									</td>
-									<td style="display: ${displayMultiplicity};" name="advanced">
-									</td>
-								</tr>
-								
-							</table><!-- id="shower-events" -->
+							</select>
+						</c:if>					
+					</td>
+				</tr>
+				<c:choose>
+					<c:when test="${pageStart != null && param.start == null}">
+						<c:set var="start" value="${pageStart}"/>
+						<c:set var="end" value="${pageStart + 30}"/>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${param.start != null}">
+								<c:set var="start" value="${param.start}"/>
+								<c:set var="end" value="${param.start + 30}"/>
+							</c:when>
+							<c:otherwise>
+								<c:set var="start" value="0"/>
+								<c:set var="end" value="30"/>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
+					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
+						<td>
+							<c:if test="${row.eventNum == eventNum}">
+								<img src="../graphics/Tright.gif"></img>
+							</c:if>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
 						</td>
-
-						<td align="center" valign="top">
-							<p>
-								Click on image for a larger view
-							</p>
-							<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}" target="showerPopup" width="650" height="750">
-								<img src="${results.outputDirURL}/plot_thm.png"/>
-							</e:popup>
-							<p>
-								View raw data or geometry for ${crtEventRow.dateF} for detector ID 
-								<c:forEach items="${crtEventRow.ids}" var="detectorId">
-									<a href="../analysis-shower/find-data.jsp?detectorId=${detectorId}&time=${crtEventRow.date.time}">
-										${detectorId}
-									</a>
-								</c:forEach>
-							</p>
-							<%@ include file="events-table.jspf" %>
+						<td>
+							${row.eventCoincidence}
+						</td>
+						<td>
+							${row.numDetectors}
+								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
+						</td>
+						<td style="display: ${displayMultiplicity};" name="advanced">
+							${row.multiplicityCount }
 						</td>
 					</tr>
 				</c:forEach>
@@ -463,44 +319,18 @@
 	<p><b>OR</b></p>
 	<%@ include file="save-form.jspf" %>
 <% } %>
-				</table><!-- id="shower-results" -->
-
-				<p>
-					Analysis run time: ${showerResults.formattedRunTime}; estimated:			${showerResults.formattedEstimatedRunTime}<br />
-					EventCandidates Time: ${totalTime }<br />
-					{memory }
-				</p>
-				<p>
-					Show
-					<e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
-		width="800" height="600" toolbar="true">
-						shower analysis directory
-					</e:popup>
-					or
-					<e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
-		width="800" height="600" toolbar="true">
-						event plot analysis directory
-					</e:popup> 
-				</p>
-				<p>
-					<e:rerun type="shower" id="${showerResults.id}" label="Change"/>
-					your parameters
-				</p>
-				<% if (!user.isGuest()) { %>
-					 <p><b>OR</b></p>
-				<%@ include file="save-form.jspf" %>
-				<% } %>
 
 			</div>
 			<!-- end content -->	
 	
-			<div id="footer"></div>
+			<div id="footer">
+			</div>
 		</div>
-	</c:when>
-	<c:otherwise>
-		${message }
-	</c:otherwise>
+</c:when>
+<c:otherwise>
+	${message }
+</c:otherwise>
 </c:choose>
-<!-- end container -->
-</body>
+		<!-- end container -->
+	</body>
 </html>
