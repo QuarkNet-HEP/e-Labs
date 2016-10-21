@@ -184,8 +184,8 @@
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-                                        Read <e:popup href="eventInfoDef.html" target="Event Info Def" width="700" height="400">Event Information Definitions</e:popup> to understand the columns.<br>
-	                        </tr>
+					Read <e:popup href="eventInfoDef.html" target="Event Info Def" width="700" height="400">Event Information Definitions</e:popup> to understand the columns.<br>
+				</tr>
 				<tr>
 					<th width="40%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
