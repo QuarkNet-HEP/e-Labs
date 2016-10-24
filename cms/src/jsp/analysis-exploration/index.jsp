@@ -171,7 +171,7 @@
         <p>Need help with dataset selection? Try these links:</p>
         <ul>
 <li>
-            <e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+            <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select datasets.
           </li>
           <li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
