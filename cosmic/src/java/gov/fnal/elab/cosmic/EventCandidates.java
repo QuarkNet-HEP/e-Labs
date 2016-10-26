@@ -312,17 +312,18 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        public double getDeltaT() {
-						return deltaT[1];
-				}
-
         public void setDeltaT(double[] deltaT) {
             this.deltaT = deltaT;
         }
 
-				//public double[] getDeltaT() {
-				//		return deltaT;
+				
+        //public double getDeltaT() {
+				//		return deltaT[1];
 				//}
+
+				public double[] getDeltaT() {
+						return deltaT;
+				}
 				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
