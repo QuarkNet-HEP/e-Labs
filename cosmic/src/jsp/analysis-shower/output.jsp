@@ -329,12 +329,12 @@
 						
 						<!-- Column 3.5: Test -->
 						<td>
-							dt value
+							${row.deltaT[1]}
 						</td>
 						
 						<!-- Column 4: Multiplicity Totals -->
 						<td style="display: ${displayMultiplicity};" name="advanced">
-							${row.multiplicityCount }
+							${row.multiplicityCount}
 						</td>
 					</tr>
 				</c:forEach>
