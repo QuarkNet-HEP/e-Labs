@@ -60,13 +60,15 @@ public class EventCandidates {
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiplicities = new HashSet();
+				Set deltaT = new HashSet();
         ElabMemory em = new ElabMemory();
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
                 lineNo++;
-                if (lineNo > eventThreshold) {
+								// memory management
+								if (lineNo > eventThreshold) {
                     em.refresh();
                     if (em.isCritical()) {
                     	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
@@ -79,9 +81,13 @@ public class EventCandidates {
                     }
                 }
 
+								// parse the eventCandidates input file
                 if (lineNo >= eventStart) {
                     Row row = new Row();
-                    String[] arr = line.split("\\s");
+										// arr[] is the array that holds all individual
+										//   elements of a single row
+										String[] arr = line.split("\\s");
+										// The first three elements:
                     row.setEventCoincidence(Integer.parseInt(arr[1]));
                     row.setNumDetectors(Integer.parseInt(arr[2]));
                     row.setEventNum(Integer.parseInt(arr[0]));
@@ -89,28 +95,37 @@ public class EventCandidates {
                     if (this.eventNum == null) {
                         this.eventNum = arr[0];
                     }
+
+										// remaining elements in sets of three
                     ids.clear();
                     multiplicities.clear();
-                    for (int i = 3; i < arr.length; i += 3) {
-                        String[] idchan = arr[i].split("\\.");
-                        idchan[0] = idchan[0].intern();
-                        ids.add(idchan[0]);
-                        //if (!ids.contains(idchan[0])) {
-                        //	ids.add(idchan[0]);
-                        //}
-                        String mult = arr[i].intern();
+										deltaT.clear();
+										int firstHit = arr[3];
+										for (int i = 3; i < arr.length; i += 3) {
+												// arr[i] will always be detector.channel
+												String[] idchan = arr[i].split("\\.");
+												//idchan[0] = idchan[0].intern();
+                        //ids.add(idchan[0]);
+                        if (!ids.contains(idchan[0])) {
+                        	ids.add(idchan[0]);
+													// note that deltaT[0]=0 always
+													deltaT.add(arr[i+2]-firstHit);
+												}
+												String mult = arr[i].intern();
                         multiplicities.add(mult);
                         //if (!multiplicities.contains(arr[i])) {
                         //	multiplicities.add(arr[i]);
                         //}
                         allIds.add(idchan[0]);
-                    }
+										}
                     
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-                    
+										row.setDeltaT((double[]) deltaT.toArray());
+										
+										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -121,20 +136,20 @@ public class EventCandidates {
                     rows.add(row);
                     if (this.eventNum.equals(arr[0])) {
                         crt = row;
-                    }     
+                    }
                 }
              }
             line = br.readLine();
         }
         //set the event position
-    	Object[] allR = rows.toArray();
-    	for (int i = 0; i < allR.length; i++) {
-    		Row r = (Row) allR[i];
-    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
-    			eventNdx = i;
-    			break;
-    		}
-    	}
+				Object[] allR = rows.toArray();
+				for (int i = 0; i < allR.length; i++) {
+						Row r = (Row) allR[i];
+						if (r.getEventNum() == Integer.parseInt(eventNum)) {
+								eventNdx = i;
+								break;
+						}
+				}
         //write multiplicity summary
         try {
         	saveMultiplicitySummary(bw);
@@ -226,7 +241,8 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-        private int multiplicityCount;
+				private double[] deltaT;
+				private int multiplicityCount;
 
         public int getEventCoincidence() {
             return eventCoincidence;
@@ -295,7 +311,16 @@ public class EventCandidates {
         public void setMultiplicityCount() {
         	this.multiplicityCount = multiplicity.length;
         }
-                
+
+        //public double[] getDeltaT() {
+				public double getDeltaT() {
+						return deltaT[1];
+				}
+
+        public void setDeltaT(double[] deltaT) {
+            this.deltaT = deltaT;
+        }
+				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
         	for (int i=0; i < ids.length; i++) {
