@@ -312,10 +312,9 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        public void setDeltaT(double[] deltaT) {
-            this.deltaT = deltaT;
-        }
-
+        //public void setDeltaT(double[] deltaT) {
+        //    this.deltaT = deltaT;
+        //}
 				
         //public double getDeltaT() {
 				//		return deltaT[1];
