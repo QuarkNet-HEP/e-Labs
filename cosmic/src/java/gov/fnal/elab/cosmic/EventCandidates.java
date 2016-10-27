@@ -60,7 +60,7 @@ public class EventCandidates {
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiplicities = new HashSet();
-				Set deltaT = new HashSet();
+				ArrayList<Double> deltaT = new ArrayList<Double>();
         ElabMemory em = new ElabMemory();
         userFeedback = "";
         while (line != null) {
@@ -124,8 +124,8 @@ public class EventCandidates {
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										//row.setDeltaT((double[]) deltaT.toArray());
-										row.setDeltaT((double[]) deltaT);
+										row.setDeltaT((double[]) deltaT.toArray());
+										//row.setDeltaT((double[]) deltaT);
 										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
