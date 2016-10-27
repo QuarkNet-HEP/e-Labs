@@ -124,7 +124,8 @@ public class EventCandidates {
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										row.setDeltaT((double[]) deltaT.toArray());
+										//row.setDeltaT((double[]) deltaT.toArray());
+										row.setDeltaT(deltaT.toArray(double[]));
 										//row.setDeltaT((double[]) deltaT);
 										// Julian Date
                     String jd = arr[4];
