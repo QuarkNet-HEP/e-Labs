@@ -329,8 +329,8 @@
 						
 						<!-- Column 3.5: Test -->
 						<td>
-							dt
-							<!--${row.deltaT}-->
+							<!--dt-->
+							${row.deltaT[1]}
 						</td>
 						
 						<!-- Column 4: Multiplicity Totals -->
