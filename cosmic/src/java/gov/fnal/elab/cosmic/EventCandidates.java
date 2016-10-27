@@ -100,7 +100,7 @@ public class EventCandidates {
                     ids.clear();
                     multiplicities.clear();
 										deltaT.clear();
-										int firstHit = arr[3];
+										double firstHit = Double.parseDouble(arr[5]);
 										for (int i = 3; i < arr.length; i += 3) {
 												// arr[i] will always be detector.channel
 												String[] idchan = arr[i].split("\\.");
@@ -109,7 +109,8 @@ public class EventCandidates {
                         if (!ids.contains(idchan[0])) {
                         	ids.add(idchan[0]);
 													// note that deltaT[0]=0 always
-													deltaT.add(arr[i+2]-firstHit);
+													double nowHit = Double.parseDouble(arr[i+2]);
+													deltaT.add(nowHit-firstHit);
 												}
 												String mult = arr[i].intern();
                         multiplicities.add(mult);
@@ -123,7 +124,7 @@ public class EventCandidates {
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										//row.setDeltaT((double[]) deltaT.toArray());
+										row.setDeltaT((double[]) deltaT.toArray());
 										
 										// Julian Date
                     String jd = arr[4];
@@ -312,9 +313,9 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        //public void setDeltaT(double[] deltaT) {
-        //    this.deltaT = deltaT;
-        //}
+        public void setDeltaT(double[] deltaT) {
+            this.deltaT = deltaT;
+        }
 				
         //public double getDeltaT() {
 				//		return deltaT[1];
