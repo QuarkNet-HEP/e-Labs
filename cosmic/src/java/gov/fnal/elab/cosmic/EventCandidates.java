@@ -44,8 +44,10 @@ public class EventCandidates {
         allIds = new HashSet();
     }
 
+		// "templates" used to cast using Set/List.toArray()
     private static final String[] STRING_ARRAY = new String[0];
-
+    private static final double[] DOUBLE_ARRAY = new double[0];
+		
     public void read(File in, File out, int eventStart, String en)
             throws Exception {
     	Elab elab = Elab.getElab(null, "cosmic");
@@ -60,7 +62,7 @@ public class EventCandidates {
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiplicities = new HashSet();
-				ArrayList<Double> deltaT = new ArrayList<Double>();
+				List<double> deltaT = new ArrayList<double>();
         ElabMemory em = new ElabMemory();
         userFeedback = "";
         while (line != null) {
@@ -125,8 +127,10 @@ public class EventCandidates {
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
 										//row.setDeltaT((double[]) deltaT.toArray());
-										row.setDeltaT(deltaT.toArray(double[]));
+										//row.setDeltaT(deltaT.toArray(double[]));
 										//row.setDeltaT((double[]) deltaT);
+										row.setDeltaT((double[]) deltaT.toArray(DOUBLE_ARRAY));
+
 										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
