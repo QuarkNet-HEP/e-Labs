@@ -46,7 +46,7 @@ public class EventCandidates {
 
 		// "templates" used to cast using Set/List.toArray()
     private static final String[] STRING_ARRAY = new String[0];
-    private static final double[] DOUBLE_ARRAY = new double[0];
+    private static final Double[] DOUBLE_ARRAY = new Double[0];
 		
     public void read(File in, File out, int eventStart, String en)
             throws Exception {
@@ -62,7 +62,7 @@ public class EventCandidates {
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiplicities = new HashSet();
-				List<double> deltaT = new ArrayList<double>();
+				List<Double> deltaT = new ArrayList<Double>();
         ElabMemory em = new ElabMemory();
         userFeedback = "";
         while (line != null) {
@@ -102,7 +102,7 @@ public class EventCandidates {
                     ids.clear();
                     multiplicities.clear();
 										deltaT.clear();
-										double firstHit = Double.parseDouble(arr[5]);
+										Double firstHit = Double.parseDouble(arr[5]);
 										for (int i = 3; i < arr.length; i += 3) {
 												// arr[i] will always be detector.channel
 												String[] idchan = arr[i].split("\\.");
@@ -111,7 +111,7 @@ public class EventCandidates {
                         if (!ids.contains(idchan[0])) {
                         	ids.add(idchan[0]);
 													// note that deltaT[0]=0 always
-													double nowHit = Double.parseDouble(arr[i+2]);
+													Double nowHit = Double.parseDouble(arr[i+2]);
 													deltaT.add(nowHit-firstHit);
 												}
 												String mult = arr[i].intern();
@@ -129,7 +129,7 @@ public class EventCandidates {
 										//row.setDeltaT((double[]) deltaT.toArray());
 										//row.setDeltaT(deltaT.toArray(double[]));
 										//row.setDeltaT((double[]) deltaT);
-										row.setDeltaT((double[]) deltaT.toArray(DOUBLE_ARRAY));
+										row.setDeltaT((Double[]) deltaT.toArray(DOUBLE_ARRAY));
 
 										// Julian Date
                     String jd = arr[4];
@@ -247,7 +247,7 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-				private double[] deltaT;
+				private Double[] deltaT;
 				private int multiplicityCount;
 
         public int getEventCoincidence() {
@@ -318,7 +318,7 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        public void setDeltaT(double[] deltaT) {
+        public void setDeltaT(Double[] deltaT) {
             this.deltaT = deltaT;
         }
 				
@@ -326,7 +326,7 @@ public class EventCandidates {
 				//		return deltaT[1];
 				//}
 
-				public double[] getDeltaT() {
+				public Double[] getDeltaT() {
 						return deltaT;
 				}
 				
