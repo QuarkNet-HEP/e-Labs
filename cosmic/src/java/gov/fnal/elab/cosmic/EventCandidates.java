@@ -334,7 +334,7 @@ public class EventCandidates {
 						df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT values are in days.  The constant here
 						// converts to nanoseconds
-						return df.format(deltaT[1]*86400e9);
+						return df.format((double) deltaT[1]*86400e9);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
