@@ -327,14 +327,14 @@ public class EventCandidates {
 						return deltaT;
 				}
 
-				public Double getDeltaTShower() {
-				// returns deltaT[1] in ns, reported to tenths place
+				public String getDeltaTShower() {
+				// returns (String) deltaT[1] in ns, reported to tenths place
 				// format specific to Shower Analysis
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT values are in days.  The constant here
 						// converts to nanoseconds
-						return df.format((double) deltaT[1]*86400e9);
+						return df.format(deltaT[1]*86400e9);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
