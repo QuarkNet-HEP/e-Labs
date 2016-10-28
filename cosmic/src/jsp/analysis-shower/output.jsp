@@ -210,7 +210,7 @@
 					</th>
 					<!-- Column 3.5: Test -->
 					<th width="10%"><!-- 10% removed from 3 -->
-						&Delta;t
+						&Delta;t (ns)
 					</th>
 					<!-- Column 4: Multiplicity Totals -->
 					<th width="10%" style="display: ${displayMultiplicity};"
@@ -329,8 +329,7 @@
 						
 						<!-- Column 3.5: Test -->
 						<td>
-							<!--dt-->
-							${row.deltaT[1]}
+							${row.deltaTShower}
 						</td>
 						
 						<!-- Column 4: Multiplicity Totals -->
