@@ -208,11 +208,11 @@
 						</a>
 						[Channel Multiplicity]			
 					</th>
-					<!-- Column 3.5: Test -->
+					<!-- Column 4: Delta t -->
 					<th width="10%"><!-- 10% removed from 3 -->
-						&Delta;t (ns)
+						&Delta;t&nbsp;(ns)
 					</th>
-					<!-- Column 4: Multiplicity Totals -->
+					<!-- Column 5: Multiplicity Totals -->
 					<th width="10%" style="display: ${displayMultiplicity};"
 							name="advanced">					
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >
@@ -242,9 +242,10 @@
 							</c:otherwise>
 						</c:choose>					
 					</td>
-					<!-- Column 3.5: nothing -->
+
+					<!-- Column 4: nothing -->
 					<td colspan="1"></td>
-					<!-- Optional Column 4: Multiplicity Totals -->
+					<!-- Optional Column 5: Multiplicity Totals -->
 					<td style="display: ${displayMultiplicity};" name="advanced">
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
@@ -327,12 +328,10 @@
 							</c:forEach>)
 						</td>
 						
-						<!-- Column 3.5: Test -->
-						<td>
-							${row.deltaTShower}
-						</td>
+						<!-- Column 4: Delta t -->
+						<td>${row.deltaTShower}</td>
 						
-						<!-- Column 4: Multiplicity Totals -->
+						<!-- Column 5: Multiplicity Totals -->
 						<td style="display: ${displayMultiplicity};" name="advanced">
 							${row.multiplicityCount}
 						</td>
