@@ -42,7 +42,7 @@ public class EventCandidates {
     public int eventNdx = 0;
     // Cosmic data files store time values in days.
 		// Multiply by timeUnitNano to convert to nanoseconds
-		public int timeUnitNano = 86400*1e9;
+		public Double timeUnitNano = 86400.0*1e9;
 		
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
@@ -337,7 +337,7 @@ public class EventCandidates {
 				// format specific to Shower Analysis		
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
-						return df.format(deltaT[1]*Double.parseDouble(timeUnitNano));
+						return df.format(deltaT[1]*timeUnitNano);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
