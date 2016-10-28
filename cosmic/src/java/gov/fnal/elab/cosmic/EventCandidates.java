@@ -43,7 +43,7 @@ public class EventCandidates {
     public int eventNdx = 0;
     // Cosmic data files store time values in days.
 		// Multiply by timeUnitNano to convert to nanoseconds
-		public Double timeUnitNano = 86400.0*1e9;
+		private Double timeUnitNano = 86400.0*1e9;
 		
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
