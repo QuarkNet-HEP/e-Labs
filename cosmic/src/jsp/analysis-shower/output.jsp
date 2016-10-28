@@ -210,14 +210,16 @@
 					</th>
 					<!-- Column 4: Delta t -->
 					<th width="10%"><!-- 10% removed from 3 -->
-						&Delta;t&nbsp;(ns)
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >
+							&Delta;t&nbsp;(ns)
+						</a>
 					</th>
 					<!-- Column 5: Multiplicity Totals -->
 					<th width="10%" style="display: ${displayMultiplicity};"
 							name="advanced">					
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'd') ? 'a' : 'd' }" >
 							Multiplicity Totals
-						</a> 
+						</a>
 					</th>
 				</tr>
 
