@@ -1,5 +1,6 @@
 /*
  * Created on Jan 8, 2008
+ * Updated Oct 2016 to add Delta-t function (JG)
  */
 package gov.fnal.elab.cosmic;
 
@@ -18,6 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+// for Shower delta-t only:
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class EventCandidates {
@@ -34,10 +37,13 @@ public class EventCandidates {
     private ArrayList<Integer> multiplicityFilter = new ArrayList<Integer>(); 
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
-    public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-    public int eventThreshold = 400000;
+    public static final TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
+		public int eventThreshold = 400000;
     public int eventNdx = 0;
-    
+    // Cosmic data files store time values in days.
+		// Multiply by timeUnitNano to convert to nanoseconds
+		public int timeUnitNano = 86400*1e9;
+		
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
         filteredRows = new TreeSet(c);
@@ -321,13 +327,17 @@ public class EventCandidates {
         public void setDeltaT(Double[] deltaT) {
             this.deltaT = deltaT;
         }
-				
-        //public double getDeltaT() {
-				//		return deltaT[1];
-				//}
 
 				public Double[] getDeltaT() {
 						return deltaT;
+				}
+
+				public Double getDeltaTShower() {
+				// returns deltaT[1] in ns, reported to tenths place
+				// format specific to Shower Analysis		
+						DecimalFormat df = new DecimalFormat("#.0");
+						df.setRoundingMode(RoundingMode.HALF_UP);
+						return df.format(deltaT[1]*Double.parseDouble(timeUnitNano));
 				}
 				
         public TreeMap<String,String> getIdsMult() {
