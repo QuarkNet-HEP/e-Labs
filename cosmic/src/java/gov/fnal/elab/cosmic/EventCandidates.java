@@ -41,9 +41,6 @@ public class EventCandidates {
     public static final TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
 		public int eventThreshold = 400000;
     public int eventNdx = 0;
-    // Cosmic data files store time values in days.
-		// Multiply by timeUnitNano to convert to nanoseconds
-		private Double timeUnitNano = 86400.0*1e9;
 		
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
@@ -332,10 +329,12 @@ public class EventCandidates {
 
 				public Double getDeltaTShower() {
 				// returns deltaT[1] in ns, reported to tenths place
-				// format specific to Shower Analysis		
+				// format specific to Shower Analysis
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
-						return df.format(deltaT[1]*timeUnitNano);
+						// deltaT values are in days.  The constant here
+						// converts to nanoseconds
+						return df.format(deltaT[1]*86400e9);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
