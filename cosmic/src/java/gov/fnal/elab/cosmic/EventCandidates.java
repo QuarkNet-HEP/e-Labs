@@ -19,8 +19,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-// for Shower delta-t only:
+// for Shower delta-t only (2):
 import java.text.DecimalFormat;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class EventCandidates {
@@ -132,9 +133,6 @@ public class EventCandidates {
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										//row.setDeltaT((double[]) deltaT.toArray());
-										//row.setDeltaT(deltaT.toArray(double[]));
-										//row.setDeltaT((double[]) deltaT);
 										row.setDeltaT((Double[]) deltaT.toArray(DOUBLE_ARRAY));
 
 										// Julian Date
