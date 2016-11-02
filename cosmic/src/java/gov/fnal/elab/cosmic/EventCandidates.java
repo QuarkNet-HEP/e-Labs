@@ -392,8 +392,8 @@ public class EventCandidates {
             }
 						// added 2Nov2016 JG for DeltaT analysis
 						else if (csc == 4) {
-								//c = mt.getDeltaT(1).compareTo(m2.getDeltaT(1));
-								c = mt.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
+								//c = m1.getDeltaT(1).compareTo(m2.getDeltaT(1));
+								c = m1.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
 						}
 
 						// If the two things are equal:
