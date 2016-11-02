@@ -35,8 +35,8 @@
 	if (sortCol < 0) {
 	    sortCol = 0;
 	}
-	if (sortCol > 3) {
-	    sortCol = 3;
+	if (sortCol > 4) {
+	    sortCol = 4;
 	}
 	request.setAttribute("sort", new Integer(sortCol));
 	String eventNum = (String) analysis.getParameter("eventNum");
@@ -53,8 +53,8 @@
 	else {
 		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
 	}
-	
-	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
+
+ 	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
@@ -210,7 +210,7 @@
 					</th>
 					<!-- Column 4: Delta t -->
 					<th width="10%"><!-- 10% removed from 3 -->
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'a') ? 'a' : 'd' }" >
 							&Delta;t&nbsp;(ns)
 						</a>
 					</th>
@@ -247,13 +247,16 @@
 
 					<!-- Column 4: nothing -->
 					<td colspan="1"></td>
+
 					<!-- Optional Column 5: Multiplicity Totals -->
 					<td style="display: ${displayMultiplicity};" name="advanced">
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
 									<c:when test='${param.mFilter != null && param.mFilter== "" }'>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>
+										<option value="output.jsp?id=${param.id}
+																							&showerId=${param.showerId}
+																							&mFilter=0" selected>
 											All
 										</option>
 									</c:when>
@@ -283,6 +286,7 @@
 				</tr>
 				
 				<!-- Table data rows (JSP preamble) -->
+				<!-- Selecting which 30-event chunk of data to display -->
 				<c:choose>
 					<c:when test="${pageStart != null && param.start == null}">
 						<c:set var="start" value="${pageStart}"/>
@@ -311,7 +315,12 @@
 							<c:if test="${row.eventNum == eventNum}">
 								<img src="../graphics/Tright.gif"></img>
 							</c:if>
-							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}
+												&eventNum=${row.eventNum}
+												&mFilter=${mFilter}
+												&eventDir=${eventDir}
+												&eventDateTime=${row.dateF}
+												&submit=true">
 								${row.dateF}
 							</a>
 						</td>

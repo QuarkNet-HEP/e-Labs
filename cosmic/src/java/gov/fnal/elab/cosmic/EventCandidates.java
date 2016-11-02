@@ -327,6 +327,14 @@ public class EventCandidates {
 						return deltaT;
 				}
 
+				public Double getDeltaT(int i) {
+				// returns a specific element of deltaT[]
+						if (i > -1 && i < deltaT.length) {
+								return deltaT[i];
+						}
+						else return null;
+				}
+						
 				public String getDeltaTShower() {
 				// returns (String) deltaT[1] in ns, reported to tenths place
 				// format specific to Shower Analysis
@@ -353,7 +361,12 @@ public class EventCandidates {
     }
 
     public static class EventsComparator implements Comparator {
-        private int csc;
+				// csc is the column sort index
+				// (i.e., which column in the table gets sorted?)
+				private int csc;
+				// dir is the direction of sort
+				//   "a" for "ascending" maps to +1
+				//   "d" for "descending" maps to -1
         private int dir;
 
         public EventsComparator(int csc, int dir) {
@@ -377,14 +390,30 @@ public class EventCandidates {
             else if (csc == 3) {
                 c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
             }
+						// added 2Nov2016 JG for DeltaT analysis
+						else if (csc == 4) {
+								//c = mt.getDeltaT(1).compareTo(m2.getDeltaT(1));
+								c = mt.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
+						}
+
+						// If the two things are equal:
             if (c == 0) {
+								// If same event date and sorted by event date,
+								// default instead to EventCoincidence sort
+								// (I think - JG 2Nov2016)
                 if (csc == 0) {
                     return dir * (m1.getEventCoincidence() - m2.getEventCoincidence()); 
                 }
                 else {
-                    return m1.getLine() - m2.getLine();
+										// int Row.getLine() returns the row line number
+										// from the EventCandidates file (I think)
+										// So, default to line number sort 
+										return m1.getLine() - m2.getLine();
                 }
             }
+
+						// If the two things are unequal, with int c determined
+						//   as above:
             else {
                 return dir * c;
             }
