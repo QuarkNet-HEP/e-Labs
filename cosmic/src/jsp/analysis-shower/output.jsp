@@ -194,13 +194,15 @@
 							Event Date
 						</a>
 					</th>
-  				<!-- Column 2: Hit Coincidence -->
+
+					<!-- Column 2: Hit Coincidence -->
 					<th width="10%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >
 		  				Hit Coincidence
 						</a>
 					</th>
-	  			<!-- Column 3: Detector Coincidence -->
+
+					<!-- Column 3: Detector Coincidence -->
 					<!--<th width="40%">-->
 					<th width="30%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >
@@ -208,12 +210,14 @@
 						</a>
 						[Channel Multiplicity]			
 					</th>
+
 					<!-- Column 4: Delta t -->
 					<th width="10%"><!-- 10% removed from 3 -->
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'a') ? 'a' : 'd' }" >
 							&Delta;t&nbsp;(ns)
 						</a>
 					</th>
+
 					<!-- Column 5: Multiplicity Totals -->
 					<th width="10%" style="display: ${displayMultiplicity};"
 							name="advanced">					
@@ -227,6 +231,7 @@
 				<tr>
 					<!-- Columns 1 & 2: nothing -->
 					<td colspan="2"></td>
+
 					<!-- Column 3: "View Multiplicity Totals" checkbox -->
 					<td>
 						<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}">
