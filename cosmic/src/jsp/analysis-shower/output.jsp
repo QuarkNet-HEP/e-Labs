@@ -213,7 +213,7 @@
 
 					<!-- Column 4: Delta t -->
 					<th width="10%"><!-- 10% removed from 3 -->
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'a') ? 'a' : 'd' }" >
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'a') ? 'd' : 'a' }" >
 							&Delta;t&nbsp;(ns)
 						</a>
 					</th>

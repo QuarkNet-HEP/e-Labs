@@ -25,8 +25,11 @@ import java.math.RoundingMode;
 import java.util.*;
 
 public class EventCandidates {
+		// This appears to be unused.  If used, should add Delta-t as a
+		//   column name
     public static final String[] colNames = new String[] { "date",
             "eventCoincidence", "numDetectors", "multiplicityCount" };
+		// defDir is "default direction of sort" for columns
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
@@ -326,15 +329,7 @@ public class EventCandidates {
 				public Double[] getDeltaT() {
 						return deltaT;
 				}
-
-				public Double getDeltaT(int i) {
-				// returns a specific element of deltaT[]
-						if (i > -1 && i < deltaT.length) {
-								return deltaT[i];
-						}
-						else return null;
-				}
-						
+					
 				public String getDeltaTShower() {
 				// returns (String) deltaT[1] in ns, reported to tenths place
 				// format specific to Shower Analysis
@@ -392,7 +387,6 @@ public class EventCandidates {
             }
 						// added 2Nov2016 JG for DeltaT analysis
 						else if (csc == 4) {
-								//c = m1.getDeltaT(1).compareTo(m2.getDeltaT(1));
 								c = m1.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
 						}
 
