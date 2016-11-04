@@ -25,13 +25,13 @@
 			</div>
 			
 			<div id="content">
-		<p>
+			<p>
 			<center>
 			<p>
 			<p>
 			<table width="655">
-			<tr>
-					<td colspan=3>
+				<tr>
+					    <td colspan=3>
 						<center>
 							<font color="#0a5ca6" size="+3">
 								<b>
@@ -39,31 +39,37 @@
  								</b>
 							</font>
 						</center>
-						</td></tr>
-						
-						<tr><td width=233 valign=top>
+					    </td>
+				</tr>
+					
+				<tr>
+					    <td width=233 valign=top>
 						<center>
 							<img src="../graphics/lifetime_example.gif">
 						</center>
 						</td><td width=10>
 						&nbsp;
-						</td>
+					    </td>
 						
-				<td width=233 valign=top>
-		 				&nbsp;<p>
-		 			
-					
+					    <td width=233 valign=top>
+		 				&nbsp;<p>		 			
 						<p>The only way out is to collect many, many of these "candidates" and then plot a 
 						histogram of the length between signals. Real 
-						<a href="javascript:glossary('decay',350)">decays</a> will be much longer between 
-						signals <i>and</i> have an exponential distribution with a "longish" time constant.	
-					
-				
+						<a href="javascript:glossary('decay',350)">decays</a> will be much longer between signals <i>and</i> have an exponential distribution with a "longish" time constant.	
+					    </td>
+				</tr>
+
+				<tr>
+					<td>
+						<p>&nbsp;
+						<center>
+							<p>Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> &amp; <a href="index.jsp">Analysis</a>
+						</center>
 					</td>
-					</tr>
-				</table>
+				</tr>
+			</table>
 			<p>
-		</center>
+			</center>
 
 			</div>
 			<!-- end content -->	
