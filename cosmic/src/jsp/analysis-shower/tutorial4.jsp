@@ -43,7 +43,7 @@
 <p><b>These diagrams show how to set the detector, channel and hit coincidence levels when doing a shower study.</b></p>
 				<div style="text-align: center;">
 				<p><font size=+2><b>Shower Study Interface</b></font></p>
-				<img src="../graphics/coincidence-anal-controls.gif">
+				<img src="../graphics/coincidence-anal-controls.png">
 				<p>&nbsp;
 				
 				<p><font size=+2><b>Coincidence Diagram</b></font></p>
