@@ -29,8 +29,8 @@
 			You can:
 				<strong>1)</strong> Find some help on this page
 				<strong>2)</strong> 
-					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16.data" 
-						target="PossibleParticleDecays" width="700" height="510">View</e:popup> a poster 
+					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16-cosmic-crdata-robert_s._peterson-fermilab_test_array-batavia-il-2016.1114.data" 
+						target="MuonLifetime" width="700" height="510">View</e:popup> a poster 
 					created using this study
 				<strong>3)</strong> 
 					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
