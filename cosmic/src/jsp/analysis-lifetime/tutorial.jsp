@@ -29,7 +29,7 @@
 			You can:
 				<strong>1)</strong> Find some help on this page
 				<strong>2)</strong> 
-					<e:popup href="../posters/display.jsp?type=poster&amp;name=poster_decays.data" 
+					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16.data" 
 						target="PossibleParticleDecays" width="700" height="510">View</e:popup> a poster 
 					created using this study
 				<strong>3)</strong> 
