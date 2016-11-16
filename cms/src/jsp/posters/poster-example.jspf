@@ -1,1 +1,2 @@
- 			Look at the <e:popup href="../library/ref-poster.jsp?" target="PosterInfo" width="600" height="600">characteristics of a good poster</e:popup>.
+Look at the <e:popup href="../library/ref-poster.jsp?" target="PosterInfo" width="600" height="600">characteristics of a good poster</e:popup> 
+and an <e:popup href="display.jsp?name=davis_nagle_jpsi-cms-knagle-ken_nagle-st._paul_school_for_girls-brooklandville-md-2016.1111.data" target="PosterInfo" width="700" height="900">excellent example</e:popup>.
