@@ -81,7 +81,7 @@
     </script>
     <p>
 	Explore data from the CMS experiment at the Large Hadon Collider (LHC). Many particles can be produced 
-	in the proton-proton collisions recorded by CMS, such as J/&Psi; mesons, Y (upsilon) mesons, and W and Z bosons. 
+	in the proton-proton collisions recorded by CMS, such as J/&#936; mesons, (upsilon) mesons, and W and Z bosons. 
 	These particles decay very promptly and cannot be detected directly. Some of the more familiar particles into 
 	which they can decay, such as electrons, muons, and photons, can be detected and measured in CMS. 
 	From these particles, one can study the properties of the parent particles.
