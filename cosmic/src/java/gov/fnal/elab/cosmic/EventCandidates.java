@@ -22,14 +22,15 @@ import java.text.SimpleDateFormat;
 // for Shower delta-t only (2):
 import java.text.DecimalFormat;
 import java.math.RoundingMode;
+//
 import java.util.*;
 
 public class EventCandidates {
-		// This appears to be unused.  If used, should add Delta-t as a
+		// "colNames" appears to be unused.  If used, should add Delta-t as a
 		//   column name
-    public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount" };
-		// defDir is "default direction of sort" for columns
+    //public static final String[] colNames = new String[] { "date",
+    //        "eventCoincidence", "numDetectors", "multiplicityCount" };
+		// defDir is "default direction of sort" for output.jsp columns
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
@@ -42,6 +43,8 @@ public class EventCandidates {
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
     public static final TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
+		// Maximum number of events before we need start checking if memory
+		//   can handle it:
 		public int eventThreshold = 400000;
     public int eventNdx = 0;
 		
@@ -51,34 +54,44 @@ public class EventCandidates {
         allIds = new HashSet();
     }
 
-		// "templates" used to cast using Set/List.toArray()
+		// These are dummy variables used to cast using Set/List.toArray()
     private static final String[] STRING_ARRAY = new String[0];
-    private static final Double[] DOUBLE_ARRAY = new Double[0];
+    // private static final Double[] DOUBLE_ARRAY = new Double[0];
 		
     public void read(File in, File out, int eventStart, String en)
-            throws Exception {
-    	Elab elab = Elab.getElab(null, "cosmic");
-    	String et = elab.getProperty("event.threshold");
-    	if (et != null && !et.equals("")) {
-    		eventThreshold = Integer.parseInt(et);
-    	}
+				throws Exception {
+				Elab elab = Elab.getElab(null, "cosmic");
+				String et = elab.getProperty("event.threshold");
+				if (et != null && !et.equals("")) {
+						eventThreshold = Integer.parseInt(et);
+				}
         this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         BufferedWriter bw = new BufferedWriter(new FileWriter(out));
         String line = br.readLine();
-        Set ids = new HashSet();
+				// Change ids to ArrayList to keep ordering for deltaT
+				//Set ids = new HashSet();
+        List<String> ids = new ArrayList<String>();
         Set multiplicities = new HashSet();
-				List<Double> deltaT = new ArrayList<Double>();
         ElabMemory em = new ElabMemory();
+				// For deltaT:
+				List<Double> firstHitTimes = new ArrayList<Double>();
+				//List<Double> deltaT = new ArrayList<Double>();
+				Double deltaT = new Double;
+				String detOne = null;
+				String detTwo = null;
+				int dtSign = 0;
+				//
+				
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
                 lineNo++;
-								// memory management
 								if (lineNo > eventThreshold) {
-                    em.refresh();
+                // memory management
+										em.refresh();
                     if (em.isCritical()) {
                     	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
                     	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
@@ -93,33 +106,33 @@ public class EventCandidates {
 								// parse the eventCandidates input file
                 if (lineNo >= eventStart) {
                     Row row = new Row();
-										// arr[] is the array that holds all individual
-										//   elements of a single row
+										// arr[] is the array that holds the individual
+										//   elements of a single row, divided at whitespaces
 										String[] arr = line.split("\\s");
-										// The first three elements:
-                    row.setEventCoincidence(Integer.parseInt(arr[1]));
-                    row.setNumDetectors(Integer.parseInt(arr[2]));
+										// The first three row elements:
                     row.setEventNum(Integer.parseInt(arr[0]));
-                    row.setLine(lineNo);
                     if (this.eventNum == null) {
                         this.eventNum = arr[0];
                     }
+                    row.setEventCoincidence(Integer.parseInt(arr[1]));
+                    row.setNumDetectors(Integer.parseInt(arr[2]));
+                    row.setLine(lineNo);
 
 										// remaining elements in sets of three
                     ids.clear();
                     multiplicities.clear();
-										deltaT.clear();
-										Double firstHit = Double.parseDouble(arr[5]);
+										firstHitTimes.clear();
+										//deltaT.clear();
+										// This loop covers an individual line of eventCandidates.
+										// Note the increment of 3 such that arr[i] will always
+										//   be <String> detector.channel
 										for (int i = 3; i < arr.length; i += 3) {
-												// arr[i] will always be detector.channel
 												String[] idchan = arr[i].split("\\.");
 												//idchan[0] = idchan[0].intern();
-                        //ids.add(idchan[0]);
+												//ids.add(idchan[0]);
                         if (!ids.contains(idchan[0])) {
-                        	ids.add(idchan[0]);
-													// note that deltaT[0]=0 always
-													Double nowHit = Double.parseDouble(arr[i+2]);
-													deltaT.add(nowHit-firstHit);
+													ids.add(idchan[0]);
+													firstHitTimes.add(Double.parseDouble(arr[i+2]);
 												}
 												String mult = arr[i].intern();
                         multiplicities.add(mult);
@@ -128,12 +141,38 @@ public class EventCandidates {
                         //}
                         allIds.add(idchan[0]);
 										}
-                    
+										// deltaT compares the first two detectors to fire,
+										//		as recorded on the first row (eventNum=1)
+										// Determine these from ids[] after constructing it for
+										//    that row
+										// Is there any danger that this code can be executed
+										//   with eventNum != 1 as the first event?
+										if (Integer.parseInt(eventNum) == 1) {
+												detOne = ids[0];
+											  detTwo = ids[1];
+												dtSign = Integer.signum(Integer.parseInt(detOne) -
+																								Integer.parseInt(detTwo));
+										}
+										// Convention: deltaT is the first hit time of the detector
+										//   with the larger id minus the first hit time of the
+										//   detector with the smaller id
+										if (detOne != null && detTwo != null) {
+												deltaT = dtSign*(firstHitTimes[ids.indexOf(detOne)] -
+																				 firstHitTimes[ids.indexOf(detTwo)]);
+										}
+										else {
+												deltaT = 0.0;
+												// throw error
+										}
+										
+										//make sure the rest of this works:
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										row.setDeltaT((Double[]) deltaT.toArray(DOUBLE_ARRAY));
+										// with deltaT no longer an array, don't need DOUBLE_ARRAY
+										//row.setDeltaT((Double[]) deltaT.toArray(DOUBLE_ARRAY));
+										row.setDeltaT(deltaT);
 
 										// Julian Date
                     String jd = arr[4];
@@ -251,7 +290,8 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-				private Double[] deltaT;
+				//private Double[] deltaT;
+				private Double deltaT;
 				private int multiplicityCount;
 
         public int getEventCoincidence() {
@@ -322,22 +362,24 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        public void setDeltaT(Double[] deltaT) {
+        //public void setDeltaT(Double[] deltaT) {
+        public void setDeltaT(Double deltaT) {
             this.deltaT = deltaT;
         }
 
-				public Double[] getDeltaT() {
+				//public Double[] getDeltaT() {
+				public Double getDeltaT() {
 						return deltaT;
 				}
 					
 				public String getDeltaTShower() {
-				// returns (String) deltaT[1] in ns, reported to tenths place
-				// format specific to Shower Analysis
+				// Returns <String> deltaT in nanoseconds to one decimal place
+				// Format is specific to Shower Analysis
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT values are in days.  The constant here
-						// converts to nanoseconds
-						return df.format(deltaT[1]*86400e9);
+						//   converts to nanoseconds
+						return df.format(deltaT*86400e9);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
