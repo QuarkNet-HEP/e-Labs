@@ -19,7 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-// for Shower delta-t only (2):
+// for Shower delta-t only:
 import java.text.DecimalFormat;
 import java.math.RoundingMode;
 //
@@ -78,7 +78,7 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				//List<Double> deltaT = new ArrayList<Double>();
-				Double deltaT = new Double();
+				Double deltaT = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
 				int dtSign = 0;
@@ -148,8 +148,8 @@ public class EventCandidates {
 										// Is there any danger that this code can be executed
 										//   with eventNum != 1 as the first event?
 										if (Integer.parseInt(eventNum) == 1) {
-												detOne = ids[0];
-											  detTwo = ids[1];
+												detOne = ids.get(0);
+											  detTwo = ids.get(1);
 												dtSign = Integer.signum(Integer.parseInt(detOne) -
 																								Integer.parseInt(detTwo));
 										}
@@ -157,8 +157,8 @@ public class EventCandidates {
 										//   with the larger id minus the first hit time of the
 										//   detector with the smaller id
 										if (detOne != null && detTwo != null) {
-												deltaT = dtSign*(firstHitTimes[ids.indexOf(detOne)] -
-																				 firstHitTimes[ids.indexOf(detTwo)]);
+												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
+																				 firstHitTimes.get(ids.indexOf(detTwo)));
 										}
 										else {
 												deltaT = 0.0;
@@ -429,7 +429,8 @@ public class EventCandidates {
             }
 						// added 2Nov2016 JG for DeltaT analysis
 						else if (csc == 4) {
-								c = m1.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
+								//c = m1.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
+								c = m1.getDeltaT().compareTo(m2.getDeltaT());
 						}
 
 						// If the two things are equal:
