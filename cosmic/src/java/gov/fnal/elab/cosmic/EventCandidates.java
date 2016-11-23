@@ -78,7 +78,7 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				//List<Double> deltaT = new ArrayList<Double>();
-				Double deltaT = new Double;
+				Double deltaT = new Double();
 				String detOne = null;
 				String detTwo = null;
 				int dtSign = 0;
@@ -132,7 +132,7 @@ public class EventCandidates {
 												//ids.add(idchan[0]);
                         if (!ids.contains(idchan[0])) {
 													ids.add(idchan[0]);
-													firstHitTimes.add(Double.parseDouble(arr[i+2]);
+													firstHitTimes.add(Double.parseDouble(arr[i+2]));
 												}
 												String mult = arr[i].intern();
                         multiplicities.add(mult);
