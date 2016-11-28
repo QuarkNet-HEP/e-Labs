@@ -1,3 +1,4 @@
+<!--Rev.8278-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
@@ -13,10 +14,13 @@
   <link rel="stylesheet" type="text/css" href="../css/data.css"/>
   <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
   <link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
+  <link rel="stylesheet" type="text/css" href="../css/dc.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/d3.min.js"></script>
   <script type="text/javascript" src="../include/crossfilter.min.js"></script>
+  <script type="text/javascript" src="../include/dc.min.js"></script>
+  <script type="text/javascript" src="../include/html2canvas.js"></script>
 
    <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 
@@ -49,12 +53,61 @@
     bottom: -24px;
   }
 
+  .ylabel {
+    position: absolute;
+    left: 0px;
+    top: 200px;
+    writing-mode: tb-rl;
+    filter: flipV flipH;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+  }
+
   #plot-container {
     margin-top: 20px;
   }
 
   .plot {
     border: 1px dashed #cccccc;
+  }
+
+  ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+
+  ul.tab li {float: left;}
+
+  ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  ul.tab li a:hover {background-color: #ddd;}
+  ul.tab li a:focus, .active {background-color: #ccc;}
+
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: none;
+    border-top: none;
+  }
+
+  .tab::before {
+    content: none;
+  }
+
+  .data .tab {
+    padding-top: 0;
   }
   </style>
 
@@ -76,15 +129,11 @@
   <div id="content">
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
-    <script>
-      console.log(d3.version);
-    </script>
     <p>
-	Explore data from the CMS experiment at the Large Hadon Collider (LHC). Many particles can be produced 
-	in the proton-proton collisions recorded by CMS, such as J/&#936; mesons, Y (upsilon) mesons, and W and Z bosons. 
-	These particles decay very promptly and cannot be detected directly. Some of the more familiar particles into 
-	which they can decay, such as electrons, muons, and photons, can be detected and measured in CMS. 
-	From these particles, one can study the properties of the parent particles.
+      Explore data from the CMS experiment at the LHC. Many particles can be produced in the proton-proton
+      collisions recorded by CMS, such as J/&psi; particles, 	&Upsilon; particles, and W and Z bosons. These
+      particles decay into perhaps more familiar particles such as electrons, muons, and photons. From these
+      particles one can study the properties of the parent particles.
     </p>
     <p>
       Choose one of the following datasets:
@@ -108,7 +157,15 @@
     </table>
   </div>
 
-    <div id="plot-container">
+    <ul class="tab">
+      <li><a href="#" class="tablinks plot active">Histograms</a></li>
+      <li><a href="#" class="tablinks chart">Correlated charts</a></li>
+    </ul>
+
+    <div id="plot-container" class="tabcontent">
+    </div>
+
+    <div id="chart-container" class="tabcontent">
     </div>
 
     <div id="plot-template" style="display: none">
@@ -126,13 +183,16 @@
                   -->
                   <input type="checkbox" class="logx" />Log X
                   <input type="checkbox" class="logy" />Log Y
-                  <input type="button" class="reset-selection" value="Reset Selection" />
+                  <input type="button" class="reset-selection" disabled autocomplete="off" value="Reset X Selection" />
                 </td>
                 <td class="group-title">
                   Plot
                 </td>
                 <td class="toolbox-group">
-                  Bin Width: <input type="text" class="binwidth" value="0.1" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
+                  Bin Width: <input type="text" class="binwidth" value="1.0" size="6" /><input type="button" class="apply-binwidth" value="Set"/>
+                </td>
+                <td>
+                  <input type="button" class="save" value="Print plot"/>
                 </td>
               </tr>
                 <tr>
@@ -158,7 +218,7 @@
         <div class="placeholder"></div>
         <div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
         <div class="xlabel"></div>
-        <div class="ylabel" style="position: absolute; left: -50px; top: 200px;writing-mode: tb-rl; filter: flipV flipH; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);"></div>
+        <div class="ylabel"></div>
       </div>
     </div>
 
@@ -172,7 +232,7 @@
         <p>Need help with dataset selection? Try these links:</p>
         <ul>
 <li>
-            <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+            <e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select datasets.
           </li>
           <li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
@@ -196,8 +256,25 @@
   <script type="text/javascript">
   $(function() {
 
+    $('.tablinks').bind('click', function() {
+      $('.tablinks').removeClass('active');
+      $(this).addClass('active');
+
+      if ($(this).hasClass('plot')) {
+        $('#chart-container').hide();
+        $('#plot-container').show();
+      }
+
+      if ($(this).hasClass('chart')) {
+        $('#plot-container').hide();
+        $('#chart-container').show();
+      }
+    });
+
     $('#parameters').hide();
-    //$('.plot').hide();
+
+    // show plot container div by default
+    $('#plot-container').show();
 
     var csv_files = [
       {
@@ -293,7 +370,8 @@
           {name:"phiMET", unit:"radians", description:"The &phi; angle [radians] of the missing transverse energy"},
           {name:"eta", unit:null, description:"The pseudorapidity of the lepton (electron or muon)"},
           {name:"phi", unit:"radians", description:"The &phi; angle [radians] of the lepton (electron or muon) direction"},
-          {name:"pt", unit:"GeV", description:"The transverse momentum [GeV] of the lepton (electron or muon)"}
+          {name:"pt", unit:"GeV", description:"The transverse momentum [GeV] of the lepton (electron or muon)"},
+          {name:"Mt", unit:"GeV", description:"The transverse mass [GeV]"}
         ]
     };
 
@@ -310,7 +388,7 @@
   var dataset_id;
   var dataset_type;
   var dataset_descr;
-  var cfdata;
+  var cfdata, all;
 
   function getDataset(id) {
     for ( var i = 0; i < csv_files.length; i++ ) {
@@ -322,20 +400,22 @@
   }
 
   function buildHistogram(data, bw) {
-     var minx = d3.min(data),
-     maxx = d3.max(data),
-     nbins = Math.floor((maxx-minx) / bw);
+    var minx = Math.floor(d3.min(data)),
+    maxx = Math.ceil(d3.max(data)),
+    nbins = Math.floor((maxx-minx) / bw);
 
-     var histogram = d3.layout.histogram();
-     histogram.bins(nbins);
-     data = histogram(data);
+    //console.log('minx, maxx', minx, maxx);
 
-     var output = [];
-     for ( var i = 0; i < data.length; i++ ) {
-       output.push([data[i].x, data[i].y]);
-       output.push([data[i].x + data[i].dx, data[i].y]);
-     }
-     return output;
+    var histogram = d3.layout.histogram();
+    histogram.bins(nbins);
+    data = histogram(data);
+
+    var output = [];
+    for ( var i = 0; i < data.length; i++ ) {
+      output.push([data[i].x, data[i].y]);
+      output.push([data[i].x + data[i].dx, data[i].y]);
+    }
+    return output;
   }
 
   ln = function(v) { return v > 0 ? Math.log(v) : 0; }
@@ -354,7 +434,7 @@
     if ( active ) {
       $(this).removeClass('active');
       $('#'+parId).remove();
-
+      $('#'+parId+'-chart').remove();
     } else {
       $(this).addClass('active');
 
@@ -365,15 +445,35 @@
           legend: { noColumns: 1 },
           xaxis: { tickDecimals: 0 },
           yaxis: { autoscaleMargin: 0.1 },
-          y2axis: { autoscaleMargin: 0.1 },
           crosshair: { mode: "xy" },
-          selection: { mode: "xy", color: "yellow" }
+          selection: { mode: "x", color: "yellow" }
       };
 
-      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), 0.1);
+      var dimension = cfdata.dimension(function(d) {return +d[parameter];});
+
+      var xmin = dimension.bottom(1)[0][parameter];
+      var xmax = dimension.top(1)[0][parameter];
+
+      xmin = Math.floor(xmin);
+      xmax = Math.ceil(xmax);
+
+      var binw = (xmax - xmin) / 100;
+      if ( binw > 1.0 ) {
+        binw = Math.floor(binw);
+      } else {
+        binw = 1.0;
+      }
+
+      var group = dimension.group(function(d) {return Math.floor(d/binw)*binw;});
+
+      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), binw);
       var nevents = original_data.length;
+
       $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
       $('#'+parId).append($('#plot-template').html());
+      $('#'+parId+' input.binwidth').attr('value', binw);
+
+      $('#chart-container').append("<div class=\"chart\" id=\"" + parId+"-chart" + "\"></div>");
 
       $('#'+parId+' .selector').hide();
       var dataset = getDataset(dataset_id);
@@ -394,24 +494,40 @@
       var plot = $.plot($('#'+parId+ ' .placeholder'), data, options);
 
       $('#'+parId+ ' .xlabel').html(title);
-      $('#'+parId+ ' .ylabel').html('Number of events');
+      //$('#'+parId+ ' .ylabel').html('Number of events');
       $('#'+parId+ ' .plottitle').html(dataset_descr+': '+parameter+' : '+nevents+' entries');
 
       plot.draw();
-      var xmin = plot.getAxes().xaxis.min;
-      var xmax = plot.getAxes().xaxis.max;
-      var ymin = plot.getAxes().yaxis.min;
-      var ymax = plot.getAxes().yaxis.max;
+
+      $('#'+parId+'-chart').append('<input type="button" class="save" value="Print plot"/>');
+
+      var chart = dc.barChart('#'+parId+'-chart')
+        .width(768)
+        .height(480)
+        .x(d3.scale.linear().domain([xmin,xmax]))
+        .brushOn(true)
+        .centerBar(false)
+        .xAxisLabel(title)
+        .yAxisLabel('Number of events')
+        .dimension(dimension)
+        .group(group);
+
+      chart.render();
+
+      xmin = plot.getAxes().xaxis.min;
+      xmax = plot.getAxes().xaxis.max;
 
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
-        console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
-        console.log(data[0].data.length);
-        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}, yaxis:{ min: ranges.yaxis.from, max: ranges.yaxis.to}});
+        //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
+        //console.log(data[0].data.length);
+        $('.reset-selection').removeAttr('disabled');
+        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        //$.extend(true, options, {xaxis:{min: xmin, max: xmax}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
       $('#'+parId+' .reset-selection').bind('click', function() {
-         $.extend(true, options, {xaxis:{min: xmin, max: xmax}, yaxis:{min: ymin, max:ymax}});
+         $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
          $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
@@ -446,6 +562,35 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
+      $('#'+parId+' .save').bind('click', function() {
+        html2canvas($('#'+parId)).then(function(canvas) {
+          image = canvas.toDataURL("image/png");
+          window.open(image, "toDataURL() image", "width=800, height=400");
+        });
+      });
+
+      $('#'+parId+'-chart .save').bind('click', function() {
+
+        var svg = document.querySelector('#'+parId+'-chart > svg');
+        var serializer = new XMLSerializer();
+        var source = serializer.serializeToString(svg);
+        var imgsrc = 'data:image/svg+xml;base64,'+ btoa(source);
+
+        var img = '<img src="'+imgsrc+'">';
+        var image = new Image;
+        image.src = imgsrc;
+
+        image.onload = function() {
+          var canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          var context = canvas.getContext('2d');
+          context.drawImage(image, 0, 0);
+          var canvasdata = canvas.toDataURL("image/png");
+          window.open(canvasdata, "toDataURL() image", "width=800, height=400");
+        };
+      });
+      
       $('#'+parId+' input.selector').bind('change', function() {
         var bw = $('input.binwidth').val();
         var hist;
@@ -504,6 +649,7 @@
         original_data = data;
         current_data = original_data;
         cfdata = crossfilter(data);
+        all = cfdata.groupAll();
       }
     );
   }
@@ -512,6 +658,7 @@
     $('#parameters').hide();
     $('#parameter-table').empty();
     $('#plot-container').empty();
+    $('#chart-container').empty();
 
     var expr = $('select option:selected').attr('value');
     var type;
