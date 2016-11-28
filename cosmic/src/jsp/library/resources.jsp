@@ -101,7 +101,7 @@
 						    <br>
 						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates</a> - Find your GPS Coordinates.
 						    <br>
-						    <e:popup href="Notif_tryit.html" targe="TryIt" width="520" height="600">Notifications</e:popup> - View or send notifications for your group. 
+						    <e:popup href="Notif_tryit.html" target="TryIt" width="520" height="600">Notifications</e:popup> - View or send notifications for your group. 
 						</li>    
 						<li>
 							Data Blessing Tutorials<br />
