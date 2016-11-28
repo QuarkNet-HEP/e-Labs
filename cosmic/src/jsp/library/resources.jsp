@@ -96,15 +96,12 @@
 						</li>
 							
 						<c:if test="${user.upload}">
-					    	<li>Geometry, GPS, Notifications<br>
-						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
-						    - Properly input detector layout.
+					    	<li>Geometry, GPS, Notifications Tutorials<br>
+						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry</a> - Properly input detector layout.
 						    <br>
-						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
-						    - Find your GPS Coordinates.
+						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates</a> - Find your GPS Coordinates.
 						    <br>
-						    <a target="TryIt" href="Notif_tryit.html">Notifications Tutorial</a> 
-						    - View or send notifications for your group. 
+						    <e:popup href="Notif_tryit.html" targe="TryIt" width="520" height="600">Notifications</e:popup> - View or send notifications for your group. 
 						</li>    
 						<li>
 							Data Blessing Tutorials<br />
