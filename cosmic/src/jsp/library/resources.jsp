@@ -103,7 +103,7 @@
 						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
 						    - Find your GPS Coordinates.
 						    <br>
-						    <a target="_blank" href="Notif_tryit.html">Notifications Tutorial</a> 
+						    <a target="TryIt" href="Notif_tryit.html">Notifications Tutorial</a> 
 						    - View or send notifications for your group. 
 						</li>    
 						<li>
