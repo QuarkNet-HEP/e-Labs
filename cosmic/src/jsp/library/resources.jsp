@@ -97,13 +97,13 @@
 							
 						<c:if test="${user.upload}">
 					    	<li>Geometry, GPS, Notifications<br>
-						    <a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
+						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
 						    - Properly input detector layout.
 						    <br>
-						    <a href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
+						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
 						    - Find your GPS Coordinates.
 						    <br>
-						    <a href="Notif_tryit.html">Notifications Tutorial</a> 
+						    <a target="_blank" href="Notif_tryit.html">Notifications Tutorial</a> 
 						    - View or send notifications for your group. 
 						</li>    
 						<li>
