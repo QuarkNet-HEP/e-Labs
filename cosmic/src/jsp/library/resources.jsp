@@ -98,13 +98,13 @@
 						<c:if test="${user.upload}">
 					    	<li>Geometry, GPS, Notifications<br>
 						    <a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
-						    - Learn how to properly input the layout of your detector.
+						    - Properly input detector layout.
 						    <br>
 						    <a href="../geometry/gps_tutorial.jsp">GPS Coordinates Tutorial</a>
 						    - Find your GPS Coordinates.
 						    <br>
 						    <a href="Notif_tryit.html">Notifications Tutorial</a> 
-						    - Learn how to view or send notifications pertaining to your group. 
+						    - View or send notifications for your group. 
 						</li>    
 						<li>
 							Data Blessing Tutorials<br />
