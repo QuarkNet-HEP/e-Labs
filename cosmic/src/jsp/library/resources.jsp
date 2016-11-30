@@ -94,8 +94,8 @@
 							and  <a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a>
 							- Learn how to understand the results of a <b>Time of Flight Study </b>. 
 						</li>
-						    
-						<c:if test="${user.upload}">	
+						   
+						<% if (user != null) { %>
 						<li>Geometry, GPS, Notifications Tutorials:<br>
 						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry</a> - Properly input detector layout.
 						    <br>
@@ -103,16 +103,13 @@
 						    <br>
 						    <e:popup href="Notif_tryit.html" target="TryIt" width="750" height="600">Notifications</e:popup> - View or send notifications for your group. 
 						</li>		
-						</c:if>
-						
-						<c:if test="${user.upload}">				
 						<li>
 							Data Blessing Tutorials:<br />
 							<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
 							<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
 							<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
 						</li>
-						</c:if>
+						<% } %>
 						
 						<li>
 							Advanced details on how to use the CRMD:<br />
