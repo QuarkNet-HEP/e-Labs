@@ -95,7 +95,7 @@
 							- Learn how to understand the results of a <b>Time of Flight Study </b>. 
 						</li>
 						   
-						<% if (user != null) { %>
+						<c:if test="${user.upload}">
 						<li>Geometry, GPS, Notifications Tutorials:<br>
 						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry</a> - Properly input detector layout.
 						    <br>
@@ -109,7 +109,7 @@
 							<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
 							<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
 						</li>
-						<% } %>
+						</c:if>
 						
 						<li>
 							Advanced details on how to use the CRMD:<br />
