@@ -94,17 +94,17 @@
 							and  <a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a>
 							- Learn how to understand the results of a <b>Time of Flight Study </b>. 
 						</li>
-							
-						<c:if test="${user.upload}">
-					    	<li>Geometry, GPS, Notifications Tutorials<br>
+						<li>Geometry, GPS, Notifications Tutorials:<br>
 						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry</a> - Properly input detector layout.
 						    <br>
 						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates</a> - Find your GPS Coordinates.
 						    <br>
 						    <e:popup href="Notif_tryit.html" target="TryIt" width="750" height="600">Notifications</e:popup> - View or send notifications for your group. 
 						</li>    
+							
+						<c:if test="${user.upload}">	
 						<li>
-							Data Blessing Tutorials<br />
+							Data Blessing Tutorials:<br />
 							<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
 							<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
 							<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
@@ -112,7 +112,7 @@
 						</c:if>
 							
 						<li>
-							Advanced details on how to use the CRMD<br />
+							Advanced details on how to use the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
 							Series "6000" CRMD Users Manual </a>
 							<br />
@@ -120,7 +120,7 @@
 							Series "200" &amp; "5000" CRMD Users Manual</a>
 						</li>
 						<li>
-							Learn how to assemble the CRMD<br />
+							Learn how to assemble the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 							Series "6000" CRMD Assembly Instructions </a>
 							<br />
@@ -128,7 +128,7 @@
 							Series "5000" CRMD Assembly Instructions</a>
 						</li>
 						<li>
-							Series "6000" CRMD Plateauing Instructions<br />
+							Series "6000" CRMD Plateauing Instructions:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
 							"6000" HOWTO PowerPoint </a>
 							<br />
