@@ -104,14 +104,6 @@
 							
 						<c:if test="${user.upload}">	
 						<li>
-							Data Blessing Tutorials:<br />
-							<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
-							<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
-							<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
-						</li>
-						</c:if>
-							
-						<li>
 							Advanced details on how to use the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
 							Series "6000" CRMD Users Manual </a>
@@ -119,6 +111,14 @@
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
 							Series "200" &amp; "5000" CRMD Users Manual</a>
 						</li>
+						<li>
+							Data Blessing Tutorials:<br />
+							<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
+							<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
+							<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
+						</li>
+						</c:if>
+						
 						<li>
 							Learn how to assemble the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
