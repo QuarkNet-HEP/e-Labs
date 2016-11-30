@@ -94,23 +94,15 @@
 							and  <a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a>
 							- Learn how to understand the results of a <b>Time of Flight Study </b>. 
 						</li>
+						    
+						<c:if test="${user.upload}">	
 						<li>Geometry, GPS, Notifications Tutorials:<br>
 						    <a target="_blank" href="../geometry/tutorial.jsp">Updating Geometry</a> - Properly input detector layout.
 						    <br>
 						    <a target="_blank" href="../geometry/gps_tutorial.jsp">GPS Coordinates</a> - Find your GPS Coordinates.
 						    <br>
 						    <e:popup href="Notif_tryit.html" target="TryIt" width="750" height="600">Notifications</e:popup> - View or send notifications for your group. 
-						</li>    
-							
-						<c:if test="${user.upload}">	
-						<li>
-							Advanced details on how to use the CRMD:<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
-							Series "6000" CRMD Users Manual </a>
-							<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
-							Series "200" &amp; "5000" CRMD Users Manual</a>
-						</li>
+						</li>						
 						<li>
 							Data Blessing Tutorials:<br />
 							<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
@@ -119,6 +111,14 @@
 						</li>
 						</c:if>
 						
+						<li>
+							Advanced details on how to use the CRMD:<br />
+							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
+							Series "6000" CRMD Users Manual </a>
+							<br />
+							<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
+							Series "200" &amp; "5000" CRMD Users Manual</a>
+						</li>
 						<li>
 							Learn how to assemble the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
