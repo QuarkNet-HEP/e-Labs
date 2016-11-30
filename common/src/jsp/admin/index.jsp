@@ -3,9 +3,31 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
+	//remove expired notifications right here
+	String message = "";
+	try {
+		ElabNotificationsProvider nprovider = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
+		List<Notification> en = nprovider.getExpiredNotifications();
+		if (en != null) {
+			for (Notification rm: en) {
+				nprovider.removeNotification(user.getGroup(), rm.getId());
+			}
+		}
+	} catch (Exception e) {
+		message = e.getMessage();
+	}
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
+	request.setAttribute("message", message);
+	request.setAttribute("memory", memory);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,21 +54,16 @@
 			<div id="content">
 				<table id="main" cellpadding="10" cellspacing="10">
 					<tr><th colspan="2" >Admin Links</th><th></th></tr>
+          <tr>
+            <td>&#8226; <a href="../reports/index.jsp">e-Lab Reports</a></td>
+            <td>Reports for uploads, posters and plots.</td>
+          </tr>
 					<tr>
-						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
-						<td>Add e-Lab users.</td>
+						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users</a></td>
+						<td>Add e-Lab users</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete expired notifications</a></td>
-						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
-					</tr>
-
-					<tr>
-						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
-						<td>Delete all files created by the guest user.</td>					
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, update FAQs</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -54,11 +71,11 @@
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="session-tracking.jsp">Session Tracking</a></td>
+						<td>&#8226; <a href="../session/session-tracking.jsp">Session Tracking</a></td>
 						<td>See the users whose sessions are still active.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
+						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
 					<tr>
@@ -76,7 +93,11 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>&#8226; <a href="../jsp/editDescription.jsp">Edit TR Descriptions</a></td>
+							<td>Access cosmic transformation descriptions.</td>						
+						</tr>
+						<tr>
+							<td>&#8226; <a href="../data/data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
 						<tr>
@@ -84,26 +105,28 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=split">Download Purdue-Java</a></td>
-							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
-						</tr>
-						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
-							<td>View queued analyses and their statuses.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
+							<td>&#8226; <a href="../reports/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
-					</c:if>				
+						<tr>
+							<td>&#8226; <a href="../reports/geometry-info.jsp">View splits with geometry problems.</a></td>
+							<td>View split files where the geometry stacked metadata does not match the geometry.</td>
+						</tr>
+					</c:if>	
+					<tr><td colspan="2"><br /><i>* Expired notifications are removed automatically when we browse this page.</i></td></tr>			
+					<tr><td style="text-align: right;"><i>* Memory Details:</i></td>
+						<td><i>${memory}</i></td>
+					</tr>			
 				</table>
 			</div>
 			<!-- end content -->	
-		
+			<c:if test="${not empty message }">
+				<div>${message}</div>
+			</c:if>
 			<div id="footer">
 			</div>
 		</div>
