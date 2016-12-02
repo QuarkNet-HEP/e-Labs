@@ -130,10 +130,11 @@
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
     <p>
-      Explore data from the CMS experiment at the LHC. Many particles can be produced in the proton-proton
-      collisions recorded by CMS, such as J/&psi; particles, 	&Upsilon; particles, and W and Z bosons. These
-      particles decay into perhaps more familiar particles such as electrons, muons, and photons. From these
-      particles one can study the properties of the parent particles.
+      Explore data from the CMS experiment at the Large Hadron Collider (LHC). Many particles can be produced in the proton-proton
+      collisions recorded by CMS, such as J/&psi; mesons, &Upsilon; (upsilon) mesons, and W and Z bosons. These
+      particles decay very promptly and cannot be detected directly.  Some of the more familiar particles into which they can decay, 
+      such as electrons, muons, and photons, can be detected and measured in CMS.  From these particles, one can study the properties 
+      of the parent particles.
     </p>
     <p>
       Choose one of the following datasets:
@@ -232,7 +233,7 @@
         <p>Need help with dataset selection? Try these links:</p>
         <ul>
 <li>
-            <e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+            <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select datasets.
           </li>
           <li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
