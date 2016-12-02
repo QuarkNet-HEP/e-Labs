@@ -52,6 +52,9 @@
 					<tr>
 						<td><font size="-1"><b><u>Teacher</u></b></font></td>
 						<td><font size="-1"><b><u>Active/Inactive?</u></b></font></td>
+						<td><font size="-1"><b><u>School</u></b></font></td>
+						<td><font size="-1"><b><u>City</u></b></font></td>
+						<td><font size="-1"><b><u>State</u></b></font></td>
 					</tr>
 					<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<tr>
@@ -66,6 +69,9 @@
 								 </c:otherwise>
 								</c:choose>
 							</td>
+							<td>${teacher.school}</td>
+							<td>${teacher.city}</td>
+							<td>${teacher.state}</td>
 						</tr>
 					</c:forEach>
 				</table>
