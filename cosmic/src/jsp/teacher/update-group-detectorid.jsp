@@ -101,7 +101,8 @@
 %>
 <p>Every <a HREF="javascript:glossary('DAQ',130)">DAQ</a> board has a detector id (DAQ number) based on the serial number on the board. Students select it when they upload
 data. To find it, type "SN" when connected with your detector.</p>
-<p><font color="red"><i>Note:  Groups created before summer 2009 will not appear in the dropdown menu.  If no group appears, please go to Registration and create a student research group.</i></font></p>
+<p><font color="red"><i>Note:  Groups created before summer 2009 will not appear in the dropdown menu.  If no group appears, click on Registration in the header, and create a new student research group for your students to use when uploading data.</i></font></p>
+
 <form name="update-group-projects-form" method="post" action="">
 	<p id="choose-group">
 		<c:choose>
