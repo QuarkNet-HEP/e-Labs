@@ -159,8 +159,9 @@ public class EventCandidates {
 										if (detOne != null && detTwo != null) {
 												//deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
 												//								 firstHitTimes.get(ids.indexOf(detTwo)));
-												deltaT = firstHitTimes.get(ids.indexOf(detOne))
-														     -firstHitTimes.get(ids.indexOf(detTwo));
+												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
+												//		     -firstHitTimes.get(ids.indexOf(detTwo));
+												deltaT = Double.parseDouble(detOne);
 										}
 										else {
 												deltaT = 0.0;
