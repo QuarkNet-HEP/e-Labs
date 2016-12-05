@@ -79,8 +79,8 @@ public class EventCandidates {
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				//List<Double> deltaT = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
-				String detOne = null;
-				String detTwo = null;
+				Integer detOne = 0;
+				Integer detTwo = 0;
 				int dtSign = 0;
 				//
 				
@@ -148,17 +148,18 @@ public class EventCandidates {
 										//   with eventNum != 1 as the first event?
 										//if (Integer.parseInt(this.eventNum) == 1) {
 										if (Integer.parseInt(arr[0]) == 1) {
-												detOne = ids.get(0);
-											  detTwo = ids.get(1);
-												dtSign = Integer.signum(Integer.parseInt(detOne) -
-																								Integer.parseInt(detTwo));
+												detOne = Integer.parseInt(ids.get(0));
+												detTwo = Integer.parseInt(ids.get(1));
+												dtSign = Integer.signum(detOne-detTwo);
 										}
 										// Convention: deltaT is the first hit time of the detector
 										//   with the larger id minus the first hit time of the
 										//   detector with the smaller id
 										if (detOne != null && detTwo != null) {
-												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
-																				 firstHitTimes.get(ids.indexOf(detTwo)));
+										//		deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
+										//										 firstHitTimes.get(ids.indexOf(detTwo)));
+												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne))
+																				 -firstHitTimes.get(ids.indexOf(detTwo)));
 										}
 										else {
 												deltaT = 0.0;
