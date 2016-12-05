@@ -106,7 +106,7 @@ public class EventCandidates {
 
 								// parse the eventCandidates input file
                 if (lineNo >= eventStart) {
-                    Row row = new Row();
+                   Row row = new Row();
 										// Each line of the eventCandidates file is divided at spaces
 										//   into the array arr[]
 										String[] arr = line.split("\\s");
@@ -293,8 +293,8 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-				//private Double[] deltaT;
 				private Double deltaT;
+				private Integer testInteger;
 				private int multiplicityCount;
 
         public int getEventCoincidence() {
