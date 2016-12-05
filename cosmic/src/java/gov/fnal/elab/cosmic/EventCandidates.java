@@ -78,7 +78,8 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				//List<Double> deltaT = new ArrayList<Double>();
-				Double deltaT = new Double(0.0);
+				//Double deltaT = new Double(0.0);
+				Integer deltaT = new Integer(1);
 				Double testDouble = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
