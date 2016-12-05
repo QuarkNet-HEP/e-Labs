@@ -345,8 +345,9 @@
 						</td>
 						
 						<!-- Column 4: Delta t -->
-						<td>${row.deltaTShower}</td>
-						
+						<td>${row.testInteger}</td>
+						<!--<td>${row.deltaTShower}</td>-->
+
 						<!-- Column 5: Multiplicity Totals -->
 						<td style="display: ${displayMultiplicity};" name="advanced">
 							${row.multiplicityCount}

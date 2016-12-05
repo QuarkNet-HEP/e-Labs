@@ -77,9 +77,8 @@ public class EventCandidates {
         ElabMemory em = new ElabMemory();
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
-				//List<Double> deltaT = new ArrayList<Double>();
-				//Double deltaT = new Double(0.0);
-				Integer deltaT = new Integer(1);
+				Double deltaT = new Double(0.0);
+				Integer testInteger = new Integer(1);
 				Double testDouble = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
@@ -163,7 +162,8 @@ public class EventCandidates {
 												//								 firstHitTimes.get(ids.indexOf(detTwo)));
 												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
 												//		     -firstHitTimes.get(ids.indexOf(detTwo));
-												deltaT = Integer.parseInt(detOne);
+												deltaT = 0.0;
+												testInteger = Integer.parseInt(detOne);
 										}
 										else {
 												deltaT = 0.0;
@@ -175,7 +175,8 @@ public class EventCandidates {
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
 										row.setDeltaT(deltaT);
-
+										row.setTestInteger(testInteger);
+										
 										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
@@ -382,13 +383,12 @@ public class EventCandidates {
 						return df.format(deltaT*86400e9);
 				}
 
-				// Overloaded methods for testing output
-        public void setDeltaT(Integer deltaT) {
-            this.deltaT = deltaT;
+        public void setTestInteger(Integer testInteger) {
+            this.testInteger = testInteger;
         }
 				
-				public Integer getDeltaT() {
-						return deltaT;
+				public Integer getTestInteger() {
+						return testInteger;
 				}
 				
         public TreeMap<String,String> getIdsMult() {
@@ -438,7 +438,6 @@ public class EventCandidates {
             }
 						// added 2Nov2016 JG for DeltaT analysis
 						else if (csc == 4) {
-								//c = m1.getDeltaT()[1].compareTo(m2.getDeltaT()[1]);
 								c = m1.getDeltaT().compareTo(m2.getDeltaT());
 						}
 
