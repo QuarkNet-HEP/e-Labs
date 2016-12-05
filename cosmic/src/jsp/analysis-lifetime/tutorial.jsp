@@ -55,11 +55,22 @@
 					<td colspan=3>
 		 				
 					
+						A classic modern physics experiment is the measurement of the muon mean lifetime.  Some short-lived cosmic ray <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
+						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, and the electron will leave another. You can ask, "How long before the muon decays?" "What is their <a href="javascript:glossary('lifetime',100)">
+						lifetime</a>?"  
+						<br>
+						Consider the figure below.
+						<br>
+						<img src="../graphics/tryPerf/lifetimeBasic.png" alt="">
+						<br>
+						When a muon enters a counter, a signal is generated in that counter. If the muon travels through counter 1 and into counter 2, both of these counters should 
+						have a signal at approximately the same time. If the muon has stopped within counter 2, however, it will “wait around” until it decays and generate a second signal in counter 2 upon decay. 
+						The time t<sub>DECAY</sub>, the time between the two signals in counter 2, can be extrapolated from the data file.  If no signal occurs in counter 3 (the veto counter), this is a strong 
+						indication that a muon did indeed decay in counter 2. 
+						<br>
+						See how the <A href="../flash/daq_only_standalone.html">detector works</a>.
 						
-						Some short-lived cosmic rays <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface  may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
-						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, the electron will leave another. You can ask, "How long before the muon decays?" "What is their <a href="javascript:glossary('lifetime',100)">
-						lifetime</a>?"<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-					
+						
 				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
 				
 						<img src="../graphics/lifetimeDAG.png" alt="">
