@@ -146,7 +146,8 @@ public class EventCandidates {
 										//    that row
 										// Is there any danger that this code can be executed
 										//   with eventNum != 1 as the first event?
-										if (Integer.parseInt(this.eventNum) == 1) {
+										//if (Integer.parseInt(this.eventNum) == 1) {
+										if (Integer.parseInt(arr[0]) == 1) {
 												detOne = ids.get(0);
 											  detTwo = ids.get(1);
 												dtSign = Integer.signum(Integer.parseInt(detOne) -
