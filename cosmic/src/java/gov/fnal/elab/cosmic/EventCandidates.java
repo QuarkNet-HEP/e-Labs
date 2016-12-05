@@ -157,8 +157,10 @@ public class EventCandidates {
 										//   with the larger id minus the first hit time of the
 										//   detector with the smaller id
 										if (detOne != null && detTwo != null) {
-												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
-																				 firstHitTimes.get(ids.indexOf(detTwo)));
+												//deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
+												//								 firstHitTimes.get(ids.indexOf(detTwo)));
+												deltaT = firstHitTimes.get(ids.indexOf(detOne))
+														     -firstHitTimes.get(ids.indexOf(detTwo));
 										}
 										else {
 												deltaT = 0.0;
