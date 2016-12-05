@@ -106,8 +106,8 @@ public class EventCandidates {
 								// parse the eventCandidates input file
                 if (lineNo >= eventStart) {
                     Row row = new Row();
-										// arr[] is the array that holds the individual
-										//   elements of a single row, divided at whitespaces
+										// Each line of the eventCandidates file is divided at spaces
+										//   into the array arr[]
 										String[] arr = line.split("\\s");
 										// The first three row elements:
                     row.setEventNum(Integer.parseInt(arr[0]));
@@ -122,7 +122,6 @@ public class EventCandidates {
                     ids.clear();
                     multiplicities.clear();
 										firstHitTimes.clear();
-										//deltaT.clear();
 										// This loop covers an individual line of eventCandidates.
 										// Note the increment of 3 such that arr[i] will always
 										//   be <String> detector.channel
@@ -147,7 +146,7 @@ public class EventCandidates {
 										//    that row
 										// Is there any danger that this code can be executed
 										//   with eventNum != 1 as the first event?
-										if (Integer.parseInt(eventNum) == 1) {
+										if (Integer.parseInt(this.eventNum) == 1) {
 												detOne = ids.get(0);
 											  detTwo = ids.get(1);
 												dtSign = Integer.signum(Integer.parseInt(detOne) -
@@ -165,13 +164,10 @@ public class EventCandidates {
 												// throw error
 										}
 										
-										//make sure the rest of this works:
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										// with deltaT no longer an array, don't need DOUBLE_ARRAY
-										//row.setDeltaT((Double[]) deltaT.toArray(DOUBLE_ARRAY));
 										row.setDeltaT(deltaT);
 
 										// Julian Date
