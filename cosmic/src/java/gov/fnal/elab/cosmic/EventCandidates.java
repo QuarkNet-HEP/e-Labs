@@ -79,6 +79,7 @@ public class EventCandidates {
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				//List<Double> deltaT = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
+				Double testDouble = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
 				int dtSign = 0;
@@ -161,7 +162,7 @@ public class EventCandidates {
 												//								 firstHitTimes.get(ids.indexOf(detTwo)));
 												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
 												//		     -firstHitTimes.get(ids.indexOf(detTwo));
-												deltaT = Double.parseDouble(detOne);
+												deltaT = Integer.parseInt(detOne);
 										}
 										else {
 												deltaT = 0.0;
@@ -362,12 +363,10 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        //public void setDeltaT(Double[] deltaT) {
         public void setDeltaT(Double deltaT) {
             this.deltaT = deltaT;
         }
 
-				//public Double[] getDeltaT() {
 				public Double getDeltaT() {
 						return deltaT;
 				}
@@ -380,6 +379,15 @@ public class EventCandidates {
 						// deltaT values are in days.  The constant here
 						//   converts to nanoseconds
 						return df.format(deltaT*86400e9);
+				}
+
+				// Overloaded methods for testing output
+        public void setDeltaT(Integer deltaT) {
+            this.deltaT = deltaT;
+        }
+				
+				public Integer getDeltaT() {
+						return deltaT;
 				}
 				
         public TreeMap<String,String> getIdsMult() {
