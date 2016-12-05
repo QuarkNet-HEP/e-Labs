@@ -163,7 +163,7 @@ public class EventCandidates {
 												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
 												//		     -firstHitTimes.get(ids.indexOf(detTwo));
 												deltaT = 0.0;
-												testInteger = Integer.parseInt(detOne);
+												testInteger = ids.indexOf(detOne);
 										}
 										else {
 												deltaT = 0.0;
