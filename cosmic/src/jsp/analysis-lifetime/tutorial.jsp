@@ -62,7 +62,8 @@
 						<center><img src="../graphics/tryPerf/lifetimeBasic.png" alt=""></center>
 						<br>
 						When a muon enters a counter, a signal is generated in that counter. If the muon travels through counter 1 and into counter 2, both of these counters should 
-						have a signal at approximately the same time. If the muon has stopped within counter 2, however, it will &quot;wait around&quot; until it decays and generate a second signal in the same counter (2) upon decay. 
+						have a signal at approximately the same time.  This is called a two-fold <a href="javascript:glossary('coincidence',100)">coincidence</a> (signal seen in two counters within a certain small time window).  
+						If the muon has stopped within counter 2, however, it will &quot;wait around&quot; until it decays and generate a second signal in the same counter (2) upon decay. 
 						The time between the two signals in counter 2, t<sub>DECAY</sub>, can be extrapolated from the raw data file.  If no signal occurs in counter 3 (the veto counter), this is a strong 
 						indication that a muon did indeed decay in counter 2.  See how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
 						
