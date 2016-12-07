@@ -70,9 +70,9 @@
 								 </c:otherwise>
 								</c:choose>
 							</td>
-							<td>${teacher.group.school}</td>
-							<td>${teacher.group.city}</td>
-							<td>${teacher.group.state}</td>
+							<td valign=top>${teacher.group.school}</td>
+							<td valign=top>${teacher.group.city}</td>
+							<td valign=top>${teacher.group.state}</td>
 							<td>
 								<c:forEach items="${teacher.groups}" var="group">
 									${group.name}<br/>
