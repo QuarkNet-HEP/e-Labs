@@ -24,19 +24,8 @@
 				</div>
 			</div>
 			
-			<div id="content">
-			
-			You can:
-				<strong>1)</strong> Find some help on this page
-				<strong>2)</strong> 
-					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16-cosmic-crdata-robert_s._peterson-fermilab_test_array-batavia-il-2016.1114.data" 
-						target="MuonLifetime" width="700" height="510">View</e:popup> a poster 
-					created using this study
-				<strong>3)</strong> 
-					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-					Step-by-Step Instructions
-	
-	<p>
+			<div id="content">			
+			<p>
 			<center>
 			<table width = "655" cellpadding ="8">
 				<tr>
@@ -71,12 +60,13 @@
 						particles. Others include mass and electric charge.<p>
 						<P>
 						We measure the time between two <a href="javascript:glossary('signal',350)">signals</a>  in the same counter and look for patterns in the time difference between two consecutive signals. 
-						The difference may result from a muon decay. Two types of backgrounds are minimized in the accompanying example.   Seeing many of these can increase your confidence in what you are observing.
-						<p>1. Hardware errors on some signals with large pulse widths can generate fake second-hits at very small times, so times are excluded below 100ns.
-						
-						<p>2. The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  Second hits in counter 2 could resulting from things other than an electron, 
-						e.g. noise or a second muon, occur randomly and would occupy the regions at longer times.
-						
+						The difference may result from a muon decay. 
+						<p>Two types of backgrounds are minimized in the accompanying example.   
+						<ol>
+							<li>Hardware errors on some signals with large pulse widths can generate fake second-hits at very small times, so times are excluded below 100ns.</li>
+							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  Second hits in counter 2 could resulting from things other than an electron, 
+							e.g. noise or a second muon, occur randomly and would occupy the regions at longer times.</li>
+						</ol>
 						<p>If we plot a histogram of the length between signals for many of these candidate decays, we can fit the result with an exponential 
 		 				distribution for the <a href="javascript:glossary('decay',350)">decays</a> plus a flat component for any random backgrounds.  
 		 				The mean lifetime from that fit is shown in the plot as 2.2 microseconds.	
