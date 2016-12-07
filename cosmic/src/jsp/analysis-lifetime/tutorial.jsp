@@ -68,7 +68,9 @@
 						
 						<p>Furthermore, if no signal occurs in counter 3 (the veto counter), this is a strong 
 						indication that a muon did indeed decay in counter 2.  Although existing  e-Lab tools do not include veto capability in software, the DAQ can be configured to require veto counters in hardware.  In other words,
-						vetoes are a useful concept but not available in analysis at the moment.  For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
+						vetoes are a useful concept but not available in analysis at the moment.  
+						
+						<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
 						
 						
 				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
