@@ -52,7 +52,10 @@
 					    </td>
 						
 					    <td width=233 valign=top>
-		 				&nbsp;<p>		 			
+		 				&nbsp;<p>		
+		 				<p>If we plot a histogram of the length between signals for many of these candidate decays, we can fit the result with an exponential 
+		 				distribution for the decays plus a flat component for any random backgrounds.  The mean lifetime from that fit is shown in the plot as 2.2 microseconds.
+		 				 			
 						<p>The only way out is to collect many, many of these "candidates" and then plot a 
 						histogram of the length between signals. Real 
 						<a href="javascript:glossary('decay',350)">decays</a> will be much longer between signals <i>and</i> have an exponential distribution with a "longish" time constant.	
