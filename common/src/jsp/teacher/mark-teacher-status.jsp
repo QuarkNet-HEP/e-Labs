@@ -59,8 +59,8 @@
 					</tr>
 					<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<tr>
-							<td>${teacher.name}</td>
-							<td style="text-align: center;">
+							<td valign=top>${teacher.name}</td>
+							<td valign=top style="text-align: center;">
 								<c:choose>
 								 <c:when test="${teacher.active == true }">
 									<input type="checkbox" name="status" id="${teacher.name}" value="${teacher.teacherId}" checked></input>
