@@ -83,9 +83,8 @@ function setDisplay(objectID,state) {
 				
 				<tr>
 					<td width = "321" valign="top">
-						Once the PMT "sees" the electron, we know the amount of time between the muon 
-						stopping and decaying. The node that asks "Any Decays" looks for a light 
-						signal from one counter (the incoming muon) and then waits. 
+						Each counter is connected via a channel to the DAQ.  The channel that seeks decays looks for a light signal (the incoming muon) and then waits.  
+						When the counter later detects the electron's signal within a certain time window, we know the amount of time between the muon stopping and decaying.  
 					</td>
 
 					
