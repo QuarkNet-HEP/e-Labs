@@ -52,10 +52,10 @@
 					<tr>
 						<td><font size="-1"><b><u>Teacher</u></b></font></td>
 						<td><font size="-1"><b><u>Active/Inactive?</u></b></font></td>
-						<td><font size="-1"><b><u>ID</u></b></font></td>
 						<td><font size="-1"><b><u>School</u></b></font></td>
 						<td><font size="-1"><b><u>City</u></b></font></td>
 						<td><font size="-1"><b><u>State</u></b></font></td>
+						<td><font size="-1"><b><u>Groups</u></b></font></td>
 					</tr>
 					<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<tr>
@@ -70,10 +70,14 @@
 								 </c:otherwise>
 								</c:choose>
 							</td>
-							<td>${teacher.id}</td>
-							<td>${teacher.school}</td>
-							<td>${teacher.city}</td>
-							<td>${teacher.state}</td>
+							<td>${teacher.group.school}</td>
+							<td>${teacher.group.city}</td>
+							<td>${teacher.group.state}</td>
+							<td>
+								<c:forEach items="${teacher.groups}" var="group">
+									${group.name}<br/>
+								</c:forEach>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
