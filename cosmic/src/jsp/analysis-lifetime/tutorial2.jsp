@@ -52,7 +52,7 @@
 					<td valign = "top" width=322>
 					&nbsp;<p>
 					
-						Muon decay follows an exponential law&mdash;just like radioactive decay and many other natural phenomenon. 
+						Muon decay follows an exponential law&mdash;just like radioactive decay and many other natural phenomena. 
 						<a href="http://www.purplemath.com/modules/graphexp.htm">Exponential plots</a> have a characteristic shape.<p>
 						
 						Finding the value of the exponent leads to the 
@@ -64,8 +64,8 @@
 						<p>Two types of backgrounds are minimized in the accompanying example.   
 						<ol>
 							<li>Hardware errors on some signals with large pulse widths can generate fake second-hits at very small times, so times are excluded below 100ns.</li>
-							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  Second hits in counter 2 could resulting from things other than an electron, 
-							e.g. noise or a second muon, occur randomly and would occupy the regions at longer times.</li>
+							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  Second hits in counter 2 could resulting from things other than an electron. 
+							For example, noise or a second muon can occur randomly and would occupy the regions at longer times.</li>
 						</ol>
 						<p>If we plot a histogram of the length between signals for many of these candidate decays, we can fit the result with an exponential 
 		 				distribution for the <a href="javascript:glossary('decay',350)">decays</a> plus a flat component for any random backgrounds.  
