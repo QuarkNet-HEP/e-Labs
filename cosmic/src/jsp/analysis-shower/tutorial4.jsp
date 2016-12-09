@@ -26,35 +26,31 @@
 			</div>
 			
 			<div id="content">
+			<p>
+			<center>
+			<table width=650>
+			<tr><td>
+					<font color="#0a5ca6" size=+3>
+						<b><center>
+	 						Shower Study
+	 					</center></b>
+	 				</font>	 		
 
-<p>
-<center>
-<p>
-<p>	
-<center>
-<table width=650>
-<tr><td>
-									<font color="#0a5ca6" size=+3>
-										<b><center>
-	 										Shower Study
-	 									</center></b>
-	 								</font>
-	 							</center>
-<p><b>These diagrams show how to set the detector, channel and hit coincidence levels when doing a shower study.</b></p>
 				<div style="text-align: center;">
+				<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
+				<img src="../graphics/showerDAG.png" alt=""/>		
+				<p>
 				<p><font size=+2><b>Shower Study Interface</b></font></p>
 				<img src="../graphics/coincidence-anal-controls.png">
 				<p>&nbsp;
-				
-				<p><font size=+2><b><a href="javascript:glossary('coincidence',350)">Coincidence</a> Diagram</b></font></p>
-				<img src="../graphics/coincidence-diagram.png">
-				
                </div>
+
                &nbsp;<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <b>4</b> & <a href="index.jsp">Analysis</a>
 
-			</div>
 			</td></tr>
 			</table>
+			</center>
+			</div>
 			<!-- end content -->	
 		
 			<div id="footer">
