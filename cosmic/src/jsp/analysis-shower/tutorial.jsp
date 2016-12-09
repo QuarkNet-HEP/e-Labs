@@ -75,48 +75,22 @@
 				
 				<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
 				
-		<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
-		
-				<img src="../graphics/showerDAG.png" alt=""/>
-				<p>
 				<hr>
+				<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
+				<img src="../graphics/showerDAG.png" alt=""/>		
 				<p>
 			</td>
 		</tr>
 				
-		<tr>
-		<td  valign="top" width=322>
-				<img src="../graphics/shower.png" height= "350" width = "350" alt=""/>
-			</td>	
-		<td width=5>&nbsp;
-							</td>					
-			<td valign="top" width=322>
-				&nbsp<p>
-				&nbsp<p>
-				In this event, the detector captured 12 
-				PMT
-				signals from 3 different locations. <br/>
-				<p>	
-				Signals are  marked by the red 
-				polygons. The polygon's height above the x-y plane (the green spike) tells 
-				us the amount of time between the beginning of the shower and the start of 
-				the PMT signal at that x-y location. A polygon with no tail represents the 
-				beginning of the event. <br/>
-	<p>
-				We said there are 12 signals in the event. The plot only shows three. Where 
-				are the other nine?<br/>
-
-				<p align="center">
-				</td></tr>
-				<tr><td colspan=3>
-					               <p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
-				</p>
-					
-			</td>
-					
-						
+		
+				
+		<tr><td colspan=3>
+		        <p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
+				</p>			
+			</td>		
 		</tr>
 	</table>
+</center>	
 				
 			</div>
 			<!-- end content -->	
