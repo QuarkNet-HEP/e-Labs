@@ -280,29 +280,30 @@
                         3
                     	</td>
                 	</tr>
-            		</table>
-  						<p>
-            			Signals are  marked by the red 
-						polygons. The polygon's height above the x-y plane (the green spike) tells 
-						us the amount of time between the beginning of the shower and the start of 
-						the PMT signal at that x-y location. A polygon with no tail represents the 
-						beginning of the event. <br/>
-						<p>
-						We said there are 12 signals in the event. The plot only shows three. Where 
-						are the other nine?<br/>                			
+            		</table>             			
 					</td>
 				</tr>
 				
 				<tr>
-					<td colspan ="3" >
-					You can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in three 
+					<td colspan ="3" >&nbsp;
+					<p>
+					Signals are  marked by the red polygons. The polygon's height above the x-y plane (the green spike) tells 
+					us the amount of time between the beginning of the shower and the start of 
+					the PMT signal at that x-y location. A polygon with no tail represents the 
+					beginning of the event. 
+					<p>
+					We said there are 12 signals in the event. The plot only shows three. Where 
+					are the other nine?					
+					<p>
+					From the table, you can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in three 
                 	<a href="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150.  
                 	Look at the amount of time between the signals in detector 119. The signal times are so close together that 
                 	they only show up as one polygon on this plot. if you zoom in (rerun the analysis with a different time scale),
                 	you can see the others.
 					<p>
 					The plot tells us that detector 141 fired first, then 119, and 150 last. The table can give us much more information. 
-					Does this event candidate look like a shower to you?</p>
+					Does this event candidate look like a shower to you?
+					</td>
 				</tr>
 					
 				<tr><td colspan=3>
