@@ -46,7 +46,7 @@
 				<img src="../graphics/coincidence-anal-controls.png">
 				<p>&nbsp;
 				
-				<p><font size=+2><b>Coincidence Diagram</b></font></p>
+				<p><font size=+2><b><a href="javascript:glossary('coincidence',350)">Coincidence</a> Diagram</b></font></p>
 				<img src="../graphics/coincidence-diagram.png">
 				
                </div>
