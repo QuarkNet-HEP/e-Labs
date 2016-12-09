@@ -39,10 +39,6 @@
 				<div style="text-align: center;">
 				<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
 				<img src="../graphics/showerDAG.png" alt=""/>		
-				<p>
-				<p><font size=+2><b>Shower Study Interface</b></font></p>
-				<img src="../graphics/coincidence-anal-controls.png">
-				<p>&nbsp;
                </div>
 
                &nbsp;<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <b>4</b> & <a href="index.jsp">Analysis</a>

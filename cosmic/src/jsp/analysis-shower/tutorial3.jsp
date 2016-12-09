@@ -119,7 +119,7 @@
                	We entered parameters for the event and got back the table on the left. 
                	These "candidates" satisfy our requirements for an event. What do you 
                	think we entered for the hit coincidence level? What about 
-                detector coincidence? <i>[Answer:  hit coincidence-10, detector coincidence-3]</i>
+                detector coincidence? <i>[Answer - hit coincidence: 10, detector coincidence: 3]</i>
 				<p>
 				The analysis software can only find 
 				signals that match the parameter 

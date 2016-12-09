@@ -75,8 +75,6 @@
 				
 				<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
 				
-				<hr>
-				
 				<center><p><font size=+2><b>Shower Study Interface</b></font></p></center>
 				<p>Here is how to set the detector, channel and hit coincidence levels when doing a shower study like the one described above.
 				<center><img src="../graphics/coincidence-anal-controls.png"></center>
