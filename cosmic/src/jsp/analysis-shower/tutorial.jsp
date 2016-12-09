@@ -55,7 +55,7 @@
  			<td colspan=3>
  				<p><a href="javascript:glossary('shower',350)">Showers</a> can pepper a large area of Earth's surface 
  				in a very tiny window of time.  With the <a href="javascript:glossary('GPS',350)">GPS</a> device connected to your 
- 				<a href="javascript:glossary('DAQ',350)">DAQ board, the absolute time stamp allows a network of detectors 
+ 				<a href="javascript:glossary('DAQ',350)">DAQ</a> board, the absolute time stamp allows a network of detectors 
  				(at the same site or at different schools) to study cosmic ray showers. Students can look for small showers over their own detectors, 
  				or collaborate with other schools in the area to look for larger showers. The online analysis tools of the e-Lab can check for 
  				multiple detectors firing in coincidence.  They also allow students to make predictions about the direction from which the shower 
