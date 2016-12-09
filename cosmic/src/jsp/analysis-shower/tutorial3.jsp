@@ -52,7 +52,7 @@
                         Event Date
                     </td>
                     <td align="center" width="70">
-                        Event Coincidence
+                        Hit Coincidence
                     </td>
                     <td align="center" width="71">
                         Detector Coincidence
@@ -118,9 +118,9 @@
                &nbsp;<p>
                	We entered parameters for the event and got back the table on the left. 
                	These "candidates" satisfy our requirements for an event. What do you 
-               	think we entered for the event coincidence level? What about 
-              detector coincidence?<p>
-
+               	think we entered for the hit coincidence level? What about 
+                detector coincidence? <i>[Answer:  hit coincidence-10, detector coincidence-3]</i>
+				<p>
 				The analysis software can only find 
 				signals that match the parameter 
 				settings. You have to decide which of the candidates is an event&mdash;if any!<p>
