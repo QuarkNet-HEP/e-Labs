@@ -54,16 +54,24 @@
 	 					</tr><tr>
  			<td colspan=3>
  				<a href="javascript:glossary('shower',350)">Showers</a> can pepper a large area of Earth's surface 
- 				in a very tiny window of time. They can be rare, especially 
- 				if the area you are looking in is large.
+ 				in a very tiny window of time.  With the <a href="javascript:glossary('GPS',350)">GPS device connected to your 
+ 				<a href="javascript:glossary('DAQ',350)">DAQ board, the absolute time stamp allows a network of detectors 
+ 				(at the same site or at different schools) to study cosmic ray showers. Students can look for small showers over their own detectors, 
+ 				or collaborate with other schools in the area to look for larger showers. The online analysis tools of the e-Lab can check for 
+ 				multiple detectors firing in coincidence.  They also allow students to make predictions about the direction from which the shower 
+ 				(and thus the primary cosmic ray) originated. 
 		
 				The many particles in a shower light up the detector's 
 				<a href="javascript:glossary('photomultiplier_tube',350)">photomultiplier tubes</a> (PMT)
-				with many <a href="javascript:glossary('signal',350)">signals</a> 
-				one after another. The more particles in the shower, the larger 
-				area it covers, the more interesting it is. You could find out the extent of the shower or perhaps the origin of the primary cosmic ray.
-				We set up the detector with the counters unstacked, <img src="../graphics/unstacked.gif" />. <br>(How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-			
+				with many <a href="javascript:glossary('signal',350)">signals</a> one after another. 
+				Interesting showers have many particles and cover a large area.  
+				We set up the detector with the <a href="javascript:glossary('counter',350)">counters</a> unstacked, <img src="../graphics/unstacked.gif" />.  
+				Each counter is connected via a channel to the DAQ.  See picture below for a sample setup:
+				<p><font size=+2><b><a href="javascript:glossary('coincidence',350)">Coincidence</a> Diagram</b></font></p>
+				<img src="../graphics/coincidence-diagram.png">
+				
+				<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
+				
 		<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
 		
 				<img src="../graphics/showerDAG.png" alt=""/>
