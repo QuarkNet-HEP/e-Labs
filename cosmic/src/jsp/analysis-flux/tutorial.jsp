@@ -54,11 +54,21 @@
 						<tr>
 				 			
 							<td colspan=3>
-							&nbsp<p>
-								The detectors record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a>. You may be interested in looking at <a HREF="javascript:glossary('flux',100)">flux</a> throughout the day or year to see if there are changes in the rain of these particles. You can ask questions like: How does the arrival rate depend on time of day? or solar activity? 
-
-
-<p align=center><font size=+2><b>From Raw Data to a Plot</font></b>
+							&nbsp<p>Definition of Cosmic ray flux:
+							<center>&Phi;<sub>CR</sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></center>
+								Since the area of the detector remains constant, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
+								“How does the rate (events/time) at which cosmic rays pass through a detector depend on a certain variable?” 
+								One can consider flux throughout the day or year to see if there are changes in the rain of these particles. 
+								One can ask questions like: How does the arrival rate depend on time of day or solar activity?  The detectors record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a>. 
+								<p>Flux experiments may include several geometries of your detectors such as:
+								<ol>
+									<li>a single counter</li>
+									<li>multiple counters placed in the same plane to increase detector area</li>
+									<li>closely stacked counters that require coincidence</li>
+									<li>separated, stacked counters that require coincidence used to look at flux from only a particular direction of the sky</li>
+								</ol>
+								<p>When analyzing flux study data, students select the dataset and channel(s) to be analyzed. The analysis tools produce a histogram of flux vs. time similar to the one shown below. 
+								Students can juxtapose data regarding their independent variable as a function of time to look for correlations.										
 							</td>
 							
 							</td>
@@ -66,36 +76,39 @@
 				
 						<tr>
 							<td colspan = 3>
-								<img src="../graphics/fluxDAG.png" align="middle">
-<p>
-<hr>
-<p>
-<center><font size=+2><b>Sample Plot</b></font></center>
+							<p>
+							<center><font size=+2><b>Sample Plot</b></font></center>
 							</td>
 						</tr>
 	
 						<tr>
 							<td valign=top width=322>
-						
 								<img src="../graphics/flux.png">
 							</td>
-							<td width=5>&nbsp;
-							
-							</td>
+
+							<td width=5>&nbsp;</td>
 			
 							<td valign=top width=322>
 								&nbsp<p>
-							
-											
 								<p> 
-								One interesting feature occurs periodically in this <a href="http://www.shodor.org/interactivate/activities/scatterplot/">scatter plot</a>: the flux diminishes and increases regularly; do you see it? What might cause this? Is the effect real or is it the result of the way this file was plotted? Is there a way that you can tell?
-<p>
-This plot shows <a HREF="javascript:glossary('flux',350)">flux</a> measurements for <a HREF="javascript:glossary('detector',350)">detector # 5078 </a> from 7 May to 11 May 2003. The counters were stacked, one on top of the other, <img src="../graphics/stacked.gif" />.
-<p>
-<center>
-<IMG SRC="../graphics/stacked.jpg" BORDER=1> 
-<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-</center>
+								One interesting feature occurs periodically in this <a href="http://www.shodor.org/interactivate/activities/scatterplot/">scatter plot</a>: 
+								the flux diminishes and increases regularly; do you see it? What might cause this? Is the effect real or is it the result of the way this file was plotted? Is there a way that you can tell?
+								<p>
+								This plot shows <a HREF="javascript:glossary('flux',350)">flux</a> measurements for <a HREF="javascript:glossary('detector',350)">detector # 5078 </a> 
+								from 7 May to 11 May 2003. The counters were stacked, one on top of the other, <img src="../graphics/stacked.gif" />.
+								<p>
+								<center>
+									<IMG SRC="../graphics/stacked.jpg" BORDER=1> 
+									<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+								</center>
+							</td>
+						</tr>
+						<hr>
+						<tr>
+							<td colspan=3>
+							<p align=center><font size=+2><b>From Raw Data to a Plot</font></b>
+							<img src="../graphics/fluxDAG.png" align="middle">
+							<p>
 							</td>
 						</tr>
 					</table>
