@@ -55,12 +55,13 @@
 				 			
 							<td colspan=3>
 							&nbsp<p>Definition of Cosmic ray flux:
-							<center>&Phi;<sub>CR</sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></center>
-								Since the area of the detector remains constant, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
-								“How does the rate (events/time) at which cosmic rays pass through a detector depend on a certain variable?” 
+							<center><font size=+2>&Phi;<sub>CR</sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font></center>
+								<p>Since the area of the detector remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
+								&quot;How does the rate (events/time) at which cosmic rays pass through a detector depend on a certain variable?&quot;
 								One can consider flux throughout the day or year to see if there are changes in the rain of these particles. 
-								One can ask questions like: How does the arrival rate depend on time of day or solar activity?  The detectors record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a>. 
-								<p>Flux experiments may include several geometries of your detectors such as:
+								One can see if arrival rate depends on time of day or solar activity.  The <a HREF="javascript:glossary('detector',100)">detectors</a> record the arrival 
+								time of the <a href="javascript:glossary('muon',100)">muons</a>. 
+								<p>Flux experiments may include several <a href="javascript:glossary('geometry',100)">geometries</a> of your detectors such as:
 								<ol>
 									<li>a single counter</li>
 									<li>multiple counters placed in the same plane to increase detector area</li>
