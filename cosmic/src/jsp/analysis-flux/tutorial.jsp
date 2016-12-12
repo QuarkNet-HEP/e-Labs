@@ -62,10 +62,15 @@
 								For example, one can see if it depends on time of day or perhaps solar activity.   
 								<p>Flux experiments may include several <a href="javascript:glossary('geometry',100)">geometries</a> of your detectors such as:
 								<ol>
-									<li>a single counter<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>
-									<li>multiple counters placed in the same plane to increase detector area</li>
-									<li>closely stacked counters that require coincidence</li>
-									<li>separated, stacked counters that require coincidence used to look at flux from only a particular direction of the sky</li>
+									<li>closely stacked counters that require coincidence (2, 3, or 4)<br><img src="../graphics/tryPerf/flux_234stacks.png" align="middle"></li>
+									<li>other geometries</li>
+									<ul>									
+										<li>two stacks of stacked counters<br><img src="../graphics/tryPerf/flux_2counter_stacks.png align="middle"><li>									
+										<li>separated, stacked counters that require coincidence to look at flux from only a particular direction of the sky
+										<br><img src="../graphics/tryPerf/flux_separated_stack.png align="middle"></li>
+										<li>multiple counters placed in the same plane to increase detector area<br><img src="../graphics/tryPerf/flux_4counters_plane.png" align="middle"></li>
+										<li>avoid using a single counter (1-fold coincidence dominated by noise)<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>				
+									</ul>
 								</ol>
 								<p>The <a HREF="javascript:glossary('detector',100)">detectors</a> record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a> in a raw data file.  
 								When analyzing flux study data, students select the dataset and channel(s) to be analyzed. The analysis tools produce a histogram of flux vs. time similar to the one shown below. 
