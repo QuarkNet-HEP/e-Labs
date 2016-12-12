@@ -57,18 +57,18 @@
 							&nbsp<p>Definition of Cosmic ray flux:
 							<center><font size=+2>&Phi;<sub>CR</sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font></center>
 								<p>Since the area of the detector remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
-								&quot;How does the rate (events/time) at which cosmic rays pass through a detector depend on a certain variable?&quot;
-								One can consider flux throughout the day or year to see if there are changes in the rain of these particles. 
-								One can see if arrival rate depends on time of day or solar activity.  The <a HREF="javascript:glossary('detector',100)">detectors</a> record the arrival 
-								time of the <a href="javascript:glossary('muon',100)">muons</a>. 
+								&quot;How does the rate (events/time) at which cosmic rays pass through a <a href="javascript:glossary('counter',100)">counter</a> depend on a certain variable?&quot;
+								One can consider flux throughout the day or year to see if there are changes in the arrival rate of these particles. 
+								For example, one can see if it depends on time of day or perhaps solar activity.   
 								<p>Flux experiments may include several <a href="javascript:glossary('geometry',100)">geometries</a> of your detectors such as:
 								<ol>
-									<li>a single counter</li>
+									<li>a single counter<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>
 									<li>multiple counters placed in the same plane to increase detector area</li>
 									<li>closely stacked counters that require coincidence</li>
 									<li>separated, stacked counters that require coincidence used to look at flux from only a particular direction of the sky</li>
 								</ol>
-								<p>When analyzing flux study data, students select the dataset and channel(s) to be analyzed. The analysis tools produce a histogram of flux vs. time similar to the one shown below. 
+								<p>The <a HREF="javascript:glossary('detector',100)">detectors</a> record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a> in a raw data file.  
+								When analyzing flux study data, students select the dataset and channel(s) to be analyzed. The analysis tools produce a histogram of flux vs. time similar to the one shown below. 
 								Students can juxtapose data regarding their independent variable as a function of time to look for correlations.										
 							</td>
 							
