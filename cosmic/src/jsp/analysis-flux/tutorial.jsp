@@ -65,7 +65,7 @@
 									<li>closely stacked counters that require coincidence (2, 3, or 4)<br><img src="../graphics/tryPerf/flux_234stacks.png" align="middle"></li>
 									<li>other geometries</li>
 									<ul>									
-										<li>two stacks of stacked counters<br><img src="../graphics/tryPerf/flux_2counter_stacks.png align="middle"><li>									
+										<li>two stacks of stacked counters<br><img src="../graphics/tryPerf/flux_2counter_stacks.png align="middle"></li>									
 										<li>separated, stacked counters that require coincidence to look at flux from only a particular direction of the sky
 										<br><img src="../graphics/tryPerf/flux_separated_stack.png align="middle"></li>
 										<li>multiple counters placed in the same plane to increase detector area<br><img src="../graphics/tryPerf/flux_4counters_plane.png" align="middle"></li>
