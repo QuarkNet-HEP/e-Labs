@@ -47,6 +47,7 @@
 			</div>
 			
 			<div id="content">
+			<p>New code.</p>
 			<form id="updateStatus" method="post">
 				<table cellpadding="10" cellspacing="10" border="1" align="center">
 					<tr>
@@ -75,7 +76,8 @@
 							<td valign=top>${teacher.group.state}</td>
 							<td>
 								<c:forEach items="${teacher.groups}" var="group">
-									${group.name}<br/>
+									${group.name} - 
+									${group.role}<br>
 								</c:forEach>
 							</td>
 						</tr>
