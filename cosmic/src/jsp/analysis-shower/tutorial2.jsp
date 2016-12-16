@@ -41,7 +41,7 @@
 	 				<td colspan = 3>
 	 					The detector identified 1376 shower candidates.  There's a data table for each shower candidate 
 						that meets your input parameters.
-						<p> <img src="../graphics/tryPerf/shower_cand_tutorial.png" alt="">
+						<p> <center><img src="../graphics/tryPerf/shower_cand_tutorial.png" alt=""></center>
 						<p> Look at the data table for Sep 1, 2016 01:02:17 UTC. 										
 	 			</tr>
 				<tr>
@@ -51,7 +51,7 @@
 					<td width=10>&nbsp;</td>
 					
 					<td width="322" valign="top">
-						In this event, the detector captured 10 PMT signals from 2 different locations. <br>
+						In this event, the detector captured ten PMT signals from two different locations. <br>
 						<img src="../graphics/tryPerf/shower_event_tutorial.png" alt="">         			
 					</td>
 				</tr>
@@ -60,17 +60,16 @@
 					<td colspan ="3" >&nbsp;
 					<p>
 					Signals are  marked by the red polygons. The polygon's height above the x-y plane (the green spike) tells 
-					us the amount of time between the beginning of the shower and the start of 
-					the PMT signal at that x-y location. A polygon with no tail represents the 
-					beginning of the event. 
+					us the amount of time between the beginning of the shower and the start of the PMT signal at that x-y location. 
+					A polygon with no tail represents the beginning of the event. 
 					<p>
-					We said there are 10 signals in the event. The plot only shows nine. Where is the other one?					
+					We said there are ten signals in the event. The plot seems to show only nine. Where is the other one?					
 					<p>
-					From the table, you can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in two 
+					From the table, one can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in two 
                 	<a href="javascript:glossary('detector',350)">detectors</a>: 6148 and 6119.  
                 	Look at the amount of time between the signals in detector 6119. The signal times are so close together (40.0ns & 41.3ns) that 
-                	they only show up as one polygon on this plot. If you zoom in (rerun the analysis with a different time scale),
-                	you can see the other one.
+                	they only show up as one polygon on this plot. Upon zooming in (rerun the analysis with a different time scale),
+                	one can see the tenth polygon.
 					<p>
 					The plot tells us that detector 6148 fired first, then 6119. The table can give us much more information. 
 					Does this event candidate look like a shower to you?
