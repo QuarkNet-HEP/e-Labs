@@ -33,106 +33,48 @@
 	
 				<table width="655">
 				<tr>
-							<td colspan = 3>
-								<center>
-									<font color="#0a5ca6" size=+3>
-										<b>
-	 										Shower Study
-	 									</b>
-	 								</font>
-	 							</center>
-	 						</td>
-	 					</tr>
-				<tr width="322">
-		 			<td valign="top">
-		 			&nbsp<p>
-            <table cellspacing="2" border="0">
-                <tr>
-                    <td align="center" width="180">
-                        Event Date
-                    </td>
-                    <td align="center" width="70">
-                        Hit Coincidence
-                    </td>
-                    <td align="center" width="71">
-                        Detector Coincidence
-                    </td>
+					<td colspan = 3>
+						<center><font color="#0a5ca6" size=+3><b>Shower Study</b></font></center>
+						<p>
+	 				</td>
+	 			</tr>
+						            
+				<tr>
+		 			<td width="322" valign="top">
+		 				<img src="../graphics/tryPerf/shower_plot_tutorial.png" alt="">
+					</td>
+					<td width=10>&nbsp;</td>
+					
+					<td width="322" valign="top">
+						In this event, the detector captured ten PMT signals from two different locations. <br>
+						<img src="../graphics/tryPerf/shower_event_tutorial.png" alt="">         			
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan ="3" >&nbsp;
+					<p>
+					Signals are  marked by the red polygons. The polygon's height above the x-y plane (the green spike) indicates 
+					the amount of time between the beginning of the shower and the start of the PMT signal at that x-y location. 
+					A polygon with no tail represents the beginning of the event. 
+					<p>
+					We said there are ten signals in the event. The plot seems to show only nine. Where is the other one?					
+					<p>
+					From the table, one can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in two 
+                	<a href="javascript:glossary('detector',350)">detectors</a>: 6148 and 6119.  
+                	Look at the amount of time between the signals in detector 6119. Two signal times are so close together (40.0ns & 41.3ns) that 
+                	they only show up as one polygon on this plot. Upon zooming in (rerun the analysis with a different time scale),
+                	one can see the tenth polygon.
+					<p>
+					The plot tells us that detector 6148 fired first, then 6119. The table can give us much more information. 
+					Does this event candidate look like a shower?
+					</td>
+				</tr>
+				<tr>
+					<td colspan=3>
+						&nbsp<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
+               		</td>
                 </tr>
-<tr bgcolor="#aaaafc">
-
-                    <td align="center">
-                       Oct 19, 2004 12:07:06 AM CDT
-                    </td>
-                    <td align="center">
-                        12
-                    </td>
-                    <td align="center">
-                        3 (119 150 141)
-                    </td>
-                </tr>
-<tr bgcolor="#e7eefc">
-
-                    <td align="center">
-                       Oct 19, 2004 4:32:53 PM CDT
-                    </td>
-                    <td align="center">
-                        10
-                    </td>
-                    <td align="center">
-                        3 (119 150 141)
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                    	Oct 20, 2004 10:36:36 PM CDT
-                    </td>
-                    
-                    <td align="center">
-                        10
-                    </td>
-                    <td align="center">
-                        3 (119 150 141)
-                    </td>
-                </tr>
-<tr bgcolor="#e7eefc">
-
-                    <td align="center">
-                  	  Oct 21, 2004 10:23:49 AM CDT
-                    </td>
-                    
-                    <td align="center">
-                        12
-                    </td>
-                    <td align="center">
-                        3 (119 150 141)
-                    </td>
-                </tr>
-
-                </table>
-               </td>
-               <td width=10>&nbsp;
-							</td>
-               
-               <td valign="top" width="322">
-               &nbsp;<p>
-               	We entered parameters for the event and got back the table on the left. 
-               	These "candidates" satisfy our requirements for an event. What do you 
-               	think we entered for the hit coincidence level? What about 
-                detector coincidence? <i>[Answer - hit coincidence: 10, detector coincidence: 3]</i>
-				<p>
-				The analysis software can only find 
-				signals that match the parameter 
-				settings. You have to decide which of the candidates is an event&mdash;if any!<p>
-
-				What will you do to make this decision? What does an event look like? 
-				How will you know when you are right?
-				<p align="center">
-				</td></tr
-				<tr><td colspan=3>
-					&nbsp<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
-               	</td>
-               </tr>
           		
           		
                </table>
