@@ -63,8 +63,10 @@
 						<p>Two types of background noise are minimized in the accompanying example.   
 						<ol>
 							<li>Hardware errors on some signals with large pulse widths can generate fake second-hits at very small times, so times are excluded below 100ns.</li>
-							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  Second hits in counter 2 could resulting from things other than an electron. 
-							For example, noise or a second muon can occur randomly and would occupy the regions at longer times.</li>
+							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  
+							Second hits in counter 2 could result from things other than an electron. 
+							For instance, noise or a second muon can occur randomly and would occupy the regions at longer times.  
+							One can improve knowledge of this type of background with collection of data in the longer intervals.</li>
 						</ol>
 						<p>If we plot a histogram of the length between signals for many of these candidate decays using the e-Lab tool, we can fit the result with an exponential 
 		 				distribution for the <a href="javascript:glossary('decay',350)">decays</a> plus a flat component for any random backgrounds.  
