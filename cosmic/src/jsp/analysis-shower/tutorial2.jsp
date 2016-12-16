@@ -41,12 +41,12 @@
 	 				<td colspan = 3>
 	 					The detector identified 1376 shower candidates.  There's a data table for each shower candidate 
 						that meets your input parameters.
-						<br> <center><img src="../graphics/tryPerf/shower_cand_tutorial.png" alt=""></center>
-						<br> Look at the data table for Sep 1, 2016 01:02:17 UTC. 										
+						<p> <img src="../graphics/tryPerf/shower_cand_tutorial.png" alt="">
+						<p> Look at the data table for Sep 1, 2016 01:02:17 UTC. 										
 	 			</tr>
 				<tr>
 		 			<td width="322" valign="top">
-		 				<img src="../graphics/tryPerf/shower_cand_tutorial.png" alt="">
+		 				<img src="../graphics/tryPerf/shower_plot_tutorial.png" alt="">
 					</td>
 					<td width=10>&nbsp;</td>
 					
