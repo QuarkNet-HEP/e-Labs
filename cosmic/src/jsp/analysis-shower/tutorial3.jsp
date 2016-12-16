@@ -33,20 +33,12 @@
 	
 				<table width="655">
 				<tr>
-							<td colspan = 3>
-								<center>
-									<font color="#0a5ca6" size=+3>
-										<b>
-	 										Shower Study
-	 									</b>
-	 								</font>
-	 							</center>
-	 						</td>
-	 					</tr>
-				<tr width="322">
-		 			<td valign="top">
-		 			&nbsp<p>
-            <table cellspacing="2" border="0">
+					<td colspan = 3>
+						<center><font color="#0a5ca6" size=+3><b>Shower Study</b></font></center>
+						<p>
+	 				</td>
+	 			</tr>
+						            
 				<tr>
 		 			<td width="322" valign="top">
 		 				<img src="../graphics/tryPerf/shower_plot_tutorial.png" alt="">
@@ -78,10 +70,11 @@
 					Does this event candidate look like a shower?
 					</td>
 				</tr>
-				<tr><td colspan=3>
-					&nbsp<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
-               	</td>
-               </tr>
+				<tr>
+					<td colspan=3>
+						&nbsp<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
+               		</td>
+                </tr>
           		
           		
                </table>
