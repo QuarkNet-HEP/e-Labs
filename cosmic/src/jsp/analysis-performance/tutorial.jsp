@@ -59,19 +59,26 @@
 	 				to evaluate data in the performance study. 
 	 				
 	 				<p>Figure 24(a) below shows the ideal, <a href="javascript:glossary('Gaussian distribution',350)">Gaussian distribution</a> 
-	 				about a mean value for ToT; Figure 24(b) shows an actual data run plot, which peaks around 12 ns (which is typical for the 1/2”-thick scintillator, 
+	 				about a mean value for ToT; Figure 24(b) shows an actual data run plot, which peaks around 12 ns (which is typical for the 1/2 inch thick scintillator, 
 	 				the PMT efficiency, and threshold settings used in our experiment).  
 	 				
 	 				<br><img src="../graphics/tryPerf/perf_ideal_actual.png" alt="">
 	 				
-	 				<p>The actual data, however, appears more skewed than Gaussian. This histogram may tell us that there is “good” data in our actual run data, 
-	 				but that it is contaminated with short pulses (a.k.a. noise) that were just above threshold. Increasing the threshold value may “clean-up” this channel in the future.
+	 				<p>The actual data, however, appears more skewed than Gaussian. This histogram may tell us that there is <q>good</q> data in our actual run data, 
+	 				but that it is contaminated with short pulses (a.k.a. noise) that were just above threshold. Increasing the threshold value may <q>clean-up</q> this channel in the future.
 					When plotting a histogram, one can modify the number of bins into which the data are divided. Choosing a different number of bins for the same dataset can 
 					significantly change the shape of the graph and may help evaluate the quality of the data.
 					
-					<p> (For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+					<p>For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>.
 					</td>
 			    </tr>
+			    
+			    <tr>
+			    	<td colspan=3>
+			    	<p>Figure 24(a) is used with permission. Eric W. Weisstein. "Gaussian Distribution." 
+			    	<br>From <a href="http://mathworld.wolfram.com/GaussianDistribution.html">MathWorld</a>--A Wolfram Web Resource. 
+			    </tr>	
+			    	
 			    
 				<tr>
 					<td colspan="3">
