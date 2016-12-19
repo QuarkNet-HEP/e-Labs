@@ -55,12 +55,12 @@
 								For example, one can see if it depends on time of day or perhaps solar activity.   
 								<p>Flux experiments may include several <a href="javascript:glossary('geometry',100)">geometries</a> of your detectors such as:
 								<ol>
-									<li>closely stacked counters that require coincidence (2, 3, or 4)<br><img src="../graphics/tryPerf/flux_234stacks.png" align="middle"></li>
-									<li>two stacks of stacked counters<br><img src="../graphics/tryPerf/flux_2counter_stacks.png" align="middle"></li>									
-									<li>separated, stacked counters that require coincidence to look at flux from only a particular direction of the sky
+									<li>Closely stacked counters that require coincidence (2, 3, or 4).<br><img src="../graphics/tryPerf/flux_234stacks.png" align="middle"></li>
+									<li>Two stacks of stacked counters.<br><img src="../graphics/tryPerf/flux_2counter_stacks.png" align="middle"></li>									
+									<li>Separated, stacked counters that require coincidence to look at flux from only a particular direction of the sky.
 									<br><img src="../graphics/tryPerf/flux_separated_stack.png" align="middle"></li>
-									<li>multiple counters placed in the same plane to increase detector area<br><img src="../graphics/tryPerf/flux_4counters_plane.png" align="middle"></li>
-									<li>avoid using a single counter (1-fold coincidence dominated by noise)<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>				
+									<li>Multiple counters placed in the same plane to increase detector area.<br><img src="../graphics/tryPerf/flux_4counters_plane.png" align="middle"></li>
+									<li>Avoid using a single counter (1-fold coincidence dominated by noise).<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>				
 									</ul>
 								</ol>									
 							</td>

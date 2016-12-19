@@ -76,7 +76,7 @@
 				<tr>
 					<td colspan=3>
 						&nbsp;
-						<p align=center>Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> &amp; <a href="index.jsp">Analysis</a>
+						<p align=center>Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> &amp; <a href="index.jsp">Analysis</a>
 					</td>
 				</tr>
 			</table>
