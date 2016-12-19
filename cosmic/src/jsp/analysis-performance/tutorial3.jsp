@@ -74,7 +74,7 @@
 					<td align=center colspan=3>
 					
 						
-					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> &
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a>&
 						
 					
 						<a href="index.jsp">Analysis</a>

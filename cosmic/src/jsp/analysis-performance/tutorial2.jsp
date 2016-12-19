@@ -120,7 +120,7 @@
 					<tr>
 						<td colspan="3" align="center">
 						
-					Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> &
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a>&
 						
 					
 						<a href="index.jsp">Analysis</a>
