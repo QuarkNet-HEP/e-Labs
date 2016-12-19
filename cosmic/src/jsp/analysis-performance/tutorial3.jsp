@@ -25,66 +25,54 @@
 			</div>
 			
 			<div id="content">
-
-
-	<p>
-	
-		<center>
-			<table width=655>
-					<td colspan = 3>
-								<center>
-									<font color="#0a5ca6" size=+3>
-								
-										<b>
-	 										Detector Performance Study
-	 									</b>
-	 								</font>
-	 							</center>
-	 						</td>
-	 					</tr>
-				<tr>
-				
-					<td valign=top width=322>
-						&nbsp<p>
-						<img src="../graphics/Ballard3.gif" alt="">
-							<p>&nbsp
-					</td>
-					<td width=10>&nbsp
-					</td>
-					<td valign=top width=322>
-						&nbsp<p>
-						This particular graph shows a very noisy counter with a large peak centered at 3 ns. 
-						This peak is so large that it may be masking the good data  centered near 8 ns that we saw previously.
-<p>
-
-
-						In a very loose sense, time over threshold is a measure of the amount of energy deposited in the 
-						<a HREF="javascript:glossary('scintillator',350)">scintillator</a> for a given 
-						<a HREF="javascript:glossary('muon',100)">muon</a>. There is a correlation 
-						between the <a HREF="javascript:glossary('signal_width',350)">width of the signal</a> 
-						in time and the height of the signal. 
-
-						
-					</td>
-					
-				
-				</tr>
 			
-				<tr>
-					<td align=center colspan=3>
-					
-						
-					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a>&
-						
-					
-						<a href="index.jsp">Analysis</a>
-					</td>
-					
-					
-				</tr>
-			</table>
-		</center>			
+		You can:
+			<strong>1)</strong> Find some help on this page
+			<strong>2)</strong>
+				<e:popup href="../posters/display.jsp?type=poster&amp;name=adlerperformance.data" 
+				target="PossibleParticleDecays" width="700" height="510">View</e:popup>
+				a poster created using this study&nbsp
+			<strong>3)</strong>
+				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+				Step-by-Step Instructions
+	
 
+		<center>        	
+			<p>	
+			<table width = "650" cellpadding ="8">
+				<tr>
+					<td colspan = "3">
+						<center>
+							<font color="#0a5ca6" size="+3"><b>Detector Performance Study</b></font>
+						</center>
+	 				</td>
+	 			</tr>
+	 			
+	 			<tr>
+	 				<td colspan=3>
+	 				<p>&nbsp;		
+	 				<p align=center><font size=+2><b>
+	 					From Raw Data to a Plot</b></font>	 				
+					</td>
+				</tr>
+		
+				<tr>
+					<td colspan="3">
+						<img src="../graphics/performanceDAG.png" alt="">
+						<p>
+					</td>
+				</tr>
+		
+				<tr>
+					<td colspan="3" align="center">	
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> & <a href="index.jsp">Analysis</a>
+					<p>&nbsp;
+					</td>
+				</tr>
+				
+			</table>	
+		</center>
+		
 			</div>
 			<!-- end content -->	
 		
@@ -94,3 +82,4 @@
 		<!-- end container -->
 	</body>
 </html>
+
