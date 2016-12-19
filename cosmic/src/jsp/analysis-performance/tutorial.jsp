@@ -100,16 +100,16 @@
 				
 				<tr>
 			    	<td colspan=3>
+			    	For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>.	
+			    	<br>
 			    	<i><p>Figure 24(a) is used with permission. Eric W. Weisstein. "Gaussian Distribution." 
-			    	<br>&#09;From <a href="http://mathworld.wolfram.com/GaussianDistribution.html" target="_blank">MathWorld</a>--A Wolfram Web Resource. </i>
+			    	<br>&emsp;From <a href="http://mathworld.wolfram.com/GaussianDistribution.html" target="_blank">MathWorld</a>--A Wolfram Web Resource. </i>
 			    	</td>
 			    </tr>	
 				
 				<tr>
-					<td colspan="3">	
-					For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>.	
-					<p>
-					<center>Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a></center>
+					<td colspan="3"  align="center">	
+						Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
 					<p>&nbsp;
 					</td>
 				</tr>
