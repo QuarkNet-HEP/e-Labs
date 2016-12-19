@@ -40,22 +40,10 @@
 		<center>        
 	
 			<p>
-		
-			<p>
-	
 			<table width = "650" cellpadding ="8">
 				<tr>
 					<td colspan = "3">
-						<center>
-							<font color="#0a5ca6" size="+3">
-							<p>
-						
-							
-								<b>
-									Detector Performance Study
-								</b>
-							</font>
-						</center>
+						<center><font color="#0a5ca6" size="+3"><b>Detector Performance Study</b></font></center>
 	 				</td>
 	 			</tr>
 	 			
@@ -83,6 +71,7 @@
 					significantly change the shape of the graph and may help evaluate the quality of the data.
 					
 					<p> (For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+					</td>
 			    </tr>
 			    
 				<tr>
