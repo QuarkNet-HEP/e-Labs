@@ -62,52 +62,12 @@
 									<li>multiple counters placed in the same plane to increase detector area<br><img src="../graphics/tryPerf/flux_4counters_plane.png" align="middle"></li>
 									<li>avoid using a single counter (1-fold coincidence dominated by noise)<br><img src="../graphics/tryPerf/flux_1counter.png" align="middle"></li>				
 									</ul>
-								</ol>
-								<p>The <a HREF="javascript:glossary('detector',100)">detectors</a> record the arrival time of the <a href="javascript:glossary('muon',100)">muons</a> in a raw data file.  
-								When analyzing flux study data, students select the dataset and channel(s) to be analyzed. The analysis tools produce a histogram of flux vs. time similar to the one shown below. 
-								Students can juxtapose data regarding their independent variable as a function of time to look for correlations.										
+								</ol>									
 							</td>
 							
 							</td>
 						</tr>
 				
-						<tr>
-							<td colspan = 3>
-							<p>
-							<center><font size=+2><b>Sample Plot</b></font></center>
-							</td>
-						</tr>
-	
-						<tr>
-							<td valign=top width=322>
-								<img src="../graphics/flux.png">
-							</td>
-
-							<td width=5>&nbsp;</td>
-			
-							<td valign=top width=322>
-								&nbsp<p>
-								<p> 
-								One interesting feature occurs periodically in this <a href="http://www.shodor.org/interactivate/activities/scatterplot/">scatter plot</a>: 
-								the flux diminishes and increases regularly; do you see it? What might cause this? Is the effect real or is it the result of the way this file was plotted? Is there a way that you can tell?
-								<p>
-								This plot shows <a HREF="javascript:glossary('flux',350)">flux</a> measurements for <a HREF="javascript:glossary('detector',350)">detector # 5078 </a> 
-								from 7 May to 11 May 2003. The counters were stacked, one on top of the other, <img src="../graphics/stacked.gif" />.
-								<p>
-								<center>
-									<IMG SRC="../graphics/stacked.jpg" BORDER=1> 
-									<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-								</center>
-							</td>
-						</tr>
-						<hr>
-						<tr>
-							<td colspan=3>
-							<p align=center><font size=+2><b>From Raw Data to a Plot</font></b>
-							<img src="../graphics/fluxDAG.png" align="middle">
-							<p>
-							</td>
-						</tr>
 						<tr>
 							<td colspan=3>
 								&nbsp<p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> & <a href="index.jsp">Analysis</a>
