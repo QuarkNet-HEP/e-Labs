@@ -62,7 +62,7 @@
 	 				about a mean value for ToT; Figure 24(b) shows an actual data run plot, which peaks around 12 ns (which is typical for the 1/2”-thick scintillator, 
 	 				the PMT efficiency, and threshold settings used in our experiment).  
 	 				
-	 				<br><img src="../graphics/tryPerf/perf_ideal_actual.png" alt=""></td><td width=5>&nbsp;
+	 				<br><img src="../graphics/tryPerf/perf_ideal_actual.png" alt="">
 	 				
 	 				<p>The actual data, however, appears more skewed than Gaussian. This histogram may tell us that there is “good” data in our actual run data, 
 	 				but that it is contaminated with short pulses (a.k.a. noise) that were just above threshold. Increasing the threshold value may “clean-up” this channel in the future.
