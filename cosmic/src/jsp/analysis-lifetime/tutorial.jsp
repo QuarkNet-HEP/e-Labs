@@ -72,13 +72,6 @@
 						
 						<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
 						
-						
-				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
-				
-						<img src="../graphics/lifetimeDAG.png" alt="">
-						<p>
-						<hr>
-						<p>
 					</td>
 				</tr>
 								

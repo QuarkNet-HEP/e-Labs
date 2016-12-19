@@ -51,20 +51,13 @@
 					</td>
 				</tr>
 			
-				<tr>			
-				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
-				
-						<img src="../graphics/lifetimeDAG.png" alt="">
-						<p>
-						<hr>
-						<p>
+				<tr>	
+					<td>		
+					<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
+					<img src="../graphics/lifetimeDAG.png" alt="">
+					<p>	
 					</td>
-				</tr>
-								
-				<tr>
-					
-					</td>
-				</tr>
+				</tr>								
 				
 				<tr>
 					<td colspan=3>
