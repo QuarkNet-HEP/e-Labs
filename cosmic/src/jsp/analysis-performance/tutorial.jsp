@@ -38,6 +38,8 @@
 	
 
 		<center>        
+	
+			<p>
 		
 			<p>
 	
@@ -61,32 +63,67 @@
 	 				<td colspan=3>
 	 				<p>&nbsp;
 	 				<p>	
-	 				The main objective of the “system performance” study is to understand the quality of the data.
-	 				In order to believe in any science results from the analysis, one must first confirm that the detector performs reliably over time. 
-	 				<p>
-	 				We measure the length of time the <a href="javascript:glossary('photomultiplier_tube',150)">photomultiplier tube</a> responds to a 
-	 				<a HREF="javascript:glossary('muon',100)">muon</a> and count the number of muons for each value. A data set that has a lot of muons with short response 
-	 				times and only a few muons with longer times may indicate a noisy <a href="javascript:glossary('counter',350)">counter</a>.
-	 				We create a histogram of the number of events (muon hits) as a function of time over threshold (ToT) to evaluate data in the performance study.  
+	 				The main objective of the <q>system performance</q> study is to understand the quality of the data. In order to 
+	 				believe in any science results from the analysis, one must first confirm that the detector performs reliably over time.  
+	 				We measure the length of time the <a href="javascript:glossary('photomultiplier tube',350)">photomultiplier tube</a> 
+	 				responds to a <a href="javascript:glossary('muon',350)">muon</a> and count the number of muons for each value. 
+	 				A data set that has a lot of muons with short response times and only a few muons with longer times may indicate a noisy <a href="javascript:glossary('counter',350)">counter</a>. 
+	 				We create a histogram of the number of events (muon hits) as a function of <a href="javascript:glossary('signal width',350)">time over threshold</a> (ToT) 
+	 				to evaluate data in the performance study. 
 	 				
-	 				In a very loose sense, ToT is a measure of the amount of energy deposited in the scintillator for a given event.  
-	 				Since taller pulses (pulses with more energy) are generally wider, there is a correlation between the time that the pulse exceeded the threshold value 
-	 				and the amount of energy deposited in the scintillator.
-	 			
-					<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-				</tr>
-		
+	 				<p>Figure 24(a) below shows the ideal, <a href="javascript:glossary('Gaussian distribution',350)">Gaussian distribution</a> 
+	 				about a mean value for ToT; Figure 24(b) shows an actual data run plot, which peaks around 12 ns (which is typical for the 1/2”-thick scintillator, 
+	 				the PMT efficiency, and threshold settings used in our experiment).  
+	 				
+	 				<br><img src="../graphics/tryPerf/performance_ideal_actual.png" alt=""></td><td width=5>&nbsp;</td>
+	 				
+	 				<p>The actual data, however, appears more skewed than Gaussian. This histogram may tell us that there is “good” data in our actual run data, 
+	 				but that it is contaminated with short pulses (a.k.a. noise) that were just above threshold. Increasing the threshold value may “clean-up” this channel in the future.
+					When plotting a histogram, one can modify the number of bins into which the data are divided. Choosing a different number of bins for the same dataset can 
+					significantly change the shape of the graph and may help evaluate the quality of the data.
+					
+					<p> (For more background information, see how the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+			    </tr>
+			    
 				<tr>
 					<td colspan="3">
+
 						<p>Inspect these plots. Which one shows a counter with an enormous number of 
 						short <a href="javascript:glossary('signal',350)">signals</a>? Which two counters have similar performance? What would you 
 						do if you owned these four counters?
 					<p>&nbsp;
 					</td>
 				</tr>
+				
 				<tr>
-					<td colspan="3" align="center">	<font size=+2>
-					Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  <a href="tutorial4.jsp">4</a>& <a href="index.jsp">Analysis</a></font>
+					<td>
+					
+						<img src="../graphics/Ballard1.gif" alt=""></td><td width=5>&nbsp;
+							</td><td><img src="../graphics/Ballard2.gif" alt=""> 
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td width=5>&nbsp;
+							</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<img src="../graphics/Ballard3.gif" alt=""></td><td width=5>&nbsp;
+							</td><td><img src="../graphics/Ballard4.gif" alt="">
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="3" align="center">		
+					Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
 					<p>&nbsp;
 					</td>
 				</tr>
