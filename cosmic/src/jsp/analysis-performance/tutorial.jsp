@@ -37,8 +37,7 @@
 				Step-by-Step Instructions
 	
 
-		<center>        
-	
+			<center>        
 			<p>
 			<table width = "650" cellpadding ="8">
 				<tr>
@@ -63,7 +62,7 @@
 	 				about a mean value for ToT; Figure 24(b) shows an actual data run plot, which peaks around 12 ns (which is typical for the 1/2”-thick scintillator, 
 	 				the PMT efficiency, and threshold settings used in our experiment).  
 	 				
-	 				<br><img src="../graphics/tryPerf/perf_ideal_actual.png" alt=""></td><td width=5>&nbsp;</td>
+	 				<br><img src="../graphics/tryPerf/perf_ideal_actual.png" alt=""></td><td width=5>&nbsp;
 	 				
 	 				<p>The actual data, however, appears more skewed than Gaussian. This histogram may tell us that there is “good” data in our actual run data, 
 	 				but that it is contaminated with short pulses (a.k.a. noise) that were just above threshold. Increasing the threshold value may “clean-up” this channel in the future.
@@ -76,7 +75,6 @@
 			    
 				<tr>
 					<td colspan="3">
-
 						<p>Inspect these plots. Which one shows a counter with an enormous number of 
 						short <a href="javascript:glossary('signal',350)">signals</a>? Which two counters have similar performance? What would you 
 						do if you owned these four counters?
@@ -85,29 +83,21 @@
 				</tr>
 				
 				<tr>
-					<td>
-					
-						<img src="../graphics/Ballard1.gif" alt=""></td><td width=5>&nbsp;
-							</td><td><img src="../graphics/Ballard2.gif" alt=""> 
-					</td>
+					<td><img src="../graphics/Ballard1.gif" alt=""></td>
+					<td width=5>&nbsp;</td>
+					<td><img src="../graphics/Ballard2.gif" alt=""></td>
 				</tr>
 				
 				<tr>
-					<td>
-						&nbsp;
-					</td>
-					<td width=5>&nbsp;
-							</td>
-					<td>
-						&nbsp;
-					</td>
+					<td>&nbsp;</td>
+					<td width=5>&nbsp;</td>
+					<td>&nbsp;</td>
 				</tr>
 				
 				<tr>
-					<td>
-						<img src="../graphics/Ballard3.gif" alt=""></td><td width=5>&nbsp;
-							</td><td><img src="../graphics/Ballard4.gif" alt="">
-					</td>
+					<td><img src="../graphics/Ballard3.gif" alt=""></td>
+					<td width=5>&nbsp;</td>
+					<td><img src="../graphics/Ballard4.gif" alt=""></td>
 				</tr>
 				
 				<tr>
