@@ -345,7 +345,6 @@
 						</td>
 						
 						<!-- Column 4: Delta t -->
-
 						<td>${row.deltaTShower}</td>
 
 						<!-- Column 5: Multiplicity Totals -->

@@ -1,6 +1,6 @@
 /*
  * Created on Jan 8, 2008
- * Updated Oct 2016 to add Delta-t function (JG)
+ * Updated Dec 2016 to add Delta-t function (JG)
  */
 package gov.fnal.elab.cosmic;
 
@@ -78,8 +78,6 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
-				//Integer testInteger = new Integer(1);
-				//Double testDouble = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
 				int dtSign = 0;
@@ -141,36 +139,37 @@ public class EventCandidates {
                         //}
                         allIds.add(idchan[0]);
 										}
-										// At the end of this loop:
-										//   The array ids[] contains the ids of all detectors
-										//     that fire, in the order listed on that line of
-										//     eventCandidates.
-										//   The array firstHitTimes[] contains the times of
-										//     first hits in each detector, correlated to ids[]
+										/*
+										 * At the end of this loop:
+										 *   The array ids[] contains the ids of all detectors
+										 *     that fire, in the order listed on that line of
+										 *    eventCandidates.
+										 *  The array firstHitTimes[] contains the times of
+										 *    first hits in each detector, correlated to ids[]
+										 */
 
-										// deltaT compares the first two detectors to fire,
-										//		as recorded on the first row (eventNum=1)
-										// Determine these from ids[] after constructing it for
-										//    that row
-										// Is there any danger that this code can be executed
-										//   with eventNum != 1 as the first event?
-										//if (Integer.parseInt(this.eventNum) == 1) {
+										/* 
+										 * deltaT compares the first two detectors to fire,
+										 *		as recorded on the first row (eventNum=1)
+										 * Determine these from ids[] after constructing it for
+										 *    that row
+										 * Is there any danger that this code can be executed
+										 *   with eventNum != 1 as the first event?
+										 */
 										if (Integer.parseInt(arr[0]) == 1) {
 												detOne = ids.get(0);
 											  detTwo = ids.get(1);
 												dtSign = Integer.signum(Integer.parseInt(detOne) -
 																								Integer.parseInt(detTwo));
 										}
-										// Convention: deltaT is the first hit time of the detector
-										//   with the larger id minus the first hit time of the
-										//   detector with the smaller id
+										/*
+										 * Convention: deltaT is the first hit time of the detector
+										 *   with the larger id minus the first hit time of the
+										 *   detector with the smaller id
+										 */
 										if (detOne != null && detTwo != null) {
 												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
 																				 firstHitTimes.get(ids.indexOf(detTwo)));
-												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
-												//		     -firstHitTimes.get(ids.indexOf(detTwo));
-												//deltaT = 0.0;
-												//testInteger = ids.indexOf(detOne);
 										}
 										else {
 												deltaT = 0.0;
@@ -182,7 +181,6 @@ public class EventCandidates {
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
 										row.setDeltaT(deltaT);
-										//row.setTestInteger(testInteger);
 										
 										// Julian Date
                     String jd = arr[4];
@@ -389,14 +387,6 @@ public class EventCandidates {
 						//   converts to nanoseconds
 						return df.format(deltaT*86400e9);
 				}
-
-        //public void setTestInteger(Integer testInteger) {
-        //    this.testInteger = testInteger;
-        //}
-				
-				//public Integer getTestInteger() {
-				//		return testInteger;
-				//}
 				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
