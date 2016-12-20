@@ -310,7 +310,7 @@
 						</c:choose>
 					</c:otherwise>
 				</c:choose>
-				
+
 				<!-- Table data rows (actual HTML) -->
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
