@@ -22,7 +22,6 @@ function HideShowChannel(ID) {
 		if (ID=="ch2-h") {t2=true;}
 		if (ID=="ch3-h") {t3=true;}
 		if (ID=="ch4-h") {t4=true;}
-		console.log(ID);
 	}
 }
 
