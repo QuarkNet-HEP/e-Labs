@@ -43,7 +43,9 @@
                     <c:forEach var="i" items="1,2,3,4">
                     	<td class="channel-id">${i}
                     	<e:trinput type="checkbox" name="chan${i}IsActive" disabled="${ro}"  
-                        	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/><%= chan${i}IsActive %></td>
+                        	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>
+                    	</td>
+                    	<% out.println(request.getParameter("chan${i}IsActive")); %>
                     </c:forEach>
                 </tr>
                 <tr id="secondary-heading">
