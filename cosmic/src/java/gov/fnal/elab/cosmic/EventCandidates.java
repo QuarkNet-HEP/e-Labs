@@ -78,8 +78,8 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
-				Integer testInteger = new Integer(1);
-				Double testDouble = new Double(0.0);
+				//Integer testInteger = new Integer(1);
+				//Double testDouble = new Double(0.0);
 				String detOne = null;
 				String detTwo = null;
 				int dtSign = 0;
@@ -141,6 +141,13 @@ public class EventCandidates {
                         //}
                         allIds.add(idchan[0]);
 										}
+										// At the end of this loop:
+										//   The array ids[] contains the ids of all detectors
+										//     that fire, in the order listed on that line of
+										//     eventCandidates.
+										//   The array firstHitTimes[] contains the times of
+										//     first hits in each detector, correlated to ids[]
+
 										// deltaT compares the first two detectors to fire,
 										//		as recorded on the first row (eventNum=1)
 										// Determine these from ids[] after constructing it for
@@ -158,12 +165,12 @@ public class EventCandidates {
 										//   with the larger id minus the first hit time of the
 										//   detector with the smaller id
 										if (detOne != null && detTwo != null) {
-												//deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
+												deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
 												//								 firstHitTimes.get(ids.indexOf(detTwo)));
 												//deltaT = firstHitTimes.get(ids.indexOf(detOne))
 												//		     -firstHitTimes.get(ids.indexOf(detTwo));
-												deltaT = 0.0;
-												testInteger = ids.indexOf(detOne);
+												//deltaT = 0.0;
+												//testInteger = ids.indexOf(detOne);
 										}
 										else {
 												deltaT = 0.0;
@@ -175,7 +182,7 @@ public class EventCandidates {
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
 										row.setDeltaT(deltaT);
-										row.setTestInteger(testInteger);
+										//row.setTestInteger(testInteger);
 										
 										// Julian Date
                     String jd = arr[4];
@@ -193,7 +200,7 @@ public class EventCandidates {
              }
             line = br.readLine();
         }
-        //set the event position
+        // Set the event position
 				Object[] allR = rows.toArray();
 				for (int i = 0; i < allR.length; i++) {
 						Row r = (Row) allR[i];
@@ -202,7 +209,7 @@ public class EventCandidates {
 								break;
 						}
 				}
-        //write multiplicity summary
+        // Write multiplicity summary
         try {
         	saveMultiplicitySummary(bw);
         } catch (Exception e) {
@@ -271,7 +278,7 @@ public class EventCandidates {
         	}
         	bw.write(String.valueOf(multiplicityFilter.get(x))+","+String.valueOf(count)+"\n");
         }
-    }//end of saveMultiplicitySummary
+    }// end of saveMultiplicitySummary
     
     public static EventCandidates read(File in, File out, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
@@ -294,7 +301,7 @@ public class EventCandidates {
         private String[] ids;
         private String[] multiplicity;
 				private Double deltaT;
-				private Integer testInteger;
+				//private Integer testInteger;
 				private int multiplicityCount;
 
         public int getEventCoincidence() {
@@ -383,13 +390,13 @@ public class EventCandidates {
 						return df.format(deltaT*86400e9);
 				}
 
-        public void setTestInteger(Integer testInteger) {
-            this.testInteger = testInteger;
-        }
+        //public void setTestInteger(Integer testInteger) {
+        //    this.testInteger = testInteger;
+        //}
 				
-				public Integer getTestInteger() {
-						return testInteger;
-				}
+				//public Integer getTestInteger() {
+				//		return testInteger;
+				//}
 				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
