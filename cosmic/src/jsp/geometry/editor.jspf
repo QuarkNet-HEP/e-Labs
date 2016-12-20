@@ -27,21 +27,11 @@
 				</tr>
 				<tr>
 					<td align="center">
-						GPS is @ (0,0,0).	
+						GPS is @ (0,0,0).
+						<br>Each point (x,y,z) represents the center of a counter.
+						<br>Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank" >Geometry Tutorial</a>.	
 					</td>
 				</tr>
-				<tr>
-					<td align="center">
-						Each point (x,y,z) represents the center of a counter.
-					</td>
-				</tr>	
-				<tr>
-					<td align="center">
-						<c:if test="${!ro}">
-							Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank" >Geometry Tutorial</a>.
-						</c:if>	
-					</td>
-				</tr>	
 			</table>			
 		</div>
 
