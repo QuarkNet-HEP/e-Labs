@@ -44,8 +44,8 @@
                     	<td class="channel-id">${i}
                     	<e:trinput type="checkbox" name="chan${i}IsActive" disabled="${ro}"  
                         	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>
-                    	<% out.println(chan${i}IsActive); %> 
-                    	<% out.println(${ro});%>
+                    	chan${i}IsActive 
+                    	${ro}
                     	</td>
                     </c:forEach>
                 </tr>
