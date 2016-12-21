@@ -6,7 +6,7 @@
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
-	
+	<% out.println(request.getParameter("ro")); %>
 		<c:if test="${!nodate && !ro}">
 			Date: <e:trselect name="month"
 					valueList="1..12"
