@@ -76,7 +76,7 @@
 							<td valign=top>${teacher.group.state}</td>
 							<td>
 								<c:forEach items="${teacher.groups}" var="group">
-									${group.name} <br>
+									${group.name}-${group.role} <br>
 								</c:forEach>
 							</td>
 						</tr>
