@@ -47,9 +47,10 @@ you are satisfied with it.  You can always run the analysis again and change the
 			<th>ID</th>
 			<th>Analysis</th>
 			<th>Run Mode</th>
-			<th>Start Time (UTC)</th>
-			<th>End Time (UTC)</th>
-			<th>Time (Actual/Est.)</th>
+			<th>Start Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
+			<th>End Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
+			<!--<th>Time (Actual/Est.)</th>-->
+			<th>Run Time</th>
 			<th>Status</th>
 		</tr>
 		<c:choose>
@@ -97,7 +98,8 @@ you are satisfied with it.  You can always run the analysis again and change the
 							</c:choose>
 						</td>
 						<td align="center">
-							${run.formattedRunTime}&nbsp;/&nbsp;${run.formattedEstimatedRunTime}
+							<!--${run.formattedRunTime}&nbsp;/&nbsp;${run.formattedEstimatedRunTime}-->
+							${run.formattedRunTime}&nbsp;
 						</td>
 						<td width="148px">
 							<table border="0">
