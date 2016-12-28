@@ -35,7 +35,7 @@
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
-	Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+	Analysis run time: ${results.formattedRunTime} <!--; estimated: ${results.formattedEstimatedRunTime}-->
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
