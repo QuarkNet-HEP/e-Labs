@@ -102,7 +102,7 @@
 							</tr>
 						</table>
 						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
-						estimated: ${run.formattedEstimatedRunTime}
+						<!--estimated: ${run.formattedEstimatedRunTime}        SB, 12/28/16-->
 						<div id="error-text" style="background: #ffaf70"></div>
 						
 						
