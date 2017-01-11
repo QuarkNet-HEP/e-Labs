@@ -25,12 +25,12 @@
 			
 			<div id="content">
 
-				You can:
-				<strong>1)</strong> Find some help on this page
+				Options:
+				<strong>1)</strong> Find some help on this page.
 				<strong>2)</strong>
-				<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data" target="possibleparticledelays" width="700" height="510">View</e:popup> a poster created using this study
+				<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data" target="possibleparticledelays" width="700" height="510">View</e:popup> a poster created using this study.
 				<strong>3)</strong>
-				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: Step-by-Step Instructions
+				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: Step-by-Step Instructions.
 	
 				<p>
 				<center>        
@@ -48,8 +48,8 @@
 				 			
 							<td colspan=3>
 							&nbsp<p>Definition of Cosmic ray flux:
-							<center><font size=+2>&Phi;<sub>CR</sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font></center>
-								<p>Since the area of the detector remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
+							<center><font size=+2>&Phi;<sub><font size="-1">CR</font></sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font></center>
+								<p>Since the area of the counter remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
 								&quot;How does the rate (events/time) at which cosmic rays pass through a <a href="javascript:glossary('counter',100)">counter</a> depend on a certain variable?&quot;
 								One can consider flux throughout the day or year to see if there are changes in the arrival rate of these particles. 
 								For example, one can see if it depends on time of day or perhaps solar activity.   
