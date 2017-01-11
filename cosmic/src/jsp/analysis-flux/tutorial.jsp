@@ -48,7 +48,12 @@
 				 			
 							<td colspan=3>
 							&nbsp<p>Definition of Cosmic ray flux:
-							<center><font size=+2>&Phi;<sub><font size="-1">CR</font></sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font></center>
+							<center>
+								<font size=+2>&Phi;<sub><font size="-1">CR</font></sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font>
+	                                                        <br>
+								typical units to measure flux:  <sup>number<i>(events)</i></sup>&frasl;<sub>s&middot;m<sup>2</sup></sub>						
+							</center>
+								
 								<p>Since the area of the counter remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
 								&quot;How does the rate (events/time) at which cosmic rays pass through a <a href="javascript:glossary('counter',100)">counter</a> depend on a certain variable?&quot;
 								One can consider flux throughout the day or year to see if there are changes in the arrival rate of these particles. 
