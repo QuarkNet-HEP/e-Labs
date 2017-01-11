@@ -26,15 +26,15 @@
 			
 			<div id="content">
 			
-			You can:
-				<strong>1)</strong> Find some help on this page
+			Options:
+				<strong>1)</strong> Find some help on this page. 
 				<strong>2)</strong> 
 					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16-cosmic-crdata-robert_s._peterson-fermilab_test_array-batavia-il-2016.1114.data" 
 						target="MuonLifetime" width="700" height="510">View</e:popup> a poster 
-					created using this study
+					created using this study. 
 				<strong>3)</strong> 
 					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-					Step-by-Step Instructions
+					Step-by-Step Instructions.
 	
 	<p>
 			<center>
@@ -57,7 +57,7 @@
 					
 						<p>A classic modern physics experiment is the measurement of the muon mean lifetime.  Some short-lived cosmic ray <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
 						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, and the electron will leave another. 
-						You can ask, "How long before the muon decays?" "What is its <a href="javascript:glossary('lifetime',100)">lifetime</a>?"  Consider the figure below.
+						One can ask, "How long before the muon decays?  What is its <a href="javascript:glossary('lifetime',100)">lifetime</a>?"  Consider the figure below.
 						<br>
 						<center><img src="../graphics/tryPerf/lifetimeBasic.png" alt=""></center>
 						<br>
