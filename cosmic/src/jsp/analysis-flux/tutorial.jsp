@@ -50,8 +50,8 @@
 							&nbsp<p>Definition of Cosmic ray flux:
 							<center>
 								<font size=+2>&Phi;<sub><font size="-1">CR</font></sub> = <sup>(events)</sup>&frasl;<sub>(time)(area)</sub></font>
-	                                                        <br>
-								typical units to measure flux:  <sup>number<i>(events)</i></sup>&frasl;<sub>s&middot;m<sup>2</sup></sub>						
+	                                                        <p>
+								Typical units to measure flux:  <sup>number<i>(events)</i></sup>&frasl;<sub>s&middot;m<sup>2</sup></sub>						
 							</center>
 								
 								<p>Since the area of the counter remains constant during an experiment, <a HREF="javascript:glossary('flux',100)">flux</a> studies ask the question, 
