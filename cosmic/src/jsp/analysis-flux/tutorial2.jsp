@@ -24,14 +24,6 @@
 			</div>
 			
 			<div id="content">
-
-				You can:
-				<strong>1)</strong> Find some help on this page
-				<strong>2)</strong>
-				<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data" target="possibleparticledelays" width="700" height="510">View</e:popup> a poster created using this study
-				<strong>3)</strong>
-				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: Step-by-Step Instructions
-	
 				<p>
 				<center>        
 					
