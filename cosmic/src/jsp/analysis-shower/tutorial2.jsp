@@ -40,9 +40,9 @@
 	 			<tr>
 	 				<td colspan = 3>
 	 					We entered parameters for an event and got back the table below. 
-               			These "candidates" satisfy our requirements for an event. What do you 
-               			think we entered for the hit coincidence level? What about 
-                		detector coincidence? <i>[Answer - hit coincidence: 2, detector coincidence: 2]</i>
+               			These "candidates" satisfy our requirements for an event. What might we have 
+               			entered for the hit coincidence level? What about detector coincidence? 
+				<i>[Answer - hit coincidence: 2, detector coincidence: 2]</i>.
 						<p>
 						The analysis software can only find signals that match the parameter 
 						settings. The experimenter must decide which of the candidates is an event&mdash;if any!
@@ -51,7 +51,7 @@
 						How to tell when one is right?
 						<p>
 	 					The detector identified 1376 shower candidates.  There's a data table for each shower candidate 
-						that meets your input parameters.
+						that meets the input parameters.
 						<p> <center><img src="../graphics/tryPerf/shower_cand_tutorial.png" alt=""></center>
 						<p> Let us look at the data table for Sep 1, 2016 01:02:17 UTC on the next page. 										
 	 			</tr>
