@@ -2,13 +2,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$con=mysqli_connect("data1.i2u2.org","cima","cim@us3r","Masterclass");
+$con=mysqli_connect("i2u2-db.crc.nd.edu","cima","cim@us3r","Masterclass");
 if (mysqli_connect_errno($con)) {
  echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
 function askdb($q){
-	global $con;
+	global $con; /* the connection defined above */
 	$res=$con->query($q);
 	return $res;
 }
@@ -65,7 +65,7 @@ function GetAllEvents($table){
 function GetEvents($group,$table){
     $q="SELECT `".$table."`.o_no, `".$table."`.checked, Events.mass FROM `".$table."` LEFT OUTER JOIN Events ON `".$table."`.o_no = Events.o_no WHERE g_no=".$group." ORDER BY `".$table."`.o_no;";
     $res=askdb($q);
-		while($obj=$res->fetch_object()){ 
+		while($obj=$res->fetch_object()){
 			$temp["id"]=$obj->o_no;
 			$temp["checked"]=$obj->checked;
 			$temp["mass"]=$obj->mass;			
@@ -122,8 +122,11 @@ function GetNext($finEvents,$g_no){
 }
 
 function WriteEntry($table,$o_no,$checked){
+	/* Find the given number o_no in the given table */
 	$q="SELECT o_no FROM `".$table."` WHERE o_no=".$o_no;
 	$res=askdb($q);
+	/* If it's not found, insert it into the table along with the
+			 given $checked array */
 	if(!$res->fetch_object()){
 		$q="INSERT into `".$table."` (o_no,checked) VALUES (".$o_no.",'".$checked."')";
 		askdb($q);

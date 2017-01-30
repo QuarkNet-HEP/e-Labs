@@ -5,23 +5,28 @@ function printMass(mass){
 	}
 	var HiggsChecked=document.getElementById("H").checked;
 	var ZChecked=document.getElementById("Z").checked;
-	
-	if(HiggsChecked || ZChecked){
-		//$( "#mass" ).html( mass );
-		document.getElementById('mass').innerHTML = mass + 'GeV/c²<br><b><font size="1" color="red">Please enter into mass histogram after clicking \"Submit\".</font></b>';
-	}else{
-		$( "#mass" ).html( " " );
-	}
 
+	if(HiggsChecked){
+			//$("#massEntry").prop("value",mass);
+			$("#massEntry").prop("value"," ");
+	} else if(!HiggsChecked){
+			$("#massEntry").prop("value"," ");
+	} else if(ZChecked){
+			$("#massEntry").prop("value"," ");
+	} else{
+			$("#massEntry").prop("value"," ");
+	}
+		
 }
 
 function check(state){
+  // check(primary) true if a final state box is checked
+  // check(final) true if a primary state box is checked
 	if(state=="primary"){
-		return (document.getElementById("e").checked || document.getElementById("mu").checked);
+		return (document.getElementById("e").checked || 					document.getElementById("mu").checked);
 	}
 	if(state=="final"){
-		return (document.getElementById("H").checked || document.getElementById("Z").checked || document.getElementById("W").checked
-		|| document.getElementById("Wp").checked || document.getElementById("W-").checked || document.getElementById("Zoo").checked);
+		return (document.getElementById("H").checked || document.getElementById("Z").checked || document.getElementById("W").checked ||	document.getElementById("Wp").checked || document.getElementById("W-").checked || document.getElementById("Zoo").checked);
 	}
 }
 
@@ -34,7 +39,7 @@ function SelP(element,mass){
 		var arr=["mu","e"];
 		prim=checked;
 		fin=check("final");
-	
+
 	}else{
 		if(element.id=="Zoo" || element.id=="H"){
 			$("#mu").prop("checked",false);
@@ -46,10 +51,21 @@ function SelP(element,mass){
 			prim=check("primary");
 		}
 
-		printMass(mass);
+		if(element.id=="Z"){
+			$("#massEntry").prop("disabled",!checked);
+			if(checked){
+				document.getElementById('massInput').style.color = 'black';
+				document.getElementById('Znote').style.fontWeight = 'bold';
+			} else if (!checked){
+				document.getElementById('massInput').style.color = 'grey';
+				document.getElementById('Znote').style.fontWeight = 'normal';
+			}
+		}
+			
+		//printMass(mass);
 		var arr=["H","W","W-","Wp","Z","Zoo"];
 		fin=checked;
-	}	
+	}
 	for(var i=0;i<arr.length;i++){
 		if(element.id!=arr[i]){
 			$("#"+arr[i]).prop("disabled", checked);
@@ -62,7 +78,6 @@ function SelP(element,mass){
 	}
 
 }
-	
 
 function GetTables(){
 	var sel=document.getElementById("Eselect");
@@ -78,7 +93,7 @@ function GetTables(){
 	type: "POST",
 	url: "showTables.php",
 	data: {
-	MCE : list.join(), 
+	MCE : list.join(),
 	source: "Backend"},
 	success: function( data ) {
 	$( "#tables" ).html( data );
@@ -94,7 +109,6 @@ function GetTables(){
 	$( "#NG" ).html( data );
 	}
 	});
-
 
 }
 
