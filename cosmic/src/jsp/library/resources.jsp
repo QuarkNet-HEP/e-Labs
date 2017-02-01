@@ -322,7 +322,8 @@
 					<p>The e-Lab uses <a href="http://www.wikipedia.org/wiki/Distributed_computing" target="website" width="850" height="600">distributed computing</a> where multiple computers, 
 					networked together, perform the analysis of the data.  Many scientists use the grid - one form of distributed computing.  Learn more about the grid.</p>
 					<ul class="simple">
-						<li><a href="http://www.gridcafe.org">The Grid Cafe</a> - an introduction.  From there, go to <a href="http://gridtalk.org/">Grid Talk</a> where you can read 
+						<li>See <a href="https://www.youtube.com/watch?v=LZDSLzU9pZ4" target="_blank">The Grid</a> and <a href="https://home.cern/about/computing/worldwide-lhc-computing-grid" target="_blank">
+						The Worldwide LHC Computing Grid</a> for an introduction.  From there, go to <a href="http://gridtalk.org/">Grid Talk</a> where you can read 
 						<a href="http://gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
 						</li>
 						<li>
