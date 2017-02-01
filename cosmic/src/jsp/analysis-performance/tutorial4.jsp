@@ -26,6 +26,17 @@
 			
 			<div id="content">
 			
+		You can:
+			<strong>1)</strong> Find some help on this page
+			<strong>2)</strong>
+				<e:popup href="../posters/display.jsp?type=poster&amp;name=adlerperformance.data" 
+				target="PossibleParticleDecays" width="700" height="510">View</e:popup>
+				a poster created using this study&nbsp
+			<strong>3)</strong>
+				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+				Step-by-Step Instructions
+	
+
 		<center>        	
 			<p>	
 			<table width = "650" cellpadding ="8">
@@ -53,8 +64,8 @@
 				</tr>
 		
 				<tr>
-					<td colspan="3" align="center">	
-					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> & <a href="index.jsp">Analysis</a>
+					<td colspan="3" align="center">	<font size=+2>
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <b>4</b>& <a href="index.jsp">Analysis</a></font>
 					<p>&nbsp;
 					</td>
 				</tr>

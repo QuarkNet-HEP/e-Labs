@@ -26,13 +26,9 @@
 			
 			<div id="content">
 
-
-<p>
+			<p>
 	
-	
-	
-	
-	<center>
+			<center>
 			<table width="655">
 					<td colspan = 3>
 								<center>
@@ -53,15 +49,13 @@
 						Imagine standing at an intersection, counting the number and type of 
 						cars that drive past in 20 minutes. <p>
 
-						On your <a href="http://www.shodor.org/interactivate/activities/histogram/">histogram</a>, the x-axis would say "Chevrolet, Ford, 
+						On the <a href="http://www.shodor.org/interactivate/activities/histogram/">histogram</a>, the x-axis would say "Chevrolet, Ford, 
 						Saab, Toyota, Volkswagen." The y-axis would have the numbers 0-14. 
-						You would draw a bar to the proper height for each make of car
+						One would draw a bar to the proper height for each make of car
 						(<e:popup href="../graphics/car_hist.gif" width="740" height="510" target="illustration">Illustration</e:popup>).<p>
+					</td>
 					
-							</td>
-							</p>
-					<td width=10>&nbsp;
-							</td>
+					<td width=10>&nbsp;</td>
 					
 					<td valign="top" width=322>
 						&nbsp<p>
@@ -77,58 +71,48 @@
 									<tr><td>Volkswagen</td>	<td>5</td></tr>
 								</table>
 							</center>
-						</td>
-					</tr>
-					
-					<tr>
-						<td colspan="3">
-						<p>
-							<hr>
-							<p>
-						</td>
-					</tr>
-			
-					<tr>
-						<td valign="bottom" width=322>
-							<img src="../graphics/Ballard3.gif" alt="">
-								<p>&nbsp;
-						</td>
-				<td width=10>&nbsp;
-							</td>
-						<td valign="top" width=322>
-							Our histogram labels read "Time over Threshold (ns)" and "Number of Muons." 
-							We measure the length of the response time as <a href="javascript:glossary('pulse_width',350)"><i>time over threshold</i></a>. 
-							<p>
-	
-							The question is: "Do these measurements look right?" Your answer depends on what the 
-							<a href="javascript:glossary('detector',350)"> detector</a> 
-							usually sees. This plot looks pretty good; The <a HREF="javascript:glossary('counter',350)"> counter</a> is well callibrated. 
-							<p>
-							But, is today's performance close to yesterday's? 
-							Does each of the four counters on one detector indicate the 
-							same measurement? 
-							
-							<p>Back to the cars: Do these measurements look right? If you saw 18 Saabs and 1 Chevrolet would you 
-							believe it? Perhaps, if you collected the data in Sweden!
-
-							What if several of you took data. Did everyone at the street corner see all of the 
-							cars or did one person see only Chevys? 
-							
-						</td>
-					</tr>
-		
-					<tr>
-						<td colspan="3" align="center">
-						
-					Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> &
-						
-					
-						<a href="index.jsp">Analysis</a>
-						
 					</td>
-					</tr>
-				</table>
-			</cener>
+				</tr>
+					
+				<tr>
+					<td colspan="3">
+					<p>
+					<hr>
+					<p>
+					</td>
+				</tr>
+			
+				<tr>
+					<td valign="bottom" width=322>
+						<img src="../graphics/Ballard3.gif" alt=""><p>&nbsp;
+					</td>
+					<td width=10>&nbsp;</td>
+					<td valign="top" width=322>
+						Our histogram labels read "Time over Threshold (ns)" and "Number of Muons." 
+						We measure the length of the response time as <a href="javascript:glossary('pulse_width',350)"><i>time over threshold</i></a>. 
+	
+						<p>Is today's performance close to yesterday's?  Do each of the four counters on one detector indicate the same measurement?  Do these measurements look right?  
+						Your answer depends on what the <a href="javascript:glossary('detector',350)"> detector</a> usually sees. 
+
+						<p>This plot looks pretty good; the <a HREF="javascript:glossary('counter',350)"> counter</a> appears well callibrated. 
+						However, it shows a very noisy counter with a large peak centered at 3 ns. This peak is so large that it may be masking the good data centered near 8 ns.
+						
+						<p>Since taller pulses (pulses with more energy) are generally wider, there is a correlation between ToT and the amount of energy deposited by a 
+						<a HREF="javascript:glossary('muon',100)">muon</a> in the <a HREF="javascript:glossary('scintillator',350)">scintillator</a>.
+							
+						<p>Back to the cars: Do these measurements look right? If 18 Saabs and 1 Chevrolet were recorded, is it credible? Perhaps - 
+						if you collected the data in Sweden!  What if several people took data? Did everyone at the street corner see all of the cars, 
+						or did one person see only Chevys? 		
+					</td>
+				</tr>
+		
+				<tr>
+					<td colspan="3" align="center">
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> & <a href="index.jsp">Analysis</a>
+					</td>
+				</tr>
+			</table>
+			</center>
 
 			</div>
 			<!-- end content -->	
