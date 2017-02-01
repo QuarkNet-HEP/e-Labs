@@ -181,11 +181,8 @@
 						<input type="radio" name="runMode" value="local" checked/> Local 
 					</td>
 				</tr>
-				<tr>
-					<td>
-						Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
-					</td>
-				</tr>
+
+
 				<tr>
 					<td>
 						<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
