@@ -12,15 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-
-
-<script type="text/javascript">
-function setDisplay(objectID,state) {
-	var object = document.getElementById(objectID);	
-	object.style.display = state;
-}
-</script>
-</head>
+	</head>
 	
 	<body id="lifetime-tutorial" class="data, tutorial">
 		<!-- entire page container -->
@@ -32,71 +24,59 @@ function setDisplay(objectID,state) {
 				</div>
 			</div>
 			
-			<div id="content">
-		<p>
+			<div id="content">			
+			<p>
 			<center>
-			<p>
-			<p>
-			<table width="655">
-			<tr>
-					<td>
+			<table width = "655" cellpadding ="8">
+				<tr>
+					<td colspan = "3">
 						<center>
 							<font color="#0a5ca6" size="+3">
 								<b>
 									Lifetime Study
  								</b>
 							</font>
-					</center>
-						&nbsp;<p>
-					
-					
-		 				Cosmic ray <a href="javascript:glossary('muon',100)">muons</a> reach the detector with 
-		 				varying amounts of energy and deposit that energy in the 
-		 				<a href="javascript:glossary('counter',350)">counter</a>. Some are trapped in the 
-		 				counter and eventually <a href="javascript:glossary('decay',350)">decay</a> into 
-		 				an electron, a neutrino and an anti-neutrino.
-					These three new particles zoom away (to conserve the momentum of the stopped muon). 
-						
-					<p>&nbsp;
-					<center>
-						<div id="image" style="display:block"><a href="javascript:setDisplay('image','none');setDisplay('movie','block');">
-						<img src="../graphics/decay.gif" alt="" width="508" height="220" align="middle"/></a>
-						<p>Click to see an animation.</p>
-						</div>
-						
-						<div id="movie"  style="display:none"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
-							codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" 
-							width="504" height="216" id="muondecay2" align="middle">
-							<param name="allowScriptAccess" value="sameDomain" />
-							<param name="movie" value="../flash/muondecay2.swf" />
-							<param name="quality" value="high" />
-							<param name="bgcolor" value="#ffffff" />
-							<embed src="../flash/muondecay2.swf" quality="high" bgcolor="#ffffff" width="504" 
-							height="216" name="muondecay2" align="middle" allowscriptaccess="sameDomain" 
-							type="application/x-shockwave-flash" 
-							pluginspage="http://www.macromedia.com/go/getflashplayer"/>
-						</object>
-						</div>
 						</center>
-					<p>&nbsp;
-				
-				
-				<tr>
-					<td width = "321" valign="top">
-						Once the PMT "sees" the electron, we know the amount of time between the muon 
-						stopping and decaying. The node that asks "Any Decays" looks for a light 
-						signal from one counter (the incoming muon) and then waits. 
 					</td>
-
+				</tr>
+								
+				<tr>
+					<td valign="top" width=322>
+						<center>
+							<img src="../graphics/lifetime_example.gif">
+						</center>
+					</td>
+					<td width=5>&nbsp;
+							</td>
 					
+					<td valign = "top" width=322>
+					&nbsp;<p>
 					
+						Muon decay follows an exponential law&mdash;just like radioactive decay and many other natural phenomena. 
+						<a href="http://www.purplemath.com/modules/graphexp.htm">Exponential plots</a> have a characteristic shape.<p>
+						
+						Finding the value of the exponent leads to the mean	lifetime of the particle&mdash;one of many characteristics that allow us to describe 
+						particles. Others include mass and electric charge.<p>
+						<P>
+						We measure the time between two <a href="javascript:glossary('signal',350)">signals</a>  in the same counter and look for patterns in the time difference between two consecutive signals. 
+						The difference may result from a muon decay. 
+						<p>Two types of background noise are minimized in the accompanying example.   
+						<ol>
+							<li>Hardware errors on some signals with large pulse widths can generate fake second-hits at very small times, so times are excluded below 100ns.</li>
+							<li>The DAQ was configured so it did not collect times above 10 microseconds in a single triggered event.  
+							Second hits in counter 2 could result from things other than an electron. 
+							For instance, noise or a second muon can occur randomly and would occupy the regions at longer times.  
+							One can improve knowledge of this type of background with collection of data in the longer intervals.</li>
+						</ol>
+						<p>If we plot a histogram of the length between signals for many of these candidate decays using the e-Lab tool, we can fit the result with an exponential 
+		 				distribution for the <a href="javascript:glossary('decay',350)">decays</a> plus a flat component for any random backgrounds.  
+		 				The mean lifetime from that fit is shown in the plot as 2.2 microseconds.	
+					</td>
 				</tr>
 				<tr>
-					<td>
-						<p>&nbsp;
-						<center>
-							<p>Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> &amp; <a href="index.jsp">Analysis</a>
-						</center>
+					<td colspan=3>
+						&nbsp;
+						<p align=center>Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> &amp; <a href="index.jsp">Analysis</a>
 					</td>
 				</tr>
 			</table>
@@ -112,4 +92,6 @@ function setDisplay(objectID,state) {
 		<!-- end container -->
 	</body>
 </html>
+
+
 

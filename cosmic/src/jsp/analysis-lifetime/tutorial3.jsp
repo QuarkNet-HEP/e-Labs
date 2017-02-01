@@ -12,7 +12,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-	</head>
+
+
+<script type="text/javascript">
+function setDisplay(objectID,state) {
+	var object = document.getElementById(objectID);	
+	object.style.display = state;
+}
+</script>
+</head>
 	
 	<body id="lifetime-tutorial" class="data, tutorial">
 		<!-- entire page container -->
@@ -25,52 +33,75 @@
 			</div>
 			
 			<div id="content">
-			<p>
+		<p>
 			<center>
 			<p>
 			<p>
 			<table width="655">
-				<tr>
-					    <td colspan=3>
+			<tr>
+					<td>
 						<center>
 							<font color="#0a5ca6" size="+3">
 								<b>
 									Lifetime Study
  								</b>
 							</font>
-						</center>
-					    </td>
-				</tr>
+					</center>
+						&nbsp;<p>
 					
-				<tr>
-					    <td width=233 valign=top>
-						<center>
-							<img src="../graphics/lifetime_example.gif">
-						</center>
-						</td><td width=10>
-						&nbsp;
-					    </td>
+					
+		 				Cosmic ray <a href="javascript:glossary('muon',100)">muons</a> reach the detector with 
+		 				varying amounts of energy and deposit that energy in the 
+		 				<a href="javascript:glossary('counter',350)">counter</a>. Some are trapped in the 
+		 				counter and eventually <a href="javascript:glossary('decay',350)">decay</a> into 
+		 				an electron, a neutrino and an anti-neutrino.
+					These three new particles zoom away (to conserve the momentum of the stopped muon). 
 						
-					    <td width=233 valign=top>
-		 				&nbsp;<p>		 			
-						<p>The only way out is to collect many, many of these "candidates" and then plot a 
-						histogram of the length between signals. Real 
-						<a href="javascript:glossary('decay',350)">decays</a> will be much longer between signals <i>and</i> have an exponential distribution with a "longish" time constant.	
-					    </td>
-				</tr>
+					<p>&nbsp;
+					<center>
+						<div id="image" style="display:block"><a href="javascript:setDisplay('image','none');setDisplay('movie','block');">
+						<img src="../graphics/decay.gif" alt="" width="508" height="220" align="middle"/></a>
+						<p>Click to see an animation.</p>
+						</div>
+						
+						<div id="movie"  style="display:none"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
+							codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" 
+							width="504" height="216" id="muondecay2" align="middle">
+							<param name="allowScriptAccess" value="sameDomain" />
+							<param name="movie" value="../flash/muondecay2.swf" />
+							<param name="quality" value="high" />
+							<param name="bgcolor" value="#ffffff" />
+							<embed src="../flash/muondecay2.swf" quality="high" bgcolor="#ffffff" width="504" 
+							height="216" name="muondecay2" align="middle" allowscriptaccess="sameDomain" 
+							type="application/x-shockwave-flash" 
+							pluginspage="http://www.macromedia.com/go/getflashplayer"/>
+						</object>
+						</div>
+						</center>
+					<p>&nbsp;
+				
+				
+				<tr>
+					<td width = "321" valign="top">
+						Each counter is connected via a channel to the DAQ.  The channel that seeks decays looks for a light signal (the incoming muon) and then waits.  
+						When the counter later detects the electron's signal within a certain time window, we know the amount of time between the muon stopping and decaying.  
+					</td>
 
+					
+					
+				</tr>
 				<tr>
 					<td>
 						<p>&nbsp;
 						<center>
-							<p>Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> &amp; <a href="index.jsp">Analysis</a>
+							<p>Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> &amp; <a href="index.jsp">Analysis</a>
 						</center>
 					</td>
 				</tr>
 			</table>
 			<p>
-			</center>
-
+		</center>
+		
 			</div>
 			<!-- end content -->	
 		
