@@ -26,301 +26,45 @@
 			</div>
 			
 			<div id="content">
-		<p>
-<center>
-<p>
-<p>
-				<table width="655">
+			<p>
+			<center>
+			<p>
+			<p>
+			<table width="655">
 				<tr>
-							<td colspan = 3>
-								<center>
-									<font color="#0a5ca6" size=+3>
-										<b>
-	 										Shower Study
-	 									</b>
-	 								</font>
-	 								&nbsp;<p>
-	 							</center>
-	 						</td>
-	 					</tr>
-				<tr>
-		 			<td width="322" valign="top">
-		 				<img src="../graphics/shower.png" height="350" width="350" alt="">
-					</td>
-					<td width=10>&nbsp;
-							</td>
+					<td colspan = 3>
+						<center><font color="#0a5ca6" size=+3><b>Shower Study</b></font>
+	 					&nbsp;<p></center>
+	 				</td>
+	 			</tr>
+	 			<tr>
+	 				<td colspan = 3>
+	 					We entered parameters for an event and got back the table below. 
+               			These "candidates" satisfy our requirements for an event. What might we have 
+               			entered for the hit coincidence level? What about detector coincidence? 
+				<i>[Answer - hit coincidence: 2, detector coincidence: 2]</i>.
+						<p>
+						The analysis software can only find signals that match the parameter 
+						settings. The experimenter must decide which of the candidates is an event&mdash;if any!
+						<p>
+						What does one do to make this decision? What does an event look like? 
+						How to tell when one is right?
+						<p>
+	 					The detector identified 1376 shower candidates.  There's a data table for each shower candidate 
+						that meets the input parameters.
+						<p> <center><img src="../graphics/tryPerf/shower_cand_tutorial.png" alt=""></center>
+						<p> Let us look at the data table for Sep 1, 2016 01:02:17 UTC on the next page. 										
+	 			</tr>
 					
-					<td width="322" valign="top">
-					&nbsp<p>
-				&nbsp<p>
-						The plot shows only 3 of the 12 signals.
-						 How did we know that there were 12? Take a look at the data table 
-						 (you'll see a data table for each shower candidate that meets your input parameters): <p>
-
-
-							<table cellspacing="2" border="0">
-                <tr>
-                    <td align="center">
-                        East/West
-                    </td>
-                    <td align="center">
-                        North/South
-                    </td>
-                    <td align="center">
-                        Time
-                    </td>
-                    <td align="center">
-                        Detector
-                    </td>
-                    <td align="center">
-                        Channel
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        3.0
-                    </td>
-                    <td align="center">
-                        3.0
-                    </td>
-                    <td align="center">
-                        0.0
-                    </td>
-                    <td align="center">
-                        141
-                    </td>
-                    <td align="center">
-                        1
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        7837.1
-                    </td>
-                    <td align="center">
-                        41968.2
-                    </td>
-                    <td align="center">
-                        7287679.4
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        4
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        7831.1
-                    </td>
-                    <td align="center">
-                        41974.2
-                    </td>
-                    <td align="center">
-                        7287681.7
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        2
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        7831.1
-                    </td>
-                    <td align="center">
-                        41968.2
-                    </td>
-                    <td align="center">
-                        7287681.7
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        3
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        7837.1
-                    </td>
-                    <td align="center">
-                        41974.2
-                    </td>
-                    <td align="center">
-                        7287686.9
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        1
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        7837.1
-                    </td>
-                    <td align="center">
-                        41968.2
-                    </td>
-                    <td align="center">
-                        7287704.2
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        4
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        7831.1
-                    </td>
-                    <td align="center">
-                        41974.2
-                    </td>
-                    <td align="center">
-                        7287734.2
-                    </td>
-                    <td align="center">
-                        119
-                    </td>
-                    <td align="center">
-                        2
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        1192.2
-                    </td>
-                    <td align="center">
-                        34366.3
-                    </td>
-                    <td align="center">
-                        8820242.2
-                    </td>
-                    <td align="center">
-                        150
-                    </td>
-                    <td align="center">
-                        3
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        1192.2
-                    </td>
-                    <td align="center">
-                        34372.3
-                    </td>
-                    <td align="center">
-                        8820243.7
-                    </td>
-                    <td align="center">
-                        150
-                    </td>
-                    <td align="center">
-                        2
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        1192.2
-                    </td>
-                    <td align="center">
-                        34366.3
-                    </td>
-                    <td align="center">
-                        8820313.4
-                    </td>
-                    <td align="center">
-                        150
-                    </td>
-                    <td align="center">
-                        3
-                    </td>
-                </tr>
-<tr>
-
-                    <td align="center">
-                        1192.2
-                    </td>
-                    <td align="center">
-                        34366.3
-                    </td>
-                    <td align="center">
-                        8820390.7
-                    </td>
-                    <td align="center">
-                        150
-                    </td>
-                    <td align="center">
-                        3
-                    </td>
-                </tr>
-<tr bgcolor="#CCFFBB">
-
-                    <td align="center">
-                        1192.2
-                    </td>
-                    <td align="center">
-                        34366.3
-                    </td>
-                    <td align="center">
-                        8820503.2
-                    </td>
-                    <td align="center">
-                        150
-                    </td>
-                    <td align="center">
-                        3
-                    </td>
-                </tr>
-                </table>
-                			<p>
-                			You can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in three 
-                			<a href="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150. 
-
-
-
-                
-                
-					</td>
-				</tr>
-				
-				<tr>
-					<td colspan ="3" >
-					Look at the amount of time between the signals in detector 119. The signal times are so close together that they only show up as one polygon on this plot. if you zoom in (rerun the analysis with a different time scale), you can see the others.
-<p>
-					The plot can tell us that detector 141 fired first then 119 and 150 fired last. The table can give us much more information. Does this event candidate look like a shower to you?</p>
-
-&nbsp;<p align=center>
-
+				<tr><td colspan=3>
+					<p align=center>
 							         Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
+					</p>
 					</td>
 				</tr>
-				
-				
-				
 				
 			</table>
-			
+			</center>
 
 			</div>
 			<!-- end content -->	
