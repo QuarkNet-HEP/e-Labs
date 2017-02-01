@@ -51,7 +51,7 @@
 	 					</tr><tr>
  			<td colspan=3>
  				<p>
- 				Using the ToF analysis module, one can measure the average time muons take to travel between two counters.  
+ 				Using the TOF analysis module, one can measure the average time muons take to travel between two counters.  
  				Then, we can calculate average speed (v = d/t).  
  				We use the following definitions (same as Flux): 
  				<li>muon time of arrival at a scintillation counter = hit</li> 
