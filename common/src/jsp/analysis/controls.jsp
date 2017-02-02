@@ -1,4 +1,6 @@
+<!-- 
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+
 <p>
   <input type="hidden" name="provider" value="swift"/>
   <table id="swift-run-mode" width="100%" align="center">
@@ -10,7 +12,7 @@
     </tr>
   </table> 
 </p>
-<!-- 
+
 <p>
 	<e:vswitch revert="true">
 		<e:visible>
