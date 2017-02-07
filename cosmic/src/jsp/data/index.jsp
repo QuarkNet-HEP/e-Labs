@@ -36,7 +36,7 @@
 					<div class="tab-contents">
 						<p>
 							<a href="../analysis-performance">Performance Study</a>
-							- Look at data from a detector. Can you trust the data?
+							- Look at data from a detector. Is the data reliable?
 						</p>
 						<p>
 							<a href="../analysis-flux">Flux Study</a>
@@ -46,14 +46,19 @@
 						</p>
 						<p>
 							<a href="../analysis-shower">Shower Study</a>
-							- You can detect an air shower using the four counters at your school. 
-							Your colleagues at other schools will want to know when you detect one, 
-							so they can check for coincident showers at their school. Contribute 
+							- One can detect an air shower using the four counters at school. 
+							Colleagues at other schools can check for coincident showers. One may contribute 
 							to cutting-edge research on the origin of high-energy primary cosmic rays.
 						</p>
 						<p>
 							<a href="../analysis-lifetime">Lifetime Study</a>
-							- How long before muons decay? Combine a lifetime study with flux studies to determine whether you live in Newton's or Einstein's world.
+							- How long before muons decay? Students can combine a lifetime study with flux studies 
+							to determine if they live in Newton's or Einstein's world.
+						</p>
+                                                <p>
+                                                        <a href="../analysis-timeofflight">Time of Flight Study</a>
+                                                        - Using the TOF analysis module, one can measure the average time muons take to travel 
+							between two counters and then calculate the average speed. 
 						</p>
 					</div>
 				</div>		
