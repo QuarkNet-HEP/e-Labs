@@ -38,7 +38,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 <div style="color: red">Be sure to save your plots permanently!</div><p>
 <%
 	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
-
 %>
 <form action="../analysis/remove.jsp">
 	<table id="analysis-table">
@@ -47,10 +46,9 @@ you are satisfied with it.  You can always run the analysis again and change the
 			</th>
 			<th>ID</th>
 			<th>Analysis</th>
-			<th>Run Mode</th>
-			<th>Start Time (UTC)</th>
-			<th>End Time (UTC)</th>
-			<th>Time (Actual/Est.)</th>
+			<th>Start Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
+			<th>End Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
+			<th>Run Time</th>
 			<th>Status</th>
 		</tr>
 		<c:choose>
@@ -75,9 +73,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 							<a href="status.jsp?id=${run.id}">${run.analysis.name}</a>
 						</td>
 						<td>
-							${run.attributes.runMode}
-						</td>
-						<td>
 							<c:choose>
 								<c:when test="${run.startTime == null}">
 									N/A
@@ -98,7 +93,7 @@ you are satisfied with it.  You can always run the analysis again and change the
 							</c:choose>
 						</td>
 						<td align="center">
-							${run.formattedRunTime}&nbsp;/&nbsp;${run.formattedEstimatedRunTime}
+							${run.formattedRunTime}&nbsp;<!--/&nbsp;${run.formattedEstimatedRunTime}-->
 						</td>
 						<td width="148px">
 							<table border="0">
@@ -125,6 +120,7 @@ you are satisfied with it.  You can always run the analysis again and change the
 			</c:otherwise>
 		</c:choose>
 	</table>
+	
 	<input type="submit" name="remove" value="Remove Selected" />
 </form>
 	<%@ include file="async-update.jsp" %>
