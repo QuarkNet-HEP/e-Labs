@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -100,8 +101,8 @@
 								<td>&nbsp;</td>
 							</tr>
 						</table>
-						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
-						estimated: ${run.formattedEstimatedRunTime}
+						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span> 
+						<!--estimated: ${run.formattedEstimatedRunTime}        SB, 12/28/16-->
 						<div id="error-text" style="background: #ffaf70"></div>
 						
 						
@@ -195,6 +196,27 @@
 							</code>
 						</e:hidden>
 					</e:vswitch>
+				<%
+				}
+				else if (status == AnalysisRun.STATUS_QUEUED) {
+			    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
+					int queued = 0;
+			    	if (aq != null) {
+			    		String runMode = (String) run.getAttribute("runMode");					    
+			    		if (runMode.equals("local")) {
+							queued = aq.getQueueLocal().size();
+			    		}
+			    		if (runMode.equals("i2u2")) {
+			    			queued = aq.getQueueNodes().size();
+			    		}
+			    		if (runMode.equals("mixed")) {
+			    			queued = aq.getQueueMixed().size();
+			    		}
+					}
+				%>
+					<H1>The study was queued</H1> 
+					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
+					<p>At the moment, <%=queued %> analyses are waiting for the execution mode you chose.</p>
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
