@@ -46,7 +46,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 			</th>
 			<th>ID</th>
 			<th>Analysis</th>
-			<th>Run Mode</th>
 			<th>Start Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
 			<th>End Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
 			<!--<th>Time (Actual/Est.)</th>-->
@@ -75,9 +74,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 							<a href="status.jsp?id=${run.id}">${run.analysis.name}</a>
 						</td>
 						<td>
-							${run.attributes.runMode}
-						</td>
-						<td>
 							<c:choose>
 								<c:when test="${run.startTime == null}">
 									N/A
@@ -98,8 +94,7 @@ you are satisfied with it.  You can always run the analysis again and change the
 							</c:choose>
 						</td>
 						<td align="center">
-							<!--${run.formattedRunTime}&nbsp;/&nbsp;${run.formattedEstimatedRunTime}-->
-							${run.formattedRunTime}&nbsp;
+							${run.formattedRunTime}&nbsp;<!--/&nbsp;${run.formattedEstimatedRunTime}-->
 						</td>
 						<td width="148px">
 							<table border="0">
