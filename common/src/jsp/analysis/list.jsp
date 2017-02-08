@@ -48,7 +48,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 			<th>Analysis</th>
 			<th>Start Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
 			<th>End Time <a href="javascript:glossary('UTC',350)">(UTC)</a></th>
-			<!--<th>Time (Actual/Est.)</th>-->
 			<th>Run Time</th>
 			<th>Status</th>
 		</tr>
