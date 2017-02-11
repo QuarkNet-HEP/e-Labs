@@ -323,11 +323,9 @@
 			<div id="footer">
 			</div>
 		</div>
-</c:when>
 <c:otherwise>
 	${message }
 </c:otherwise>
-</c:choose>
 		<!-- end container -->
 	</body>
 </html>
