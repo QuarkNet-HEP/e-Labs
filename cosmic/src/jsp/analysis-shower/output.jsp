@@ -409,7 +409,6 @@
 			<div id="footer">
 			</div>
 		</div>
-</c:when>
 <c:otherwise>
 	${message }
 </c:otherwise>
