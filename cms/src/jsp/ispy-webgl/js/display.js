@@ -12,9 +12,11 @@ ispy.invertColors = function() {
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           if ( c.name === k ) {
-            c.material.color = new THREE.Color(obj.style.color[0], obj.style.color[1], obj.style.color[2]);
+            c.children.forEach(function(d) {
+              d.material.color.setStyle(obj.style.color);
+            });
           }
-        })
+        });
       }
     }
   } else {
@@ -25,11 +27,14 @@ ispy.invertColors = function() {
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           if ( c.name === k ) {
-            c.material.color = new THREE.Color(obj.style.altColor[0], obj.style.altColor[1], obj.style.altColor[2]);
+            c.children.forEach(function(d) {
+              d.material.color.setStyle(obj.style.altColor);
+            });
           }
-        })
+        });
       }
     }
+
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
@@ -86,10 +91,15 @@ ispy.updateRendererInfo = function() {
   var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
   html += "<dl>";
 
-  for ( var i in info ) {
-    html += "<dt><strong>"+ i +"</strong></dt>";
-    for ( var j in info[i] ) {
-      html += "<dd>" + j + ": " + info[i][j] + "</dd>";
+  html += "<dt><strong> render </strong></dt>";
+  for ( var prop in info.render ) {
+    html += "<dd>" + prop + ": " + info.render[prop] + "</dd>";
+  }
+
+  if ( info.memory ) {
+    html += "<dt><strong> memory </strong></dt>";
+    for ( var prop in info.memory ) {
+      html += "<dd>" + prop + ": " + info.memory[prop] + "</dd>";
     }
   }
 
@@ -98,7 +108,31 @@ ispy.updateRendererInfo = function() {
 
 // ---------------------------------
 
+ispy.updateRenderer = function(type) {
+  if ( type === ispy.renderer_name ) {
+    alert(type + ' is already in use');
+    return;
+  }
 
+  if ( type === 'WebGLRenderer' ) {
+    if ( ! ispy.hasWebGL() ) {
+      alert('WebGL is not available. Using CanvasRenderer.');
+      type = 'CanvasRenderer';
+    }
+  }
+
+  document.getElementById('display').removeChild(ispy.renderer.domElement);
+  document.getElementById('axes').removeChild(ispy.inset_renderer.domElement);
+
+  ispy.useRenderer(type);
+
+  var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  controls.rotateSpeed = 3.0;
+  controls.zoomSpeed = 0.5;
+  ispy.controls = controls;
+
+  ispy.updateRendererInfo();
+};
 
 ispy.onWindowResize = function() {
   if (ispy.stereo) {
@@ -122,6 +156,7 @@ ispy.onWindowResize = function() {
 
   if ( ispy.camera.inPerspectiveMode ) {
     ispy.camera.cameraP.aspect = w/h;
+
   } else {
     ispy.camera.cameraO.left = -w/2;
     ispy.camera.cameraO.right = w/2;
@@ -182,19 +217,33 @@ ispy.onMouseMove = function(e) {
 };
 
 ispy.onMouseDown = function(e) {
-  if(ispy.intersected){
-    ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
-  }
+
+  if ( ispy.intersected ) {
+
+      ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
+
+    }
+
 };
+
+ispy.shift_pressed = false;
+ispy.mass_pair = [];
+
+document.addEventListener('keyup', function(e) {
+
+  if ( e.which === 16 ) {
+    ispy.shift_pressed = false;
+  }
+
+});
 
 document.addEventListener('keydown', function(e) {
 
   // Instead of a button, make output of 3D to JSON a "secret" key binding
   // If shift + e then export
-  // hide this for masterclasses
-  //if ( e.which === 69 && e.shiftKey ) {
-  //  ispy.exportScene();
-  //}
+  if ( e.which === 69 && e.shiftKey ) {
+    ispy.exportScene();
+  }
 
   // up arrow
   if ( e.which === 38 && e.shiftKey ) {
@@ -206,14 +255,15 @@ document.addEventListener('keydown', function(e) {
     ispy.zoom(-0.5);
   }
 
-  /*
-  hide this for masterclasses
-
   // shift+a to toggle animation
   if ( e.which === 65 && e.shiftKey ) {
     ispy.toggleAnimation();
   }
-  */
+
+  if ( e.shiftKey ) {
+    ispy.shift_pressed = true;
+  }
+
   /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
@@ -245,7 +295,6 @@ ispy.displayCollection = function(key, group, name, objectIds) {
   for ( var t in type ) {
     if ( type[t][0] === 'charge' ) {
       charge_index = i;
-      console.log(charge_index);
     }
 
     i += 1;
@@ -259,6 +308,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
     for ( v in collection[c] ) {
+      //row_content += "<td>"+collection[c][v]+"</td>";
+
       if ( v === charge_index.toString() ) {
         row_content += "<td> </td>";
       } else {
@@ -292,6 +343,25 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 };
 
+
+ispy.getMass = function() {
+
+  var pt1 = ispy.mass_pair[0].pt;
+  var pt2 = ispy.mass_pair[1].pt;
+
+  var eta1 = ispy.mass_pair[0].eta;
+  var eta2 = ispy.mass_pair[1].eta;
+
+  var phi1 = ispy.mass_pair[0].phi;
+  var phi2 = ispy.mass_pair[1].phi;
+
+  var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+
+  $('#invariant-mass').html(m.toFixed(2));
+  $('#invariant-mass-modal').modal('show');
+
+};
+
 ispy.displayEventObjectData = function(key, objectUserData){
   var type = ispy.current_event.Types[key];
   var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
@@ -301,17 +371,51 @@ ispy.displayEventObjectData = function(key, objectUserData){
   var dataTableBody = $('#table-data-eventObject').find("tbody");
   dataTableBody.empty();
 
-  for(var t in type){
+  var pt, eta, phi;
+
+  for ( var t in type ) {
+
+    //var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
     var row_content;
+
     if ( type[t][0] === 'charge' ) {
       row_content = "<tr> <td>" + type[t][0] + "</td> <td> </td> </tr>";
     } else {
       row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
     }
+
     dataTableBody.append(row_content);
+
+    if ( type[t][0] === 'pt' ) {
+      pt = eventObjectData[t];
+    } else if ( type[t][0] === 'eta' ) {
+      eta = eventObjectData[t];
+    } else if ( type[t][0] === 'phi' ) {
+      phi = eventObjectData[t];
+    }
   }
 
-  $('#data-EventObjects').modal('show');
+  if ( ispy.shift_pressed ) {
+
+    if ( ispy.mass_pair.length === 2 ) {
+      ispy.mass_pair = [];
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+    }
+
+    else if ( ispy.mass_pair.length === 1 ) {
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+      ispy.getMass();
+    }
+
+    else if ( ispy.mass_pair.length === 0 ) {
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+    }
+
+  } else {
+
+    $('#data-EventObjects').modal('show');
+
+  }
 };
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect){

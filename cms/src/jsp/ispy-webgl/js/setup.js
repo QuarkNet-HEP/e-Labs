@@ -56,6 +56,35 @@ ispy.initCamera = function() {
   ispy.lookAtOrigin();
 };
 
+ispy.useRenderer = function(type) {
+  var width = document.getElementById('display').clientWidth;
+  var height = document.getElementById('display').clientHeight;
+
+  var renderer = new THREE[type]({antialias:true, alpha:true});
+  var inset_renderer = new THREE[type]({antialias:true, alpha:true});
+
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+
+  if ( ispy.inverted_colors ) {
+    renderer.setClearColor(0xffffff,1);
+    inset_renderer.setClearColor(0xffffff,0);
+  } else {
+    renderer.setClearColor(0x000000,1);
+    inset_renderer.setClearColor(0x000000,0);
+  }
+
+  renderer.setSize(width, height);
+  inset_renderer.setSize(height/5, height/5);
+
+  ispy.renderer = renderer;
+  ispy.renderer_name = type;
+  ispy.inset_renderer = inset_renderer;
+
+  document.getElementById('display').appendChild(ispy.renderer.domElement);
+  document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
+};
+
 ispy.init = function() {
   var display = document.getElementById('display');
   var inset = document.getElementById('axes');
@@ -63,8 +92,8 @@ ispy.init = function() {
   var scene = new THREE.Scene();
   ispy.scene = scene;
 
-  var width = $('#display').innerWidth();
-  var height = $('#display').innerHeight();
+  var width = display.clientWidth;
+  var height = display.clientHeight;
 
   // width, height, fov, near, far, orthoNear, orthoFar
   var camera = new THREE.CombinedCamera(width, height, 75, 0.1, 100, 0.1, 100);
@@ -88,31 +117,10 @@ ispy.init = function() {
   var inset_renderer;
 
   if ( ispy.hasWebGL() ) {
-    console.log('ispy: using webgl');
-
-    renderer = new THREE.WebGLRenderer({antialias:true});
-    inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-
-    ispy.renderer_name = "WebGLRenderer";
-
+    ispy.useRenderer('WebGLRenderer', width, height);
   } else {
-    console.log('ispy: using canvas');
-
-    renderer = new THREE.CanvasRenderer();
-    inset_renderer = new THREE.CanvasRenderer();
-
-    ispy.renderer_name = "CanvasRenderer";
+    ispy.useRenderer('CanvasRenderer', width, height);
   }
-
-  renderer.setSize(width, height);
-  inset_renderer.setSize(inset_width, inset_height);
-
-  ispy.renderer = renderer;
-  ispy.inset_renderer = inset_renderer;
-  ispy.inset_renderer.alpha = 0.0;
-
-  display.appendChild(ispy.renderer.domElement);
-  inset.appendChild(ispy.inset_renderer.domElement);
 
   ispy.stats = new Stats();
   display.appendChild(ispy.stats.domElement);
@@ -130,18 +138,27 @@ ispy.init = function() {
     }
   });
 
+  $('#show-logo').prop('checked', true);
+
+  $('#show-logo').change(function() {
+    if ( this.checked ) {
+      $('#cms-logo').show();
+    } else {
+      $('#cms-logo').hide();
+    }
+  });
+
   ispy.inverted_colors = false;
   $('#invert-colors').prop('checked', false);
-  ispy.renderer.setClearColor(0x000000,1);
 
   var origin = new THREE.Vector3(0,0,0);
   var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
   var gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
   var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
 
-  rx.line.material.linewidth = 5;
-  gy.line.material.linewidth = 5;
-  bz.line.material.linewidth = 5;
+  rx.line.material.linewidth = 2.5;
+  gy.line.material.linewidth = 2.5;
+  bz.line.material.linewidth = 2.5;
 
   ispy.inset_scene.add(rx);
   ispy.inset_scene.add(gy);
@@ -181,6 +198,8 @@ ispy.init = function() {
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
   var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  controls.rotateSpeed = 3.0;
+  controls.zoomSpeed = 0.5;
   ispy.controls = controls;
 
   // Add a parent object for each group
@@ -191,6 +210,7 @@ ispy.init = function() {
   });
 
   $('#version').html("v"+ispy.version);
+  $('#threejs').html("r"+THREE.REVISION);
 
   window.addEventListener('resize', ispy.onWindowResize, false);
 
@@ -243,15 +263,26 @@ ispy.initLight = function() {
   var intensity = 1.0;
   var length = 15.0;
 
+  var lights = new THREE.Object3D();
+  lights.name = 'Lights';
+  ispy.scene.add(lights);
+
   ispy.light1 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light1.name = 'Light1';
   ispy.light1.position.set(-length, length, length);
-  ispy.scene.getObjectByName("Detector").add(ispy.light1);
+  ispy.scene.getObjectByName('Lights').add(ispy.light1);
 
   ispy.light2 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light2.name = 'Light2';
   ispy.light2.position.set(length, -length, -length);
-  ispy.scene.getObjectByName("Detector").add(ispy.light2);
+  ispy.scene.getObjectByName('Lights').add(ispy.light2);
 };
 
+ispy.getJSON = function(scr) {
+  return $.ajax({url: scr, dataType: "json", cache: true}).success(function(data) {
+    $.extend(true, ispy.detector, data);
+  });
+};
 
 ispy.getScript = function(scr) {
   return $.ajax({url: scr, dataType: "script", cache: true});
@@ -271,23 +302,22 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb-reduced.min.js"),
-           ispy.getScript("./geometry/ee-reduced.min.js"),
-           ispy.getScript("./geometry/hb.js"),
-           ispy.getScript("./geometry/ho.js"),
-           ispy.getScript("./geometry/hehf.js"),
-           ispy.getScript("./geometry/pixel.js"),
-           ispy.getScript("./geometry/tib.js"),
-           ispy.getScript("./geometry/tob.js"),
-           ispy.getScript("./geometry/tec.js"),
-           ispy.getScript("./geometry/tid.js")
-    ).done(function() {
-        $.when(
-          ispy.addDetector()
-        ).done(function() {
+    $.when(
+        ispy.getJSON('./geometry/eb-reduced.json'),
+        ispy.getJSON('./geometry/ee-reduced.json'),
+        ispy.getJSON('./geometry/hb.json'),
+        ispy.getJSON('./geometry/ho.json'),
+        ispy.getJSON('./geometry/hehf.json'),
+        ispy.getJSON('./geometry/pixel.json'),
+        ispy.getJSON('./geometry/tec.json'),
+        ispy.getJSON('./geometry/tib.json'),
+        ispy.getJSON('./geometry/tid.json'),
+        ispy.getJSON('./geometry/tob.json')
+        ).done(function(){
+        $.when(ispy.addDetector()).done(function() {
           $('#loading').modal('hide');
-        });
-    });
+        })
+      });
   }
 };
 
