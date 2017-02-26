@@ -6,9 +6,8 @@
 	<link href="bootstrab/css/bootstrap-theme.min.css" rel="stylesheet">
 	<link href="bootstrab/css/style.css" rel="stylesheet">
 	<!-- Added temporarily - JG 21Dec2016 -->
-	<link rel="stylesheet" type="text/css" href="bootstrap.css">
 	<style media="screen" type="text/css">
-		.row {
+		.panelRow {
 		overflow: hidden;
 		}
 		

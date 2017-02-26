@@ -5,13 +5,14 @@ function printMass(mass){
 	}
 	var HiggsChecked=document.getElementById("H").checked;
 	var ZChecked=document.getElementById("Z").checked;
-
+	var NPChecked=document.getElementById("NP").checked;
+		
 	if(HiggsChecked){
 			//$("#massEntry").prop("value",mass);
 			$("#massEntry").prop("value"," ");
 	} else if(!HiggsChecked){
 			$("#massEntry").prop("value"," ");
-	} else if(ZChecked){
+	} else if(NPChecked){
 			$("#massEntry").prop("value"," ");
 	} else{
 			$("#massEntry").prop("value"," ");
@@ -26,7 +27,13 @@ function check(state){
 		return (document.getElementById("e").checked || 					document.getElementById("mu").checked);
 	}
 	if(state=="final"){
-		return (document.getElementById("H").checked || document.getElementById("Z").checked || document.getElementById("W").checked ||	document.getElementById("Wp").checked || document.getElementById("W-").checked || document.getElementById("Zoo").checked);
+			return (document.getElementById("H").checked ||
+							document.getElementById("Z").checked ||
+							document.getElementById("NP").checked ||
+							document.getElementById("W").checked ||
+							document.getElementById("Wp").checked ||
+							document.getElementById("W-").checked ||
+							document.getElementById("Zoo").checked);
 	}
 }
 
@@ -51,7 +58,8 @@ function SelP(element,mass){
 			prim=check("primary");
 		}
 
-		if(element.id=="Z"){
+		//if(element.id=="Z"){
+		if(element.id=="NP"){
 			$("#massEntry").prop("disabled",!checked);
 			if(checked){
 				document.getElementById('massInput').style.color = 'black';
@@ -63,7 +71,8 @@ function SelP(element,mass){
 		}
 			
 		//printMass(mass);
-		var arr=["H","W","W-","Wp","Z","Zoo"];
+		//var arr=["H","W","W-","Wp","Z","Zoo"];
+		var arr=["H","W","W-","Wp","NP","Zoo"];
 		fin=checked;
 	}
 	for(var i=0;i<arr.length;i++){
@@ -249,7 +258,8 @@ function del(element){
 	});
 
 	$(":checkbox").prop("disabled",false);
-	var allC=["e","mu","W","Wp","W-","Z","H","Zoo"];
+//		var allC=["e","mu","W","Wp","W-","Z","H","Zoo"];
+	var allC=["e","mu","W","Wp","W-","NP","H","Zoo"];
 	for(var i=0;i<allC.length;i++){
 		    document.getElementById(allC[i]).checked = false;
 	}

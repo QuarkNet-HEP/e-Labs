@@ -14,11 +14,11 @@ if(!isset($_SESSION["database"]) || !isset($_SESSION["groupNo"])){
 /* How many decimal places to use when rounding masses */
 $rnd=2;
 /* Allowed labels for particle states */
-$stateLabels = array('e','mu','W+','Wp','W-','W','Z','Zed','H','Higgs','Zoo'); 
+$stateLabels = array('e','mu','W+','Wp','W-','W','Z','H','Higgs','Zoo','NP');
 
 /* If the form is submitted with a nonempty CustomEvent,
-	   define a $checked string for that event */
-/* Introduced $strUserInput as alternative 27Jan2017 JG */
+	   define a $strUserInput string to store the input data
+		 for that event */
 if(isset($_POST["fin"]) && $_POST["CustomEvent"]!=""){
 	$strUserInput="";
 	/* Create $strUserInput out of the POST array */
@@ -32,13 +32,14 @@ if(isset($_POST["fin"]) && $_POST["CustomEvent"]!=""){
 	if( array_key_exists("massEntry", $_POST) ){
 		/* Check to make sure user entered actual number for mass */
 		if( !is_numeric($_POST["massEntry"]) ){
-			$strUserInput=$strUserInput."NaN;";
+			$strUserInput=$strUserInput."NaN";
 		} else{
-			$strUserInput=$strUserInput.$_POST["massEntry"].";";
+			$strUserInput=$strUserInput.$_POST["massEntry"];
 		}
+	} else{
+		/* Remove the superfluous final semicolon: */
+		$strUserInput=substr($strUserInput,0,-1);
 	}
-	/* Remove the superfluous final semicolon: */
-	$strUserInput=substr($strUserInput,0,-1);
 	/* WriteEntry() defined in database.php */
 	/* Write the custom event and its POSTed data to the database */
 	WriteEntry($_SESSION["database"],$_POST["CustomEvent"],$strUserInput);
@@ -93,7 +94,7 @@ function showMassDB($checked){
 /* Show the mass from the Input Box in the analysis table? */
 function showMassInput($checked){
 	$arrChecked=explode(";",$checked);
-	if(in_array("Z",$arrChecked)){
+	if(in_array("Z",$arrChecked) || in_array("NP",$arrChecked)){
 		return true;
 	}else{
 		return false;
@@ -162,5 +163,3 @@ for($i=0;$i<count($arr);$i++){
 }
 ?>
 <script> var massGlobal= '<?php echo $s ?>'; var group='<?php echo $_SESSION["groupNo"] ?>';</script>
-
-

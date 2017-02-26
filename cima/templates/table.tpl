@@ -1,24 +1,24 @@
 <!--/* Rounding parameter $rnd defined in fillOut.php */-->
 
 <form action=fillOut.php method="post">
-<div class=row>
+<div class="row panelRow">
 	<div class=col-md-3>
 		<div class=container-fluid>
-			<div class=row>
+			<div class="row panelRow">
 				<div class=col-md-1></div>
 				<div class=col-md-10>
 					<strong> Masterclass: </strong>
 					<?php echo '<span name="database">'.$_SESSION["MasterClass"].'</span>'; ?>
 				</div>
 			</div>
-			<div class=row>
+			<div class="row panelRow">
 				<div class=col-md-1></div>
 				<div class=col-md-10>
 					<strong> location: </strong>
 					<?php echo '<span name="database"> '.$_SESSION["database"].'</span>'; ?>
 				</div>
 			</div>
-			<div class=row>
+			<div class="row panelRow">
 				<div class=col-md-1></div>
 				<div class=col-md-10>
 	  			<strong> Group: </strong>
@@ -63,7 +63,7 @@
 <div class=Cnt>
 	<!-- Interface Row -->
 	<div class="container" style="border:1px solid black">
-		<div class="row" style="background-color: none;">
+		<div class="row panelRow" style="background-color: none;">
 			<!-- Col 1: Select Event -->
 			<div class=col-md-3
 					 style="background-color:whitesmoke; border-right: 4px solid black;">
@@ -75,16 +75,25 @@
 										name="CustomEvent"
 										onchange="this.form.submit()">
 							<?php	echo '<option  id="SelEvent" selected ';
-					 					if(isset($event)){
+					 					if(isset($event) && ($event['id'] % 100)==0){
+											echo "value=".$event['id'].">100";
+											#.($event['id'] % 100)."";
+										}
+										else if(isset($event)){
 											echo "value=".$event['id'].">".($event['id'] % 100)."";
-										}				
+										}
 										else{ echo ">";	}
 										echo ' </option>';
-																		
+
+										echo '<option disabled="disabled">---</option>';
+
 										if(isset($event)){
 											for($i=0;$i<count($freeEvents);$i++){
 												if($freeEvents[$i]!=$event['id']){
-													echo '<option value='.$freeEvents[$i].'>'.($freeEvents[$i] % 100).'</option>';
+													echo '<option value='.$freeEvents[$i].'>'
+														/* convert displayed value to (1,100) */
+														.($freeEvents[$i] - $freeEvents[0] + 1).
+													'</option>';
 												}
 											}
 										}
@@ -104,16 +113,16 @@
 					
 			<!-- Col 2: Select Particles -->
 			<div class=col-md-6 style="background-color:whitesmoke;">
-				<div class="row"
+				<div class="row panelRow"
 						 style="background-color:none;"><!-- Select Particles row -->
 							
 					<!-- Final State column on the left -->
 					<div class=col-md-4
 							 style="background-color:none; border-right: 1px solid black;">
-						<div class="row"><div class=col-md-12>
+						<div class="row panelRow"><div class=col-md-12>
 								<strong> final state </strong>
 						</div></div>
-						<div class="row"><div class=col-md-12>
+						<div class="row panelRow"><div class=col-md-12>
 							<div style="background-color:none; padding: 0.5em 0.2em 0.5em 0.4em;">
 								<div>
 									<input type="checkbox"
@@ -135,10 +144,10 @@
 							
 					<!-- Primary State column on the right -->
 					<div class=col-md-8 style="background-color:none;">
-						<div class="row"><div class=col-md-12>
+						<div class="row panelRow"><div class=col-md-12>
 							<strong> primary state candidate</strong>
 						</div></div>
-						<div class="row"><!-- Primary State row-->
+						<div class="row panelRow"><!-- Primary State row-->
 							<!-- col-md-4-->
 							<div class=col-sm-4>
 								<div style="background-color:none; padding: 0.5em 0.2em 0.5em 0.4em;">
@@ -223,12 +232,12 @@
 </div><!-- class=Cnt-->
 </form>
 
-<div class=row>
+<div class="row panelRow">
   <div class=col-md-1>
 </div>
 <div class=col-md-8>
   <div class=container-fluid>
-	  <div class=row style="padding-right: 3%;">
+	  <div class="row panelRow" style="padding-right: 3%;">
 		  <div class=col-md-3> 
 			  <strong> Event index </strong>
 		  </div>

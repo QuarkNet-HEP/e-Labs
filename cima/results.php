@@ -17,10 +17,10 @@ if(!isset($_SESSION["comb"])){
 		$groups[$i]["W-"]=0;
 		$groups[$i]["W+"]=0;
 		$groups[$i]["Z"]=0;
+		$groups[$i]["NP"]=0;
 		$groups[$i]["H"]=0;
 		$groups[$i]["Zoo"]=0;
 		$groups[$i]["sum"]=0;
-
 	}
 
 }else{
@@ -45,6 +45,7 @@ if(!isset($_SESSION["comb"])){
 		$groups[$i]["W-"]=0;
 		$groups[$i]["W+"]=0;
 		$groups[$i]["Z"]=0;
+		$groups[$i]["NP"]=0;
 		$groups[$i]["H"]=0;
 		$groups[$i]["Zoo"]=0;
 		$groups[$i]["sum"]=0;
