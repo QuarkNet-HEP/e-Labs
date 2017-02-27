@@ -1,48 +1,113 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "./masterclass-2015/masterclass_samples.ig",
-  "./masterclass-2015/masterclass_1.ig",
-  "./masterclass-2015/masterclass_2.ig",
-  "./masterclass-2015/masterclass_3.ig",
-  "./masterclass-2015/masterclass_4.ig",
-  "./masterclass-2015/masterclass_5.ig",
-  "./masterclass-2015/masterclass_6.ig",
-  "./masterclass-2015/masterclass_7.ig",
-  "./masterclass-2015/masterclass_8.ig",
-  "./masterclass-2015/masterclass_9.ig",
-  "./masterclass-2015/masterclass_10.ig",
-  "./masterclass-2015/masterclass_11.ig",
-  "./masterclass-2015/masterclass_12.ig",
-  "./masterclass-2015/masterclass_13.ig",
-  "./masterclass-2015/masterclass_14.ig",
-  "./masterclass-2015/masterclass_15.ig",
-  "./masterclass-2015/masterclass_16.ig",
-  "./masterclass-2015/masterclass_17.ig",
-  "./masterclass-2015/masterclass_18.ig",
-  "./masterclass-2015/masterclass_19.ig",
-  "./masterclass-2015/masterclass_20.ig",
-  "./masterclass-2015/masterclass_21.ig",
-  "./masterclass-2015/masterclass_22.ig",
-  "./masterclass-2015/masterclass_23.ig",
-  "./masterclass-2015/masterclass_24.ig",
-  "./masterclass-2015/masterclass_25.ig",
-  "./masterclass-2015/masterclass_26.ig",
-  "./masterclass-2015/masterclass_27.ig",
-  "./masterclass-2015/masterclass_28.ig",
-  "./masterclass-2015/masterclass_29.ig",
-  "./masterclass-2015/masterclass_30.ig"
+  "./masterclass-2017/masterclass_samples.ig",
+  "./masterclass-2017/masterclass_1.ig",
+  "./masterclass-2017/masterclass_2.ig",
+  "./masterclass-2017/masterclass_3.ig",
+  "./masterclass-2017/masterclass_4.ig",
+  "./masterclass-2017/masterclass_5.ig",
+  "./masterclass-2017/masterclass_6.ig",
+  "./masterclass-2017/masterclass_7.ig",
+  "./masterclass-2017/masterclass_8.ig",
+  "./masterclass-2017/masterclass_9.ig",
+  "./masterclass-2017/masterclass_10.ig",
+  "./masterclass-2017/masterclass_11.ig",
+  "./masterclass-2017/masterclass_12.ig",
+  "./masterclass-2017/masterclass_13.ig",
+  "./masterclass-2017/masterclass_14.ig",
+  "./masterclass-2017/masterclass_15.ig",
+  "./masterclass-2017/masterclass_16.ig",
+  "./masterclass-2017/masterclass_17.ig",
+  "./masterclass-2017/masterclass_18.ig",
+  "./masterclass-2017/masterclass_19.ig",
+  "./masterclass-2017/masterclass_20.ig",
+  "./masterclass-2017/masterclass_21.ig",
+  "./masterclass-2017/masterclass_22.ig",
+  "./masterclass-2017/masterclass_23.ig",
+  "./masterclass-2017/masterclass_24.ig",
+  "./masterclass-2017/masterclass_25.ig",
+  "./masterclass-2017/masterclass_26.ig",
+  "./masterclass-2017/masterclass_27.ig",
+  "./masterclass-2017/masterclass_28.ig",
+  "./masterclass-2017/masterclass_29.ig",
+  "./masterclass-2017/masterclass_30.ig",
+  "./masterclass-2017/masterclass_31.ig",
+  "./masterclass-2017/masterclass_32.ig",
+  "./masterclass-2017/masterclass_33.ig",
+  "./masterclass-2017/masterclass_34.ig",
+  "./masterclass-2017/masterclass_35.ig",
+  "./masterclass-2017/masterclass_36.ig",
+  "./masterclass-2017/masterclass_37.ig",
+  "./masterclass-2017/masterclass_38.ig",
+  "./masterclass-2017/masterclass_39.ig",
+  "./masterclass-2017/masterclass_40.ig",
+  "./masterclass-2017/masterclass_41.ig",
+  "./masterclass-2017/masterclass_42.ig",
+  "./masterclass-2017/masterclass_43.ig",
+  "./masterclass-2017/masterclass_44.ig",
+  "./masterclass-2017/masterclass_45.ig",
+  "./masterclass-2017/masterclass_46.ig",
+  "./masterclass-2017/masterclass_47.ig",
+  "./masterclass-2017/masterclass_48.ig",
+  "./masterclass-2017/masterclass_49.ig",
+  "./masterclass-2017/masterclass_50.ig",
+  "./masterclass-2017/masterclass_61.ig",
+  "./masterclass-2017/masterclass_62.ig",
+  "./masterclass-2017/masterclass_63.ig",
+  "./masterclass-2017/masterclass_64.ig",
+  "./masterclass-2017/masterclass_65.ig",
+  "./masterclass-2017/masterclass_66.ig",
+  "./masterclass-2017/masterclass_67.ig",
+  "./masterclass-2017/masterclass_68.ig",
+  "./masterclass-2017/masterclass_69.ig",
+  "./masterclass-2017/masterclass_70.ig",
+  "./masterclass-2017/masterclass_71.ig",
+  "./masterclass-2017/masterclass_72.ig",
+  "./masterclass-2017/masterclass_73.ig",
+  "./masterclass-2017/masterclass_74.ig",
+  "./masterclass-2017/masterclass_75.ig",
+  "./masterclass-2017/masterclass_76.ig",
+  "./masterclass-2017/masterclass_77.ig",
+  "./masterclass-2017/masterclass_78.ig",
+  "./masterclass-2017/masterclass_79.ig",
+  "./masterclass-2017/masterclass_80.ig",
+  "./masterclass-2017/masterclass_81.ig",
+  "./masterclass-2017/masterclass_82.ig",
+  "./masterclass-2017/masterclass_83.ig",
+  "./masterclass-2017/masterclass_84.ig",
+  "./masterclass-2017/masterclass_85.ig",
+  "./masterclass-2017/masterclass_86.ig",
+  "./masterclass-2017/masterclass_87.ig",
+  "./masterclass-2017/masterclass_88.ig",
+  "./masterclass-2017/masterclass_89.ig",
+  "./masterclass-2017/masterclass_90.ig",
+  "./masterclass-2017/masterclass_91.ig",
+  "./masterclass-2017/masterclass_92.ig",
+  "./masterclass-2017/masterclass_93.ig",
+  "./masterclass-2017/masterclass_94.ig",
+  "./masterclass-2017/masterclass_95.ig",
+  "./masterclass-2017/masterclass_96.ig",
+  "./masterclass-2017/masterclass_97.ig",
+  "./masterclass-2017/masterclass_98.ig",
+  "./masterclass-2017/masterclass_99.ig",
+  "./masterclass-2017/masterclass_100.ig"
 ];
+
 
 ispy.obj_files = [
   "./geometry/muon-barrel.obj",
   "./geometry/muon-endcap-minus.obj",
   "./geometry/muon-endcap-plus.obj",
+  "./geometry/muon-rphi-minus.obj",
+  "./geometry/muon-rphi-plus.obj",
   "./geometry/hf.obj"
 ];
 
 ispy.ig_data = null;
 ispy.ievent = 0;
+ispy.isGeometry = false;
+ispy.loaded_local = false;
 
 ispy.openDialog = function(id) {
   $(id).modal('show');
@@ -108,6 +173,9 @@ ispy.enableNextPrev = function() {
 ispy.loadEvent = function() {
   $("#event-loaded").html("");
   $("#loading").modal("show");
+
+  ispy.mass_pair = [];
+
   var event;
 
   try {
@@ -117,15 +185,26 @@ ispy.loadEvent = function() {
   }
 
   $("#loading").modal("hide");
-  ispy.addEvent(event);
-  ispy.enableNextPrev();
 
-  var ievent = +ispy.event_index + 1; // JavaScript!
+  if ( ispy.isGeometry ) {
 
-  $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+    $.extend(ispy.detector, event);
+    ispy.addDetector();
+    ispy.isGeometry = false;
 
-  //console.log(ispy.current_event.Types);
-  //console.log(ispy.current_event.Collections.Products_V1);
+  } else {
+
+    ispy.addEvent(event);
+    ispy.enableNextPrev();
+
+    var ievent = +ispy.event_index + 1; // JavaScript!
+
+    $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+
+    console.log(ispy.current_event.Types);
+    console.log(ispy.current_event.Collections.Products_V1);
+
+  }
 };
 
 ispy.nextEvent = function() {
@@ -152,7 +231,10 @@ ispy.selectLocalFile = function(index) {
     var event_list = [];
 
     $.each(zip.files, function(index, zipEntry){
-      if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+      if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+        if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
+          ispy.isGeometry = true;
+        }
         event_list.push(zipEntry.name);
       }
     });
@@ -196,19 +278,21 @@ ispy.loadLocalFiles = function() {
 
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
-  $('#selected-event').html("Choose an event from Events and then Load");
+  $('#selected-event').html("Choose a file from Files then an event from Events then Load");
 
   ispy.local_files = document.getElementById('local-files').files;
   ispy.updateLocalFileList(ispy.local_files);
+  ispy.loaded_local = true;
   ispy.openDialog('#files');
 };
 
 ispy.selectFile = function(filename) {
   ispy.clearTable("browser-events");
-  $('#selected-event').html("Choose an event from Events and then Load");
 
   var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
   ispy.file_name = new_file_name;
+
+  $('#progress').modal('show');
 
   var xhr = new XMLHttpRequest();
   xhr.open("GET", filename, true);
@@ -218,24 +302,17 @@ ispy.selectFile = function(filename) {
   var ecell = document.getElementById("browser-events").insertRow(0).insertCell(0);
   ecell.innerHTML = 'Loading events...';
 
-  $('#progress').modal('show');
-
   xhr.onprogress = function(evt) {
     if ( evt.lengthComputable ) {
      var percentComplete = Math.round((evt.loaded / evt.total)*100);
      $('.progress-bar').attr('style', 'width:'+percentComplete+'%;');
      $('.progress-bar').html(percentComplete+'%');
-   } else {
-     $('#progress').modal('hide');
-     $('#loading').modal('show');
-  }
+   }
  };
 
-  xhr.onreadystatechange = function (evt) {
+  xhr.onreadystatechange = function () {
     if (this.readyState === 4){
       $('#progress').modal('hide');
-      $('#loading').modal('hide');
-
       $('.progress-bar').attr('style', 'width:0%;');
       $('.progress-bar').html('0%');
     }
@@ -248,7 +325,7 @@ ispy.selectFile = function(filename) {
       var event_list = [];
 
       $.each(zip.files, function(index, zipEntry){
-        if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+        if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
           event_list.push(zipEntry.name);
         }
       });
@@ -264,11 +341,7 @@ ispy.selectFile = function(filename) {
 };
 
 ispy.loadWebFiles = function() {
-  //ispy.clearTable("browser-files");
-  //ispy.clearTable("browser-events");
-
-  //$('#selected-event').html("Selected event");
-  $('#selected-event').html("Choose an event from Events and then Load");
+  $('#selected-event').html("Choose a file from Files then an event from Events then Load");
   $('#load-event').addClass('disabled');
 
   var tbl = document.getElementById("browser-files");
@@ -281,6 +354,23 @@ ispy.loadWebFiles = function() {
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
   }
+};
+
+ispy.showWebFiles = function() {
+  ispy.openDialog('#files');
+
+  if ( ispy.loaded_local === true ) {
+    // If we have previously opened a local file then
+    // we don't want its contents appearing
+    // in the web files dialog
+    ispy.clearTable("browser-files");
+    ispy.clearTable("browser-events");
+    ispy.loaded_local = false;
+
+    ispy.loadWebFiles();
+  }
+
+  $('#open-files').modal('hide');
 };
 
 ispy.cleanupData = function(d) {
@@ -299,7 +389,7 @@ ispy.cleanupData = function(d) {
 ispy.loadObjFiles = function() {
   ispy.clearTable('obj-files');
 
-  $('#selected-obj').html("Selected event");
+  $('#selected-obj').html("Choose a file from Files then an event from Events then Load");
   $('#load-obj').addClass('disabled');
 
   var tbl = document.getElementById('obj-files');
@@ -484,6 +574,7 @@ ispy.loadSelectedObj = function() {
 
 ispy.importBeampipe = function() {
   var loader = new THREE.OBJMTLLoader();
+
   loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
     object.name = 'BeamPipe';
     object.visible = true;

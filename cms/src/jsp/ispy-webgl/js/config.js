@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9-masterclass2016-rc8";
+ispy.version = "masterclass2017-rc2";
 
 // These need to be defined before adding objects:
 ispy.POINT = 0;
@@ -11,7 +11,12 @@ ispy.SCALEDBOX = 4;
 ispy.SCALEDSOLIDBOX = 5;
 ispy.SCALEDSOLIDTOWER = 6;
 ispy.MODEL = 7;
-ispy.TRACK = 8;
-ispy.POLYLINE = 9;
-ispy.SHAPE = 10;
-ispy.TEXT = 11;
+
+// This is something with an associated collection (the extras) and the relationship
+// with it and the primary collection is given by association set.
+// The materials and shapes have to be specified in the drawing method.
+ispy.ASSOC = 8;
+
+ispy.SHAPE = 9;
+ispy.TEXT = 10;
+ispy.BUFFERBOX = 11;
