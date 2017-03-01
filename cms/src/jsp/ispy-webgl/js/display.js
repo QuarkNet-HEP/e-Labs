@@ -346,6 +346,14 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 ispy.getMass = function() {
 
+  var k1 = ispy.mass_pair[0].key;
+  var k2 = ispy.mass_pair[1].key;
+
+  if ( ! (k1.includes('Muons') || k1.includes('Electrons')) )
+    return;
+  if ( ! (k2.includes('Muons') || k2.includes('Electrons')) )
+    return;
+
   var pt1 = ispy.mass_pair[0].pt;
   var pt2 = ispy.mass_pair[1].pt;
 
@@ -399,16 +407,16 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
     if ( ispy.mass_pair.length === 2 ) {
       ispy.mass_pair = [];
-      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+      ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
     }
 
     else if ( ispy.mass_pair.length === 1 ) {
-      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+      ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
       ispy.getMass();
     }
 
     else if ( ispy.mass_pair.length === 0 ) {
-      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+      ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
     }
 
   } else {
