@@ -11,6 +11,7 @@ if(!isset($_SESSION["database"]) || !isset($_SESSION["groupNo"])){
 	header("Location: index.php");
 }
 
+/* TASMANIA - put these into the header.tpl? */
 /* How many decimal places to use when rounding masses */
 $rnd=2;
 /* Allowed labels for particle states */
@@ -50,7 +51,8 @@ if(isset($_POST["fedit"]) && $_POST["fedit"]!=""){
 	unset($_SESSION["edit"]);
 }
 
-/* Define $arr.  This happens at every Submit */
+/* Define $arr.  This happens at every Submit, so there's one $arr array for
+	 every Submit event */
 /* GetEvents() and GetFreeEvents() are defined in database.php */
 $arr=GetEvents($_SESSION["groupNo"],$_SESSION["database"]);
 

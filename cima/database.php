@@ -13,8 +13,9 @@ function askdb($q){
 	return $res;
 }
 
-/* For $group, return its events from the Events table that HAVEN'T
-	 already been set in its working $table */
+/* For group number (g_no) $group, return those events (o_no) assigned
+	 to it in the Events table that HAVEN'T already been set in its own
+	 Location $table (o_no, checked) */
 function GetFreeEvents($group,$table){
   $q="SELECT o_no FROM Events WHERE g_no=".$group." AND NOT o_no IN (SELECT o_no FROM `".$table."` WHERE g_no=".$group.") ORDER BY o_no";
 	$res=askdb($q);
@@ -85,6 +86,10 @@ function GetEvent($o_no){
 		$result["id"]=$obj->o_no;
 		$result["g"]=$obj->g_no;
 		$result["mass"]=$obj->mass;
+		/* TASMANIA */
+		/* Include this:
+		$result["index"]=$obj->g_index;
+		*/
 	}else{
 		print("error");
 		return 0;
@@ -114,6 +119,10 @@ function GetNext($finEvents,$g_no){
 		$result["id"]=$obj->o_no;
 		$result["g"]=$obj->g_no;
 		$result["mass"]=$obj->mass;
+		/* TASMANIA */
+		/* Include this:
+		$result["index"]=$obj->g_index;
+		*/
 	}
 	if(isset($result)){
 		return $result;
@@ -153,6 +162,7 @@ function DeleteTable($tableid){
 
 	$q="DELETE FROM TableGroups WHERE tableid=".$tableid;
 	askdb($q);
+
 	$q="DELETE FROM EventTables WHERE tableid=".$tableid;
 	askdb($q);
 
@@ -240,10 +250,15 @@ function DelGroupsFromTables($tables,$groups){
 	}
 
 function CreateTable($name,$Groups){
+	/* Check to see if the table name exists in Tables */
 	$q="SELECT name FROM Tables WHERE name='".$name."'";
 	$res=askdb($q);
+
+	/* If it doesn't, and input name is valid, create the table */
 	if(!$res->fetch_object() && isset($name) && $name!=""){
 		$q="CREATE TABLE `".$name."` (o_no INT, checked VARCHAR(20));";
+		/* TASMANIA */
+		/*$q="CREATE TABLE `".$name."` (o_no INT, group_index INT, checked VARCHAR(20), mass DOUBLE);";*/
 		askdb($q);
 
 		CreateHist();
@@ -252,13 +267,20 @@ function CreateTable($name,$Groups){
 		$res=askdb($q);
 		$histid=$res->fetch_object()->id;
 
+		/* Update Tables to include the new table */
 		$q="INSERT INTO Tables (name,hist) VALUES ('".$name."', ".$histid.")";
 		askdb($q);
 
+		/* Having just been added to Tables, the new entry should have the
+			 maximum `id` value in that table.  Select it as "id" and assign
+			 to $tableid */
 		$q="SELECT MAX(id) AS id FROM Tables";
-
 		$res=askdb($q);
 		$tableid=$res->fetch_object()->id;
+
+		/* The input $Groups will be the `g_no` value (1,100) and $tableid
+			 will be the `tableid` value from the table TableGroups.  $Groups can
+			 be an array, with each element representing a single group. */
 		AddGroupsToTable($tableid,$Groups);
 		return $tableid;
 	}
@@ -343,7 +365,7 @@ function GetMClassEvent($id){
 
 
 function GetTables($event){
-	$q="SELECT * FROM Tables WHERE id IN (SELECT tableid FROM EventTables WHERE MclassEventID='".$event."')";
+	$q="SELECT * FROM Tables Where id IN (SELECT tableid FROM EventTables WHERE MclassEventID='".$event."')";
 	$res=askdb($q);
 	while($obj = $res->fetch_object()){
 		$temp["id"]=$obj->id;
@@ -363,6 +385,8 @@ function GetGroups($Tables){
 				for($i=0;$i<count($Tables);$i++){
 					$tables[]=$Tables[$i]["id"];
 				}
+
+				$q="SELECT g_no,postAdded FROM TableGroups Where tableid IN ( ".implode(",",$tables).")";
 
 				$q="SELECT g_no,postAdded FROM TableGroups WHERE tableid IN ( ".implode(",",$tables).")";
 

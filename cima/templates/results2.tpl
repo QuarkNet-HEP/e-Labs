@@ -12,7 +12,7 @@
 <table class="table">
 <thead>
 <tr>
-<th> Muon </th><th> Electron </th><th> W </th><th> W- </th><th> W+ </th><th> Z </th><th> Higgs </th><th> Zoo </th><th> Sum </th> <th>e/mu </th><th> W+/W- </th>
+<th> Muon </th><th> Electron </th><th> W </th><th> W- </th><th> W+ </th><th> <!--Z-->NP </th><th> Higgs </th><th> Zoo </th><th> Sum </th> <th>e/mu </th><th> W+/W- </th>
 
 </tr></thead><tbody>
 

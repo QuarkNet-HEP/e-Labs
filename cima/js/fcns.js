@@ -4,9 +4,12 @@ function printMass(mass){
 		mass=Mmass;
 	}
 	var HiggsChecked=document.getElementById("H").checked;
-	var ZChecked=document.getElementById("Z").checked;
+	//var ZChecked=document.getElementById("Z").checked;
 	var NPChecked=document.getElementById("NP").checked;
-		
+
+	// Code to have an event's mass written to the particle selection
+	// panel's mass entry input box. Unused as of Feb2017 - JG
+	/*
 	if(HiggsChecked){
 			//$("#massEntry").prop("value",mass);
 			$("#massEntry").prop("value"," ");
@@ -17,48 +20,58 @@ function printMass(mass){
 	} else{
 			$("#massEntry").prop("value"," ");
 	}
-		
+	*/
 }
 
 function check(state){
-  // check(primary) true if a final state box is checked
-  // check(final) true if a primary state box is checked
+  // check(primary)=true if a final state box is checked
+  // check(final)=true if a primary state box is checked
+	// Did someone get these backwards?
 	if(state=="primary"){
-		return (document.getElementById("e").checked || 					document.getElementById("mu").checked);
+		return (document.getElementById("e").checked ||
+						document.getElementById("mu").checked);
 	}
 	if(state=="final"){
-			return (document.getElementById("H").checked ||
-							document.getElementById("Z").checked ||
-							document.getElementById("NP").checked ||
-							document.getElementById("W").checked ||
-							document.getElementById("Wp").checked ||
-							document.getElementById("W-").checked ||
-							document.getElementById("Zoo").checked);
+		return (document.getElementById("H").checked ||
+						document.getElementById("Z").checked ||
+						document.getElementById("NP").checked ||
+						document.getElementById("W").checked ||
+						document.getElementById("Wp").checked ||
+						document.getElementById("W-").checked ||
+						document.getElementById("Zoo").checked);
 	}
 }
 
 function SelP(element,mass){
 	var prim=false;
 	var fin=false;
-	
+
 	checked=element.checked;
+	// If a final state element has been checked,	
 	if(element.id=="mu" || element.id=="e"){
 		var arr=["mu","e"];
-		prim=checked;
-		fin=check("final");
-
-	}else{
+		prim=checked; // true if e or mu (final state) checked
+		fin=check("final"); // true if primary state box checked
+		// I think whoever wrote this switched "primary" and "final" in a
+		//   way that cancels out :) JG
+	}
+	// Otherwise, a primary state element will have been checked
+	else{
+		// If H or Zoo are selected as primary, uncheck and disable
+		// the final state selection boxes
 		if(element.id=="Zoo" || element.id=="H"){
 			$("#mu").prop("checked",false);
 			$("#e").prop("checked",false);
 			$("#mu").prop("disabled",checked);
 			$("#e").prop("disabled",checked);
-			prim=checked;
+			prim=checked; // true if e or mu checked
 		}else{
-			prim=check("primary");
+			prim=check("primary"); // true if e or mu checked
 		}
 
 		//if(element.id=="Z"){
+		// If NP is selected as primary, enable the massEntry input box
+		//   and change styling
 		if(element.id=="NP"){
 			$("#massEntry").prop("disabled",!checked);
 			if(checked){
@@ -73,12 +86,16 @@ function SelP(element,mass){
 		//printMass(mass);
 		//var arr=["H","W","W-","Wp","Z","Zoo"];
 		var arr=["H","W","W-","Wp","NP","Zoo"];
-		fin=checked;
+		fin=checked; // true if e or mu checked
 	}
 	for(var i=0;i<arr.length;i++){
+		// For everything in arr[] that *isn't* the selected element,
+		//   disable it
 		if(element.id!=arr[i]){
-			$("#"+arr[i]).prop("disabled", checked);
+			//$("#"+arr[i]).prop("checked",false);
+			$("#"+arr[i]).prop("disabled",checked);
 		}
+		// Nonetheless, if mu is checked, e does not disable, and vice-versa
 	}
 	if(prim && fin){
 		$("#next").prop("disabled", false);

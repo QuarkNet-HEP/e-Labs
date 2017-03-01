@@ -90,9 +90,12 @@
 										if(isset($event)){
 											for($i=0;$i<count($freeEvents);$i++){
 												if($freeEvents[$i]!=$event['id']){
-													echo '<option value='.$freeEvents[$i].'>'
-														/* convert displayed value to (1,100) */
-														.($freeEvents[$i] - $freeEvents[0] + 1).
+														/* TASMANIA */
+														/* Ideally, group index would be pulled from the
+															 Location table as part of $event */
+														/* convert displayed value to group index (1,100) */
+														echo '<option value='.$freeEvents[$i].'>'
+										.($freeEvents[$i] - 100*(floor(($freeEvents[$i]-1)/100))).
 													'</option>';
 												}
 											}
@@ -129,7 +132,7 @@
 													<?php echo
 												 		'onclick="SelP(this,'.round($event["mass"],$rnd).')"';
 												 	?>
-												 	id="e" name="electron" value="e">
+												 	id="e" name="e" value="e">
 									Electron</br>
 									<input type="checkbox" 
 												 	<?php echo
