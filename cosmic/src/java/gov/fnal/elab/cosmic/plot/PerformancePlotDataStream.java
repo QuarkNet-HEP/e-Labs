@@ -31,19 +31,21 @@ import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.util.ElabException;
 
 public class PerformancePlotDataStream {
-	private List<Double> perfDataChannel1;
-	private List<Double> perfDataChannel2;
-	private List<Double> perfDataChannel3;
-	private List<Double> perfDataChannel4;
+	private ArrayList<Double> perfDataChannel1;
+	private ArrayList<Double> perfDataChannel2;
+	private ArrayList<Double> perfDataChannel3;
+	private ArrayList<Double> perfDataChannel4;
 	private Double binValue;
 	private Double minX = 0.0;
 	private Double maxX = -1.0;
 	private Double nBins = -1.0;
+	private String filename = "";
+	
 	public PerformancePlotDataStream(File[] files, Double binValue, String outputDir) throws IOException {
 		String message = "";
 		this.binValue = binValue;
 		try {
-			String filename = outputDir+"/PerformancePlotFlot";
+			filename = outputDir+"/PerformancePlotFlot";
 			JsonWriter writer = new JsonWriter(new FileWriter(filename));
 			for (int i= 0; i < files.length; i++) {
 				BufferedReader br = new BufferedReader(new FileReader(files[i]));
@@ -73,10 +75,10 @@ public class PerformancePlotDataStream {
 		}
 	}//end of constructor
 
-	public List<Double> saveLineData(BufferedReader br) {
+	public ArrayList<Double> saveLineData(BufferedReader br) {
 		String[] split; 
 		String line;
-		List<Double> plotData = new ArrayList<Double>();
+		ArrayList<Double> plotData = new ArrayList<Double>();
 		int ts=0; 
 		try {
 			while ((line = br.readLine()) != null) {
@@ -230,25 +232,6 @@ public class PerformancePlotDataStream {
 			System.out.println("Performance Stream: "+e.getMessage());
 		}		
 	}//end of saveFileChannelError
-	
-	public String getGsonFromJson(String outputDir) {
-		String result = "";
-		StringBuilder filevalues = new StringBuilder();
-		String filename = outputDir+"/PerformancePlotFlot";		
-		try {
-	        BufferedReader br = new BufferedReader(new FileReader(filename));
-	        String line = br.readLine();
-	        while (line != null) {
-	        	filevalues.append(line);
-	        	line = br.readLine();
-	        }
-			br.close();
-		} catch (Exception e) {
-			System.out.println("Performance Stream: "+e.getMessage());
-		}			
-		result = filevalues.toString();
-		return result;
-	}//end getGsonFromJson
 	
 	public double parseToDouble(String split)
 	{

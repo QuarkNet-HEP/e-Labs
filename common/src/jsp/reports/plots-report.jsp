@@ -36,7 +36,7 @@
   Date endDate = null;
   String messages = "";
   TreeMap<Integer, VDSCatalogEntry> plotResults = new TreeMap<Integer, VDSCatalogEntry>();
-  TreeMap<String, ArrayList<String>> reportLines = new TreeMap<String,ArrayList<String>>();
+  TreeMap<String, ArrayList<String>> reportLines = new TreeMap<String, ArrayList<String>>();
   
   if ("Retrieve Report".equals(submit)) {
     if (StringUtils.isNotBlank(fromDate)) {
@@ -51,7 +51,7 @@
     //prepare results by detectorid
     for (Map.Entry<Integer,VDSCatalogEntry> e: plotResults.entrySet()) {
           VDSCatalogEntry entry = e.getValue();
-          ArrayList<String>details = new ArrayList<String>();
+          ArrayList<String> details = new ArrayList<String>();
           details.add((String) entry.getTupleValue("name"));
           details.add((String) entry.getTupleValue("group"));
           details.add((String) entry.getTupleValue("teacher"));

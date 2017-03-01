@@ -434,3 +434,10 @@ function intToFloat(num, decPlaces) {
 	return num + '.' + Array(decPlaces + 1).join('0'); 
 	}
 
+function validateAndSaveCombChart(plot_to_save, name_id, div_id, run_id){
+	if (validatePlotName(name_id)){
+		saveChart(plot_to_save, name_id, div_id, run_id); return true;
+	}else {
+  	return false;
+	}
+}//end of validateAndSaveCombChart

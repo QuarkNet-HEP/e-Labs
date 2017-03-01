@@ -239,4 +239,5 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     public boolean getDelayedCompletion() {
     	return this.delayedCompletion;
     }
+    
 }

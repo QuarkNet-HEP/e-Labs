@@ -34,7 +34,7 @@ import org.griphyn.vdl.util.ChimeraProperties;
 
 public abstract class VDSCatalogProvider {
 	
-	protected static String DATEFORMAT = "yyyy-MM-dd HH:mm:ssZ";
+    protected static String DATEFORMAT = "yyyy-MM-dd HH:mm:ssZ";
     protected WeakHashMap<String, VDSCatalogEntry> entryCache;
     
     public VDSCatalogProvider() {
@@ -50,17 +50,11 @@ public abstract class VDSCatalogProvider {
             Connect connect = new Connect();
             dbschema = connect.connectDatabase(schemaName);
 
-
-			if (!(dbschema instanceof Annotation)) {
-			   if (dbschema == null) {
-			      throw new ElabException(
-			                        "Null schema");
-			   }
-			   else {
-			      throw new ElabException(
-			                        "The database does not support metadata! Returned schema was " + dbschema.getClass());
-			   }
-			}
+            if (! (dbschema instanceof Annotation)) {
+                throw new ElabException(
+                        "The database does not support metadata!");
+//                        "The database has metadata it doesn't like");
+            }
         }
         catch (Exception e) {
             throw new ElabException(e.getMessage()

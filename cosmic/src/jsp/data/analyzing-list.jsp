@@ -17,8 +17,13 @@
     if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
 		bin_width = analysis.getParameterValues("flux_binWidth");
     }
-	
-	if (request.getParameter("remove") != null) {
+	String chanRequire = "";
+	String chanVeto = "";
+    if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+		chanRequire = (String) analysis.getParameter("singleChannel_require");
+		chanVeto = (String) analysis.getParameter("singleChannel_veto");
+	}
+    if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
 		request.setAttribute("remfiles", r);
 		Set s = new HashSet();
@@ -38,6 +43,10 @@
 		//EPeronja-06/05/2013: Bug 316-Keeping the bin width from the study
 		if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
 			newAnalysis.setParameter("flux_binWidth", bin_width);
+		}
+	    if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+			newAnalysis.setParameter("singleChannel_require", chanRequire);
+			newAnalysis.setParameter("singleChannel_veto", chanVeto);
 		}
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
@@ -113,6 +122,15 @@
 		        	<%
 		        	continue;	
 				}
+				//EPeronja: check if there is a .thresh file associated with this lfn
+				if (!ElabUtil.fileExists(elab, lfn+".thresh")) {
+			        %> 
+		        	<tr><td colspan="8"><span class="error">Missing .thresh file: <%= lfn %></span>
+					</td></tr>
+		        	<%
+		        	continue;	
+				}
+				
 			    //create a string of the date for the file and find start and end date
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
 			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421

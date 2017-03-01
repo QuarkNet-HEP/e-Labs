@@ -38,14 +38,16 @@
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
 
-<p>
+<%--<p>
 	<a href="flux-plot.jsp?id=${results.id }&message=${message}">View interactive Flux plots</a> (Beta Version)<br />
-</p>
+</p>--%>
+
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
-  Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+  Analysis run time: ${results.formattedRunTime} 
+  <%-- estimated: ${results.formattedEstimatedRunTime} --%>
 </p>
 <p>
   Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 

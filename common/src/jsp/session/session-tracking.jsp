@@ -14,6 +14,7 @@
 <%
 	int sessionCount = SessionListener.getTotalActiveSession();
 	ArrayList activeSessions = SessionListener.getTotalSessionUsers();
+	activeSessions.removeAll(Collections.singleton(null));
 	int sessionUsers = 0;
 	
 	//now create the local TreeMap
@@ -25,9 +26,17 @@
 	    //start building session details
 	    //sb.append("<strong>Session ID:</strong> " + s.getId() + "<br />");
 		//get user
-		if (s != null) {
-			try {
-			    ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
+		try {
+			boolean validSession = false;
+			Enumeration att_names = s.getAttributeNames();
+			while (att_names.hasMoreElements()) {
+				String attr = (String) att_names.nextElement();
+				if (attr.equals("elab")) {
+					validSession = true;
+				}
+			}
+			if (validSession) {
+				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 				Elab e = (Elab) s.getAttribute("elab");
 				if (eu != null && e != null) {
 					sessionUsers++;
@@ -38,15 +47,15 @@
 					sb.append("<strong>Location:</strong> "+ school + ", " + city + " - " + state + "<br />");
 					sb.append("<strong>Role:</strong> "+ eu.getRole() + "<br />");
 					sb.append("<strong>Logged in to:</strong> "+ e.getName() + "<br />");
-					}
+		            }
 				String sessiontext = sb.toString();
 				if (!sessiontext.equals("")) {
 		    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sessiontext + "</strong>");				
 				}
-			} catch (Exception e) {
-        		String message = "Exception in session-tracking.jsp: " + e.getMessage();
-			}
-		}//end of null check
+			}//end of validSession
+		} catch (Exception e) {
+    		String message = "Exception in session-tracking.jsp: " + e.getMessage();			
+		}
 	}
 	request.setAttribute("sessionCount",sessionCount);
 	request.setAttribute("sessionUsers", sessionUsers);

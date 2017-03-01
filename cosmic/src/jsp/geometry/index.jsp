@@ -50,7 +50,9 @@
 				</div>				
 				<br /><br /><br /><br /><br /><br /><br /><br />
 				<div id="tutorial" style="float: left;">
-	                    Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+	                    <br></br>
+	                    Confused? Seeing errors? Please consult the <a href="tutorial.jsp" target="_blank">Geometry Tutorial</a> 
+	                    or the <a href="gps_tutorial.jsp" target="_blank">GPS Tutorial</a>.
 	            </div>
             </div>
         </td>

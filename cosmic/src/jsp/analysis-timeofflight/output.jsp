@@ -191,7 +191,7 @@
 		</div>		
 	</div>
 <p>
-	Analysis run time: ${timeofflightResults.formattedRunTime}; estimated: ${timeofflightResults.formattedEstimatedRunTime}
+	Analysis run time: ${timeofflightResults.formattedRunTime} <%-- ; estimated: ${timeofflightResults.formattedEstimatedRunTime} --%>
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${timeofflightResults.id}" target="analysisdir" 

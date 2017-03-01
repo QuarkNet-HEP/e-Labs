@@ -5,29 +5,53 @@ $script=2;
 
 include 'database.php';
 include 'templates/header.tpl';
+
+/*
+ * Define an array $groups[] with one entry for each group
+ */
+/* $_SESSION["comb"] is set in Classes.php */
 if(!isset($_SESSION["comb"])){
 	include 'templates/navbar.tpl';
 	$start=1;
-	$ng=30;
+	/* TASMANIA */
+	/* Number of groups.  This should probably change.
+		 And not be hard-coded here in the first place. */
+	/*$ng=31;*/
+	$ng=101;
+
+	/* TASMANIA */
+	/* This should be a loop over $statelabels[] */
 	for($i=1;$i<$ng;$i++){
 		$groups[$i]["mu"]=0;
 		$groups[$i]["e"]=0;
 		$groups[$i]["W"]=0;
 		$groups[$i]["W-"]=0;
 		$groups[$i]["W+"]=0;
-		$groups[$i]["Z"]=0;
+		/*$groups[$i]["Z"]=0;*/
+		$groups[$i]["NP"]=0;
 		$groups[$i]["H"]=0;
 		$groups[$i]["Zoo"]=0;
 		$groups[$i]["sum"]=0;
-
 	}
 
 }else{
+	/* $basescript used by templates/Resnav.tpl */
+	$basescript="results.php";
 	include 'templates/Resnav.tpl';
-	$g=GetGroups($_SESSION["tables"]);
+	/* $_GET["i"] will be set by a GET request from Resnav.tpl */
+	if(isset($_GET["i"])){
+		$tables[]=$_SESSION["tables"][$_GET["i"]];
+	}else{
+		$tables=$_SESSION["tables"];
+	}
+
+	$g=GetGroups($tables);
+
 	$ng=count($g);
 	$start=$g[0]["g_no"];
 
+	/* TASMANIA */
+	/* This should be a loop over $statelabels[] */
 	for($j=0;$j<$ng;$j++){
 		$i=$g[$j]["g_no"];
 		$groups[$i]["mu"]=0;
@@ -35,13 +59,14 @@ if(!isset($_SESSION["comb"])){
 		$groups[$i]["W"]=0;
 		$groups[$i]["W-"]=0;
 		$groups[$i]["W+"]=0;
-		$groups[$i]["Z"]=0;
+		/*$groups[$i]["Z"]=0;*/
+		$groups[$i]["NP"]=0;
 		$groups[$i]["H"]=0;
 		$groups[$i]["Zoo"]=0;
 		$groups[$i]["sum"]=0;
-
 	}
 }
+
 /*
 old version uses group numbers but is less efficient
 if(isset($_SESSION["tables"])){
@@ -88,12 +113,18 @@ if(isset($_SESSION["tables"])){
 		$events=GetAllEvents($T["name"]);
 		if(isset($events)){
 			foreach($events as $asArr){
+				/* $i evaluates to the group number (g_no) */
 				$i=floor(($asArr["id"]-1)/100)+1;
-				$groups[$i]["sum"]++;
-				$temp=explode(";",$asArr["checked"]);
-				for($j=0;$j<count($temp);$j++){
-					if($temp[$j]!=""){
-						$groups[$i][$temp[$j]]++;
+				if(isset($groups[$i])){
+					$groups[$i]["sum"]++;
+					$temp=explode(";",$asArr["checked"]);
+					for($j=0;$j<count($temp);$j++){
+						/* TASMANIA */
+						/* Temporary fix until we get mass in its own column */
+						//if($temp[$j]!=""){
+						if($temp[$j]!="" && !is_numeric($temp[$j])){
+							$groups[$i][$temp[$j]]++;
+						}
 					}
 				}
 			}
@@ -105,21 +136,25 @@ if(isset($_SESSION["tables"])){
 	if(isset($events)){
 		foreach($events as $asArr){
 			$i=floor(($asArr["id"]-1)/100)+1;
-			$groups[$i]["sum"]++;
-			$temp=explode(";",$asArr["checked"]);
-			for($j=0;$j<count($temp);$j++){
-				if($temp[$j]!=""){
-					$groups[$i][$temp[$j]]++;
+			if(isset($groups[$i])){
+				$groups[$i]["sum"]++;
+				$temp=explode(";",$asArr["checked"]);
+				for($j=0;$j<count($temp);$j++){
+					/* TASMANIA */
+					/* Temporary fix until we get mass in its own column */
+					//if($temp[$j]!=""){
+					if($temp[$j]!="" && !is_numeric($temp[$j])){
+						$groups[$i][$temp[$j]]++;
+					}
 				}
 			}
 		}
 	}
 }
 
-
-
 include "templates/results.tpl";
 
+/* $start will be the group number (g_no) of the starting group */
 foreach($groups[$start] as $k => $v){
 	$tot[$k]=0;
 }
@@ -132,7 +167,6 @@ foreach($groups as $i => $g){
 		}
 	echo '</tr>';
 }
-
 
 echo '</tbody></table></div> <div class=col-md-2></div></div>';
 include "templates/results2.tpl";

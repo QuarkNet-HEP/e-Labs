@@ -20,6 +20,7 @@
  * 
  * @(#) $Id: LocalSettings.php,v 1.10 2009/05/07 20:33:07 myers Exp $ 
 \***********************************************************************/
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = MW_INSTALL_PATH;
@@ -81,7 +82,7 @@ $wgCookiePath = '/';		// whole site
 $wgEnableEmail      = true;
 $wgEnableUserEmail  = true;
 
-$wgPasswordSender   = "help@i2u2.org";
+$wgPasswordSender   = "e-labs@fnal.gov";
 $wgEmergencyContact = "myers@spy-hill.net";
 
 

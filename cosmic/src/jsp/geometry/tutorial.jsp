@@ -31,22 +31,25 @@
 			</div>
 			
 			<div id="content">
-
+			<center>
+	           <font color="#0a5ca6" size=+3><b>Geometry Tutorial</b></font>
+	        </center>	
+	        
 <table border="0" id="main">
 	<tr>
 		<td id="center">
-			<h3>You should  upload geometry each time you move the detector.</h3>
+			<h3>You should upload geometry each time you move the detector.</h3>
 			<h4>Many calculations rely on knowing the detector's location.</h4>
 			
-			<table border="0" width="100%">
+			<table border="0" width="100%" cellspacing="10">
 				<tr>
-					<td valign = top>
+					<td style="border:1px solid black; background:yellow;">
 						Here is a typical detector layout. The GPS unit is the 0,0,0 point of a 
-						coordinate system. In this example, the GPS unit is on the roof and the 
+						coordinate system. In this example, the GPS unit is on the roof, and the 
 						<a href="javascript:glossary('counter',350)">counters</a> are inside the classroom.
 					</td>
 					
-					<td valign = top>
+					<td style="border:1px solid black; background:yellow;">
 						The counters are arranged in this (x,y,z) coordinate system which our measurements 
 						refer to. Our example shows the plane containing the counters to be 4 meters below 
 						the plane containing the GPS.
@@ -66,21 +69,21 @@
 			
 			<p>
 	            Compare the values in the screen shot below to the diagram above.
-	            We have circled Counter 1 and its values in orange to help you.
-	            The geometry update page consists of three main areas: <b>Detector Geometry</b>, 
-	            <b>Detector Configuration</b>, and <b>GPS Location</b>.
+	            We have circled Counter 1 and its values to help you.
+	            The geometry update page consists of three main areas: <b><i>Detectory List</i></b> in the purple box on the side, <b><i>Detector Geometry</i></b>, 
+	            and <b><i>GPS Coordinates</i></b>.
 	        </p>  
             <ul>
                 <li>
-                	The <b>Detector Geometry</b> area lists all detectors you own along 
+                	The <b><i>Detector List</i></b> area lists all detectors you own along 
                 	with a listing of the dates on which you changed that detector's 
-                	geometry. You can edit (click <img src="../graphics/geo_pencil.gif" />) 
-                	or delete (click <img src="../graphics/delete_x.gif" />) any entry, 
-                	as well as add new ones for each detector 
-                	(click <img src="../graphics/geo_new.gif" />).
+                	geometry. For any entry, you can <b>edit</b> (click <img src="../graphics/geo_pencil.gif" />),  
+                	<b>delete</b> (click <img src="../graphics/delete_x.gif" />), <b>duplicate</b> (click  <img src="../graphics/saveas.gif" />), 
+                	or <b>view map</b> (click <img border="0" src="../graphics/world.png" height="15px" width="15px" />), 
+                	as well as <b>add</b> new ones for each detector (click <img src="../graphics/geo_new.gif" />).<br></br>
                 </li>
                 <li>
-                	The <b>Detector Configuration</b> area allows you to input the location
+                	The <b><i>Detector Geometry</i></b> area allows you to input the location
                 	of the counters.  The "Active Channels" checkboxes are to indicate 
                 	which channels will have data in them while this geometry entry is in 
                 	effect. If you only have two counters and hooked them up to the second 
@@ -88,24 +91,21 @@
                 	"2" and "3" boxes checked.  IMPORTANT: Make sure your "Active Channels" 
                 	match up to the channels that you plugged your counters into on your 
                 	DAQ board during your data run.  Cable Length refers to the length of 
-                	the cables that connect the counters to the Readout Board, Area refers 
-                	to the top surface area of the counter, and E-W, N-S, and Up-Dn refers 
+                	the cables that connect the counters to the Readout Board.  Area refers 
+                	to the top surface area of the counter.  E-W, N-S, and Up-Dn refer 
                 	to the position of the counters relative to the GPS antenna (see image 
                 	above).  The "Orientation" refers to whether the counters are stacked 
                 	(<img src="../graphics/stacked.gif" />) or spread out 
-                	(<img src="../graphics/unstacked.gif" />).
+                	(<img src="../graphics/unstacked.gif" />).<br></br>
                 </li>
                 <li>
-                	The <b>GPS Location</b> area allows you to input the location of your 
+                	The <b><i>GPS Coordinates</i></b> area allows you to input the location of your 
                 	GPS antenna and the length of the cable connecting it to the DAQ board.
-                	If you link to the geometry page from the "Upload Successful!" page, 
-                	the latitude, longitude, and altitude will automatically be filled in 
-                	(as long as the "DG" command was used during the data run).
                 </li>
             </ul>
             
             <p>
-	            This display is set up in an "array" orientation.  If your counters are set up 
+	            This display is set up in an "unstacked", or "array", orientation.  If your counters are set up 
 	            in a "stacked" orientation, you should make sure that you accurately measure 
 	            the altitude (Up-Dn) of each indivual counter instead of assuming that they're 
 	            all at the same altitude.  Some of our analyses need to know the order in which 
@@ -115,7 +115,7 @@
             	Once all of the information is entered, click "Commit Geometry" to write that 
             	information to a file that will be used in future analyses.
                     
-				<img src="../graphics/grab.gif" alt="grab.gif" width="750" height="500" />
+				<center><img src="../graphics/geometry_sections.png" alt="geometry_sections.png" width="500" height="500" /></center>
 			</p>
 			
    			<h3>Error List</h3>

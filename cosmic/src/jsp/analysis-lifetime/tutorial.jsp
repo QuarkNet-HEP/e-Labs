@@ -26,15 +26,15 @@
 			
 			<div id="content">
 			
-			You can:
-				<strong>1)</strong> Find some help on this page
+			Options:
+				<strong>1)</strong> Find some help on this page. 
 				<strong>2)</strong> 
-					<e:popup href="../posters/display.jsp?type=poster&amp;name=poster_decays.data" 
-						target="PossibleParticleDecays" width="700" height="510">View</e:popup> a poster 
-					created using this study
+					<e:popup href="../posters/display.jsp?type=poster&amp;name=lifetime_16may16-cosmic-crdata-robert_s._peterson-fermilab_test_array-batavia-il-2016.1114.data" 
+						target="MuonLifetime" width="700" height="510">View</e:popup> a poster 
+					created using this study. 
 				<strong>3)</strong> 
 					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-					Step-by-Step Instructions
+					Step-by-Step Instructions.
 	
 	<p>
 			<center>
@@ -55,17 +55,23 @@
 					<td colspan=3>
 		 				
 					
+						<p>A classic modern physics experiment is the measurement of the muon mean lifetime.  Some short-lived cosmic ray <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
+						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, and the electron will leave another. 
+						One can ask, "How long before the muon decays?  What is its <a href="javascript:glossary('lifetime',100)">lifetime</a>?"  Consider the figure below.
+						<br>
+						<center><img src="../graphics/tryPerf/lifetimeBasic.png" alt=""></center>
+						<br>
+						When a muon enters a counter, a signal is generated in that counter. If the muon travels through counter 1 and into counter 2, both of these counters should 
+						have a signal at approximately the same time.  This is called a two-fold <a href="javascript:glossary('coincidence',100)">coincidence</a> (signal seen in two counters within a certain small time window).  
+						If the muon has stopped within counter 2, however, it will &quot;wait around&quot; until it decays and generate a second signal in the same counter (2) upon decay. 
+						The time between the two signals in counter 2, t<sub>DECAY</sub>, can be calculated from the raw data file.  
 						
-						Some short-lived cosmic rays <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface  may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
-						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, the electron will leave another. You can ask, "How long before the muon decays?" "What is their <a href="javascript:glossary('lifetime',100)">
-						lifetime</a>?"<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
-					
-				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
-				
-						<img src="../graphics/lifetimeDAG.png" alt="">
-						<p>
-						<hr>
-						<p>
+						<p>Furthermore, if no signal occurs in counter 3 (the veto counter), this is a strong 
+						indication that a muon did indeed decay in counter 2.  Although existing  e-Lab tools do not include veto capability in software, the DAQ can be configured to require a veto counter in hardware.  In other words,
+						veto is a useful concept but not available in the e-Lab analysis tools at the moment.  
+						
+						<p>For more background, see how the <A href="../flash/daq_only_standalone.html" target="_blank">detector works</a>.
+						
 					</td>
 				</tr>
 								
@@ -75,34 +81,9 @@
 				</tr>
 				
 				<tr>
-					<td valign="top" width=322>
-						<center>
-							<img src="../graphics/lifetime_example.gif">
-						</center>
-					</td>
-					<td width=5>&nbsp;
-							</td>
-					
-					<td valign = "top" width=322>
-					&nbsp;<p>
-					
-					Muon
-						decay follows an exponential 
-						law&mdash;just like radioactive decay and many other natural phenomenon. 
-						<a href="http://www.purplemath.com/modules/graphexp.htm">Exponential plots</a> have a characteristic shape.<p>
-						
-						Finding the value of the exponent leads to the 
-						lifetime of the particle&mdash;one of many characteristics that allow us to describe 
-						particles. Others include mass and electric charge.<p>
-						<P>
-						We measure the time between two <a href="javascript:glossary('signal',350)">signals</a>  in the same counter and look for patterns in the time difference between two consecutive signals. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
-						</td></tr>
-						<tr>
-						<td colspan=3>
+					<td colspan=3>
 						&nbsp;
-						<p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  & <a href="index.jsp">Analysis</a>
-				</p>
-						
+						<p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a></p>	
 					</td>
 				</tr>
 			</table>

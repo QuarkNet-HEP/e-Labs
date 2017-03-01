@@ -31,6 +31,7 @@ function loadJSON1(callback) {
 
 function onDataLoadChart1(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td1) {
 		buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
 	}
@@ -63,6 +64,7 @@ function loadJSON2(callback) {
 
 function onDataLoadChart2(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td2) {
 		buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
 	}
@@ -95,6 +97,7 @@ function loadJSON3(callback) {
 
 function onDataLoadChart3(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td3) {
 		buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	}
@@ -127,6 +130,7 @@ function loadJSON4(callback) {
 
 function onDataLoadChart4(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td4) {
 		buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	}
@@ -159,6 +163,7 @@ function loadJSON5(callback) {
 
 function onDataLoadChart5(json) {	
 	//var start = new Date().getTime();
+	loadCount++;
 	if (json.td5) {
 		buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
 	}
@@ -196,6 +201,7 @@ function onDataLoadChart6(json) {
 	//buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
 	//buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
 	//buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
+	loadCount++;
 	if (json.td6) {
 		buildIndividualDataSets(json.td6, "6", 5, document.getElementById("chart6"));
 	}
@@ -219,7 +225,7 @@ function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
 function buildTimeDiff(timediff, diffNum) {
     var feedback = document.getElementById("feedback");
     feedback.innerHTML = "<strong>Chart "+diffNum+" is loading...</strong>";
-    loadCount++;
+    //loadCount++;--SB, 10/3/16, put this in each onDataLoadChart# instead.
 	data = [];
 	if (timediff != null) {
 		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.bins);
@@ -507,8 +513,17 @@ function saveToFChart(ndx, name_id, div_id, run_id) {
 		}
     }
     return rc;
-}//end of saveChart
+}//end of saveTOFChart
 
+function validateAndSaveTOFChart(ndx, name_id, div_id, run_id) {
+	if (validatePlotName(name_id)){
+		saveToFChart(ndx, name_id, div_id, run_id); return true;
+	}else {
+  	return false;
+	}
+}//end of validateAndSaveTOFChart
+        	
+     	
 options = {
         axisLabels: {
             show: true

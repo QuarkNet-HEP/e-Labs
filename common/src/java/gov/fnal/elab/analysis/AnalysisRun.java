@@ -163,6 +163,8 @@ public interface AnalysisRun {
 
     void setListener(AnalysisRunListener l);
     
+    public AnalysisRunListener getListener();
+    
     void setInitialStatus(int status);
     
     void setStatus(int status);

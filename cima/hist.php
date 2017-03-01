@@ -22,10 +22,18 @@ if(!isset($_SESSION["comb"])){
 	$datax=GetHistDataForTable($_SESSION["database"]);
 	$_SESSION["currentHist"]=$datax;
 }else{
-	include 'templates/Resnav.tpl';
-	include 'templates/histBackend.tpl';
-	if(isset($_SESSION["tables"])){	
-		foreach($_SESSION["tables"] as $t){
+	$basescript="hist.php";
+	if(isset($_SESSION["tables"])){
+		if(isset($_GET["i"])){
+			$tables[]=$_SESSION["tables"][$_GET["i"]];
+		}else{
+			$tables=$_SESSION["tables"];
+		}
+		include 'templates/Resnav.tpl';
+		include 'templates/histBackend.tpl';
+
+
+		foreach($tables as $t){
 			$table=GetTableByID($t);
 			$pretemp=GetHistDataForTable($table["name"]);
 			$temp=explode(";",$pretemp["data"]);
@@ -39,6 +47,8 @@ if(!isset($_SESSION["comb"])){
 			}
 		}
 		$datax["data"]=implode(";",$data);
+	}else{
+	header("Location: Classes.php");
 	}
 }
 

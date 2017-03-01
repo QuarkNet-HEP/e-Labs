@@ -47,6 +47,7 @@
 %>
 <script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
 <script type="text/javascript" src="../analysis-timeofflight/controls.js"></script>		
+<script type="text/javascript" src="../include/elab.js"></script>	
 
 <c:choose>
 	<c:when test="${availableChannelsSize > 1 }">
@@ -68,7 +69,7 @@
 							<table>
 								<tr>
 									<td class="form-label">
-										<e:trlabel for="zeroZeroZeroID" name="Center of graph view">Center of graph view:</e:trlabel>
+										<e:trlabel for="zeroZeroZeroID" name="Center of graph view">Location:</e:trlabel>
 									</td>
 									<td class="form-control">
 										<e:trselect name="zeroZeroZeroID" 
@@ -94,12 +95,17 @@
 									</td>
 								</tr>
 								<tr>
+								   <td><a href="javascript:glossary('soft_triggers',350)"><img src="../graphics/question.gif"></a>Define Soft Triggers</td>
+								<%-- 
 									<td class="form-label">
 										<e:trlabel for="softTriggers" name="Soft Triggers">Define Soft Triggers?</e:trlabel>
 									</td>
+								--%>	
 									<td></td>
+								
 								</tr>
 								<tr>
+									
 									<td class="form-label">
 										<label for="softTriggersRequireControls" name="RequireChannelLabel">Require Channels:</label>
 									</td>
@@ -175,11 +181,8 @@
 						<input type="radio" name="runMode" value="local" checked/> Local 
 					</td>
 				</tr>
-				<tr>
-					<td>
-						Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
-					</td>
-				</tr>
+
+
 				<tr>
 					<td>
 						<!-- this MUST be used if all the elab:tr* stuff is to work                      -->

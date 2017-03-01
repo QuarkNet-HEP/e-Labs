@@ -59,12 +59,8 @@
             <td>Reports for uploads, posters and plots.</td>
           </tr>
 					<tr>
-						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
-						<td>Add e-Lab users.</td>
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users NEW</a></td>
-						<td>Add e-Lab users - NEW.</td>
+						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users</a></td>
+						<td>Add e-Lab users</td>
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
@@ -82,12 +78,10 @@
 						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
-<!-- 
 					<tr>
 						<td>&#8226; <a href="../unit-testing/index.jsp">Unit Testing</a></td>
 						<td>Run automated tests for written code grouped by functionality.</td>					
 					</tr>
- -->
 					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
 						<td>View ${elab.name} e-Lab statistics.</td>

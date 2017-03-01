@@ -35,41 +35,48 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/CMS-sidebar.jpg"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
+				<img src="../graphics/CMS-sidebar2.png"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Real Event<br>Superimposed on Detector</div>
 			</div>
 		</td>
 		
 		<td>
 			<div id="center">
-				<p>
-                    Particle physics aims to answer two questions: What are the elementary constituents of matter?
-                    What are the fundament forces that control their behavior at the most basic level? CERN's Large
-                    Hadron Collider (LHC) and its experiments will probe deeper into matter than ever before.
-                    The Compact Muon Solenoid (CMS) detector is designed to detect fundamental particles:
-                    electrons, muons, tau leptons, photons, and quark jets and missing energy due to very
-                    weakly interacting particles such as neutrinos. Massive particles such as the Higgs boson
-                    will decay into these fundamental objects, the properties of which will be measured in
-                    the CMS detector's many subsystems.</p>
-				<p>
-                    The CMS e-Lab provides students with an opportunity to analyze data to calibrate the detector
-                    and participate in discovery science (as particle physicists do). Calibrating the detector to
-                    "rediscover" previous measured results is an important part of the early scientific activity at
-                    CMS. Later students will probe data where physicists expect to find answers to questions at
-                    the heart of 21st century particle physics. The CMS e-Lab addresses ALL science practices in 
-                    the Next Generation Science Standards.</p>
-                   <p>
-                    Join our learning community. Go to the teacher pages to find learner objectives and assessment
-                    tools, standards, classroom notes and more. Your students begin the e-Lab at the Student Home
-                    and cannot access this page or teacher pages from the student pages.</p>
-                    
+			    <p>
+			        At CERN near Geneva, Switzerland, the Large Hadron Collider (LHC) collides protons at the highest 
+			        energies ever achieved in the laboratory to reveal new knowledge about matter and energy. Giant detectors 
+			        make careful measurements from the collisions. One of these detectors is CMS, the Compact Muon Solenoid.
+			    </p>
+
+                <p>
+                    Physicists working on CMS and its sister detector, ATLAS, first calibrated their experiments by rediscovering 
+                    the particles of the Standard Model. They added to that picture in 2012 with the discovery of the Higgs boson, 
+                    the long-sought key to understanding the masses of fundamental particles. Yet physicists know that the Standard Model 
+                    does not explain everything. The search for new physics continues beyond the Standard Model.</p>
+
+                <p>
+                    CMS e-Lab Student Home provides a guide with resources to create a research project, access to authentic CMS data and 
+                    analysis tools for conducting that research, and ways to collaborate. The Teacher Home has learner objectives, 
+                    assessment rubrics, standards, management tools, and more.
+                </p>
+
+                <p>
+                    Join our learning community built around the CMS e-Lab and the QuarkNet CMS data thread as we probe the physics 
+                    uncovered by CMS. What are the elementary constituents of matter? What are the fundamental forces that control their 
+                    behavior at the most basic level?
+                </p>
+                
+
 				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a><br />
 				<a href="../library/resources.jsp<%=viewOnly %>" ><strong>Check out our online resources</strong></a>
 				<br/><br/><br/><br/><br/><br/><br/><br/>
-				<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
-						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+				<table width="700">
+				        <tr>
+				        <td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
+						<td class="annotPict"><img src="../graphics/dimuon_logo.png" border="1"><br>Event in CMS with two muons</td>
 						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
-						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
-						</td></tr></table>
+						<td class="annotPict"><img src="../graphics/eemm_run195099_evt137440354_ispy_3d.png" border="1"><br>Higgs candidate detected by CMS</td>
+						</tr>
+				</table>
 			</div>
 		</td>
 		
@@ -85,7 +92,7 @@
 						This project is supported in part by the National Science Foundation and 
 						the Office of High Energy Physics in the Office of Science , U.S. 
 						Department of Energy. Opinions expressed are those of the authors and 
-						not necessarily those of the Foundation or Department.
+						not necessarily those of the Foundation or Department. 
 					</p>
 				</div>
 	

@@ -47,16 +47,21 @@
 			</div>
 			
 			<div id="content">
+			<p>New code.</p>
 			<form id="updateStatus" method="post">
 				<table cellpadding="10" cellspacing="10" border="1" align="center">
 					<tr>
 						<td><font size="-1"><b><u>Teacher</u></b></font></td>
 						<td><font size="-1"><b><u>Active/Inactive?</u></b></font></td>
+						<td><font size="-1"><b><u>School</u></b></font></td>
+						<td><font size="-1"><b><u>City</u></b></font></td>
+						<td><font size="-1"><b><u>State</u></b></font></td>
+						<td><font size="-1"><b><u>Groups</u></b></font></td>
 					</tr>
 					<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<tr>
-							<td>${teacher.name}</td>
-							<td style="text-align: center;">
+							<td valign=top>${teacher.name}</td>
+							<td valign=top style="text-align: center;">
 								<c:choose>
 								 <c:when test="${teacher.active == true }">
 									<input type="checkbox" name="status" id="${teacher.name}" value="${teacher.teacherId}" checked></input>
@@ -65,6 +70,14 @@
 									<input type="checkbox" name="status" id="${teacher.name}" value="${teacher.teacherId}"></input>
 								 </c:otherwise>
 								</c:choose>
+							</td>
+							<td valign=top>${teacher.group.school}</td>
+							<td valign=top>${teacher.group.city}</td>
+							<td valign=top>${teacher.group.state}</td>
+							<td>
+								<c:forEach items="${teacher.groups}" var="group">
+									${group.name} <br>
+								</c:forEach>
 							</td>
 						</tr>
 					</c:forEach>
@@ -81,3 +94,7 @@
 		<!-- end container -->
 	</body>
 </html>
+
+
+
+

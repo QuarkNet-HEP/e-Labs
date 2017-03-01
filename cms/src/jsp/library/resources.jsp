@@ -242,7 +242,10 @@
 								<a href="mailto:lantonel@nd.edu">Jamie Antonelli</a> - Ohio State
 							</li>
 							<li>
-								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
+								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - University of Notre Dame
+							</li>
+							<li>
+								<a href="mailto:thomas.mccauley@cern.ch">Tom McCauley</a> - CERN
 							</li>
 						</ul>
 						<h2>Staff</h2>
@@ -279,18 +282,21 @@
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
 							<li>
-								<e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet</e:popup>,
-								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+								ACM's <A href="http://computingcareers.acm.org" target="_blank">Computing Degrees & Careers</a>
+							</li>
+							<li><A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>, 
+								from Microsoft Learning.
 							</li>
 							<li>
-								<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>,
-								from Microsoft Learning
+								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
 							</li>
-							</ul>
+							<li>
+								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education								
+							</li>
+						</ul>
 					</div>			
 				
 	             </div>			
-
 
 
 							<div class="tab" id="tab-grid-computing">

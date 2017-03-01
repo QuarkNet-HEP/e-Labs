@@ -1,14 +1,14 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<%
+<% 
 	
 	if (user.isGuest()) {
 		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp")));
 		return; 
 	}
 	else if (user.isTeacher() || user.isAdmin()) {
-		response.sendRedirect(response.encodeRedirectURL("../teacher"));
+		response.sendRedirect(response.encodeRedirectURL("../teacher/index.jsp?justLoggedIn=yes"));
 		return; 
     }
 	else if (user.isNewSurvey()) { // New survey overrides the old one
@@ -40,7 +40,7 @@
 	}
 
 	if (!user.isFirstTime()) {
-		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/")));
+		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp?justLoggedIn=yes")));
 	}
 	else {
 		user.resetFirstTime();

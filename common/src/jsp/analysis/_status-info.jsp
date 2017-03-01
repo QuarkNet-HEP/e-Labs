@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -100,8 +101,8 @@
 								<td>&nbsp;</td>
 							</tr>
 						</table>
-						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
-						estimated: ${run.formattedEstimatedRunTime}
+						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span> 
+						<!--estimated: ${run.formattedEstimatedRunTime}        SB, 12/28/16-->
 						<div id="error-text" style="background: #ffaf70"></div>
 						
 						

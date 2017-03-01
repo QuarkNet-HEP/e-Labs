@@ -34,14 +34,16 @@
 			</div>
 			
 			<div id="content">
-<p>
+<%--<p>
 	<a href="performance-plot.jsp?id=${results.id }">View interactive Flot plots</a> (Beta Version)<br />
-</p>
+</p>--%>
+
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
-	Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+	Analysis run time: ${results.formattedRunTime} 
+	<%-- estimated: ${results.formattedEstimatedRunTime} --%>
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 

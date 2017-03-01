@@ -74,28 +74,11 @@ namespace("vdl"
 		element(cleanups, [cleanup]
 			log(LOG:INFO, "START cleanups={cleanup}")
 		)
-	
-		element(readErrorFiles, [dir, jobid, stdout, stderr]
-			concat(
-				if (file:exists("{dir}/{jobid}.error")
-					then(
-						str:strip(file:read("{dir}/{jobid}.error"))
-						file:remove("{dir}/{jobid}.error")
-					)
-				)
-				if (file:exists("{dir}/{stderr}")
-					then(
-						nl()
-						"stderr.txt: "
-						str:strip(file:read("{dir}/{stderr}"))))
-				if (file:exists("{dir}/{stdout}")
-					then(
-						nl()
-						"stdout.txt: "
-						str:strip(file:read("{dir}/{stdout}"))))
-			)
+		
+		element(readErrorFile, [dir, jobid]
+			str:strip(file:read("{dir}/{jobid}.error"))
+			file:remove("{dir}/{jobid}.error")
 		)
-	
 		
 		element(execute2, [tr, optional(arguments, stdin, stdout, stderr), stagein, stageout,  restartout,
 			replicationGroup, replicationChannel]
@@ -172,9 +155,10 @@ namespace("vdl"
 
 							stageOut("wrapper.log", "{stagingMethod}://localhost/{ddir}/{jobid}.info", 
 								mode = WRAPPER_TRANSFER_MODE)
-							stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}", mode = 4)
-							stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}", mode = 4)
-							stageOut("wrapper.error", "{stagingMethod}://localhost/{ddir}/{jobid}.error", mode = 2)
+							//stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}")
+							//stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}")
+							stageOut("wrapper.error", "{stagingMethod}://localhost/{ddir}/{jobid}.error", 
+								mode = STAGING_MODE:IF_PRESENT)
 							appStageouts(jobid, stageout, stagingMethod)
 
 							task:cleanUp(".") //the whole job directory
@@ -189,7 +173,7 @@ namespace("vdl"
 					catch("^(?!Abort$).*"
 						vdl:setprogress("Failed but can retry")
 						prev := exception
-						exception := try(exception(readErrorFiles(ddir, jobid, stdout, stderr)), prev)
+						exception := try(exception(readErrorFile(ddir, jobid)), prev)
 						log(LOG:DEBUG, "APPLICATION_EXCEPTION jobid={jobid} - Application exception: ", exception)
 
 						throw(

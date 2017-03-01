@@ -4,55 +4,98 @@ function printMass(mass){
 		mass=Mmass;
 	}
 	var HiggsChecked=document.getElementById("H").checked;
-	var ZChecked=document.getElementById("Z").checked;
-	
-	if(HiggsChecked || ZChecked){
-		$( "#mass" ).html( mass );
-	}else{
-		$( "#mass" ).html( " " );
-	}
+	//var ZChecked=document.getElementById("Z").checked;
+	var NPChecked=document.getElementById("NP").checked;
 
+	// Code to have an event's mass written to the particle selection
+	// panel's mass entry input box. Unused as of Feb2017 - JG
+	/*
+	if(HiggsChecked){
+			//$("#massEntry").prop("value",mass);
+			$("#massEntry").prop("value"," ");
+	} else if(!HiggsChecked){
+			$("#massEntry").prop("value"," ");
+	} else if(NPChecked){
+			$("#massEntry").prop("value"," ");
+	} else{
+			$("#massEntry").prop("value"," ");
+	}
+	*/
 }
 
 function check(state){
+  // check(primary)=true if a final state box is checked
+  // check(final)=true if a primary state box is checked
+	// Did someone get these backwards?
 	if(state=="primary"){
-		return (document.getElementById("e").checked || document.getElementById("mu").checked);
+		return (document.getElementById("e").checked ||
+						document.getElementById("mu").checked);
 	}
 	if(state=="final"){
-		return (document.getElementById("H").checked || document.getElementById("Z").checked || document.getElementById("W").checked
-		|| document.getElementById("Wp").checked || document.getElementById("W-").checked || document.getElementById("Zoo").checked);
+		return (document.getElementById("H").checked ||
+						document.getElementById("Z").checked ||
+						document.getElementById("NP").checked ||
+						document.getElementById("W").checked ||
+						document.getElementById("Wp").checked ||
+						document.getElementById("W-").checked ||
+						document.getElementById("Zoo").checked);
 	}
 }
 
 function SelP(element,mass){
 	var prim=false;
 	var fin=false;
-	
+
 	checked=element.checked;
+	// If a final state element has been checked,	
 	if(element.id=="mu" || element.id=="e"){
 		var arr=["mu","e"];
-		prim=checked;
-		fin=check("final");
-	
-	}else{
+		prim=checked; // true if e or mu (final state) checked
+		fin=check("final"); // true if primary state box checked
+		// I think whoever wrote this switched "primary" and "final" in a
+		//   way that cancels out :) JG
+	}
+	// Otherwise, a primary state element will have been checked
+	else{
+		// If H or Zoo are selected as primary, uncheck and disable
+		// the final state selection boxes
 		if(element.id=="Zoo" || element.id=="H"){
 			$("#mu").prop("checked",false);
 			$("#e").prop("checked",false);
 			$("#mu").prop("disabled",checked);
 			$("#e").prop("disabled",checked);
-			prim=checked;
+			prim=checked; // true if e or mu checked
 		}else{
-			prim=check("primary");
+			prim=check("primary"); // true if e or mu checked
 		}
 
-		printMass(mass);
-		var arr=["H","W","W-","Wp","Z","Zoo"];
-		fin=checked;
-	}	
-	for(var i=0;i<arr.length;i++){
-		if(element.id!=arr[i]){
-			$("#"+arr[i]).prop("disabled", checked);
+		//if(element.id=="Z"){
+		// If NP is selected as primary, enable the massEntry input box
+		//   and change styling
+		if(element.id=="NP"){
+			$("#massEntry").prop("disabled",!checked);
+			if(checked){
+				document.getElementById('massInput').style.color = 'black';
+				document.getElementById('Znote').style.fontWeight = 'bold';
+			} else if (!checked){
+				document.getElementById('massInput').style.color = 'grey';
+				document.getElementById('Znote').style.fontWeight = 'normal';
+			}
 		}
+			
+		//printMass(mass);
+		//var arr=["H","W","W-","Wp","Z","Zoo"];
+		var arr=["H","W","W-","Wp","NP","Zoo"];
+		fin=checked; // true if e or mu checked
+	}
+	for(var i=0;i<arr.length;i++){
+		// For everything in arr[] that *isn't* the selected element,
+		//   disable it
+		if(element.id!=arr[i]){
+			//$("#"+arr[i]).prop("checked",false);
+			$("#"+arr[i]).prop("disabled",checked);
+		}
+		// Nonetheless, if mu is checked, e does not disable, and vice-versa
 	}
 	if(prim && fin){
 		$("#next").prop("disabled", false);
@@ -61,7 +104,6 @@ function SelP(element,mass){
 	}
 
 }
-	
 
 function GetTables(){
 	var sel=document.getElementById("Eselect");
@@ -77,7 +119,7 @@ function GetTables(){
 	type: "POST",
 	url: "showTables.php",
 	data: {
-	MCE : list.join(), 
+	MCE : list.join(),
 	source: "Backend"},
 	success: function( data ) {
 	$( "#tables" ).html( data );
@@ -93,7 +135,6 @@ function GetTables(){
 	$( "#NG" ).html( data );
 	}
 	});
-
 
 }
 
@@ -132,7 +173,7 @@ function showdel(element){
 	//alert(elstr);
 	element.style.backgroundColor = "#AAFFAA";
 	elstr="del-"+element.id;
-	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit");
+	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit (double click)");
 }
 
 function nshowdel(element){
@@ -234,24 +275,28 @@ function del(element){
 	});
 
 	$(":checkbox").prop("disabled",false);
-	var allC=["e","mu","W","Wp","W-","Z","H","Zoo"];
+//		var allC=["e","mu","W","Wp","W-","Z","H","Zoo"];
+	var allC=["e","mu","W","Wp","W-","NP","H","Zoo"];
 	for(var i=0;i<allC.length;i++){
 		    document.getElementById(allC[i]).checked = false;
 	}
 	sel=document.getElementById("EvSelOver");
 	var nopt=document.createElement("option");
-	nopt.text=$("#SelEvent").text();
-	sel.add(nopt,sel[1]);
-	$("#SelEvent").html($.trim(cs[1].innerHTML));
+	nopt.text=$.trim(cs[1].innerHTML);
+	nopt.value=parseInt($.trim(cs[1].innerHTML))+(parseInt(group)-1)*100;
+	nopt.selected=true;
+	sel.add(nopt,sel[0]);
 	$("#Eventid").html($.trim(cs[3].innerHTML));
 
 	var s=massGlobal.split(";");
 	for(var i=0;i<s.length;i++){
 		var temp=s[i].split(":");
-		if(temp[0]==element.id){
+		if(parseInt(temp[0])==parseInt(element.id)){
 			Mmass=temp[1];
+
 		}
 	}
+
 
 	if(checked && $.trim(checked[0])!=""){
 		for(var i=0;i<checked.length;i++){

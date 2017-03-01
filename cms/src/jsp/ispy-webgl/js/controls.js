@@ -44,25 +44,67 @@ ispy.setPerspective = function() {
   ispy.camera.toPerspective();
 };
 
+ispy.enterFullscreen = function() {
+  var container = document.getElementById('ispy');
+
+  if ( container.requestFullscreen ) {
+    container.requestFullscreen();
+  } else if ( container.msRequestFullscreen ) {
+    container.msRequestFullscreen();
+  } else if ( container.mozRequestFullScreen ) {
+    container.mozRequestFullScreen();
+  } else if ( container.webkitRequestFullscreen ) {
+    container.webkitRequestFullscreen();
+  } else {
+    alert('Cannot go to full screen!');
+  }
+};
+
+ispy.exitFullscreen = function() {
+  if ( document.exitFullscreen ) {
+    document.exitFullscreen();
+  } else if ( document.msExitFullscreen ) {
+    document.msExitFullscreen();
+  } else if ( document.mozCancelFullScreen ) {
+    document.mozCancelFullScreen();
+  } else if ( document.webkitExitFullscreen ) {
+    document.webkitExitFullscreen();
+  } else {
+    alert('Cannot exit full screen. Try Esc?');
+  }
+};
+
+ispy.toggleFullscreen = function() {
+  $('#enterFullscreen').toggleClass('active');
+  $('#exitFullscreen').toggleClass('active');
+};
+
+document.addEventListener('webkitfullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('mozfullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('fullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('MSFullscreenChange', ispy.toggleFullscreen, false);
+
+ispy.reload = function() {
+  location.reload();
+};
+
 ispy.toStereo = function () {
   if (!ispy.stereo) {
     ispy.stereo = true;
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
-    ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+    ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera);
 
     $('#axes').hide();
     $('#event-info').hide();
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
-    ispy.do_controls.autoForward = true;
     ispy.do_controls.connect();
-    ispy.do_controls.update();
 
-    ispy.camera.position.x = 2;
+    ispy.camera.position.x = 5;
     ispy.camera.position.y = 2;
-    ispy.camera.position.z = -10;
+    ispy.camera.position.z = 10;
     ispy.lookAtOrigin();
 
     ispy.onWindowResize();
@@ -95,6 +137,7 @@ ispy.setStereo = function() {
   $('#orthographic').removeClass('active');
   $('#stereo').addClass('active');
   ispy.toStereo();
+  ispy.enterFullscreen();
 };
 
 ispy.zoom = function(step) {
@@ -115,6 +158,8 @@ ispy.exportString = function(output, filename) {
 
   // Use this to output to file:
   var link = document.createElement('a');
+  link.style.display = 'none';
+  document.body.appendChild( link );
   link.href = objectURL;
   link.download = filename || 'data.txt';
   link.target = '_blank';
@@ -139,7 +184,14 @@ ispy.exportScene = function() {
 
 ispy.exportModel = function() {
   var exporter = new THREE.OBJExporter();
-  ispy.scene.children.forEach(function(c) {
-     ispy.exportString(exporter.parse(c), c.name+'.obj');
-  })
+
+  ispy.scene.children.forEach(function(c){
+    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+      c.children.forEach(function(o) {
+        if ( o.visible ) {
+          ispy.exportString(exporter.parse(o), o.name+'.obj');
+        }
+      });
+    }
+  });
 }

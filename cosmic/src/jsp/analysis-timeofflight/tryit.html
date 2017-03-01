@@ -1,0 +1,132 @@
+<html>
+<head>
+	<title>Step-by-Step Instructions: Time of Flight Study</title>
+</head>
+<body>
+<!-- include css style file -->
+<link rel="stylesheet"  href="../css/styletut.css" type="text/css">
+
+<center><h2>Step-by-Step Instructions: Time of Flight Study</h2>
+<h4><a href="#data_button">Data Button</a> -
+<a href="#tof_button">T of F Button</a> -
+<a href="#search_data">Searching Data Files</a> -
+<a href="#select_data">Selecting Data</a> -
+<a href="#analyzing">Analyzing</a><BR>
+<a href="#in_progress">In Progress</a> -
+<a href="#analysis_links">Analysis Links</a> -
+<a href="#adv_controls">Advanced Controls</a> -
+<a href="#refit_x">Refit X</a> -
+<a href="#plot">The Plot</a> 
+</h4></center>
+
+<center>
+<table width="525" cellpadding="4" cellspacing="4">
+<tr><td colspan="2">
+	<ul>
+		<li>Keep two windows open, one with these instructions and the other with the TOF study web pages. </li>
+		<li>Go back and forth between them.  </li>
+		<li>Use the scroll bar to move the instructions.</li>
+		<li>Look for the blue highlights for guidance.</li>
+	</ul>
+	<p>We shall create a plot with data collected at Fermilab with DAQ #6203 from November 2015 to January 2016.</p>  
+</td></tr>
+
+<tr><td colspan="2" height="16"><A Name="data_button"> </A></td></tr>
+<tr align="left" valign="top"><td width="50" >Step 1:</td><td>Click on the Data button in the main menu.</td></tr>
+<tr align="left" valign="top"><td colspan="2"><IMG border="0"  src="../graphics/tryPerf/data_menu_75.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="tof_button"> </A></td></tr>
+<tr><td >Step 2:</td><td>Click on the Shower button in the submenu.</td></tr>
+<tr><td colspan="2"><IMG border="0" src="../graphics/tryPerf/tof_menu_75.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="search_data"> </A></td></tr>
+<tr><td valign="top">Step 3.1:</td><td>Look at the search page. On the right, there are links to a tutorial, step-by-step instructions, and FAQs. The legend shows icons for information about each data file.
+NOTE:  TOF works with one file at a time.  So, we use Advanced Search to select one file. </td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data1.png"></td></tr>
+
+<tr><td colspan="2" height="16"> </A></td></tr>
+<tr><td valign="top">Step 3.2:</td><td> 
+Find all data for DAQ #6203 from Nov. 1, 2015 through Jan. 31, 2016. <BR>
+a) Select <b>Detector ID</b> in the pulldown list.<br>
+b) Enter <b>6203</b> in the search field.<BR>
+c) Click on the little arrow next to "Advanced Search."</td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data1_5.png"></td></tr>
+
+<tr><td colspan="2" height="16"></A></td></tr>
+<tr><td valign="top">Step 3.3:</td><td>a) Select <b>Start Date</b> in the pulldown list for dates and enter "11/01/2015" in the first date field and "01/31/2016" in the second date field. You can also use the calendar.
+<br>b) Select Blessed:  All.  This means all files, blessed or not.  Default means blessed only.
+<br>c) Click <b>Search Data</b></td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data2.png"></td></tr>
+
+<tr><td colspan="2" height="16"></A></td></tr>
+<tr><td valign="top">Step 3.4:</td><td>a) Click on the little arrow next to "Fermilab Test Array" to see the data files.
+</td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data3.png"></td></tr>
+
+<tr><td colspan="2" height="16"></A></td></tr>
+<tr><td valign="top">Step 3.5:</td><td>a) Click on the little arrow next to "November 2015" to see the data files for that month.
+</td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data4.png"></td></tr>
+
+<tr><td colspan="2" height="16"></A></td></tr>
+<tr><td valign="top">Step 3.6:</td><td>One can view the data by clicking on the icon with the magnifying glass and additional information by clicking on the comments bubble. </td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_search_data5.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="select_data"> </A></td></tr>
+<tr><td valign="top">Step 4:</td><td>Click the button next to the first Monday, 11/23/2015, data set.  
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_choose_data.png"></td></tr>
+
+<tr><td colspan="2" height="16"></td></tr>
+<tr><td valign="top">Step 4.1:</td><td>Then click <b>Run TOF study</b> on the right.
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_choose_data2.png"></td></tr>
+
+<tr><td colspan="2" height="16"></td></tr>
+<tr><td valign="top">Step 4.2:</td><td>Look at the display of the selected data file.  You can view the raw data and check the statistics.  Also, make sure the geometry file is there.  
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_view_data.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="analyzing"> </A></td></tr>
+<tr><td valign="top">Step 5:</td><td>To understand the input parameters, you can click on the question mark next to each.  The first time through, keep all the defaults,<br>
+a) DAQ Name: Fermilab Test Array, Batavia, IL (6203).<BR>
+b) Event gate (ns):  500.<BR>
+c) Channel Coincidence:  2.<br>
+d) Define Soft Triggers?  Require Channels: None, in the case of the first example given in the TOF Tutorial.  Software triggers are used in the later examples.<br>
+e) Define Soft Triggers?  Veto Channels: None.<br>
+f) Plot Controls:  As an option, you can modify labels on the plot.<br>
+g) Click <b>Analyze</b>. We will run the analysis on our local computer. This will take a while, so don't be alarmed if you do not get a plot right away.</td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_choose_parameters.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="in_progress"> </A></td></tr>
+<tr><td valign="top" width="50">Step 5.1:</td><td>If your analysis takes very little time to run, you may get your plot right away. More often, you get a progress bar displaying how the analysis is doing.  You can click on <b>Queue study</b> to allow the analysis to go on in the background. You can also click on <b>Analysis output</b> to see the inner workings. This might
+help you if you encounter an error in your analysis.</td></tr>
+<tr><td colspan="2"><IMG src="../graphics/tryPerf/tof-study-inprogress.png" border="1"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="analysis_links"> </A></td></tr>
+<tr><td valign="top" width="50">Step 5.2:</td><td>You can now click on <b>Analyses</b> on the navigation bar to see the progress of you job.</td></tr>
+<tr><td colspan="2"><IMG src="../graphics/tryPerf/tof_analyses-link.png" border="1"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="analysis_list"> </A></td></tr>
+<tr><td valign="top" width="50">Step 5.3:</td><td>When your job is done, you will see an entry on the Analysis List like this. You can click on the link and see the plot.<br></td></tr>
+<tr><td colspan="2"><IMG src="../graphics/tryPerf/tof_analysis-list.png" border="1"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="adv_controls"> </A></td></tr>
+<tr><td valign="top" width="50">Step 6:</td><td>On the Time Difference ch4-ch1 plot, click <b>Advanced Controls</b>.</td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_plot_controls.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="refit_x"> </A></td></tr>
+<tr><td valign="top" width="50">Step 7.1:</td><td>Limit the interval of the x-axis where the fit is applied.  This step can be used to eliminate tails or background.  <br>
+a) Change the Min X to -15 and Max X to 10.  <br>
+b) Keep the other settings (X-axis & Y-axis scale and Bin Width).  Changing the bin width is not compatible with refitting the x-values.<br>
+c) Click Refit X. <br>
+d) Notice:  Mean and standard deviation may change for the new internal.<br></td></tr>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_adv_cntrls1.png"></td></tr>
+
+<tr><td colspan="2" height="16"><A Name="plot"> </A></td></tr>
+<tr><td valign="top" width="50">Step 7.2:</td><td>Result of Refit X: </td></tr><br>
+<tr><td colspan="2"><IMG border="1" src="../graphics/tryPerf/tof_refitx.png"></td></tr>
+<tr><td valign="top" width="50">Notice:</td><td>Data seems to jump up and down.  Because the DAQ measures in 1.25ns steps, there can be odd correlations between the two counters, leading to a ragged plot.  </td></tr><br>
+
+
+</table>
+</center>
+</body>
+</html>

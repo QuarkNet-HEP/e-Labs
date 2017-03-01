@@ -1,79 +1,79 @@
 type File {}
 
 type AxisParams {
-	string low;
-	string high;
-	string label;
+  string low;
+  string high;
+  string label;
 }
 
 (File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector, string firmware) {
-	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector firmware;
-	}
+  app {
+    WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector firmware;
+  }
 }
 
 (File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
-	foreach td, i in thresholdData {
-		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
-	}
+  foreach td, i in thresholdData {
+    wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
+  }
 }
 
 (File combined) Combine(File data[]) {
-	app {
-		Combine @filenames(data) @filename(combined);
-	}
+  app {
+    Combine @filenames(data) @filename(combined);
+  }
 }
 
 (File out) Sort(File inf, string key1, string key2) {
-	app {
-		Sort @filename(inf) @filename(out) key1 key2;
-	}
+  app {
+    Sort @filename(inf) @filename(out) key1 key2;
+  }
 }
 
 (File out) EventSearch(File inf, string gate, string detectorCoincidence, string channelCoincidence,
-	string eventCoincidence) {
-	
-	app {
-		EventSearch @filename(inf) @filename(out) gate detectorCoincidence
-			channelCoincidence eventCoincidence;
-	}
+  string eventCoincidence) {
+  
+  app {
+    EventSearch @filename(inf) @filename(out) gate detectorCoincidence
+      channelCoincidence eventCoincidence;
+  }
 }
 
 (File out) EventChoice(File inf, string eventNum, string zeroZeroZeroID, string geoDir, File geoFiles[]) {
-	app {
-		EventChoice @filename(inf) @filename(out) eventNum zeroZeroZeroID @filename(geoDir);
-	}
+  app {
+    EventChoice @filename(inf) @filename(out) eventNum zeroZeroZeroID @filename(geoDir);
+  }
 }
 
 
 (File image, File outfile_param) Plot(string ptype, string caption, AxisParams x, AxisParams y, 
-	AxisParams z, string title, File infile, File extraFun) {
-	
-	app {
-		Plot 
-			"-file" @filename(infile)
-			"-extra" @filename(extraFun)
-			"-param" @filename(outfile_param)
-			"-svg" @filename(image)
-			"-type" ptype
-			"-title" title
-			"-xlabel" x.label
-			"-ylabel" y.label
-			"-zlabel" z.label
-			"-caption" caption
-			"-lowx" x.low
-			"-highx" x.high
-			"-lowy" y.low
-			"-highy" y.high
-			"-lowz" z.low
-			"-highz" z.high;
-	}
+  AxisParams z, string title, File infile, File extraFun) {
+  
+  app {
+    Plot 
+      "-file" @filename(infile)
+      "-extra" @filename(extraFun)
+      "-param" @filename(outfile_param)
+      "-svg" @filename(image)
+      "-type" ptype
+      "-title" title
+      "-xlabel" x.label
+      "-ylabel" y.label
+      "-zlabel" z.label
+      "-caption" caption
+      "-lowx" x.low
+      "-highx" x.high
+      "-lowy" y.low
+      "-highy" y.high
+      "-lowz" z.low
+      "-highz" z.high;
+  }
 }
 
 (File png) SVG2PNG(File svg, string height) {
-	app {
-		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
-	}
+  app {
+    SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+  }
 }
 
 
@@ -89,6 +89,9 @@ File eventFile <single_file_mapper;file=@arg("eventFile")>;
 
 File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//This is done to avoid corruption of threshold files when created
+//concurrently by multiple runs
+//File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\\1.thresh">;
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string  detectors[] = @strsplit(@arg("detector"), "\\s");
@@ -127,4 +130,4 @@ wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, fir
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
 eventCandidates = EventSearch(sortOut, gate, detectorCoincidence, channelCoincidence,
-	eventCoincidence);
+  eventCoincidence);

@@ -5,8 +5,8 @@
  * Solicits information sufficient to describe a bug or other problem
  * Sends to both the HelpDesk forum and a mailing list.
  *
- * This is a self-submitting form, containing both the Display of the 
- * form (last) and the action to process the form inputs. 
+ * This is a self-submitting form, containing both the Display of the
+ * form (last) and the action to process the form inputs.
  *
  * Certain parts of the form will only show for a particular e-lab.  This
  * is controlled by CSS class.  So for example, items of class 'cosmics_elab'
@@ -16,6 +16,7 @@
  * Eric Myers <myers@spy-hill.net> - 5 March 2008
  * @(#) $Id: HelpDeskRequest.php,v 1.28 2009/07/08 16:25:36 myers Exp $
 \***********************************************************************/
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 // These things are borrowed from the BOINC forum code.
 //
@@ -29,7 +30,7 @@ include_once("../inc/util.inc");        // general utility functions
 include_once("../include/util.php");      // general utility functions
 include_once("../include/debug.php");     // debugging messages
 
-include_once("../project/roles.php");     // for user permissions 
+include_once("../project/roles.php");     // for user permissions
 
 
 /*******************************
@@ -39,16 +40,16 @@ set_debug_level(0);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "help@i2u2.org"; /*hategan@mcs.anl.gov, myers@fnal.gov"; */
+$Email_List = "e-labs@fnal.gov";
 
 
 // Return address for e-mail sent from this form:
 //
-$Email_From = "help@i2u2.org";
+$Email_From = "e-labs@fnal.gov";
 
-// BCC the following people 
+// BCC the following people
 //
-$Email_BCC = "phongn@fnal.gov"; 
+$Email_BCC = "phongn@fnal.gov";
 
 /********
  * Lists for input selectors:
@@ -65,17 +66,17 @@ $elab_list=array('any' => 'Any/All',
 
 $part_list = array('Unknown',   // remove this one?  add "all/several"?
                    'DAQ Hardware', 'Data Upload',   // mainly Cosmics
-                   'Data Preparation',              // mainly LIGO    
+                   'Data Preparation',              // mainly LIGO
                    'Network', 'Data Analysis Tool', 'Posters', 'Logbook',
                    'Web server', 'Documentation');
 
 $severity_list = array( "Undetermined", "Trivial", "Minor", "Normal",
-	       "Major", "Critical", "Enhancement", "Feedback" ); 
+	       "Major", "Critical", "Enhancement", "Feedback" );
 
 $platform_list = array('Windows', 'MacOS X', 'Linux', 'Solaris', 'HP',
                        'Other', 'All/Any', 'None');
 
-$browser_list= array('Chrome', 'Internet Explorer', 'Firefox', 'Safari', 
+$browser_list= array('Chrome', 'Internet Explorer', 'Firefox', 'Safari',
                      'Opera', 'Seamonkey', 'Other', 'All/Any', 'None');
 
 // What choices does the user have to identify their position or role
@@ -89,17 +90,17 @@ $role_list=array('Student', 'Teacher', 'QuarkNet Fellow',
 $elab_forum_id= array('any' => 52,
                       'cosmic' => 57,
 	              'cms' => 60,
-                      'ligo' => 58);  
+                      'ligo' => 58);
 
-// For testing.  If the server name contains "spy-hill" 
-// then only send to Eric.  Other variations are possible. 
+// For testing.  If the server name contains "spy-hill"
+// then only send to Eric.  Other variations are possible.
 //
 if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
   $Email_List = "myers@spy-hill.net";
   $Email_From = "i2u2@spy-hill.net";
  }
 
-/* End of configuration. 
+/* End of configuration.
 \***********************************************************************/
 
 
@@ -126,13 +127,13 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 
 
 
-//
+//
 /*******************************
- * reCAPTCHA: so we know it is humans.  
+ * reCAPTCHA: so we know it is humans.
  * We only present a reCAPTCHA for users who are not already logged in.
  */
 
-require_once("../include/recaptchalib.php");  
+require_once("../include/recaptchalib.php");
 
 
 // The keys are kept in these separate files instead of
@@ -140,18 +141,20 @@ require_once("../include/recaptchalib.php");
 // available via SVN or CVS.  Please keep it that way!
 // These are (for now) the Spy Hill keys.
 //
-$pub_key_file = "../../keys/reCAPTCHA_public_key";
-$priv_key_file = "../../keys/reCAPTCHA_private_key";
+$pub_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_public_key";
+$priv_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_private_key";
+$mailhide_pub_key_file  = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_public_key";
+$mailhide_priv_key_file = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_private_key";
 
 
-// If the server name contains i2u2.org then we need 
-// to use the keys for i2u2.org, not spy-hill.net. 
+// If the server name contains i2u2.org then we need
+// to use the keys for i2u2.org, not spy-hill.net.
 //
-if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" ) ){
-  $pub_key_file = "../../keys/www13.reCAPTCHA_public_key";
+if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" )){
+	$pub_key_file = "../../keys/www13.reCAPTCHA_public_key";
   $priv_key_file = "../../keys/www13.reCAPTCHA_private_key";
   $mailhide_pub_key_file  = "../../keys/reCAPTCHA_Mailhide_public_key";
-  $mailhide_priv_key_file = "../../keys/reCAPTCHA_Mailhide_private_key"; 
+  $mailhide_priv_key_file = "../../keys/reCAPTCHA_Mailhide_private_key";
 }
 
 
@@ -159,7 +162,7 @@ if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" ) ){
 //
 if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
     !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
-    error_page("Server configuration error. Cannot access keys.   
+    error_page("Server configuration error. Cannot access keys.
         Please report this to the project administrators.");
  }
 
@@ -172,9 +175,9 @@ if( empty($public_key) || empty($private_key) ){
     error_page("Server configuration error. Empty key.
         Please report this to the project administrators.");
 }
- 
-// Used by the reCAPTCHA PHP API to enforce secure requests  
-$use_ssl = true; 
+
+// Used by the reCAPTCHA PHP API to enforce secure requests
+$use_ssl = true;
 /*******************************
  * Local functions:
  *   (some of these will move to ../include/util.php when finished)
@@ -192,14 +195,14 @@ function grab_input($name){
 
 
 // Display a checkbox item with given internal $name,
-// labeled by $text.  Optional $desc is for mouseover or 
+// labeled by $text.  Optional $desc is for mouseover or
 // is shown to 'beginners'.
 //
 function checkbox_item($name,$text,$desc='',$class=''){
     global $$name;
     $checked = ( $$name ) ? "CHECKED" : " ";  // already set
     $x = "<span title='$desc' class='$class' >";
-    $x .= "<input type='checkbox' name='$name' value='x' 
+    $x .= "<input type='checkbox' name='$name' value='x'
            onChange='updateClassVisibility()' $checked >";
     $x .= "&nbsp;$text </span>&nbsp;&nbsp;\n";
     return $x;
@@ -221,7 +224,7 @@ function handle_checkbox($name){
 
 
 // Report Checkbox state, if set
-// 
+//
 function report_checkbox_item($name,$text,$marker='x'){
     global $$name;
     $x="";
@@ -230,7 +233,7 @@ function report_checkbox_item($name,$text,$marker='x'){
     }
     return $x;
 }
-  
+
 
 
 // Get a default value set in the URL (i.e. via GET)
@@ -267,7 +270,7 @@ function error_text($name){
     // It's not an error if item doesn't exist in list
     //
     if( !array_key_exists($name, $input_error) ) return '';
-    if( empty($input_error[$name]) ) return ''; 
+    if( empty($input_error[$name]) ) return '';
 
     $text='';
 
@@ -275,36 +278,36 @@ function error_text($name){
     case 'summary':
     case 'subject':
         $text="Please supply a subject (summary).";
-        break; 
+        break;
     case 'activity':
         $text="Please tell us what you were doing at the time.";
-        break; 
+        break;
     case 'problem':
         $text="Please describe how to reproduce the problem.";
-        break; 
+        break;
     case 'daq_card':
-        $text="Please add your DAQ# or type NONE.";
-        break; 
+	      $text="Please add your DAQ# or type NONE.";
+  	    break;
     case 'user_name':
         $text="Please supply your name.";
-        break; 
+        break;
     case 'user_role':
         $text="Please indicate your role in I2U2.  ";
-        break; 
+        break;
     case 'return_address':
         $text="Please supply an e-mail address, so that we can contact you
                 if needed.";
-        break; 
+        break;
     case 'invalid_addr':
         $text="Please supply a VALID e-mail address.";
-        break; 
+        break;
 
     case 'recaptcha':
         $text="Incorrect answer.<br/>Please try again.";
-        break; 
+        break;
     case 'noverify':
         $text="Please enter an answer. ";
-        break; 
+        break;
     }
 
     // It's not an error if it wasn't found above
@@ -419,7 +422,7 @@ function use_referer_button($label){
 
 // Control the visibility of particular items, based on CSS class
 //
-// 
+//
 function setup_visibility(){
   echo "\n\n<script type=\"text/javascript\">
     function getElementsByClassName(class_name) {
@@ -434,33 +437,33 @@ function setup_visibility(){
     };
 
     function setClassVisibility(class_name,isOn){
-        var items = getElementsByClassName(class_name); 
+        var items = getElementsByClassName(class_name);
         for (var i=0; i<items.length; i++){
             if(isOn) {
             	items[i].style.visibility = \"visible\";
-            	items[i].style.display = \"\"; 
+            	items[i].style.display = \"\";
             }
             else {
             	items[i].style.visibility = \"collapse\";
             	items[i].style.display = \"none\";
             }
-        }    
+        }
     };
 
     function makeClassVisible(class_name){
-        var items = getElementsByClassName(class_name); 
+        var items = getElementsByClassName(class_name);
         for (var i=0; i<items.length; i++){
 			items[i].style.visibility = \"visible\";
-            items[i].style.display = \"\"; 
-        }    
+            items[i].style.display = \"\";
+        }
     };
 
     function makeClassInvisible(class_name){
-        var items = getElementsByClassName(class_name); 
+        var items = getElementsByClassName(class_name);
         for (var i=0; i<items.length; i++){
         	items[i].style.visibility = \"collapse\";
             items[i].style.display = \"none\";
-        }    
+        }
     };
 
     function updateClassVisibility(){
@@ -480,7 +483,7 @@ function setup_visibility(){
 function fill_in_report($body=''){
     global $subject, $activity, $problem, $error_msg, $workaround;
     global $elab, $elab_list, $daq_card;
-    global $component, $part_list, $version, $url, $severity; 
+    global $component, $part_list, $version, $url, $severity;
     global $platform_os, $browser, $os_version, $browser_version;
     global $user_name, $user_id, $user_role, $role_list, $return_address;
     global $school, $location, $date_time;
@@ -503,13 +506,13 @@ function fill_in_report($body=''){
     echo "\n";
 
     if($elab){
-        $body .= "Elab: ".$elab."\n"; 
+        $body .= "Elab: ".$elab."\n";
     }
     if($severity) $body .= "Severity: $severity\n";
 
     if($url) $body .= "URL: $url\n";
     if($component){
-        $body .= "Component: ".$component."\n"; 
+        $body .= "Component: ".$component."\n";
     }
     if($daq_card) $body .= "DAQ Card #: $daq_card\n";
     if($platform_os) $body .= "Platform OS: $platform_os $os_version \n";
@@ -594,7 +597,7 @@ function send_report_via_email($thread_id=0){
     global $subject, $problem, $error_msg;
     global $elab, $elab_list;
     global $user_name, $user_id, $user_role, $role_list, $return_address;
-   
+
     $to_address = $Email_List;
 
     $self = $_SERVER['PHP_SELF'];
@@ -642,7 +645,7 @@ function send_report_via_email($thread_id=0){
         $body .= "Submitter's IP Address: ".$_SERVER['REMOTE_ADDR']."\n";
     }
     else {
-        $body .= "====\nNo return address was provided.\n";    
+        $body .= "====\nNo return address was provided.\n";
         $body .= "Submitter's IP Address: ".$_SERVER['REMOTE_ADDR']."\n";
     }
 
@@ -652,10 +655,22 @@ function send_report_via_email($thread_id=0){
     return $x;
 }
 
+function do_post($url, $data)
+{
+	$ch = curl_init($url);
+
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+	$response = curl_exec($ch);
+	curl_close($ch);
+	return $response;
+}
 
 
 /***
- * Post the bug report to the HelpDesk forum 
+ * Post the bug report to the HelpDesk forum
  * Return value is the $thread_id of the posting, which can be used
  * to build a URL, or 0 on failure.
  */
@@ -685,7 +700,7 @@ function send_report_via_email($thread_id=0){
       if(0 && $user_role=="Student"){ // student TODO: REAL ONE
 	$auth="f1b25af57a295dba967175626c6236d4";
       }
-      if(0 && $user_role=="Teacher"){ // teacher TODO: REAL GUEST ACCT AUTH 
+      if(0 && $user_role=="Teacher"){ // teacher TODO: REAL GUEST ACCT AUTH
 	$auth="f1b25af57a295dba967175626c6236d4";
       }
       else {   // Guest User (generic)
@@ -697,7 +712,7 @@ function send_report_via_email($thread_id=0){
       //
       if( isset($_COOKIE['pirates_auth']) ){
           $form_url="http://pirates.spy-hill.net/forum_post.php?id=23";
-          $auth="f1b25af57a295dba967175626c6236d4";   //Code Dwarf's account 
+          $auth="f1b25af57a295dba967175626c6236d4";   //Code Dwarf's account
       }
     }
 
@@ -717,14 +732,15 @@ function send_report_via_email($thread_id=0){
     */
 
 
-    $hidden_addr_url = recaptcha_mailhide_url($mailhide_public_key, $mailhide_private_key, $return_address);
+    //$hidden_addr_url = recaptcha_mailhide_url($mailhide_public_key, $mailhide_private_key, $return_address);
+		$hidden_addr_url = "hello";
 
-    $forum_body = "[pre]".preg_replace("/Submitted by: (.*) \<(.*\@.*)\>/", 
+    $forum_body = "[pre]".preg_replace("/Submitted by: (.*) \<(.*\@.*)\>/",
                          "[/pre]Submitted by: [url=".$hidden_addr_url."]$1[/url][pre]", $body)."[/pre]";
 
-    $form_fields = array('title' => "[bugrpt] $subject", 
+    $form_fields = array('title' => "[bugrpt] $subject",
                          'content' => "$forum_body",
-                         'add_signature' => 'add_it', 
+                         'add_signature' => 'add_it',
                          'postit' => 'Post'  );
     $form_files=array();
     $form_options=array( 'cookies' => array( 'auth' => $auth ) );
@@ -735,8 +751,10 @@ function send_report_via_email($thread_id=0){
     debug_msg(5,"Form Fields:<pre>".print_r($form_fields,true)."</pre>");
     debug_msg(6,"Form Options:<pre>".print_r($form_options,true)."</pre>");
 
-    $response = http_post_fields($form_url, $form_fields, $form_files,
-                                 $form_options ); 
+    //$response = http_post_fields($form_url, $form_fields, $form_files,
+    //                             $form_options );
+		$response = do_post($form_url, $form_fields);
+
 
     if( $response === FALSE ){
         debug_msg(1,"http_post_fields() failed! (FALSE)");
@@ -773,10 +791,10 @@ function send_report_via_email($thread_id=0){
     }
 
     return 0;
-}   
+}
 
 
-//
+//
 /***********************************************************************\
  * Action: process form input, and if valid then submit report
 \***********************************************************************/
@@ -784,7 +802,7 @@ function send_report_via_email($thread_id=0){
 // Process URL defaults via GET
 //
 get_default('elab');
-get_default('component', 'part');  
+get_default('component', 'part');
 
 
 // Process form input via POST
@@ -794,8 +812,9 @@ require_field('subject');
 
 grab_input('elab');
 grab_input('daq_card');
-require_field('daq_card');
-
+if( $elab == "cosmic"){
+	require_field('daq_card');
+}
 grab_input('activity');
 require_field('activity');
 
@@ -837,8 +856,9 @@ handle_checkbox('ck_daq_pmt');
 handle_checkbox('ck_daq_pmt');
 handle_checkbox('ck_daq_count');
 handle_checkbox('ck_daq_cable');
-handle_checkbox('ck_daq_other');    // check the "other" box 
+handle_checkbox('ck_daq_other');    // check the "other" box
 grab_input('daq_other');            // the text the someone typed
+
 if($daq_other) $ck_daq_other=TRUE;  // is enough for us
 
 
@@ -849,9 +869,9 @@ grab_input('GPS_start_time');
 grab_input('GPS_end_time');
 
 
-// Try to get user's name for the message, but make sure that we can 
+// Try to get user's name for the message, but make sure that we can
 // continue even if we can't - eg. the database server is down, or
-// the person is using the form anonymously. 
+// the person is using the form anonymously.
 //
 $dbrc = db_init_aux();    // Connect to database, if we can
 
@@ -865,7 +885,7 @@ if( !$dbrc ){
         $return_address = $logged_in_user->email_addr;
 
         $user_roles = list_user_roles($logged_in_user);
-        debug_msg(4,"C) User has ". sizeof($user_roles). " roles"); 
+        debug_msg(4,"C) User has ". sizeof($user_roles). " roles");
         if($user_roles){
             $user_role = array_shift($user_roles);
             debug_msg(5,"D) Choosing ". $user_role);
@@ -876,7 +896,7 @@ if( !$dbrc ){
         $teamid = $logged_in_user->teamid;
         if( $teamid && is_numeric($teamid) ){
             $team = lookup_team($teamid);
-            $school = $team->name; 
+            $school = $team->name;
         }
 
         // BOINC "country" is the person's state
@@ -940,7 +960,7 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
     }
 
 
-    // Sumbit via e-mail and forum post 
+    // Sumbit via e-mail and forum post
     //
     if( empty($input_error) ){
 
@@ -962,25 +982,31 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
             flush();
         }
 
-        // Output status 
+        // Output status
 
-        if( !$mailed || $thread_id<1 ) {
-            echo "<P>There was a problem submitting the report:";
-            if( !$mailed ) echo "<br> * The report could not be mailed.";
-            if( $thread_id<1 ) echo "<br> * The report could not be posted.";
+        //if( !$mailed || $thread_id<1 ) {
+        //    echo "<P>There was a problem submitting the report:";
+        //    if( !$mailed ) echo "<br> * The report could not be mailed.";
+        //    if( $thread_id<1 ) echo "<br> * The report could not be posted.";
+        //}
+
+        if( !$mailed) {
+        	echo "<P>There was a problem submitting the report:";
+        	if( !$mailed ) echo "<br> * The report could not be mailed.";
         }
-
+        
+        
         if($mailed || $thread_id){
-            echo "<p>The following report was submitted: 
+            echo "<p>The following report was submitted:
                         <hr><blockquote><pre>\n";
             echo htmlspecialchars(fill_in_report());
             echo "</pre></blockquote><hr>\n\n";
         }
 
-        if( $thread_id > 0 ) {// if posted, link to it 
+        if( $thread_id > 0 ) {// if posted, link to it
             echo "<blockquote>* <a href='forum_thread.php?id=$thread_id'>
                 Responses will be found in the ". $elab_list[$elab].
-                " Help Desk forum...</a></blockquote>\n";          
+                " Help Desk forum...</a></blockquote>\n";
         }
 
         echo "<blockquote>* <a href='".URL_BASE."'>Go to the ".PROJECT
@@ -992,7 +1018,7 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
  }
 
 
-//
+//
 /***********************************************************************\
  * Display the input form
 \***********************************************************************/
@@ -1016,21 +1042,21 @@ setup_visibility();
 echo " <form name='bugrpt' method='POST' action='$self'> \n";
 
 echo "Use this form to submit a request to the Help Desk, either
-        to report a problem (such as a software bug), or to 
-        ask a question or to make a request. 
+        to report a problem (such as a software bug), or to
+        ask a question or to make a request.
         <P>
         Please try to give us as much information as you can to help diagnose
         the problem or to make the nature of your request clear.
         Except for the few required fields,
         you can leave things blank if they do not apply.<P>\n";
 
- 
+
 if( isset($_POST['submit_report']) && !empty($input_error) ){
     echo "<font color='RED'>Please correct the problems noted below.
             <p>";
 
     if($debug_level > 2){
-        foreach($input_error as $key=>$value){       
+        foreach($input_error as $key=>$value){
             echo "<tt>$key</tt>&nbsp;\n";
         }
     }
@@ -1049,18 +1075,18 @@ form_item("Short summary:",
           "<input type='text' name='subject' value='$subject'
                         size='60' maxlength='80' class='required'>");
 
-form_item("Date/Time", 
+form_item("Date/Time",
         "When did this happen?  Being more specific can help us find
          evidence in the server logs.  Please include time zone!",
           "<input type='text' name='date_time' value='$date_time'
                                 size='30' maxlength='40'>  &nbsp;"
           . time_button('Now')
-          //. GPS_clock_box() . GMT_clock_box 
+          //. GPS_clock_box() . GMT_clock_box
           );
 
 form_item("Which e-Lab?",
           "Which at is the general area of the problem?  "
-          .error_text('elab'), 
+          .error_text('elab'),
           selector_from_array('elab', $elab_list, $elab,
 				"updateClassVisibility()" )
           );
@@ -1068,9 +1094,9 @@ form_item("Which e-Lab?",
 form_item("Which part?",
           "What part of the e-Lab does this report apply to? "
           .error_text('component'),
-          selector_from_array('component', $part_list, $component, 
+          selector_from_array('component', $part_list, $component,
 				"updateClassVisibility()" )
-          ."<span class='description'> 
+          ."<span class='description'>
                 (This item will be changed soon to checkboxes)
            </span>"
           );
@@ -1088,7 +1114,7 @@ form_item("Activity:",
           );
 
 
-form_item("URL:", 
+form_item("URL:",
           "What web page address were you using when the problem occured?  ",
           "<input type='text' name='url' value='$url'
                         size='60' maxlength='255'><br/>"
@@ -1104,19 +1130,19 @@ form_item("Platform:",
         ."<input type='text' name='os_version' value='$os_version'
                         size='10' maxlength='15'>"
           ."<br/> Browser: &nbsp; "
-          .selector_from_array('browser', $browser_list, $browser) 
+          .selector_from_array('browser', $browser_list, $browser)
         ." Version:"
           ."<input type='text' name='browser_version' value='$browser_version'
                         size='10' maxlength='15'>"
           //."<br>User_Agent:<tt> $user_agent</tt>"
           );
 
-form_item("Problem Description:", 
-        "Please describe the problem, giving enough information that we 
-         can reproduce it ourselves, <br><b>or</b> state your question or request here. 
-        <br>&nbsp;<br> 
-         <span class='cosmics_elab'>(For cosmic rays  DAQ problems
-         include output from DG, DC, DT, V1 and V2 commands, 
+form_item("Problem Description:",
+        "Please describe the problem, giving enough information that we
+         can reproduce it ourselves, <br><b>or</b> state your question or request here.
+        <br>&nbsp;<br>
+         <span class='cosmics_elab'>(Example: for cosmic rays DAQ problems
+         include output from DG, DC, DT, V1 and V2 commands,
          and short snips of raw data from ST and DS commands) </span> "
           .error_text('problem'),
        "<textarea name='problem' rows=10 cols=60 class='required'>$problem</textarea>");
@@ -1141,7 +1167,7 @@ form_item("CRMD Hardware Component:",
         'cosmics_elab');
 
 form_item("DAQ Card #:",
-          "<span>Cosmic Rays e-Lab only.<br> Serial number of cosmic ray data aquisition 
+          "<span>Cosmic Rays e-Lab only.<br> Serial number of cosmic ray data aquisition
                 (DAQ) card. </span>"
                 .error_text('daq_card') ,
           "<input type='text' name='daq_card' value='$daq_card'
@@ -1162,7 +1188,7 @@ form_item("Time interval:",
           "LIGO e-Lab only.<br> What time interval were you looking at?",
           "Start time:
           <input type='text' name='GPS_start_time' value='$GPS_start_time'
-                        size='25'> 
+                        size='25'>
           <br>
            End time:
            <input type='text' name='GPS_end_time' value='$GPS_end_time'
@@ -1172,20 +1198,20 @@ form_item("Time interval:",
 form_item("Network Component:",
           "For Networking problems: If your problem involves computer networking,
             please check the parts you think may be involved.",
-          "<span class='description'> 
+          "<span class='description'>
                         (checkboxes would go here)
          </span>",
         'networking_part');
 
 
-// 
+//
 
 form_item("Error Output:",
-          "Please cut-and-paste relevant error messages 
+          "Please cut-and-paste relevant error messages
                 which demonstrate the problem. ",
           "<textarea name='error_msg' rows=10 cols=60>$error_msg</textarea>");
 
-form_item("Workaround/Resolution:", 
+form_item("Workaround/Resolution:",
         "Have you found a way to work around the problem?
          Or do you have a suggestion or idea for how to solve the problem?"
           .error_text('workaround'),
@@ -1205,8 +1231,8 @@ if( !$logged_in_user ) {
     form_item("E-mail address:",
               "Please give an e-mail address so that we can contact
                   you in the event we need further information."
-              .error_text('return_address') 
-              .error_text('invalid_addr'), 
+              .error_text('return_address')
+              .error_text('invalid_addr'),
               "<input name='return_address' value='$return_address',
                         size='30' maxlength='72' class='required'>");
 
@@ -1244,22 +1270,22 @@ echo req("* indicates a required field");
 
 
 echo "<P>
-      If you would rather send an e-mail to the project administrators 
+      If you would rather send an e-mail to the project administrators
         the e-mail address is <i>  "
         .str_replace('@', "&#64;<!--,
                         -->", $Email_From ).
-        "</i>.   
+        "</i>.
         Please be sure to include all of the information requested above,
         and please be aware that e-mail sent to that address may
         not immediately be added to our problem tracking system.
-        </p>\n"; 
+        </p>\n";
 
 
 echo "\n<p style='color:grey; text-align: right;'>"
         . strtr('$Revision: 1.28 $','$',' ')      ."</p>\n\n";
 
 
-// Form adjustments:  set initial visibility of sections, 
+// Form adjustments:  set initial visibility of sections,
 // Fill in some blanks with client-side scripting, if we can:
 //
 echo "\n
@@ -1270,10 +1296,10 @@ echo "\n
    makeClassInvisible(\"networking_part\");
    updateClassVisibility();\n";
 
-// If there are arguments in the URL (ie GET) then automatically insert 
+// If there are arguments in the URL (ie GET) then automatically insert
 // the refering URL
 //
-if( !empty($_GET) && !empty($referer) ){ 
+if( !empty($_GET) && !empty($referer) ){
     echo "insertRefererURL();\n";
 }
 
@@ -1282,5 +1308,5 @@ echo "\n  </script>\n";
 page_tail();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: HelpDeskRequest.php,v 1.28 2009/07/08 16:25:36 myers Exp $"; 
+    "\$Id: HelpDeskRequest.php,v 1.28 2009/07/08 16:25:36 myers Exp $";
 ?>

@@ -41,7 +41,6 @@ if(isset($_POST["CreateT"])){
 	if(isset($_POST["tableName"])){
 		$id=CreateTable($_POST["tableName"],$_POST["Groups"]);
 		AddTablesToEvent($id,$_SESSION["EventID"]);
-
 	}
 }
 

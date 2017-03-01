@@ -126,6 +126,60 @@ ispy.makeSolidBox = function(data, ci) {
   return box;
 };
 
+ispy.makeBufferBoxes = function(data, ci) {
+  var geometry = new THREE.BufferGeometry();
+  /*
+    4 corners needed to define a box,
+    2 together to form a pair
+    (using LinePieces to avoid spurious connecting lines),
+    3 components each for the corner (x,y,z),
+    3 sets of pairs to define the box
+    (one for front, one for back, and one for sides)
+  */
+  var nvs = 4*2*3*3;
+  var vertices = new Float32Array(data.length*nvs);
+
+  // Since we draw the Lines that make the box with LinePieces
+  // we want to add pairs of vertices. These are then connected.
+  // The pairing starts as 0-1, 1-2, 2-3, 3-0, etc.
+  for ( var i = 0; i < data.length; i++ ) {
+    var f1 = data[i][ci];
+    var f2 = data[i][ci+1];
+    var f3 = data[i][ci+2];
+    var f4 = data[i][ci+3];
+
+    var b1 = data[i][ci+4];
+    var b2 = data[i][ci+5];
+    var b3 = data[i][ci+6];
+    var b4 = data[i][ci+7];
+
+    var pairs = [
+      f1,f2,
+      f2,f3,
+      f3,f4,
+      f4,f1,
+      b1,b2,
+      b2,b3,
+      b3,b4,
+      b4,b1,
+      b1,f1,
+      b3,f3,
+      b2,f2,
+      b4,f4
+    ];
+
+    for ( var j = 0; j < pairs.length; j++ ) {
+      vertices[i*nvs + j*3 + 0] = pairs[j][0];
+      vertices[i*nvs + j*3 + 1] = pairs[j][1];
+      vertices[i*nvs + j*3 + 2] = pairs[j][2];
+    }
+  }
+
+  geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+  return geometry;
+};
+
 ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
@@ -452,11 +506,11 @@ ispy.makeModelEcalBarrel = function(data) {
 };
 
 ispy.makeModelEcalEndcapMinus = function(data) {
-  return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
+  return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
 };
 
 ispy.makeModelEcalEndcapPlus = function(data) {
-  return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
+  return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
 };
 
 ispy.makeModelEcalPreshower = function(data) {
@@ -686,8 +740,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
 
-  var tcolor = new THREE.Color();
-  tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var tcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -720,9 +773,9 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
   var tcolor = new THREE.Color();
   if ( ispy.inverted_colors ) {
-    tcolor.setRGB(style.altColor[0], style.altColor[1], style.altColor[2]);
+    tcolor.setStyle(style.altColor);
   } else {
-    tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+    tcolor.setStyle(style.color);
   }
 
   var transp = false;
@@ -766,7 +819,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 
     var tg = new THREE.Geometry();
-    tg.vertices = curve.getPoints(16);
+    tg.vertices = curve.getPoints(32);
 
     curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
       color:tcolor,
@@ -783,8 +836,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 ispy.makeVertex = function(data,style) {
   var geometry = new THREE.SphereGeometry(0.0025,32,32);
 
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var hcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -799,6 +851,67 @@ ispy.makeVertex = function(data,style) {
   vertex.position.z = data[2][2];
 
   return vertex;
+};
+
+ispy.makeSimVertex = function(data, style) {
+  if ( data[1] !== -1 )
+    return null;
+
+  var geometry = new THREE.SphereGeometry(0.005,32,32);
+  var hcolor = new THREE.Color(style.color);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+
+  var vertex = new THREE.Mesh(geometry, material);
+  vertex.position.x = data[0][0];
+  vertex.position.y = data[0][1];
+  vertex.position.z = data[0][2];
+
+  return vertex;
+};
+
+ispy.makeCaloClusters = function(data, extra, assoc, style, selection) {
+  if ( ! assoc ) {
+    throw "No association!";
+  }
+
+  var ri = 0;
+  var boxes = [];
+  for ( var j = 0; j < assoc.length; j++ ) {
+    ri = assoc[j][1][1];
+    boxes[j] = ispy.makeSolidFace(extra[ri], 2);
+  }
+
+  var ccolor = new THREE.Color(style.color);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var clusters = [];
+  for ( var k = 0; k < boxes.length; k++ ) {
+    clusters.push(new THREE.Mesh(boxes[k], new THREE.MeshBasicMaterial({
+      color:ccolor,
+      transparent: transp,
+      opacity:style.opacity,
+      side: THREE.DoubleSide
+    })));
+  }
+
+  return clusters;
+};
+
+ispy.makeEcalDigi = function(data, geometry, scale, selection) {
+  var energy = data[0];
+  if ( energy > selection.min_energy ) {
+    return ispy.makeScaledSolidTower(data, geometry, 15, scale*energy);
+  }
 };
 
 ispy.makeERecHit_V2 = function(data, geometry, scale, selection) {
@@ -840,12 +953,10 @@ ispy.makeHcal = function(hb) {
   return ispy.makeWireframeBox(hb, 1);
 };
 
-// Should either 1) use BufferGeometry or 2) use border positions to make wireframe
-// or 3) something else
 ispy.makeEcal = function(ecal) {
-  return ispy.makeWireframeBox(ecal, 1);
+  //return ispy.makeWireframeBox(ecal, 1);
+  return ispy.makeBufferBoxes(ecal,1);
 };
-
 
 ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);
@@ -875,51 +986,6 @@ ispy.makeTrackingClusters = function(data) {
   return ispy.makePointCloud(data,1);
 };
 
-// This is very inefficient, use point cloud instead
-/*
-ispy.makeTrackingRecHit = function(data,style) {
-  var geometry = new THREE.SphereGeometry(0.005,32,32);
-
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-
-  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
-
-  var hit = new THREE.Mesh(geometry, material);
-  hit.position.x = data[0][0];
-  hit.position.y = data[0][1];
-  hit.position.z = data[0][2];
-
-  return hit;
-};
-
-ispy.makeTrackCluster = function(data, style) {
-  var geometry = new THREE.TextGeometry('X', {size:0.05, height:0.01});
-
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-
-  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
-
-  var cluster = new THREE.Mesh(geometry, material);
-  cluster.position.x = data[1][0];
-  cluster.position.y = data[1][1];
-  cluster.position.z = data[1][2];
-
-  return cluster;
-};
-*/
-
 ispy.makeMET = function(data, style, selection) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
@@ -936,8 +1002,7 @@ ispy.makeMET = function(data, style, selection) {
   var dir = new THREE.Vector3(px,py,0);
   dir.normalize();
 
-  var color = new THREE.Color();
-  color.setRGB(style.color[0], style.color[1], style.color[2]);
+  var color = new THREE.Color(style.color);
   var origin = new THREE.Vector3(0,0,0);
   var length = pt*0.1;
 
@@ -954,6 +1019,7 @@ ispy.makeMET = function(data, style, selection) {
   dir.setLength(length);
   geometry.vertices.push(origin, dir);
   geometry.computeLineDistances(); // This is needed in order for dashed line to work
+
   var met = new THREE.Line(geometry, new THREE.LineDashedMaterial({color: color, scale: 10, dashSize:2, gapSize:1, linewidth: style.linewidth }));
   return met;
 };
@@ -986,8 +1052,7 @@ ispy.makeJet = function(data, style, selection) {
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
   geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
-  var jcolor = new THREE.Color();
-  jcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var jcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -1176,6 +1241,13 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
   return box;
 };
 
+ispy.makeCSCDigis_V2 = function(data) {
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
+  geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+  return [geometry];
+};
+
 /*
 "CSCStripDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
 "CSCWireDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
@@ -1188,6 +1260,23 @@ ispy.makeCSCWireDigis = function(data) {
 ispy.makeCSCStripDigis = function(data) {
   return ispy.makeCSCDigis(data, 0.01, 0.01, 0.0);
 };
+
+ispy.makeCSCLCTDigis = function(data) {
+  return ispy.makePointCloud(data,0);
+};
+
+ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
+  var l1 = new THREE.Geometry();
+  l1.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
+  l1.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+
+  var l2 = new THREE.Geometry();
+  l2.vertices.push(new THREE.Vector3(data[2][0], data[2][1], data[2][2]));
+  l2.vertices.push(new THREE.Vector3(data[3][0], data[3][1], data[3][2]));
+
+  return [l1,l2];
+};
+
 
 ispy.makeEvent = function(data) {
   /*

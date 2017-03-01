@@ -51,11 +51,15 @@
 	    if (cont == null) {
 	        throw new ElabJspException("No continuation specified");
 	    }
+	    String outputType = request.getParameter("outputType");
+	    if (outputType == null) {
+	    	outputType = "output.jsp";
+	    }
 	    if (cont.indexOf('?') != -1) {
-	        cont += "&id=" + run.getId();
+	        cont += "&id=" + run.getId()+"&outputType="+outputType;
 	    }
 	    else {
-	        cont += "?id=" + run.getId();
+	        cont += "?id=" + run.getId()+"&outputType="+outputType;
 	    }
 	    String err = request.getParameter("onError");
 	    if (err == null) {
@@ -121,7 +125,20 @@
 				}
 			});
 	    }
-	    run.start();
+	    //remember to set this up in elab.properties as cosmic.analysis = queue
+	    String runType = elab.getProperty(elab.getName() + ".analysis");
+	    if (runType != null && runType.equals("queue")) {
+		    if (run.getAttribute("type").equals("ProcessUpload") ||
+		    	run.getAttribute("type").equals("EventPlot") ||
+		    	run.getAttribute("type").equals("RawAnalyzeStudy") ||
+		    	run.getAttribute("type").equals("PerformanceStudy")) {
+		    	run.start();
+		    } else {
+		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
+		    }
+	    } else {
+	    	run.start();
+	    }
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>

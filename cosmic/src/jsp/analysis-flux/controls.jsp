@@ -117,6 +117,7 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
+
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the e:tr* stuff is to work                      -->

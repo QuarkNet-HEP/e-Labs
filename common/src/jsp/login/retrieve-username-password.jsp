@@ -11,7 +11,12 @@
 <%@ page import="net.tanesha.recaptcha.ReCaptchaResponse" %>
 
 <%
+// This page has two main functions
+// 1) Allow teachers to reset their passwords after providing their username
+// 2) Allow teachers to find out their username by providing their email address
+// In either case, a CAPTCHA is required.
 //EPeronja-577:Allow teachers to reset their passwords and/or retrieve usernames by providing an e-mail address.
+//elabs@i2u2.org -> e-labs@fnal.gov 23Feb2016 JG (3 instances)
 String userid = request.getParameter("userid");
 String email = request.getParameter("email");
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
@@ -30,7 +35,7 @@ String rptBodyBegin = "Someone used the webform at "+
 					  "\'https://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
 					  "the e-Lab password for the account: replaceAccount.\n\n" + 
 					  "The temporary password is: replacePassword.\n\n";
-String rptUIMsg = "We have sent a temporary password to the e-mail associated with this account.<br />Please check that account for a message from elabs@i2u2.org";
+String rptUIMsg = "We have sent a temporary password to the e-mail associated with this account.<br />Please check that account for a message from e-labs@fnal.gov";
 String rptInstructions = "You must login in and create a new password using the following steps:\n"+
 	  					 "1. Login\n"; 
 //password reset request (not a teacher)
@@ -39,7 +44,7 @@ String rpoBodyBegin = "One of your e-Lab groups: replaceGroup sent a request to 
 					   " Only the teacher that created the account can do that. Here\'s how:\n\n";
 String rpoInstructions = "1. Login to the teacher account that set up the replaceGroup account\n";
 String rpoUIMsg = "We have sent directions on how to change this password for you to the e-mail associated with this account.<br />" +
-				   "Please check that account for a message from elabs@i2u2.org.<br />";
+				   "Please check that account for a message from e-labs@fnal.gov.<br />";
 String instructions =   "2. Go to the registration page\n"+
 						"3. Select \'Update your research groups including passwords\'\n"+
 						"4. Choose your username from the dropdown and click on the \'Show Info\' button\n"+
@@ -51,7 +56,7 @@ String rpoError = "There is no e-mail associated with the username you entered.<
 String runSubject = "Your username";
 String runBodyBegin = "We have found the following username(s) associated with the e-mail address: replaceEmail\n\n";
 String runUIMsg = "We have sent a list of e-Lab logins associated with the e-mail address you provided."+
-				  "<br />Please check that account for a message from elabs@i2u2.org.<br />";
+  				  "<br />Please check that account for a message from e-labs@fnal.gov.<br />";
 String runError = "There are no usernames associated with the e-mail address: ";
 String footerMessage = "<br />Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
 		  "<a href=\'../teacher/index.jsp\'>Log in</a>";		
@@ -76,7 +81,7 @@ if (submit != null && !submit.equals("")) {
 	}
 }//end of checking reCaptcha.
 
-//if they want to reset password
+// 1) PASSWORD RESET
 if ("Reset Password".equals(submit) && continueRequest) {
 	if (userid != null && !userid.equals("")) {
 		//test if the username entered is a teacher...
@@ -117,39 +122,46 @@ if ("Reset Password".equals(submit) && continueRequest) {
 			message = rpoError;
 		}
 	} else {
-		if (userid != null && !userid.equals("")) {
-			message = "Username is blank.<br />";
-		}
+            // I think the original line here was a C&P error.  JG 28Mar2016
+	    //if (userid != null && !userid.equals("")) {
+	    if (userid != null && userid.equals("")) {
+		message = "Username is blank.<br />";
+	    }
 	}
 }//end of checking password reset
 
-//if they just want to retrieve username
+// 2) RETRIEVE USERNAME
+// "Retrieve Username" is the value of the submit button
 if ("Retrieve Username".equals(submit) && continueRequest) {
    	if (email != null && !email.equals("")) {
    		String[] user = elab.getUserManagementProvider().getUsernameFromEmail(email);
 		if (user != null) {
-			user_name = "\n";
+		   	user_name = "\n";
 			for (int i = 0; i < user.length; i++) {
 				user_name = user[i] + "\n";				
 			}
-		    to = email;
+			to = email;
 			subject = runSubject;
 			runBodyBegin = runBodyBegin.replace("replaceEmail",to);
-		    emailBody = runBodyBegin + 
+		    	emailBody = runBodyBegin + 
 		    			user_name +
 		    			instructionsEnd;
-		    runUIMsg = runUIMsg.replace("replaceEmail", to);
+		    	runUIMsg = runUIMsg.replace("replaceEmail", to);
 			pageMessage = runUIMsg; 
 			sendEmail = true;
 		} else {
 			message = runError + email;
 		}
-    } else {
-    	if (email != null && !email.equals("")) {
-	    	message = "Email address is blank.<br />";
-    	}
-    }
-}//end of checking retrieve username	
+	} else {
+            // I think the original line here was a C&P error.  JG 23Mar2016
+	    //if (email != null && !email.equals("")) {
+  	    if (email != null && email.equals("")) {
+		message = "Email address is blank.<br />";
+	    }
+        }
+}//end of checking retrieve username
+
+// Either of the above functions may set sendEmail=true.  If so, we send the email:
 if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
@@ -165,74 +177,66 @@ request.setAttribute("message", message);
 request.setAttribute("recaptcha_public_key", recaptcha_public_key);
 request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Login to ${elab.properties.formalName}</title>
-	<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/login.css"/>
-	<script>
-	 	window.onload = function() {
-			$("retrieve-username-password-form").Show();
-		}
-	 	var RecaptchaOptions = {
-	 		    theme : 'blackglass'
-	 	};
-	</script>
-</head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Login to ${elab.properties.formalName}</title>
+    <link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/login.css"/>
+    <script>
+ 	window.onload = function() {
+		$("retrieve-username-password-form").Show();
+	}
+ 	var RecaptchaOptions = {
+ 		    theme : 'blackglass'
+ 	};
+    </script>
+  </head>
 
-<body id="retrieve-username-password" >
-	<!-- entire page container -->
-	<div id="container">
-		<div id="top">
-			<div id="header">
-				<%@ include file="../include/header.jsp" %>
-				<div id="nav">
-					<!-- no nav here -->
-				</div>
-			</div>
-		</div>
-		
-		<div id="content">
-	<p>${message}</p>
+  <body id="retrieve-username-password" >
+  <!-- entire page container -->
+    <div id="container">
+      <div id="top">
+         <div id="header">
+           <%@ include file="../include/header.jsp" %>
+	   <div id="nav"> <!-- no nav here --> </div>
+         </div>
+      </div>
+
+      <div id="content">
+        <p>${message}</p>
 	
-	<form id="retrieve-username-password-form" method="post">	
-	<h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
-	<ul>
-		<li>This tool is for resetting the passwords of teachers.</li>
-		<li>To change or reset the passwords associated with student research groups, log in and go to the Registration page.</li>
-	</ul>
-		<table border="0" id="main">
-			<tr>
-				<td>Prove you are not a robot first: </td>
-			</tr>
-		 	<tr><td><div id="recaptcha" align="center">
-			<%
-				ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
-				((ReCaptchaImpl) c).setRecaptchaServer("https://www.google.com/recaptcha/api");
-				out.println(c.createRecaptchaHtml(null, null));			
-			%>
-			</div>
-			</td></tr>
-			<tr>
-				<td><br />Username: <input type="text" name="userid" id="userid"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
-			</tr>
-			<tr>
-				<td><br />OR</td>
-			</tr>			
-			<tr>
-				<td><br />E-mail address: <input type="text" name="email" id="email"></input> <input type="submit" name="submitButton" value="Retrieve Username" /></td>
-			</tr>		
-		</table>
-	</form>
+        <form id="retrieve-username-password-form" method="post">	
+          <h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
+          <ul>
+            <li>This tool is for resetting the passwords of teachers.</li>
+            <li>To change or reset the passwords associated with student research groups, log in and go to the Registration page.</li>
+          </ul>
+          <table border="0" id="main">
+            <tr><td>Prove you are not a robot first: </td></tr>
+            <tr><td><div id="recaptcha" align="center">
+              <%
+                ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
+                ((ReCaptchaImpl) c).setRecaptchaServer("https://www.google.com/recaptcha/api");
+                out.println(c.createRecaptchaHtml(null, null));			
+	      %>
+	    </div></td></tr>
+            <tr>
+              <td><br />Username: <input type="text" name="userid" id="userid"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
+	    </tr>
+            <tr><td><br />OR</td></tr>
+	    <tr>
+              <td><br />E-mail address: <input type="text" name="email" id="email"></input> <input type="submit" name="submitButton" value="Retrieve Username" /></td>
+            </tr>		
+	  </table>
+        </form>
+      </div>
+      <!-- end content -->	
+      <div id="footer"></div>
+    </div>
+    <!-- end container -->
+  </body>
 
-			</div>
-			<!-- end content -->	
-		
-			<div id="footer">
-			</div>
-		</div>
-		<!-- end container -->
-	</body>
 </html>
