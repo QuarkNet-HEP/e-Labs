@@ -68,6 +68,7 @@ if(isset($_POST["CustomEvent"]) && isset($_SESSION["current"]) && !isset($_POST[
 	$event=GetNext($arr,$_SESSION["groupNo"]);
 }
 
+/* This calculates the group index (1,100)?  Look closer when time */
 function calcEv($id){
 	return $_SESSION["groupNo"].'-'.$id%100;
 }

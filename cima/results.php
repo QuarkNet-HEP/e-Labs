@@ -20,7 +20,7 @@ if(!isset($_SESSION["comb"])){
 	$ng=101;
 
 	/* TASMANIA */
-	/* This should be a loop over $statelabels[] */
+	/* This should be a loop over $statelabels[] or something similar */
 	for($i=1;$i<$ng;$i++){
 		$groups[$i]["mu"]=0;
 		$groups[$i]["e"]=0;
@@ -51,7 +51,7 @@ if(!isset($_SESSION["comb"])){
 	$start=$g[0]["g_no"];
 
 	/* TASMANIA */
-	/* This should be a loop over $statelabels[] */
+	/* This should be a loop over $statelabels[] or something similar */
 	for($j=0;$j<$ng;$j++){
 		$i=$g[$j]["g_no"];
 		$groups[$i]["mu"]=0;
@@ -120,9 +120,11 @@ if(isset($_SESSION["tables"])){
 					$temp=explode(";",$asArr["checked"]);
 					for($j=0;$j<count($temp);$j++){
 						/* TASMANIA */
-						/* Temporary fix until we get mass in its own column */
+						/* Temporary fix until we get "mass" in its own column.
+							 Change to a comparison loop over statelabels[] or
+							 something similar */
 						//if($temp[$j]!=""){
-						if($temp[$j]!="" && !is_numeric($temp[$j])){
+						if($temp[$j]!="" && !is_numeric($temp[$j]) && !strcmp($temp[$j],"NaN")==0){
 							$groups[$i][$temp[$j]]++;
 						}
 					}
@@ -141,9 +143,11 @@ if(isset($_SESSION["tables"])){
 				$temp=explode(";",$asArr["checked"]);
 				for($j=0;$j<count($temp);$j++){
 					/* TASMANIA */
-					/* Temporary fix until we get mass in its own column */
+					/* Temporary fix until we get mass in its own column.
+						 Change to a comparison loop over statelabels[] or
+						 something similar */
 					//if($temp[$j]!=""){
-					if($temp[$j]!="" && !is_numeric($temp[$j])){
+					if($temp[$j]!="" && !is_numeric($temp[$j]) && !strcmp($temp[$j],"NaN")==0){
 						$groups[$i][$temp[$j]]++;
 					}
 				}
