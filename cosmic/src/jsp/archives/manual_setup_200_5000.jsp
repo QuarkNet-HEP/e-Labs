@@ -24,7 +24,7 @@
 			</div>
 			
 			<div id="content">
- <h1>Introduction to the QuarkNet cosmic ray detector.</h1>
+ <h1>Introduction to the QuarkNet cosmic ray detector - 200 and 5000 Series.</h1>
 
 <table width="800" align="left">
 <tr>
