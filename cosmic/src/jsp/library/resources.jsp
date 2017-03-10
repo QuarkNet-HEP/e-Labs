@@ -234,7 +234,7 @@
                                 <span class="tab-title">Archives</span>
                                 <div class="tab-contents-sublevel">
                                         <ul class="simple">
-                                                <li><a href="../archives/manuals_setup_200_5000.html">200 and 5000 Series equipment and manuals</a>
+                                                <li><a href="../archives/manuals_setup_200_5000.jsp">200 and 5000 Series equipment and manuals</a>
                                                 </li>
                                         </ul>
                                 </div>
