@@ -62,9 +62,8 @@ and stopping times for each detected pulse. </p>
 <p>In addition, an external GPS receiver module provides 
 the absolute <a href="javascript:glossary('UTC')">UTC Time</a> of each trigger, accurate to about 50 ns. 
 This allows counter arrays using separate DAQ boards such as different schools in a wide-area 
-array or two sets of counters at the same site to correlate their timing data. </p>
-
-<p>Keyboard commands allow you to define trigger criteria and retrieve additional data, 
+array or two sets of counters at the same site to correlate their timing data. 
+Keyboard commands allow you to define trigger criteria and retrieve additional data, 
 such as counting rates, auxiliary GPS data, and environmental sensor data (temperature and pressure). 
 </p>
 

@@ -54,26 +54,26 @@
     <td colspan="2">
 	<p>For this setup, the DAQ board takes the signals from the counters and provides signal processing 
 	and logic basic to most nuclear and particle physics experiments. The DAQ board can anlyze signals 
-	from up to four PMTs. (We show two in the photo.) The board produces a record of output data 
+	from up to four PMTs. (We show two in the photo). The board produces a record of output data 
 	whenever the PMT signal meets a pre-defined trigger criterion (for example, when two or more 
-	PMTs have signals above some predetermined threshold voltage, within a certain time window). 
-	The output data record, which can be sent via a standard RS-232 serial interface to any PC, 
+	PMTs have signals above some predetermined threshold voltage, within a certain time window). </p>
+	
+	<p>The output data record, which can be sent via a standard RS-232 serial interface to any PC, 
 	contains temporal information about the PMT signals. This information includes: how many channels 
 	had above-threshold signals, their relative arrival times (precise to 0.75 ns), and the starting 
-	and stopping times for each detected pulse. In addition, an external GPS receiver module provides 
+	and stopping times for each detected pulse. </p>
+
+	<p>In addition, an external GPS receiver module provides 
 	the absolute <a href="javascript:glossary('UTC')">UTC Time</a> of each trigger, accurate to about 50 ns. 
 	This allows counter arrays using separate DAQ boards such as different schools in a wide-area 
 	array or two sets of counters at the same site to correlate their timing data. Keyboard commands 
 	allow you to define trigger criteria and retrieve additional data, such as counting rates, 
 	auxiliary GPS data, and environmental sensor data (temperature and pressure). </p>
-	<p>
-	<b>Want more information?</b></p>
+	
+	<p><b>Want more information?</b></p>
 	<p><a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a></p>
-    	<p>
-	User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
-	Series "200" &amp; "5000"</a></p>
-	<p>
-	Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a></p>
+    	<p>User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">Series "200" &amp; "5000"</a></p>
+	<p>Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a></p>
     </td>
 </tr>
 </table>
