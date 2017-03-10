@@ -230,6 +230,16 @@
 				</div>	
 			</div>
 			
+			<div class="tab" id="tab-animations">
+                                <span class="tab-title">Archives</span>
+                                <div class="tab-contents-sublevel">
+                                        <ul class="simple">
+                                                <li><a href="../archives/manual_setup_200_5000.jsp">200 and 5000 Series equipment and manuals</a>
+                                                </li>
+                                        </ul>
+                                </div>
+                        </div>
+
 		</div><!-- close left div -->
 		</td>
 		
