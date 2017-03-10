@@ -388,7 +388,7 @@
 	</tr>
 </table>
 <p>
-	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
+	Analysis run time: ${showerResults.formattedRunTime}<%--; estimated: ${showerResults.formattedEstimatedRunTime}--%>
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
