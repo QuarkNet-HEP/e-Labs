@@ -26,7 +26,7 @@
 			<div id="content">
  <h1>Introduction to the QuarkNet cosmic ray detector.</h1>
 
-<p><img alt="6000 Series - 2007 Model" src="../graphics/detector6000.jpg" width="499" height="375" />
+<p align="center"><img alt="6000 Series - 2007 Model" src="../graphics/detector6000.jpg" width="499" height="375" />
 <br />6000 Series - 2007 Model
 </p>
 
@@ -73,7 +73,7 @@ auxiliary GPS data, and environmental sensor data (temperature and pressure).
     <p>
 	Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">Series "6000"</a></p>
     <p>
-	Series "6000" CRMD Plateauing Instructions:<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
+	Series "6000" CRMD Plateauing Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
 	<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">Spreadsheet</a></p>
     <p>
 	"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a></p>
