@@ -26,13 +26,10 @@
 			<div id="content">
  <h1>Introduction to the QuarkNet cosmic ray detector.</h1>
 
-<p><img alt="200 Series - Pre 2005 Model" src="../graphics/detector.jpg" width="576" height="397" />
-<br />200 Series - Pre 2005 Model
-</p><p><img alt="5000 Series - 2006 Model" src="../graphics/detector5000.jpg" width="576" height="432" />
-<br />5000 Series - 2006 Model
-</p><p><img alt="6000 Series - 2007 Model" src="../graphics/detector6000.jpg" width="499" height="375" />
+<p><img alt="6000 Series - 2007 Model" src="../graphics/detector6000.jpg" width="499" height="375" />
 <br />6000 Series - 2007 Model
 </p>
+
 <table width="800" align="left">
 
 <tr><td width="50%" valign="TOP">
@@ -65,28 +62,21 @@ array or two sets of counters at the same site to correlate their timing data. K
 allow you to define trigger criteria and retrieve additional data, such as counting rates, 
 auxiliary GPS data, and environmental sensor data (temperature and pressure). 
 </p>
-<p>
-<b>Want more information?</b>
-</p>
-<p>
-<a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a>
-</p>
-<p>
-User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">Series "6000"</a> - 
-<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
-Series "200" &amp; "5000"</a>
-</p>
-<p>
-Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">Series "6000"</a> - 
-<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a>
-</p>
-<p>
-Series "6000" CRMD Plateauing Instructions:<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
-<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">Spreadsheet</a>
-</p>
-<p>
-"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
-</p>
+
+    <p>
+	<b>Want more information?</b>
+    </p>
+    <p>
+	<a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a></p>
+    <p>
+	User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">Series "6000"</a> </p>
+    <p>
+	Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">Series "6000"</a></p>
+    <p>
+	Series "6000" CRMD Plateauing Instructions:<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
+	<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">Spreadsheet</a></p>
+    <p>
+	"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a></p>
 </td></tr>
 </table>
 
