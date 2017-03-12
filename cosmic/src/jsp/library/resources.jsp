@@ -115,17 +115,11 @@
 							Advanced details on how to use the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
 							Series "6000" CRMD Users Manual </a>
-							<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">
-							Series "200" &amp; "5000" CRMD Users Manual</a>
 						</li>
 						<li>
 							Learn how to assemble the CRMD:<br />
 							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 							Series "6000" CRMD Assembly Instructions </a>
-							<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">
-							Series "5000" CRMD Assembly Instructions</a>
 						</li>
 						<li>
 							Series "6000" CRMD Plateauing Instructions:<br />
