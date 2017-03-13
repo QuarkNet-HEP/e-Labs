@@ -196,7 +196,7 @@
   					</li>
   
  					<li><a href="http://musr.physics.ubc.ca/~jess/hr/skept/Meas/node2.html">
-  						Graphs and Error Bars</a> - A definition from <i>Believe It or Not - A Skeptics Guide</I>
+  						Graphs and Error Bars</a> - A definition from <i>Believe It or Not - A Skeptics Guide</I>.
   					</li>
 
  					<li><a href="http://www.purplemath.com/modules/graphexp.htm">Graphing Exponential Equations</a> - Lessons from
@@ -204,21 +204,21 @@
   					</li>
 
 					<li><a href="http://www.shodor.org/interactivate/activities/histogram/">Histogram</a> - All about histograms with an
-  					interactive example from Inter<i>activate</i> at Shodor
+  					interactive example from Inter<i>activate</i> at Shodor.
   					</li>
 
-					<li><a href="http://www.teacherschoice.com.au/images/histogram.gif">Histogram</a> - An example</li>
+					<li><a href="http://www.teacherschoice.com.au/images/histogram.gif">Histogram</a> - An example</li>.
 
 					<li><a href="http://www.deakin.edu.au/~agoodman/sci101/chap12.php#RTFToC12">3D Graphs</a> 
-					- Examples from an individual at Deakin University
+					- Examples from an individual at Deakin University.
 					</li>
   
 					<li><a href="http://www.teacherschoice.com.au/images/scientific_plot.gif">
-  			  		Scientific Plot</a> - A line graph with error bars on points and best fit line
+  			  		Scientific Plot</a> - A line graph with error bars on points and best fit line.
   			  		</li>
 
  					<li><a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University
- 					<a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough
+ 					<a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough.
  					</li>
 				</ul>
 				</div>	
@@ -228,7 +228,7 @@
                                 <span class="tab-title">Archives</span>
                                 <div class="tab-contents-sublevel">
                                         <ul class="simple">
-                                                <li><a href="../archives/manual_setup_200_5000.jsp">200 and 5000 Series equipment and manuals</a>
+                                                <li><a href="../archives/manual_setup_200_5000.jsp">200 and 5000 Series</a> - equipment and manuals.
                                                 </li>
                                         </ul>
                                 </div>
