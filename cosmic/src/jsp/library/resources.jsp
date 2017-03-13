@@ -178,7 +178,7 @@
 			</div>
 				
 					
-	 		<div class="tab" id="tab-animations">     
+	 		<div class="tab" id="tab-plots">     
 				<span class="tab-title">Plots</span>
 				<div class="tab-contents-sublevel">				
 				<ul  class="simple">						
@@ -224,7 +224,7 @@
 				</div>	
 			</div>
 			
-			<div class="tab" id="tab-animations">
+			<div class="tab" id="tab-archives">
                                 <span class="tab-title">Archives</span>
                                 <div class="tab-contents-sublevel">
                                         <ul class="simple">
@@ -320,7 +320,7 @@
 					</div>
 			</div>
 
-			<div class="tab" id="tab-online">
+			<div class="tab" id="tab-grid">
 				<span class="tab-title">Grid Computing</span>
 				<div class="tab-contents-sublevel">
 					<p>The e-Lab uses <a href="http://www.wikipedia.org/wiki/Distributed_computing" target="website" width="850" height="600">distributed computing</a> where multiple computers, 
@@ -340,7 +340,7 @@
 				</div>
 			</div>
 						
-			<div class="tab" id="tab-online">
+			<div class="tab" id="tab-careers">
 				<span class="tab-title">IT Careers</span>
 				<div class="tab-contents-sublevel">
 					<ul class="simple">
@@ -360,7 +360,7 @@
 				</div>
 			</div>				
 							
-			<div class="tab" id="tab-online">
+			<div class="tab" id="tab-reporting">
 				<span class="tab-title">Reporting Research</span>
 				<div class="tab-contents-sublevel">
 					<ul  class="simple">
