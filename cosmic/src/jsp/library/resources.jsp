@@ -207,7 +207,7 @@
   					interactive example from Inter<i>activate</i> at Shodor.
   					</li>
 
-					<li><a href="http://www.teacherschoice.com.au/images/histogram.gif">Histogram</a> - An example</li>.
+					<li><a href="http://www.teacherschoice.com.au/images/histogram.gif">Histogram</a> - An example.</li>
 
 					<li><a href="http://www.deakin.edu.au/~agoodman/sci101/chap12.php#RTFToC12">3D Graphs</a> 
 					- Examples from an individual at Deakin University.
@@ -228,7 +228,7 @@
                                 <span class="tab-title">Archives</span>
                                 <div class="tab-contents-sublevel">
                                         <ul class="simple">
-                                                <li><a href="../archives/manual_setup_200_5000.jsp">200 and 5000 Series</a> - equipment and manuals.
+                                                <li><a href="../archives/manual_setup_200_5000.jsp">200 and 5000 Series</a> - Equipment and manuals.
                                                 </li>
                                         </ul>
                                 </div>
