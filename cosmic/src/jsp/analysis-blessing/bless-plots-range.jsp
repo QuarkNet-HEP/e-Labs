@@ -137,7 +137,10 @@
 			});
 		</script>	
 <h1>View blessing plots by date range.</h1>
-<div style="text-align: center;"><a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a></div>
+<div style="text-align: center;">
+	<a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a> <br><br>
+	Dates on the x-axis are converted from ms after midnight UTC.  
+</div>
 	<c:choose>
 		<c:when test="${empty message }">
 			<h2>Rates</h2>

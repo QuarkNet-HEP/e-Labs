@@ -397,7 +397,7 @@ function writeLegend(canvas, ymessage, width, height) {
 	context.lineStyle="#ffff00";
 	context.font="16 px sans-serif";
 	context.textAlign = 'Seconds since midnight UTC';
-	context.fillText('Seconds since midnight UTC', width, height);
+	/*context.fillText('Seconds since midnight UTC', width, height);*/
 	context.save();
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
