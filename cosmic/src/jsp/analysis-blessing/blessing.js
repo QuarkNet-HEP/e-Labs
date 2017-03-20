@@ -313,7 +313,7 @@ var satelliteOptions = {
 			reserveSpace: true,
 		},
 		xaxes: [ 
-			{ position: 'bottom'//, axisLabel: 'Seconds since midnight UTC' }
+			{ position: 'bottom'//, axisLabel: ' ' /*'Seconds since midnight UTC'*/ }
 			}
 		],
 		colors: ["#000000"]
