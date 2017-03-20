@@ -313,7 +313,7 @@ var satelliteOptions = {
 			reserveSpace: true,
 		},
 		xaxes: [ 
-			{ position: 'bottom'//, axisLabel: ' ' /*'Seconds since midnight UTC'*/ }
+			{ position: 'bottom'//, axisLabel: 'Seconds since midnight UTC' }
 			}
 		],
 		colors: ["#000000"]
@@ -396,8 +396,8 @@ function writeLegend(canvas, ymessage, width, height) {
 	context.fillStyle="#000000";
 	context.lineStyle="#ffff00";
 	context.font="16 px sans-serif";
-	/*context.textAlign = 'Seconds since midnight UTC';*/
-	context.fillText('Seconds since midnight UTC', width, height);
+	context.textAlign = 'Seconds since midnight UTC';
+	/*context.fillText('Seconds since midnight UTC', width, height);*/
 	context.save();
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
