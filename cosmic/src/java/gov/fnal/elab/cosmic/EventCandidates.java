@@ -182,8 +182,8 @@ public class EventCandidates {
 										//		// throw error
 										//}
 
-										if( ids.contains(dtDetectors[0]) && ids.contains(dtDetectors[1]) ) {
-												deltaT = firstHitTimes.get(ids.indexOf(dtDetectors[1])) - firstHitTimes.get(ids.indexOf(dtDetectors[0]));
+										if( ids.contains(dTDetectors[0]) && ids.contains(dTDetectors[1]) ) {
+												deltaT = firstHitTimes.get(ids.indexOf(dTDetectors[1])) - firstHitTimes.get(ids.indexOf(dTDetectors[0]));
 										}
 										else {
 												deltaT = null;
