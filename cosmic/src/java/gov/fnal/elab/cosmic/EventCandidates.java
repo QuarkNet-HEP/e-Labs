@@ -1,5 +1,6 @@
 /*
  * Created on Jan 8, 2008
+ * Updated Dec 2016 to add Delta-t function (JG)
  */
 package gov.fnal.elab.cosmic;
 
@@ -18,15 +19,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+// for Shower delta-t only:
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
+//
 import java.util.*;
 
 public class EventCandidates {
-    public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount" };
-    public static final int[] defDir = new int[] { 1, -1, -1 };
-
+		/* "colNames" appears to be unused.  If used, should add Delta-t as a
+			 column name */
+    //public static final String[] colNames = new String[] { "date",
+    //        "eventCoincidence", "numDetectors", "multiplicityCount" };
+		/* 
+		 * defDir is "default direction of sort" for output.jsp columns
+		 * Does not include Multiplicity Totals, since it's hidden by default
+		 *	 1 is lowest-to-highest (ascending, "a")
+		 *  -1 is highest-to-lowest (descending, "d")
+		 */
+		//public static final int[] defDir = new int[] { 1, -1, -1 };
+    public static final int[] defDir = new int[] { 1, -1, -1, 1 };
+		
     private Collection rows;
     private Collection filteredRows;
+		// public static class Row() defined below
     private Row crt;
     private Set allIds;
     private String eventNum;
@@ -34,40 +49,59 @@ public class EventCandidates {
     private ArrayList<Integer> multiplicityFilter = new ArrayList<Integer>(); 
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
-    public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-    public int eventThreshold = 400000;
+    public static final TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
+		// Maximum number of events before we need start checking if memory
+		//   can handle it:
+		public int eventThreshold = 400000;
     public int eventNdx = 0;
-    
+		
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
         filteredRows = new TreeSet(c);
         allIds = new HashSet();
     }
 
+		// Dummy variables used to cast using Set/List.toArray()
     private static final String[] STRING_ARRAY = new String[0];
-
+    // private static final Double[] DOUBLE_ARRAY = new Double[0];
+		
     public void read(File in, File out, int eventStart, String en)
-            throws Exception {
-    	Elab elab = Elab.getElab(null, "cosmic");
-    	String et = elab.getProperty("event.threshold");
-    	if (et != null && !et.equals("")) {
-    		eventThreshold = Integer.parseInt(et);
-    	}
+				throws Exception {
+				Elab elab = Elab.getElab(null, "cosmic");
+				String et = elab.getProperty("event.threshold");
+				if (et != null && !et.equals("")) {
+						eventThreshold = Integer.parseInt(et);
+				}
         this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         BufferedWriter bw = new BufferedWriter(new FileWriter(out));
         String line = br.readLine();
-        Set ids = new HashSet();
+				// Change ids from HashSet to ArrayList to keep ordering for deltaT
+				//Set ids = new HashSet();
+        List<String> ids = new ArrayList<String>();
         Set multiplicities = new HashSet();
         ElabMemory em = new ElabMemory();
+				// For deltaT:
+				List<Double> firstHitTimes = new ArrayList<Double>();
+				Double deltaT = new Double(0.0);
+				//String detOne = null;
+				//String detTwo = null;
+				//int dtSign = 0;
+				//
+
+				BufferedReader brdt = br;
+				int[] dTDetectors = FindDeltaTDetectors(brdt);
+				brdt.close();
+				
         userFeedback = "";
         while (line != null) {
-            // ignore comments in the file
+            // ignore any line with "#" (comment)
             if (!line.matches("^.*#.*")) {
                 lineNo++;
-                if (lineNo > eventThreshold) {
-                    em.refresh();
+								// memory management
+								if (lineNo > eventThreshold) {
+										em.refresh();
                     if (em.isCritical()) {
                     	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
                     	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
@@ -79,38 +113,89 @@ public class EventCandidates {
                     }
                 }
 
-                if (lineNo >= eventStart) {
-                    Row row = new Row();
-                    String[] arr = line.split("\\s");
-                    row.setEventCoincidence(Integer.parseInt(arr[1]));
-                    row.setNumDetectors(Integer.parseInt(arr[2]));
+								// parse the eventCandidates input file
+								// For every line of the input file that isn't null or a comment
+								//   and is gte the input eventStart:
+								if (lineNo >= eventStart) {
+										Row row = new Row();
+										// Each line of the eventCandidates file is divided at spaces
+										//   into the array arr[]
+										String[] arr = line.split("\\s");
+										// The first three row elements:
                     row.setEventNum(Integer.parseInt(arr[0]));
-                    row.setLine(lineNo);
                     if (this.eventNum == null) {
                         this.eventNum = arr[0];
                     }
+                    row.setEventCoincidence(Integer.parseInt(arr[1]));
+                    row.setNumDetectors(Integer.parseInt(arr[2]));
+                    row.setLine(lineNo);
+
+										// remaining elements in sets of three
                     ids.clear();
                     multiplicities.clear();
-                    for (int i = 3; i < arr.length; i += 3) {
-                        String[] idchan = arr[i].split("\\.");
-                        idchan[0] = idchan[0].intern();
-                        ids.add(idchan[0]);
-                        //if (!ids.contains(idchan[0])) {
-                        //	ids.add(idchan[0]);
-                        //}
-                        String mult = arr[i].intern();
+										firstHitTimes.clear();
+										/* Loop over each individual line of eventCandidates.
+											 Note the increment of 3 such that arr[i] will always
+											   be <String> detector.channel */
+										for (int i = 3; i < arr.length; i += 3) {
+												String[] idchan = arr[i].split("\\.");
+												/* For every idchan[0]=detector,
+													 Add the detector to ids[] if it isn't there already
+													 Add the time of that first hit to firstHitTimes[] */
+												if (!ids.contains(idchan[0])) {
+														ids.add(idchan[0]);
+														firstHitTimes.add(Double.parseDouble(arr[i+2]));
+												}
+												/* Add <String> dectector.channel to multiplicities[]
+													 if it isn't there already */
+												String mult = arr[i].intern();
                         multiplicities.add(mult);
-                        //if (!multiplicities.contains(arr[i])) {
-                        //	multiplicities.add(arr[i]);
-                        //}
+												/* Add the detector to allIds[] w/o regard to whether
+													 it's there already */
                         allIds.add(idchan[0]);
-                    }
-                    
+										}
+
+										/* deltaT additions - JG Mar2017 */
+										/* 
+										 * By convention, we compare the first two detectors to fire,
+										 *   even if there are more than two in the analysis.
+										 * deltaT compares the first two detectors to fire,
+										 *	 as recorded on the first row (eventNum=1)
+										 * Determine these from ids[] after constructing it for
+										 *   that row
+										 * Is there any danger that this code can be executed
+										 *   with eventNum != 1 as the first event?
+										 */
+										//if (Integer.parseInt(arr[0]) == 1) {
+										//		detOne = ids.get(0);
+										//	  detTwo = ids.get(1);
+										//		dtSign = Integer.signum(Integer.parseInt(detOne) -
+										//														Integer.parseInt(detTwo));
+										//}
+										
+										//if (detOne != null && detTwo != null) {
+										//		deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
+										//										 firstHitTimes.get(ids.indexOf(detTwo)));
+										//}
+										//else {
+										//		deltaT = 0.0;
+										//		// throw error
+										//}
+
+										if( ids.contains(dtDetectors[0]) && ids.contains(dtDetectors[1]) ) {
+												deltaT = firstHitTimes.get(ids.indexOf(dtDetectors[1])) - firstHitTimes.get(ids.indexOf(dtDetectors[0]));
+										}
+										else {
+												deltaT = null;
+										}
+										
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-                    
+										row.setDeltaT(deltaT);
+										
+										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -121,21 +206,22 @@ public class EventCandidates {
                     rows.add(row);
                     if (this.eventNum.equals(arr[0])) {
                         crt = row;
-                    }     
+                    }
                 }
-             }
+						}
+						// Read in the next line
             line = br.readLine();
         }
-        //set the event position
-    	Object[] allR = rows.toArray();
-    	for (int i = 0; i < allR.length; i++) {
-    		Row r = (Row) allR[i];
-    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
-    			eventNdx = i;
-    			break;
-    		}
-    	}
-        //write multiplicity summary
+        // Set the event position
+				Object[] allR = rows.toArray();
+				for (int i = 0; i < allR.length; i++) {
+						Row r = (Row) allR[i];
+						if (r.getEventNum() == Integer.parseInt(eventNum)) {
+								eventNdx = i;
+								break;
+						}
+				}
+        // Write multiplicity summary
         try {
         	saveMultiplicitySummary(bw);
         } catch (Exception e) {
@@ -143,7 +229,7 @@ public class EventCandidates {
         }
         bw.close();
         br.close();
-    }
+    } // end of read()
     
     public Collection getRows() {
         return rows;
@@ -204,8 +290,45 @@ public class EventCandidates {
         	}
         	bw.write(String.valueOf(multiplicityFilter.get(x))+","+String.valueOf(count)+"\n");
         }
-    }//end of saveMultiplicitySummary
-    
+    } // end of saveMultiplicitySummary()
+
+		/* 
+		 * Added Mar2017 JG
+		 * Find the two detectors used for DeltaT comparision, defined as 
+		 *   the first two detectors listed in the first row of eventCandidates 
+		 *   that includes two distinct detectors
+		 */
+		private int[] FindDeltaTDetectors(BufferedReader infile) {
+				String line = infile.readLine();
+				List<String> ids = new ArrayList<String>();
+				while (line != null) {
+						String[] arr = line.split("\\s");
+
+						ids.clear();
+						// loop over elements of a single line to form ids[] for that line:
+						for (int i=3; i< arr.length; i+=3) {
+								String[] detchan = arr[i].split("\\.");
+								detchan[0] = detchan[0].intern();
+								ids.add(detchan[0]);
+						}
+
+						// check ids[] for Dt conditions
+						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+								int[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+								return dets;
+						}
+						// if not found, advance to the next line
+						else {
+								line = infile.readLine();
+						}
+				}
+				// if not found in any line, there is no valid set for DeltaT
+				int[] dets = {null,null};
+				return dets;
+		}
+
+		// read() method overload
+		// Accepts int csc, int dir input and returns EventCandidates object
     public static EventCandidates read(File in, File out, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidates ec = null;
@@ -226,7 +349,9 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-        private int multiplicityCount;
+				private Double deltaT;
+				//private Integer testInteger;
+				private int multiplicityCount;
 
         public int getEventCoincidence() {
             return eventCoincidence;
@@ -295,7 +420,23 @@ public class EventCandidates {
         public void setMultiplicityCount() {
         	this.multiplicityCount = multiplicity.length;
         }
-                
+
+        public void setDeltaT(Double deltaT) {
+            this.deltaT = deltaT;
+        }
+
+				public Double getDeltaT() {
+						return deltaT;
+				}
+					
+				public String getDeltaTShower() {
+				// Returns <String> deltaT in nanoseconds to one decimal place
+						DecimalFormat df = new DecimalFormat("#.0");
+						df.setRoundingMode(RoundingMode.HALF_UP);
+						// deltaT is calculated in days.  Convert to ns for display
+						return df.format(deltaT*86400e9);
+				}
+				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
         	for (int i=0; i < ids.length; i++) {
@@ -311,8 +452,14 @@ public class EventCandidates {
         }
     }
 
+		/* A class to manage sorting of output.jsp rows based on 
+			 comparison of column fields */
     public static class EventsComparator implements Comparator {
-        private int csc;
+        /* csc is the column sort index */
+				private int csc;
+        /* dir is the direction of sort
+				 *   "a" for "ascending" maps to +1
+				 *   "d" for "descending" maps to -1 */
         private int dir;
 
         public EventsComparator(int csc, int dir) {
@@ -320,10 +467,25 @@ public class EventCandidates {
             this.dir = dir;
         }
 
+				/* Number of columns in output.jsp hard-coded here */
         public int compare(Object o1, Object o2) {
-            Row m1 = (Row) o1;
+            /* 
+						 *  Order two EventCandidates.Row() objects by comparing 
+						 *  columns according to input csc \in (0,1,2,3,4)
+						 *  0 = Event Date            (Date)
+						 *  1 = Hit Coincidence       (int)
+						 *  2 = Detector Coincidence  (int)
+						 *  3 = Delta-t               (Double, null)
+						 *  4 = Multiplicity Totals   (int)
+						 */
+						Row m1 = (Row) o1;
             Row m2 = (Row) o2;
             int c = 0;
+						/*
+						 * c < 0  Row 1 criteria ordered before Row 2 criteria
+						 * c = 0  Row 1 criteria identical to Row 2 criteria
+						 * c > 0  Row 1 criteria ordered after Row 2 criteria
+						 */
             if (csc == 0) {
                 c = m1.getDate().compareTo(m2.getDate());
             }
@@ -333,17 +495,42 @@ public class EventCandidates {
             else if (csc == 2) {
                 c = m1.getNumDetectors() - m2.getNumDetectors();
             }
-            else if (csc == 3) {
+						// added 29Mar2016 JG for DeltaT analysis
+						else if (csc == 3) {
+								if ( (m1.getDeltaT() != null) && (m2.getDeltaT() != null) ) {
+										c = m1.getDeltaT().compareTo(m2.getDeltaT());
+								}
+								/* If exactly one deltaT is null, non-null ordered before null */
+								else if ( (m1.getDeltaT() = !null) && (m2.getDeltaT() = null) ) {
+										c = +1;
+								}
+								else if ( (m1.getDeltaT() = null) && (m2.getDeltaT() != null) ) {
+										c = -1;
+								}
+								/* If both are null, default to sort by line number and return */
+								else {
+										return m1.getLine() - m2.getLine();
+								}
+						}
+            else if (csc == 4) {
                 c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
             }
+
+						/* If the two criteria are equal: */
             if (c == 0) {
+								/* If Dates are equal, default to Hit Coincidence (col 1) sort, 
+								 * modified by input dir */
                 if (csc == 0) {
                     return dir * (m1.getEventCoincidence() - m2.getEventCoincidence()); 
                 }
-                else {
-                    return m1.getLine() - m2.getLine();
+								/* Otherwise, default to sort by line number, unmodified by dir */
+								else {
+										/* int Row.getLine() returns the row line number */
+										return m1.getLine() - m2.getLine();
                 }
             }
+						
+						/* If the two criteria are unequal, return c modified by input dir */
             else {
                 return dir * c;
             }
