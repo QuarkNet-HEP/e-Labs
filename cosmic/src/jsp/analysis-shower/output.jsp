@@ -164,15 +164,19 @@
 	
 	<body id="shower-study-output" class="data, analysis-output">
 		<!-- entire page container -->
-		<div id="container">
+			Marker 1
+			<div id="container">
+			Marker 2
 			<div id="top">
+				Marker 3				
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			
+			Marker 4
 			<div id="content">
+			Marker 5
 <c:choose>
 <c:when test="${not empty rows}">
 <h1><%= rows.size()%> shower study candidates <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
