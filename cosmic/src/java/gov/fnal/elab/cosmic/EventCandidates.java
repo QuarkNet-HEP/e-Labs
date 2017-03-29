@@ -297,12 +297,17 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		private Integer[] FindDeltaTDetectors(File infile) {
-        BufferedReader br = new BufferedReader(new FileReader(infile));
+				try {
+						BufferedReader br = new BufferedReader(new FileReader(infile));
+				} catch(FileNotFoundException fnfe) { 
+            System.out.println(fnfe.getMessage());
+        }
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
+				
 				while (line != null) {
 						String[] arr = line.split("\\s");
-
+						
 						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
 						for (int i=3; i< arr.length; i+=3) {
@@ -310,7 +315,7 @@ public class EventCandidates {
 								detchan[0] = detchan[0].intern();
 								ids.add(detchan[0]);
 						}
-
+						
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
