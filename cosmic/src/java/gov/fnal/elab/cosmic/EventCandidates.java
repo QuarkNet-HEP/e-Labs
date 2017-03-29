@@ -91,7 +91,7 @@ public class EventCandidates {
 				//
 
 				BufferedReader brdt = br;
-				int[] dTDetectors = FindDeltaTDetectors(brdt);
+				Integer[] dTDetectors = FindDeltaTDetectors(brdt);
 				brdt.close();
 				
         userFeedback = "";
@@ -297,8 +297,9 @@ public class EventCandidates {
 		 * Find the two detectors used for DeltaT comparision, defined as 
 		 *   the first two detectors listed in the first row of eventCandidates 
 		 *   that includes two distinct detectors
+		 * Integer[] instead of int[] to allow for null values
 		 */
-		private int[] FindDeltaTDetectors(BufferedReader infile) {
+		private Integer[] FindDeltaTDetectors(BufferedReader infile) {
 				String line = infile.readLine();
 				List<String> ids = new ArrayList<String>();
 				while (line != null) {
@@ -314,7 +315,7 @@ public class EventCandidates {
 
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-								int[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
 								return dets;
 						}
 						// if not found, advance to the next line
@@ -323,7 +324,7 @@ public class EventCandidates {
 						}
 				}
 				// if not found in any line, there is no valid set for DeltaT
-				int[] dets = {null,null};
+				Integer[] dets = {null,null};
 				return dets;
 		}
 
@@ -501,10 +502,10 @@ public class EventCandidates {
 										c = m1.getDeltaT().compareTo(m2.getDeltaT());
 								}
 								/* If exactly one deltaT is null, non-null ordered before null */
-								else if ( (m1.getDeltaT() = !null) && (m2.getDeltaT() = null) ) {
+								else if ( (m1.getDeltaT() != null) && (m2.getDeltaT() == null) ) {
 										c = +1;
 								}
-								else if ( (m1.getDeltaT() = null) && (m2.getDeltaT() != null) ) {
+								else if ( (m1.getDeltaT() == null) && (m2.getDeltaT() != null) ) {
 										c = -1;
 								}
 								/* If both are null, default to sort by line number and return */
