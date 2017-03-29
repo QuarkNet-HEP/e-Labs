@@ -182,6 +182,7 @@
 		<p>Marker 6</p>
 </c:when>
 <c:otherwise>
+	Marker 7	
 	${message }
 </c:otherwise>
 </c:choose>
