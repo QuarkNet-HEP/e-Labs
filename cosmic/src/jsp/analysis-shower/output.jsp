@@ -327,12 +327,12 @@ width="800" height="600" toolbar="true">shower analysis directory</e:popup> or <
 														<%@ include file="save-form.jspf" %>
 												<% } %>
 												
-						</div><%-- end content -->	
+						</div><%-- end content --%>	
 						<div id="footer"></div>
-				</div><%-- end entire page container -->
+				</div><%-- end entire page container --%>
 				
-				<%-- This stray tag is fine on i2u2-dev but flips crap on i2u2-prod.  What gives?  Investigate -->
-				<%-- </c:when> -->
+				<%-- This stray tag is fine on i2u2-dev but flips crap on i2u2-prod.  What gives?  Investigate --%>
+				<%-- </c:when> --%>
 				<c:otherwise>
 						${message }
 				</c:otherwise>
