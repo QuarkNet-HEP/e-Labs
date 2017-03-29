@@ -85,14 +85,11 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
+				Integer[] dTDetectors = FindDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
 				//
-
-				BufferedReader brdt = br;
-				Integer[] dTDetectors = FindDeltaTDetectors(brdt);
-				brdt.close();
 				
         userFeedback = "";
         while (line != null) {
@@ -299,8 +296,9 @@ public class EventCandidates {
 		 *   that includes two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		private Integer[] FindDeltaTDetectors(BufferedReader infile) {
-				String line = infile.readLine();
+		private Integer[] FindDeltaTDetectors(File infile) {
+        BufferedReader br = new BufferedReader(new FileReader(infile));
+				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
 				while (line != null) {
 						String[] arr = line.split("\\s");
@@ -316,15 +314,17 @@ public class EventCandidates {
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+								br.close();
 								return dets;
 						}
 						// if not found, advance to the next line
 						else {
-								line = infile.readLine();
+								line = br.readLine();
 						}
 				}
 				// if not found in any line, there is no valid set for DeltaT
 				Integer[] dets = {null,null};
+				br.close();
 				return dets;
 		}
 
