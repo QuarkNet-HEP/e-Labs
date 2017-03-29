@@ -296,12 +296,12 @@ public class EventCandidates {
 		 *   that includes two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		private Integer[] FindDeltaTDetectors(File infile) {
-				try {
-						BufferedReader br = new BufferedReader(new FileReader(infile));
-				} catch(FileNotFoundException fnfe) { 
-            System.out.println(fnfe.getMessage());
-        }
+		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
+				//try {
+				BufferedReader br = new BufferedReader(new FileReader(infile));
+				//} catch(FileNotFoundException fnfe) { 
+				//System.out.println(fnfe.getMessage());
+				//}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
 				
