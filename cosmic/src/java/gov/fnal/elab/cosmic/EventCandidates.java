@@ -21,8 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class EventCandidates {
-    public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount" };
+		// public static final String[] colNames = new String[] { "date",
+    //        "eventCoincidence", "numDetectors", "multiplicityCount" };
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
