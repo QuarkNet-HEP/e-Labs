@@ -297,6 +297,7 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
+				return (Integer) 0;
 				//try {
 				////BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
@@ -432,13 +433,15 @@ public class EventCandidates {
         }
 
 				public Double getDeltaT() {
-				////		return deltaT;
+						return (Double) 0.0;
+						////		return deltaT;
 				}
 					
 				public String getDeltaTShower() {
-				// Returns <String> deltaT in nanoseconds to one decimal place
-				////DecimalFormat df = new DecimalFormat("#.0");
-				////df.setRoundingMode(RoundingMode.HALF_UP);
+						return (String) "zero";
+						// Returns <String> deltaT in nanoseconds to one decimal place
+						////DecimalFormat df = new DecimalFormat("#.0");
+						////df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT is calculated in days.  Convert to ns for display
 						////return df.format(deltaT*86400e9);
 				}
