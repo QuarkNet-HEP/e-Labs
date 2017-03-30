@@ -297,7 +297,10 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
-				return (Integer[]) [0,0];
+				Integer[] fuckYouJava;
+				fuckYouJava = new Integer[1];
+				fuckYouJava[0] = 0;
+				return fuckYouJava;
 				//try {
 				////BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
