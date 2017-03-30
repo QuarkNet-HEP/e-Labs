@@ -358,7 +358,7 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-				//private Double deltaT;
+				private Double deltaT;
 				//private Integer testInteger;
 				private int multiplicityCount;
 
