@@ -297,10 +297,9 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
-				Integer[] fuckYouJava;
-				fuckYouJava = new Integer[1];
-				fuckYouJava[0] = 0;
-				return fuckYouJava;
+				Integer[] test = new Integer[1];
+				test[0] = 0;
+				return test;
 				//try {
 				////BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
@@ -432,21 +431,21 @@ public class EventCandidates {
         }
 
         public void setDeltaT(Double deltaT) {
-				////this.deltaT = deltaT;
+						this.deltaT = deltaT;
         }
 
 				public Double getDeltaT() {
-						return (Double) 0.0;
-						////		return deltaT;
+						///return (Double) 0.0;
+						return deltaT;
 				}
 					
 				public String getDeltaTShower() {
-						return (String) "zero";
+						//return (String) "zero";
 						// Returns <String> deltaT in nanoseconds to one decimal place
-						////DecimalFormat df = new DecimalFormat("#.0");
-						////df.setRoundingMode(RoundingMode.HALF_UP);
+						DecimalFormat df = new DecimalFormat("#.0");
+						df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT is calculated in days.  Convert to ns for display
-						////return df.format(deltaT*86400e9);
+						return df.format(deltaT*86400e9);
 				}
 				
         public TreeMap<String,String> getIdsMult() {
