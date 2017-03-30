@@ -306,8 +306,8 @@ public class EventCandidates {
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
 				test[0] = 0;				
-				////while (line != null) {
-		////String[] arr = line.split("\\s");
+				while (line != null) {
+						String[] arr = line.split("\\s");
 						
 		////		ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
@@ -327,10 +327,10 @@ public class EventCandidates {
 		////		else {
 		////				line = br.readLine();
 		////		}
-		////}
+				}
 				// if not found in any line, there is no valid set for DeltaT
-				////Integer[] dets = {null,null};
-				////br.close();
+				Integer[] dets = {null,null};
+				br.close();
 				////return dets;
 				return test;
 		}
