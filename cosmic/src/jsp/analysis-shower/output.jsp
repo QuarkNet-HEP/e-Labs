@@ -178,7 +178,7 @@
 			<div id="content">
 			Marker 5
 <c:choose>
-<c:when test="${not empty rows}">
+<c:when test="${not empty table}">
 		<p>Marker 6</p>
 </c:when>
 <c:otherwise>
