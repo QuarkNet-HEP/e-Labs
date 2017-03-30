@@ -296,7 +296,7 @@ public class EventCandidates {
 		 *   that includes two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		////private Integer[] FindDeltaTDetectors(File infile) throws IOException {
+		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
 				//try {
 				////BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
@@ -331,7 +331,7 @@ public class EventCandidates {
 				////Integer[] dets = {null,null};
 				////br.close();
 				////return dets;
-		////}
+		}
 
 		// read() method overload
 		// Accepts int csc, int dir input and returns EventCandidates object
@@ -427,21 +427,21 @@ public class EventCandidates {
         	this.multiplicityCount = multiplicity.length;
         }
 
-        ////public void setDeltaT(Double deltaT) {
+        public void setDeltaT(Double deltaT) {
 				////this.deltaT = deltaT;
-        ////}
+        }
 
-				////public Double getDeltaT() {
+				public Double getDeltaT() {
 				////		return deltaT;
-				////}
+				}
 					
-				////public String getDeltaTShower() {
+				public String getDeltaTShower() {
 				// Returns <String> deltaT in nanoseconds to one decimal place
 				////DecimalFormat df = new DecimalFormat("#.0");
 				////df.setRoundingMode(RoundingMode.HALF_UP);
 						// deltaT is calculated in days.  Convert to ns for display
 						////return df.format(deltaT*86400e9);
-				////}
+				}
 				
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
