@@ -298,16 +298,14 @@ public class EventCandidates {
 		 */
 		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
 				Integer[] test = new Integer[1];
-				test[0] = 0;
-				return test;
 				//try {
-				////BufferedReader br = new BufferedReader(new FileReader(infile));
+				BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
 				//System.out.println(fnfe.getMessage());
 				//}
-				////String line = br.readLine();
-				////List<String> ids = new ArrayList<String>();
-				
+				String line = br.readLine();
+				List<String> ids = new ArrayList<String>();
+				test[0] = 0;				
 				////while (line != null) {
 		////String[] arr = line.split("\\s");
 						
@@ -334,6 +332,7 @@ public class EventCandidates {
 				////Integer[] dets = {null,null};
 				////br.close();
 				////return dets;
+				return test;
 		}
 
 		// read() method overload
