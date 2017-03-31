@@ -309,30 +309,30 @@ public class EventCandidates {
 				while (line != null) {
 						String[] arr = line.split("\\s");
 						
-		////		ids.clear();
+						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
-		////		for (int i=3; i< arr.length; i+=3) {
-		////				String[] detchan = arr[i].split("\\.");
-		////				detchan[0] = detchan[0].intern();
-		////				ids.add(detchan[0]);
-		////		}
+						for (int i=3; i< arr.length; i+=3) {
+								String[] detchan = arr[i].split("\\.");
+								detchan[0] = detchan[0].intern();
+								ids.add(detchan[0]);
+						}
 						
 						// check ids[] for Dt conditions
-		////		if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-		////				Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-		////				br.close();
-		////				return dets;
-		////		}
+						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+								br.close();
+								return dets;
+						}
 						// if not found, advance to the next line
-		////		else {
-		////				line = br.readLine();
-		////		}
+						else {
+								line = br.readLine();
+						}
 				}
 				// if not found in any line, there is no valid set for DeltaT
 				Integer[] dets = {null,null};
 				br.close();
-				////return dets;
-				return test;
+				return dets;
+				//return test;
 		}
 
 		// read() method overload
