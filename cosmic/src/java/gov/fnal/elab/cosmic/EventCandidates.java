@@ -86,8 +86,8 @@ public class EventCandidates {
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
 				Integer[] dTDetectors = new Integer[2];
-				dTDetectors = FindDeltaTDetectors(in);
-				////Integer[] dTDetectors = FindDeltaTDetectors(in);
+				dTDetectors = findDeltaTDetectors(in);
+				////Integer[] dTDetectors = findDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
@@ -298,7 +298,7 @@ public class EventCandidates {
 		 *   that includes two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
+		private Integer[] findDeltaTDetectors(File infile) throws IOException {
 				Integer[] test = new Integer[1];
 				//try {
 				BufferedReader br = new BufferedReader(new FileReader(infile));
@@ -462,7 +462,7 @@ public class EventCandidates {
         	}
         	return idsMult;
         }
-    }
+    } /* end of Row() class */
 
 		/* A class to manage sorting of output.jsp rows based on 
 			 comparison of column fields */
@@ -551,6 +551,6 @@ public class EventCandidates {
             else {
                 return dir * c;
             }
-        }
-    }
-}
+        } /* end public int compare */
+    } /* end public static class EventsComparator */
+} /* end public class EventCandidates */
