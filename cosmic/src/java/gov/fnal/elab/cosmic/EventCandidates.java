@@ -83,7 +83,7 @@ public class EventCandidates {
         Set multiplicities = new HashSet();
         ElabMemory em = new ElabMemory();
 				// For deltaT:
-				List<Double> firstHitTimes = new ArrayList<Double>();
+				////List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
 				Integer[] dTDetectors = FindDeltaTDetectors(in);
 				//String detOne = null;
