@@ -85,7 +85,7 @@ public class EventCandidates {
 				// For deltaT:
 				////List<Double> firstHitTimes = new ArrayList<Double>();
 				////Double deltaT = new Double(0.0);
-				Integer[] dTDetectors = FindDeltaTDetectors(in);
+				////Integer[] dTDetectors = FindDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
