@@ -298,7 +298,7 @@ public class EventCandidates {
 		 *   that includes two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		public Integer[] findDeltaTDetectors(File infile) throws IOException {
+		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
 				Integer[] test = new Integer[1];
 				//try {
 				BufferedReader br = new BufferedReader(new FileReader(infile));
