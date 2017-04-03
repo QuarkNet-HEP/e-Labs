@@ -321,18 +321,31 @@ public class EventCandidates {
 								ids.add(detchan[0]);
 						}
 
+						if (ids.get(0) == null) {
+								dets[0] = null;
+						}
+						else {
+								dets[0] = Integer(Integer.parseInt(ids.get(0)));
+						}
+						if (ids.get(1) == null) {
+								dets[1] = null;
+						}
+						else {
+								dets[1] = Integer(Integer.parseInt(ids.get(1)));
+						}
+						
 						// check ids[] for Dt conditions
-						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+						////if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-								String det1 = ids.get(0);
-								String det2 = ids.get(1);
-								dets[0] = Integer.parseInt(det1);
-								dets[1] = Integer.parseInt(det2);
+						////String det1 = ids.get(0);
+						////		String det2 = ids.get(1);
+						////		dets[0] = Integer.parseInt(det1);
+						////		dets[1] = Integer.parseInt(det2);
 						////		dets[0] = 0;
 						////		dets[1] = 0;
 						////		br.close();
 ////								return dets;
-						}
+								////}
 						//// Added for debugging:
 						line=br.readLine();
 						////
