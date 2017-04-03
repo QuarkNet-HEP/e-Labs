@@ -328,7 +328,7 @@ public class EventCandidates {
 						}
 						else {
 								detString = ids.get(0);
-								detTemp = Integer.parseInt(detString);
+								detTemp = Integer.parseInt('1');
 								dets[0] = new Integer(detTemp);
 						}
 						if (ids.get(1) == null) {
@@ -336,7 +336,7 @@ public class EventCandidates {
 						}
 						else {
 								detString = ids.get(1);
-								detTemp = Integer.parseInt(detString);
+								detTemp = Integer.parseInt('1');
 								dets[1] = new Integer(detTemp);
 						}
 						
