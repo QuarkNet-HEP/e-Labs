@@ -326,8 +326,8 @@ public class EventCandidates {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
 								String det1 = ids.get(0);
 								String det2 = ids.get(1);
-								dets[0] = Integer.parseInt("1");
-								dets[1] = Integer.parseInt("1");
+								dets[0] = Integer.parseInt(det1);
+								dets[1] = Integer.parseInt(det2);
 						////		dets[0] = 0;
 						////		dets[1] = 0;
 						////		br.close();
