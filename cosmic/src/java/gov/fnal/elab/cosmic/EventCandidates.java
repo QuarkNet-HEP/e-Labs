@@ -302,17 +302,10 @@ public class EventCandidates {
 		 */
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
 				Integer[] dets = new Integer[2];
-				Integer[] test = new Integer[2];
-				int detTemp;
-				String detString;
-				//try {
+				//Integer[] test = new Integer[2];
+				//int detTemp;
+				//String detString;
 				BufferedReader br = new BufferedReader(new FileReader(infile));
-				//} catch(FileNotFoundException fnfe) { 
-				//System.out.println(fnfe.getMessage());
-				//}
-				//} catch(IOException ioe) {
-				//		System.out.println(ioe.getMessage());
-				//}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
 
@@ -329,60 +322,28 @@ public class EventCandidates {
 										////		ids.add(detchan[0]);
 										if (!ids.contains(detchan[0])) {
 												ids.add(detchan[0]);
-												////ids.add("6050");
 										}
 								}
 								
-								////ids.add("6119");
-								////ids.add("6337");
-								if (ids.get(0) == null) {
-										dets[0] = null;
+								// Can this line be used to define dets[]?  If so, do so
+								if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+										dets[0] = new Integer(Integer.parseInt(ids.get(0)));
+										dets[1] = new Integer(Integer.parseInt(ids.get(1)));
 								}
+								// If not, move on to the next line
 								else {
-										detString = ids.get(0);
-										detTemp = Integer.parseInt(detString);
-										dets[0] = new Integer(detTemp);
-								}
-								if (ids.get(1) == null) {
-										dets[1] = null;
-								}
-								else {
-										detString = ids.get(1);
-										detTemp = Integer.parseInt(detString);
-										dets[1] = new Integer(detTemp);
-								}
+										line = br.readLine();
+								}								
 						}
-						test[0] = 0;
-						test[1] = 0;
-						// check ids[] for Dt conditions
-						////if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-						////String det1 = ids.get(0);
-						////		String det2 = ids.get(1);
-						////		dets[0] = Integer.parseInt(det1);
-						////		dets[1] = Integer.parseInt(det2);
-						////		dets[0] = 0;
-						////		dets[1] = 0;
-						////		br.close();
-////								return dets;
-								////}
-						//// Added for debugging:
-						line=br.readLine();
-						////
-						// if not found, advance to the next line
-				////		else {
-						////		line = br.readLine();
-////						}
 				}
 				// if not found in any line, there is no valid set for DeltaT
-	////			Integer[] dets = {null,null};
+				Integer[] dets = {null,null};
 				br.close();
-	////			return dets;
-				return test;
+				return dets;
+				//return test;
 		}
 
 		// read() method overload
-		// Accepts int csc, int dir input and returns EventCandidates object
     public static EventCandidates read(File in, File out, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidates ec = null;
