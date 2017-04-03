@@ -303,15 +303,14 @@ public class EventCandidates {
 				Integer[] test = new Integer[2];
 				int detTemp;
 				String detString;
-				test[0] = 0;
-				test[1] = 0;
-				//try {
-				BufferedReader br = new BufferedReader(new FileReader(infile));
-				//} catch(FileNotFoundException fnfe) { 
-				//System.out.println(fnfe.getMessage());
-				//}
+				try {
+						BufferedReader br = new BufferedReader(new FileReader(infile));
+				} catch(FileNotFoundException fnfe) { 
+						System.out.println(fnfe.getMessage());
+				}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
+
 				while (line != null) {
 						String[] arr = line.split("\\s");
 						
@@ -345,7 +344,9 @@ public class EventCandidates {
 								detTemp = Integer.parseInt(detString);
 								dets[1] = new Integer(detTemp);
 						}
-						
+
+						test[0] = 0;
+						test[1] = 0;
 						// check ids[] for Dt conditions
 						////if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
