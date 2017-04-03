@@ -76,7 +76,8 @@ public class EventCandidates {
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-        String line = br.readLine();
+        //String line = br.readLine();
+				String line;
 				// Change ids from HashSet to ArrayList to keep ordering for deltaT
 				//Set ids = new HashSet();
         List<String> ids = new ArrayList<String>();
@@ -92,8 +93,9 @@ public class EventCandidates {
 				//String detTwo = null;
 				//int dtSign = 0;
 				//
-				
+
         userFeedback = "";
+				line = br.readLine();
         while (line != null) {
             // ignore any line with "#" (comment)
             if (!line.matches("^.*#.*")) {
@@ -303,14 +305,14 @@ public class EventCandidates {
 				Integer[] test = new Integer[2];
 				int detTemp;
 				String detString;
-				try {
-						BufferedReader br = new BufferedReader(new FileReader(infile));
+				//try {
+				BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
 				//System.out.println(fnfe.getMessage());
 				//}
-				} catch(IOException ioe) {
-						System.out.println(ioe.getMessage());
-				}
+				//} catch(IOException ioe) {
+				//		System.out.println(ioe.getMessage());
+				//}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
 
@@ -324,8 +326,8 @@ public class EventCandidates {
 						////		detchan[0] = detchan[0].intern();
 						////		ids.add(detchan[0]);
 								if (!ids.contains(detchan[0])) {
-										////ids.add(detchan[0]);
-										ids.add("6050");
+										ids.add(detchan[0]);
+										////ids.add("6050");
 								}
 						}
 
