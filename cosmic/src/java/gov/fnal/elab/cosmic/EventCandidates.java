@@ -324,10 +324,10 @@ public class EventCandidates {
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-						////		dets[0] = Integer.parseInt(ids.get(0));
-						////		dets[1] = Integer.parseInt(ids.get(1));
-								dets[0] = 0;
-								dets[1] = 0;
+								dets[0] = Integer.parseInt("1");
+								dets[1] = Integer.parseInt("1");
+						////		dets[0] = 0;
+						////		dets[1] = 0;
 						////		br.close();
 ////								return dets;
 						}
