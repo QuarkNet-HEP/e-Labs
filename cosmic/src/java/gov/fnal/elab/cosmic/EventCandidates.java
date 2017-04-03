@@ -299,6 +299,7 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
+				Integer[] dets = new Integer[2];
 				Integer[] test = new Integer[2];
 				test[0] = 0;
 				test[1] = 0;
@@ -323,9 +324,8 @@ public class EventCandidates {
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-								Integer[] dets = new Integer[2];
-								dets = {Integer.parseInt(ids.get(0)),Integer.parseInt(ids.get(1))};
-
+								dets[0] = Integer.parseInt(ids.get(0));
+								dets[1] = Integer.parseInt(ids.get(1));
 						////		br.close();
 ////								return dets;
 						}
