@@ -299,42 +299,44 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
-				Integer[] test = new Integer[1];
+				Integer[] test = new Integer[2];
+				test[0] = 0;
+				test[1] = 0;
 				//try {
-				BufferedReader br = new BufferedReader(new FileReader(infile));
+				////BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
 				//System.out.println(fnfe.getMessage());
 				//}
-				String line = br.readLine();
-				List<String> ids = new ArrayList<String>();
-				test[0] = 0;				
-				while (line != null) {
-						String[] arr = line.split("\\s");
+		////		String line = br.readLine();
+		////		List<String> ids = new ArrayList<String>();
+			////	test[0] = 0;				
+	////			while (line != null) {
+			////			String[] arr = line.split("\\s");
 						
-						ids.clear();
+////						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
-						for (int i=3; i< arr.length; i+=3) {
-								String[] detchan = arr[i].split("\\.");
-								detchan[0] = detchan[0].intern();
-								ids.add(detchan[0]);
-						}
+////						for (int i=3; i< arr.length; i+=3) {
+		////						String[] detchan = arr[i].split("\\.");
+				////				detchan[0] = detchan[0].intern();
+						////		ids.add(detchan[0]);
+////						}
 						
 						// check ids[] for Dt conditions
-						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-								br.close();
-								return dets;
-						}
+		////				if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+				////				Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+						////		br.close();
+////								return dets;
+		////				}
 						// if not found, advance to the next line
-						else {
-								line = br.readLine();
-						}
-				}
+				////		else {
+						////		line = br.readLine();
+////						}
+		////		}
 				// if not found in any line, there is no valid set for DeltaT
-				Integer[] dets = {null,null};
-				br.close();
-				return dets;
-				//return test;
+	////			Integer[] dets = {null,null};
+			////	br.close();
+	////			return dets;
+				return test;
 		}
 
 		// read() method overload
