@@ -307,9 +307,8 @@ public class EventCandidates {
 				//} catch(FileNotFoundException fnfe) { 
 				//System.out.println(fnfe.getMessage());
 				//}
-		////		String line = br.readLine();
-		////		List<String> ids = new ArrayList<String>();
-			////	test[0] = 0;				
+				String line = br.readLine();
+				List<String> ids = new ArrayList<String>();
 	////			while (line != null) {
 			////			String[] arr = line.split("\\s");
 						
