@@ -325,13 +325,13 @@ public class EventCandidates {
 								dets[0] = null;
 						}
 						else {
-								dets[0] = Integer(Integer.parseInt(ids.get(0)));
+								dets[0] = new Integer(Integer.parseInt(ids.get(0)));
 						}
 						if (ids.get(1) == null) {
 								dets[1] = null;
 						}
 						else {
-								dets[1] = Integer(Integer.parseInt(ids.get(1)));
+								dets[1] = new Integer(Integer.parseInt(ids.get(1)));
 						}
 						
 						// check ids[] for Dt conditions
