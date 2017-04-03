@@ -319,15 +319,16 @@ public class EventCandidates {
 								detchan[0] = detchan[0].intern();
 								ids.add(detchan[0]);
 						}
-						//// Added for debugging:
-						line=br.readLine();
-						////
+
 						// check ids[] for Dt conditions
-		////				if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 				////				Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
 						////		br.close();
 ////								return dets;
-		////				}
+						}
+						//// Added for debugging:
+						line=br.readLine();
+						////
 						// if not found, advance to the next line
 				////		else {
 						////		line = br.readLine();
