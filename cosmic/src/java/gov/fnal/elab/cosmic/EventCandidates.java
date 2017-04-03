@@ -317,18 +317,20 @@ public class EventCandidates {
 						
 						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
-						for (int i=3; i< arr.length; i+=3) {
-								String[] detchan = arr[i].split("\\.");
-								detchan[0] = detchan[0].intern();
-								ids.add(detchan[0]);
-						}
+						////for (int i=3; i< arr.length; i+=3) {
+						////		String[] detchan = arr[i].split("\\.");
+						////		detchan[0] = detchan[0].intern();
+						////		ids.add(detchan[0]);
+						////}
 
+						ids.add("6119");
+						ids.add("6337");
 						if (ids.get(0) == null) {
 								dets[0] = null;
 						}
 						else {
 								detString = ids.get(0);
-								detTemp = Integer.parseInt('1');
+								detTemp = Integer.parseInt(detString);
 								dets[0] = new Integer(detTemp);
 						}
 						if (ids.get(1) == null) {
@@ -336,7 +338,7 @@ public class EventCandidates {
 						}
 						else {
 								detString = ids.get(1);
-								detTemp = Integer.parseInt('1');
+								detTemp = Integer.parseInt(detString);
 								dets[1] = new Integer(detTemp);
 						}
 						
