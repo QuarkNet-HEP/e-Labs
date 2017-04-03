@@ -309,17 +309,19 @@ public class EventCandidates {
 				//}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
-				////while (line != null) {
-				////		String[] arr = line.split("\\s");
+				while (line != null) {
+						String[] arr = line.split("\\s");
 						
-				////		ids.clear();
+						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
-				////		for (int i=3; i< arr.length; i+=3) {
-				////				String[] detchan = arr[i].split("\\.");
-				////				detchan[0] = detchan[0].intern();
-				////				ids.add(detchan[0]);
-				////		}
-						
+						for (int i=3; i< arr.length; i+=3) {
+								String[] detchan = arr[i].split("\\.");
+								detchan[0] = detchan[0].intern();
+								ids.add(detchan[0]);
+						}
+						//// Added for debugging:
+						line=br.readLine();
+						////
 						// check ids[] for Dt conditions
 		////				if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 				////				Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
@@ -330,10 +332,10 @@ public class EventCandidates {
 				////		else {
 						////		line = br.readLine();
 ////						}
-				////}
+				}
 				// if not found in any line, there is no valid set for DeltaT
 	////			Integer[] dets = {null,null};
-			////	br.close();
+				br.close();
 	////			return dets;
 				return test;
 		}
