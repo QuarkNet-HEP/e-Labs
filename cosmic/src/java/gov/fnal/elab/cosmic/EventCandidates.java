@@ -325,7 +325,7 @@ public class EventCandidates {
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 						 ////			Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
 								String det1 = ids.get(0);
-								String det1 = ids.get(1);
+								String det2 = ids.get(1);
 								dets[0] = Integer.parseInt("1");
 								dets[1] = Integer.parseInt("1");
 						////		dets[0] = 0;
