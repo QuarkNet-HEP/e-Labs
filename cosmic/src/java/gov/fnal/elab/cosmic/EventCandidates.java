@@ -322,7 +322,7 @@ public class EventCandidates {
 
 						// check ids[] for Dt conditions
 						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-				////				Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
+								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
 						////		br.close();
 ////								return dets;
 						}
