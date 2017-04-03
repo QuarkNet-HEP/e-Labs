@@ -305,8 +305,11 @@ public class EventCandidates {
 				String detString;
 				try {
 						BufferedReader br = new BufferedReader(new FileReader(infile));
-				} catch(FileNotFoundException fnfe) { 
-						System.out.println(fnfe.getMessage());
+				//} catch(FileNotFoundException fnfe) { 
+				//System.out.println(fnfe.getMessage());
+				//}
+				} catch(IOException ioe) {
+						System.out.println(ioe.getMessage());
 				}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
