@@ -302,6 +302,7 @@ public class EventCandidates {
 				Integer[] dets = new Integer[2];
 				Integer[] test = new Integer[2];
 				int detTemp;
+				String detString;
 				test[0] = 0;
 				test[1] = 0;
 				//try {
@@ -326,14 +327,16 @@ public class EventCandidates {
 								dets[0] = null;
 						}
 						else {
-								detTemp = new Integer.parseInt(ids.get(0));
+								detString = ids.get(0);
+								detTemp = Integer.parseInt(detString);
 								dets[0] = new Integer(detTemp);
 						}
 						if (ids.get(1) == null) {
 								dets[1] = null;
 						}
 						else {
-								detTemp = new Integer.parseInt(ids.get(1));
+								detString = ids.get(1)
+								detTemp = Integer.parseInt(detString);
 								dets[1] = new Integer(detTemp);
 						}
 						
