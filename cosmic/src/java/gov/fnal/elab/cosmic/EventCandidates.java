@@ -303,7 +303,7 @@ public class EventCandidates {
 				test[0] = 0;
 				test[1] = 0;
 				//try {
-				////BufferedReader br = new BufferedReader(new FileReader(infile));
+				BufferedReader br = new BufferedReader(new FileReader(infile));
 				//} catch(FileNotFoundException fnfe) { 
 				//System.out.println(fnfe.getMessage());
 				//}
