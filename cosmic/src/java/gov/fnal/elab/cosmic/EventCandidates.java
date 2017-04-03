@@ -301,7 +301,8 @@ public class EventCandidates {
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
-				Integer[] dets = new Integer[2];
+				Integer[] dets = {null,null};
+				//Integer[] dets = new Integer[2];
 				//Integer[] test = new Integer[2];
 				//int detTemp;
 				//String detString;
@@ -336,8 +337,6 @@ public class EventCandidates {
 								}								
 						}
 				}
-				// if not found in any line, there is no valid set for DeltaT
-				Integer[] dets = {null,null};
 				br.close();
 				return dets;
 				//return test;
