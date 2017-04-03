@@ -317,39 +317,41 @@ public class EventCandidates {
 				List<String> ids = new ArrayList<String>();
 
 				while (line != null) {
-						String[] arr = line.split("\\s");
-						
-						ids.clear();
-						// loop over elements of a single line to form ids[] for that line:
-						for (int i=3; i< arr.length; i+=3) {
-								String[] detchan = arr[i].split("\\.");
-						////		detchan[0] = detchan[0].intern();
-						////		ids.add(detchan[0]);
-								if (!ids.contains(detchan[0])) {
-										ids.add(detchan[0]);
-										////ids.add("6050");
+            // ignore any line with "#" (comment)
+            if (!line.matches("^.*#.*")) {
+								String[] arr = line.split("\\s");
+								
+								ids.clear();
+								// loop over elements of a single line to form ids[] for that line:
+								for (int i=3; i< arr.length; i+=3) {
+										String[] detchan = arr[i].split("\\.");
+										////		detchan[0] = detchan[0].intern();
+										////		ids.add(detchan[0]);
+										if (!ids.contains(detchan[0])) {
+												ids.add(detchan[0]);
+												////ids.add("6050");
+										}
+								}
+								
+								////ids.add("6119");
+								////ids.add("6337");
+								if (ids.get(0) == null) {
+										dets[0] = null;
+								}
+								else {
+										detString = ids.get(0);
+										detTemp = Integer.parseInt(detString);
+										dets[0] = new Integer(detTemp);
+								}
+								if (ids.get(1) == null) {
+										dets[1] = null;
+								}
+								else {
+										detString = ids.get(1);
+										detTemp = Integer.parseInt(detString);
+										dets[1] = new Integer(detTemp);
 								}
 						}
-
-						////ids.add("6119");
-						////ids.add("6337");
-						if (ids.get(0) == null) {
-								dets[0] = null;
-						}
-						else {
-								detString = ids.get(0);
-								detTemp = Integer.parseInt(detString);
-								dets[0] = new Integer(detTemp);
-						}
-						if (ids.get(1) == null) {
-								dets[1] = null;
-						}
-						else {
-								detString = ids.get(1);
-								detTemp = Integer.parseInt(detString);
-								dets[1] = new Integer(detTemp);
-						}
-
 						test[0] = 0;
 						test[1] = 0;
 						// check ids[] for Dt conditions
