@@ -335,7 +335,7 @@ public class EventCandidates {
 								dets[1] = null;
 						}
 						else {
-								detString = ids.get(1)
+								detString = ids.get(1);
 								detTemp = Integer.parseInt(detString);
 								dets[1] = new Integer(detTemp);
 						}
