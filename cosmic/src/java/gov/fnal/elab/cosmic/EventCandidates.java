@@ -317,14 +317,17 @@ public class EventCandidates {
 						
 						ids.clear();
 						// loop over elements of a single line to form ids[] for that line:
-						////for (int i=3; i< arr.length; i+=3) {
-						////		String[] detchan = arr[i].split("\\.");
+						for (int i=3; i< arr.length; i+=3) {
+								String[] detchan = arr[i].split("\\.");
 						////		detchan[0] = detchan[0].intern();
 						////		ids.add(detchan[0]);
-						////}
+								if (!ids.contains(detchan[0])) {
+										ids.add(detchan[0]);
+								}
+						}
 
-						ids.add("6119");
-						ids.add("6337");
+						////ids.add("6119");
+						////ids.add("6337");
 						if (ids.get(0) == null) {
 								dets[0] = null;
 						}
