@@ -322,7 +322,8 @@ public class EventCandidates {
 						////		detchan[0] = detchan[0].intern();
 						////		ids.add(detchan[0]);
 								if (!ids.contains(detchan[0])) {
-										ids.add(detchan[0]);
+										////ids.add(detchan[0]);
+										ids.add("6050");
 								}
 						}
 
