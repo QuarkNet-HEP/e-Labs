@@ -301,6 +301,7 @@ public class EventCandidates {
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
 				Integer[] dets = new Integer[2];
 				Integer[] test = new Integer[2];
+				int detTemp;
 				test[0] = 0;
 				test[1] = 0;
 				//try {
@@ -325,13 +326,15 @@ public class EventCandidates {
 								dets[0] = null;
 						}
 						else {
-								dets[0] = new Integer(Integer.parseInt(ids.get(0)));
+								detTemp = new Integer.parseInt(ids.get(0));
+								dets[0] = new Integer(detTemp);
 						}
 						if (ids.get(1) == null) {
 								dets[1] = null;
 						}
 						else {
-								dets[1] = new Integer(Integer.parseInt(ids.get(1)));
+								detTemp = new Integer.parseInt(ids.get(1));
+								dets[1] = new Integer(detTemp);
 						}
 						
 						// check ids[] for Dt conditions
