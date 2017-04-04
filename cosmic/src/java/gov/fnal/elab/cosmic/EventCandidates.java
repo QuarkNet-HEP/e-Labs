@@ -524,10 +524,10 @@ public class EventCandidates {
 								}
 								/* If exactly one deltaT is null, non-null ordered before null */
 								else if ( (m1.getDeltaT() != null) && (m2.getDeltaT() == null) ) {
-										c = +1;
+										c = -1;
 								}
 								else if ( (m1.getDeltaT() == null) && (m2.getDeltaT() != null) ) {
-										c = -1;
+										c = +1;
 								}
 								/* If both are null, default to sort by line number and return */
 								else {
@@ -554,7 +554,6 @@ public class EventCandidates {
 										return m1.getLine() - m2.getLine();
                 }
             }
-						
 						/* If the two criteria are unequal, return c modified by input dir */
             else {
                 return dir * c;
