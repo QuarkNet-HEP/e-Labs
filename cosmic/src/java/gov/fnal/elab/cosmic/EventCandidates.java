@@ -517,31 +517,29 @@ public class EventCandidates {
             else if (csc == 2) {
                 c = m1.getNumDetectors() - m2.getNumDetectors();
             }
-						// added 29Mar2016 JG for DeltaT analysis
-						////else if (csc == 3) {
-						////if ( (m1.getDeltaT() != null) && (m2.getDeltaT() != null) ) {
-						////		c = m1.getDeltaT().compareTo(m2.getDeltaT());
-						////}
-								/* If exactly one deltaT is null, non-null ordered before null */
-						////	else if ( (m1.getDeltaT() != null) && (m2.getDeltaT() == null) ) {
-						////		c = +1;
-						////	}
-						////else if ( (m1.getDeltaT() == null) && (m2.getDeltaT() != null) ) {
-						////		c = -1;
-						////}
-								/* If both are null, default to sort by line number and return */
-								////else {
-						////return m1.getLine() - m2.getLine();
-						////}
-						////}
-            ////else if (csc == 4) {
-						////c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
-            ////}
+						// added Mar2017 JG for DeltaT analysis
 						else if (csc == 3) {
-                c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
-            }
-
-
+								if ( (m1.getDeltaT() != null) && (m2.getDeltaT() != null) ) {
+										c = m1.getDeltaT().compareTo(m2.getDeltaT());
+								}
+								/* If exactly one deltaT is null, non-null ordered before null */
+								else if ( (m1.getDeltaT() != null) && (m2.getDeltaT() == null) ) {
+										c = +1;
+								}
+								else if ( (m1.getDeltaT() == null) && (m2.getDeltaT() != null) ) {
+										c = -1;
+								}
+								/* If both are null, default to sort by line number and return */
+								else {
+										return m1.getLine() - m2.getLine();
+								}
+						}
+						else if (csc == 4) {
+								c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
+						}
+						////else if (csc == 3) {
+						////    c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
+						////}		
 
 						/* If the two criteria are equal: */
             if (c == 0) {
