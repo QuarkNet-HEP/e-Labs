@@ -178,7 +178,7 @@ public class EventCandidates {
 ////										else if (dTDetectors[1]==null) {
 ////												deltaT=999.9;
 ////										}
-										else if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
+										if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
 												deltaT=null;
 										}
 										else {
