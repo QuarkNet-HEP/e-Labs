@@ -309,7 +309,9 @@ public class EventCandidates {
 				BufferedReader br = new BufferedReader(new FileReader(infile));
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
-
+				//dets[0]=null;
+				//dets[1]=null;
+				
 				while (line != null) {
             // ignore any line with "#" (comment)
             if (!line.matches("^.*#.*")) {
@@ -326,17 +328,21 @@ public class EventCandidates {
 										}
 								}
 								
-								// Can this line be used to define dets[]?  If so, do so
+								// Can this line be used to define dets[]?
+								// If so, do so and return
 								if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
 										dets[0] = new Integer(Integer.parseInt(ids.get(0)));
 										dets[1] = new Integer(Integer.parseInt(ids.get(1)));
-								}
+										br.close();
+										return dets;								}
 								// If not, move on to the next line
 								else {
 										line = br.readLine();
-								}								
+								}
 						}
 				}
+				// If the while{} loop completes, there is not a valid set of detectors.
+				// Return initial null values.
 				br.close();
 				return dets;
 				//return test;
