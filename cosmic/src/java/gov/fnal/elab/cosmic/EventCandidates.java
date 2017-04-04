@@ -88,7 +88,7 @@ public class EventCandidates {
 				Double deltaT = new Double(0.0);
 				//Integer[] dTDetectors = new Integer[2];
 				//dTDetectors = findDeltaTDetectors(in);
-				Integer[] dTDetectors = findDeltaTDetectors(in);
+				String[] dTDetectors = findDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
@@ -159,19 +159,26 @@ public class EventCandidates {
 										
 										/* deltaT additions - JG Mar2017 */
 										/* 
-										 * By convention: Find the first line of eventCandidates that
-										 * includes at least two distinct detectors.  The first two 
-										 * detectors listed on that line, in order, are selected for 
-										 * comparison throughout the file.
+										 * By convention: Find the first line of eventCandidates
+										 * that includes at least two distinct detectors.  The 
+										 * first two detectors listed on that line, in order, are 
+										 * selected for comparison throughout the file.
 										 * 
-										 * deltaT is the time interval between the first hits in each 
-										 * detector.  The sign is chosen such that deltaT is positive 
-										 * in the defining line.
+										 * deltaT is the time interval between the first hits in 
+										 * each detector.  The sign is chosen such that deltaT 
+										 * is positive in the defining line.
 										 */
 										
 										// Does this line include both deltaT detectors?
 										// If not, the analysis is quick:
-										if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
+
+////										if (dTDetectors[0]==null) {
+////												deltaT=888.8;
+////										}
+////										else if (dTDetectors[1]==null) {
+////												deltaT=999.9;
+////										}
+										else if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
 												deltaT=null;
 										}
 										else {
@@ -290,12 +297,10 @@ public class EventCandidates {
 		 *   that includes at least two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
-				Integer[] dets = {null,null};
+		public static String[] findDeltaTDetectors(File infile) throws IOException {
+				//Integer[] dets = {1,1};
+				String[] dets = {null,null};
 				//Integer[] dets = new Integer[2];
-				//Integer[] test = new Integer[2];
-				//int detTemp;
-				//String detString;
 				BufferedReader br = new BufferedReader(new FileReader(infile));
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
@@ -308,7 +313,7 @@ public class EventCandidates {
 								String[] arr = line.split("\\s");
 								
 								ids.clear();
-								// loop over elements of a single line to form ids[] for that line:
+								// Construct the List ids from the current line:
 								for (int i=3; i< arr.length; i+=3) {
 										String[] detchan = arr[i].split("\\.");
 										////		detchan[0] = detchan[0].intern();
@@ -321,11 +326,13 @@ public class EventCandidates {
 								// Can this line be used to define dets[]?
 								// If so, do so and return
 								if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-										dets[0] = new Integer(Integer.parseInt(ids.get(0)));
-										dets[1] = new Integer(Integer.parseInt(ids.get(1)));
+										dets[0] = ids.get(0);
+										dets[1] = ids.get(1);
+										//dets[1] = new Integer(Integer.parseInt(ids.get(1)));
 										br.close();
-										return dets;								}
-								// If not, close the if{} check and move on to the next line
+										return dets;
+								}
+								// If not, close the if{comment} and increment line
 								////else {}
 						}
 						line = br.readLine();
