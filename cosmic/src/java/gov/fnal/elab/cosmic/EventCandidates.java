@@ -335,11 +335,10 @@ public class EventCandidates {
 										dets[1] = new Integer(Integer.parseInt(ids.get(1)));
 										br.close();
 										return dets;								}
-								// If not, move on to the next line
-								else {
-										line = br.readLine();
-								}
+								// If not, close the if{} check and move on to the next line
+								////else {}
 						}
+						line = br.readLine();
 				}
 				// If the while{} loop completes, there is not a valid set of detectors.
 				// Return initial null values.
