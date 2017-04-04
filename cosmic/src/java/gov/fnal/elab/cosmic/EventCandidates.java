@@ -86,9 +86,9 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
-				Integer[] dTDetectors = new Integer[2];
-				dTDetectors = findDeltaTDetectors(in);
-				////Integer[] dTDetectors = findDeltaTDetectors(in);
+				//Integer[] dTDetectors = new Integer[2];
+				//dTDetectors = findDeltaTDetectors(in);
+				Integer[] dTDetectors = findDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
@@ -113,10 +113,10 @@ public class EventCandidates {
                     	throw e;
                     }
                 }
-
-								// parse the eventCandidates input file
+								
+								// Parse the eventCandidates input file
 								// For every line of the input file that isn't null or a comment
-								//   and is gte the input eventStart:
+								//   and is withover eventStart:
 								if (lineNo >= eventStart) {
 										Row row = new Row();
 										// Each line of the eventCandidates file is divided at spaces
@@ -130,11 +130,12 @@ public class EventCandidates {
                     row.setEventCoincidence(Integer.parseInt(arr[1]));
                     row.setNumDetectors(Integer.parseInt(arr[2]));
                     row.setLine(lineNo);
-
-										// remaining elements in sets of three
+										
+										// Remaining elements in sets of three to get id's and
+										// correlated first hit times
                     ids.clear();
                     multiplicities.clear();
-										////firstHitTimes.clear();
+										firstHitTimes.clear();
 										/* Loop over each individual line of eventCandidates.
 											 Note the increment of 3 such that arr[i] will always
 											   be <String> detector.channel */
@@ -145,7 +146,7 @@ public class EventCandidates {
 													 Add the time of that first hit to firstHitTimes[] */
 												if (!ids.contains(idchan[0])) {
 														ids.add(idchan[0]);
-														////firstHitTimes.add(Double.parseDouble(arr[i+2]));
+														firstHitTimes.add(Double.parseDouble(arr[i+2]));
 												}
 												/* Add <String> dectector.channel to multiplicities[]
 													 if it isn't there already */
@@ -155,52 +156,41 @@ public class EventCandidates {
 													 it's there already */
                         allIds.add(idchan[0]);
 										}
-
+										
 										/* deltaT additions - JG Mar2017 */
 										/* 
-										 * By convention, we compare the first two detectors to fire,
-										 *   even if there are more than two in the analysis.
-										 * deltaT compares the first two detectors to fire,
-										 *	 as recorded on the first row (eventNum=1)
-										 * Determine these from ids[] after constructing it for
-										 *   that row
-										 * Is there any danger that this code can be executed
-										 *   with eventNum != 1 as the first event?
+										 * By convention: Find the first line of eventCandidates that
+										 * includes at least two distinct detectors.  The first two 
+										 * detectors listed on that line, in order, are selected for 
+										 * comparison throughout the file.
+										 * 
+										 * deltaT is the time interval between the first hits in each 
+										 * detector.  The sign is chosen such that deltaT is positive 
+										 * in the defining line.
 										 */
-										//if (Integer.parseInt(arr[0]) == 1) {
-										//		detOne = ids.get(0);
-										//	  detTwo = ids.get(1);
-										//		dtSign = Integer.signum(Integer.parseInt(detOne) -
-										//														Integer.parseInt(detTwo));
-										//}
 										
-										//if (detOne != null && detTwo != null) {
-										//		deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
-										//										 firstHitTimes.get(ids.indexOf(detTwo)));
-										//}
-										//else {
-										//		deltaT = 0.0;
-										//		// throw error
-										//}
-
-										////if( ids.contains(dTDetectors[0]) && ids.contains(dTDetectors[1]) ) {
-										////deltaT = firstHitTimes.get(ids.indexOf(dTDetectors[1])) - firstHitTimes.get(ids.indexOf(dTDetectors[0]));
-										////}
-										////else {
-										////		deltaT = null;
-										////}
+										// Does this line include both deltaT detectors?
+										// If not, the analysis is quick:
+										if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
+												deltaT=null;
+										}
+										else {
+												Double t1=firstHitTimes.get(ids.indexOf(dTDetectors[0]));
+												Double t2=firstHitTimes.get(ids.indexOf(dTDetectors[1]));
+												deltaT=t2-t1;
+										}
 										
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
-										////row.setDeltaT(deltaT);
+										row.setDeltaT(deltaT);
 										
 										// Julian Date
                     String jd = arr[4];
                     String partial = arr[5];
 
-                    // get the date and time of the shower
+                    // Get the date and time of the shower
                     NanoDate nd = ElabUtil.julianToGregorian(Integer
                             .parseInt(jd), Double.parseDouble(partial));
                     row.setDate(nd);
@@ -297,7 +287,7 @@ public class EventCandidates {
 		 * Added Mar2017 JG
 		 * Find the two detectors used for DeltaT comparision, defined as 
 		 *   the first two detectors listed in the first row of eventCandidates 
-		 *   that includes two distinct detectors
+		 *   that includes at least two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
 		public static Integer[] findDeltaTDetectors(File infile) throws IOException {
