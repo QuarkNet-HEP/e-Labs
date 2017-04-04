@@ -440,12 +440,16 @@ public class EventCandidates {
 				}
 					
 				public String getDeltaTShower() {
-						//return (String) "zero";
-						// Returns <String> deltaT in nanoseconds to one decimal place
+						// Returns <String> deltaT in ns to one decimal place
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
-						// deltaT is calculated in days.  Convert to ns for display
-						return df.format(deltaT*86400e9);
+						if (deltaT == null) {
+								return "-";
+						}
+						else {
+								// deltaT is calculated in days.  Convert to ns for display
+								return df.format(deltaT*86400e9);
+						}
 				}
 				
         public TreeMap<String,String> getIdsMult() {
