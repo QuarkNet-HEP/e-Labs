@@ -107,6 +107,7 @@ if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
 						rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
 						displayMultiplicity = "block";
 				} else {
+						// Number of columns hardcoded here
 						//if (sortCol == 3) {
 						if (sortCol == 4) {
 								displayMultiplicity = "block";		

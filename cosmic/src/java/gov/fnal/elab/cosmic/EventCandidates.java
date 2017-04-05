@@ -76,7 +76,8 @@ public class EventCandidates {
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-        String line = br.readLine();
+        //String line = br.readLine();
+				String line;
 				// Change ids from HashSet to ArrayList to keep ordering for deltaT
 				//Set ids = new HashSet();
         List<String> ids = new ArrayList<String>();
@@ -85,13 +86,16 @@ public class EventCandidates {
 				// For deltaT:
 				List<Double> firstHitTimes = new ArrayList<Double>();
 				Double deltaT = new Double(0.0);
-				Integer[] dTDetectors = FindDeltaTDetectors(in);
+				//Integer[] dTDetectors = new Integer[2];
+				//dTDetectors = findDeltaTDetectors(in);
+				String[] dTDetectors = findDeltaTDetectors(in);
 				//String detOne = null;
 				//String detTwo = null;
 				//int dtSign = 0;
 				//
-				
+
         userFeedback = "";
+				line = br.readLine();
         while (line != null) {
             // ignore any line with "#" (comment)
             if (!line.matches("^.*#.*")) {
@@ -109,10 +113,10 @@ public class EventCandidates {
                     	throw e;
                     }
                 }
-
-								// parse the eventCandidates input file
+								
+								// Parse the eventCandidates input file
 								// For every line of the input file that isn't null or a comment
-								//   and is gte the input eventStart:
+								//   and is withover eventStart:
 								if (lineNo >= eventStart) {
 										Row row = new Row();
 										// Each line of the eventCandidates file is divided at spaces
@@ -126,8 +130,9 @@ public class EventCandidates {
                     row.setEventCoincidence(Integer.parseInt(arr[1]));
                     row.setNumDetectors(Integer.parseInt(arr[2]));
                     row.setLine(lineNo);
-
-										// remaining elements in sets of three
+										
+										// Remaining elements in sets of three to get id's and
+										// correlated first hit times
                     ids.clear();
                     multiplicities.clear();
 										firstHitTimes.clear();
@@ -151,39 +156,35 @@ public class EventCandidates {
 													 it's there already */
                         allIds.add(idchan[0]);
 										}
-
+										
 										/* deltaT additions - JG Mar2017 */
 										/* 
-										 * By convention, we compare the first two detectors to fire,
-										 *   even if there are more than two in the analysis.
-										 * deltaT compares the first two detectors to fire,
-										 *	 as recorded on the first row (eventNum=1)
-										 * Determine these from ids[] after constructing it for
-										 *   that row
-										 * Is there any danger that this code can be executed
-										 *   with eventNum != 1 as the first event?
+										 * By convention: Find the first line of eventCandidates
+										 * that includes at least two distinct detectors.  The 
+										 * first two detectors listed on that line, in order, are 
+										 * selected for comparison throughout the file.
+										 * 
+										 * deltaT is the time interval between the first hits in 
+										 * each detector.  The sign is chosen such that deltaT 
+										 * is positive in the defining line.
 										 */
-										//if (Integer.parseInt(arr[0]) == 1) {
-										//		detOne = ids.get(0);
-										//	  detTwo = ids.get(1);
-										//		dtSign = Integer.signum(Integer.parseInt(detOne) -
-										//														Integer.parseInt(detTwo));
-										//}
 										
-										//if (detOne != null && detTwo != null) {
-										//		deltaT = dtSign*(firstHitTimes.get(ids.indexOf(detOne)) -
-										//										 firstHitTimes.get(ids.indexOf(detTwo)));
-										//}
-										//else {
-										//		deltaT = 0.0;
-										//		// throw error
-										//}
+										// Does this line include both deltaT detectors?
+										// If not, the analysis is quick:
 
-										if( ids.contains(dTDetectors[0]) && ids.contains(dTDetectors[1]) ) {
-												deltaT = firstHitTimes.get(ids.indexOf(dTDetectors[1])) - firstHitTimes.get(ids.indexOf(dTDetectors[0]));
+////										if (dTDetectors[0]==null) {
+////												deltaT=888.8;
+////										}
+////										else if (dTDetectors[1]==null) {
+////												deltaT=999.9;
+////										}
+										if (!ids.contains(dTDetectors[0]) && !ids.contains(dTDetectors[1])) {
+												deltaT=null;
 										}
 										else {
-												deltaT = null;
+												Double t1=firstHitTimes.get(ids.indexOf(dTDetectors[0]));
+												Double t2=firstHitTimes.get(ids.indexOf(dTDetectors[1]));
+												deltaT=t2-t1;
 										}
 										
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
@@ -196,7 +197,7 @@ public class EventCandidates {
                     String jd = arr[4];
                     String partial = arr[5];
 
-                    // get the date and time of the shower
+                    // Get the date and time of the shower
                     NanoDate nd = ElabUtil.julianToGregorian(Integer
                             .parseInt(jd), Double.parseDouble(partial));
                     row.setDate(nd);
@@ -293,48 +294,57 @@ public class EventCandidates {
 		 * Added Mar2017 JG
 		 * Find the two detectors used for DeltaT comparision, defined as 
 		 *   the first two detectors listed in the first row of eventCandidates 
-		 *   that includes two distinct detectors
+		 *   that includes at least two distinct detectors
 		 * Integer[] instead of int[] to allow for null values
 		 */
-		private Integer[] FindDeltaTDetectors(File infile) throws IOException {
-				//try {
+		public static String[] findDeltaTDetectors(File infile) throws IOException {
+				//Integer[] dets = {1,1};
+				String[] dets = {null,null};
+				//Integer[] dets = new Integer[2];
 				BufferedReader br = new BufferedReader(new FileReader(infile));
-				//} catch(FileNotFoundException fnfe) { 
-				//System.out.println(fnfe.getMessage());
-				//}
 				String line = br.readLine();
 				List<String> ids = new ArrayList<String>();
+				//dets[0]=null;
+				//dets[1]=null;
 				
 				while (line != null) {
-						String[] arr = line.split("\\s");
-						
-						ids.clear();
-						// loop over elements of a single line to form ids[] for that line:
-						for (int i=3; i< arr.length; i+=3) {
-								String[] detchan = arr[i].split("\\.");
-								detchan[0] = detchan[0].intern();
-								ids.add(detchan[0]);
+            // ignore any line with "#" (comment)
+            if (!line.matches("^.*#.*")) {
+								String[] arr = line.split("\\s");
+								
+								ids.clear();
+								// Construct the List ids from the current line:
+								for (int i=3; i< arr.length; i+=3) {
+										String[] detchan = arr[i].split("\\.");
+										////		detchan[0] = detchan[0].intern();
+										////		ids.add(detchan[0]);
+										if (!ids.contains(detchan[0])) {
+												ids.add(detchan[0]);
+										}
+								}
+								
+								// Can this line be used to define dets[]?
+								// If so, do so and return
+								if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
+										dets[0] = ids.get(0);
+										dets[1] = ids.get(1);
+										//dets[1] = new Integer(Integer.parseInt(ids.get(1)));
+										br.close();
+										return dets;
+								}
+								// If not, close the if{comment} and increment line
+								////else {}
 						}
-						
-						// check ids[] for Dt conditions
-						if ((ids.size() > 1) && (ids.get(0) != null) && (ids.get(1) != null)) {
-								Integer[] dets = {Integer.parseInt(ids.get(0)), Integer.parseInt(ids.get(1))};
-								br.close();
-								return dets;
-						}
-						// if not found, advance to the next line
-						else {
-								line = br.readLine();
-						}
+						line = br.readLine();
 				}
-				// if not found in any line, there is no valid set for DeltaT
-				Integer[] dets = {null,null};
+				// If the while{} loop completes, there is not a valid set of detectors.
+				// Return initial null values.
 				br.close();
 				return dets;
+				//return test;
 		}
 
 		// read() method overload
-		// Accepts int csc, int dir input and returns EventCandidates object
     public static EventCandidates read(File in, File out, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidates ec = null;
@@ -428,19 +438,25 @@ public class EventCandidates {
         }
 
         public void setDeltaT(Double deltaT) {
-            this.deltaT = deltaT;
+						this.deltaT = deltaT;
         }
 
 				public Double getDeltaT() {
+						///return (Double) 0.0;
 						return deltaT;
 				}
 					
 				public String getDeltaTShower() {
-				// Returns <String> deltaT in nanoseconds to one decimal place
+						// Returns <String> deltaT in ns to one decimal place
 						DecimalFormat df = new DecimalFormat("#.0");
 						df.setRoundingMode(RoundingMode.HALF_UP);
-						// deltaT is calculated in days.  Convert to ns for display
-						return df.format(deltaT*86400e9);
+						if (deltaT == null) {
+								return "-";
+						}
+						else {
+								// deltaT is calculated in days.  Convert to ns for display
+								return df.format(deltaT*86400e9);
+						}
 				}
 				
         public TreeMap<String,String> getIdsMult() {
@@ -456,7 +472,7 @@ public class EventCandidates {
         	}
         	return idsMult;
         }
-    }
+    } /* end of Row() class */
 
 		/* A class to manage sorting of output.jsp rows based on 
 			 comparison of column fields */
@@ -501,26 +517,29 @@ public class EventCandidates {
             else if (csc == 2) {
                 c = m1.getNumDetectors() - m2.getNumDetectors();
             }
-						// added 29Mar2016 JG for DeltaT analysis
+						// added Mar2017 JG for DeltaT analysis
 						else if (csc == 3) {
 								if ( (m1.getDeltaT() != null) && (m2.getDeltaT() != null) ) {
 										c = m1.getDeltaT().compareTo(m2.getDeltaT());
 								}
 								/* If exactly one deltaT is null, non-null ordered before null */
 								else if ( (m1.getDeltaT() != null) && (m2.getDeltaT() == null) ) {
-										c = +1;
+										c = -1;
 								}
 								else if ( (m1.getDeltaT() == null) && (m2.getDeltaT() != null) ) {
-										c = -1;
+										c = +1;
 								}
 								/* If both are null, default to sort by line number and return */
 								else {
 										return m1.getLine() - m2.getLine();
 								}
 						}
-            else if (csc == 4) {
-                c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
-            }
+						else if (csc == 4) {
+								c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
+						}
+						////else if (csc == 3) {
+						////    c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
+						////}		
 
 						/* If the two criteria are equal: */
             if (c == 0) {
@@ -535,11 +554,10 @@ public class EventCandidates {
 										return m1.getLine() - m2.getLine();
                 }
             }
-						
 						/* If the two criteria are unequal, return c modified by input dir */
             else {
                 return dir * c;
             }
-        }
-    }
-}
+        } /* end public int compare */
+    } /* end public static class EventsComparator */
+} /* end public class EventCandidates */
