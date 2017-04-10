@@ -1,0 +1,43 @@
+<html>
+<head>
+	<title>Event Information Definitions</title>
+</head>
+<body>
+<!-- include css style file -->
+<link rel="stylesheet"  href="../css/styletut.css" type="text/css">
+<center><h2>Event Information Definitions</h2></center>
+
+<center>
+<table width="525" cellpadding="4" cellspacing="4">
+<tr><td colspan="2">
+<p>Information about events that satisfy your search criteria are listed in four columns with one line per event.</p>
+<ol>
+	<li>If you click on the headings, events are reordered.</li>
+	<ul>
+		<li>Event Date:  The date and UTC (Greenwich Mean) time in hr:min:sec.</li>
+		<li>Hit Coincidence:  Total number of counter hits.</li>
+   	<li>Detector Coincidence:  Number of detectors hit.</li>  
+    <ul style="list-style-type:circle">
+    	<li>
+				DAQ<sub>i</sub> plus number of counters in DAQ<sub>i</sub> that fire (can be less than number of hits if a counter fires multiple times).
+			</li>
+    	<li>
+				DAQ<sub>j</sub> plus number of counters in DAQ<sub>j</sub> that fire.
+			</li>
+    </ul> 
+		<li>
+			&Delta;t:  The time interval in ns between first hits in the two comparison detectors.  If more than two detectors are included in the analysis, the comparison detectors are selected as the first two detectors in the analysis to share a coincidence.
+		</li>
+	</ul>
+  <li>If you click on the advanced topic "View Multiplicity" a new column appears summing the total number of hit counters.</li>
+  <li>The total number of events is listed in the top heading as "Number shower study candidates."</li>
+  <li>"Event List Reference" links to shower tutorial.</li>
+  <li>
+		An event display is provided for any event you select.  The detailed information for that display appears in a table below providing position, time of counter hits, detector and channel.
+	</li>
+</ol>
+</table>
+</center>
+
+</body>
+</html>
