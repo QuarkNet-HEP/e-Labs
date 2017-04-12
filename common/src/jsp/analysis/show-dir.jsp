@@ -43,7 +43,7 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="Hello World"/>
-					<%--<script language="JScript">
+					<script language="JScript">
     						function copy()
     						{
         					var myObject, newpath;
@@ -51,7 +51,7 @@
         					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
     						}
     					</script>
-					copy();--%>
+					copy();
 				</c:if>
 			</td>
 		</tr>
