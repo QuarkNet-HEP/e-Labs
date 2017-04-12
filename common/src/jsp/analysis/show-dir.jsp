@@ -41,7 +41,7 @@
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
-				<c:if test="${file.name == eventCandidates}">
+				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="Hello World"/>
 					<%--<script language="JScript">
     						function copy()
