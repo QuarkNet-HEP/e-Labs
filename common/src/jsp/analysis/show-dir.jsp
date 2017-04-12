@@ -40,20 +40,19 @@
 		<tr>
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
-				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat 
+				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == eventCandidates}">
 					<c:out value="Hello World"/>
-					<%
-					public class FileCopyTest {
-						public static void main(String[] args) {
-						Path source = Paths.get("${results.outputDirURL}/eventCandidates");
-						Path destination = Paths.get("${results.outputDirURL}/eclipseFormat");
-						try {Files.copy(source, destination);} 
-						catch (IOException e) {e.printStackTrace();}
-						}
-					}
-					%>
-				</c:if> --%>
+					<%--<script language="JScript">
+    						function copy()
+    						{
+        					var myObject, newpath;
+        					myObject = new ActiveXObject("Scripting.FileSystemObject");
+        					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
+    						}
+    					</script>
+					copy();--%>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>
