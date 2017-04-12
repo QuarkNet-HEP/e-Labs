@@ -50,7 +50,7 @@
         					myObject = new ActiveXObject("Scripting.FileSystemObject");
         					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
 						--%>
-						<c:out "Hello World"/>	
+						<c:out value="Hello World"/>	
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
