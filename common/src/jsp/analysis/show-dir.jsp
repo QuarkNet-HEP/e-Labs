@@ -40,7 +40,6 @@
 		<tr>
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
-                                <c:out value="Hello World"/>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat 
 				<c:if test="${file.name == eventCandidates}">
 					<c:out value="Hello World"/>
