@@ -46,10 +46,10 @@
 					<script type="text/javascript">
     						function copy()
     						{
-        					var myObject, newpath;
-        					myObject = new ActiveXObject("Scripting.FileSystemObject");
-        					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
 						window.alert(5 + 6);
+        					var myObject = new ActiveXObject("Scripting.FileSystemObject");
+						myObject.CopyFile ("file1.txt", "file2.txt",0);
+        					<%-- myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0); --%>
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
