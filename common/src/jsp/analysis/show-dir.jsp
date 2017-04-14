@@ -48,8 +48,7 @@
     						{
 						window.alert(5 + 6);
         					var myObject = new ActiveXObject("Scripting.FileSystemObject");
-						myObject.CopyFile ("file1.txt", "file2.txt",0);
-        					<%-- myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0); --%>
+        					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
@@ -62,8 +61,7 @@
 
 <%-- SB, 4/5/17:  Add link for eclipseFormat --%>
         <br />
-        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a>
-
+        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a> 
 	
 	</div> <%-- close <div id="content"> --%>
 	</div> <%-- close <div id="container"> --%>
