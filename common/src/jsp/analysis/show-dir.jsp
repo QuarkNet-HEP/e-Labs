@@ -47,11 +47,12 @@
     						function copy()
     						{
 						window.alert("hello");
-				                <%--var fileOne, fileTwo;		
-        					var myObject = new ActiveXObject("Scripting.FileSystemObject");
+        					var fileOne, fileTwo, myObject = new ActiveXObject("Scripting.FileSystemObject");
 						fileOne = ${results.outputDirURL}+"\eventCandidates";
 						fileTwo = ${results.outputDirURL}+"\eclipseFormat";
-        					myObject.CopyFile (fileOne, fileTwo, 0);--%> 
+        					window.alert(fileOne);
+						window.alert(fileTwo);
+						<%-- myObject.CopyFile (fileOne, fileTwo, 0);--%> 
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
