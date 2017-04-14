@@ -46,6 +46,7 @@
 					<script type="text/javascript">
     						function copy()
     						{
+						window.alert(5 + 6);
         					<%-- var myObject, newpath;
         					myObject = new ActiveXObject("Scripting.FileSystemObject");
         					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
@@ -59,13 +60,14 @@
 		</tr>
 	</c:forEach>
 
-	<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
-	<br />
-	<a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a>
-
 </table>
-				
-		 	</div>
-		</div>
+
+<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
+        <br />
+        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a>
+
+	
+	</div> <%-- close <div id="content"> --%>
+	</div> <%-- close <div id="container"> --%>
 	</body>
 </html>
