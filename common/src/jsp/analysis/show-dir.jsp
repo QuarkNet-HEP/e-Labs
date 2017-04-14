@@ -42,16 +42,16 @@
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
-					<c:out value="Hello World"/>
+					<c:out value="hello world"/>
 					<script type="text/javascript">
     						function copy()
     						{
 						window.alert("Hello! I am an alert box in copy()!");
-				                var file1, file2;		
+				                var fileOne, fileTwo;		
         					var myObject = new ActiveXObject("Scripting.FileSystemObject");
-						file1 = ${results.outputDirURL}+"\eventCandidates";
-						file2 = ${results.outputDirURL}+"\eclipseFormat";
-        					myObject.CopyFile (file1, file2, 0); 
+						fileOne = ${results.outputDirURL}+"\eventCandidates";
+						fileTwo = ${results.outputDirURL}+"\eclipseFormat";
+        					myObject.CopyFile (fileOne, fileTwo, 0); 
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
