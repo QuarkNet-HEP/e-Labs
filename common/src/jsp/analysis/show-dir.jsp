@@ -53,7 +53,7 @@
 						fileTwo = `${results.outputDirURL}/eclipseFormat`;
 						window.alert(fileTwo);
 						var myObject = new ActiveXObject("Scripting.FileSystemObject");
-						myObject.CopyFile (fileOne, fileTwo, 0);
+						myObject.CopyFile (fileOne, fileTwo);
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
