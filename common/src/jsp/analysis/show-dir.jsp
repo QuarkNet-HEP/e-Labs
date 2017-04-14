@@ -46,9 +46,12 @@
 					<script type="text/javascript">
     						function copy()
     						{
-						window.alert(5 + 6);
+						window.alert("Hello! I am an alert box in copy()!");
+				                var file1, file2;		
         					var myObject = new ActiveXObject("Scripting.FileSystemObject");
-        					myObject.CopyFile ("${results.outputDirURL}/eventCandidates", "${results.outputDirURL}/eclipseFormat",0);
+						file1 = ${results.outputDirURL}+"\eventCandidates";
+						file2 = ${results.outputDirURL}+"\eclipseFormat";
+        					myObject.CopyFile (file1, file2, 0); 
     						}
     					</script>
 					<script type="text/javascript">copy();</script>
