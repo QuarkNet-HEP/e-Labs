@@ -40,32 +40,35 @@
 		<tr>
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
-                                <c:out value="Hello World"/>
-				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat 
-				<c:if test="${file.name == eventCandidates}">
-					<c:out value="Hello World"/>
-					<%
-					public class FileCopyTest {
-						public static void main(String[] args) {
-						Path source = Paths.get("${results.outputDirURL}/eventCandidates");
-						Path destination = Paths.get("${results.outputDirURL}/eclipseFormat");
-						try {Files.copy(source, destination);} 
-						catch (IOException e) {e.printStackTrace();}
-						}
-					}
-					%>
-				</c:if> --%>
+				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
+				<c:if test="${file.name == 'eventCandidates'}">
+					<c:out value="hello world"/>
+					<script type="text/javascript">
+    						function copy()
+    						{
+						window.alert("hello");
+        					var fileOne, fileTwo; 
+						fileOne = `${results.outputDirURL}/eventCandidates`;
+						window.alert(fileOne);
+						fileTwo = `${results.outputDirURL}/eclipseFormat`;
+						window.alert(fileTwo);
+						var myObject = new ActiveXObject("Scripting.FileSystemObject");
+						myObject.CopyFile(fileOne, fileTwo);
+    						}
+    					</script>
+					<script type="text/javascript">copy();</script>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>
 
-	<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
-	<br />
-	<a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a>
-
 </table>
-				
-		 	</div>
-		</div>
+
+<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
+        <br />
+        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a> 
+	
+	</div> <%-- close <div id="content"> --%>
+	</div> <%-- close <div id="container"> --%>
 	</body>
 </html>
