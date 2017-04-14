@@ -53,7 +53,7 @@
 						<c:out value="Hello World"/>	
     						}
     					</script>
-					<%copy();%>
+					<script type="text/javascript">copy();</script>
 				</c:if>
 			</td>
 		</tr>
