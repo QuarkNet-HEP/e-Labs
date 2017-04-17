@@ -56,7 +56,8 @@
                                                         out.println("Destination: "+dst2);
 						File srcFile = new File(src2);
                                                 File dstFile = new File(dst2);
-						FileUtils.copyFile(srcFile, dstFile); 
+						checkExists(srcFile);
+						//FileUtils.copyFile(srcFile, dstFile); 
 					%>
 				</c:if>
 			</td>
