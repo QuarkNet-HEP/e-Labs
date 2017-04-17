@@ -64,7 +64,7 @@
 						File srcFile = new File(src);
                                                 File dstFile = new File(dst);
 						System.out.println(src);
-						System.out.printlin(dst);
+						System.out.println(dst);
 						//FileUtils.copyFile(srcFile, dstFile); 
 					%>
 				</c:if>
