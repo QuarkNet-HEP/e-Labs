@@ -47,7 +47,9 @@
 					<script>
     						var src = "${results.outputDirURL}/eventCandidates";
 						var dst = "${results.outputDirURL}/eclipseFormat";
+  						window.alert(src);window.alert(dst);
 					</script>
+					<%--
 					<%
   						String src = request.getParameter("src");
     						if (src != null) 
@@ -62,7 +64,6 @@
 
 					%>
 
-					<%--
 					<%      
 						String src = 
 						File srcFile = new File(src);
