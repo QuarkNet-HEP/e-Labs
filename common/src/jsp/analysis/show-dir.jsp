@@ -59,12 +59,14 @@
 				        end testing --%>
 
 					<%
-						System.out.println("Source file name:  "+ ${results.outputDirURL} + "/eventCandidates");
-						System.out.println("Destination file name:  "+ ${results.outputDirURL} + "/eclipseFormat");
+						String srcDir = "${results.outputDirURL}";
+						String dstDir = "${results.outputDirURL}";
+						System.out.println("Source file name:  "+ srcDir  + "/eventCandidates");
+						System.out.println("Destination file name:  "+ dstDir + "/eclipseFormat");
 						<%-- do this later 
-						File src = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
-                                                File dst = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
-						FileUtils.copyFile(src, dst); --%>
+						File srcFile = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
+                                                File dstFile = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
+						FileUtils.copyFile(srcFile, dstFile); --%>
 					%>
 				</c:if>
 			</td>
