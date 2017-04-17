@@ -44,10 +44,27 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="hello world"/>
-					<c:out value="${results.outputDirURL}/eventCandidates"/>
-					<c:out value="${results.outputDirURL}/eclipseFormat"/>
-					<%--
+					<script>
+    						var src = "${results.outputDirURL}/eventCandidates";
+						var dst = "${results.outputDirURL}/eclipseFormat";
+					</script>
 					<%
+  						String src = request.getParameter("src");
+    						if (src != null) 
+    						{
+        						out.println(src);
+    						}
+						String src = request.getParameter("dst");
+                                                if (dst != null)
+                                                {
+                                                        out.println(dst);
+                                                }
+
+					%>
+
+					<%--
+					<%      
+						String src = 
 						File srcFile = new File(src);
                                                 File dstFile = new File(dst);
 						out.println(src);
