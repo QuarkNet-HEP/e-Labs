@@ -48,13 +48,13 @@
     						var src = "${results.outputDirURL}/eventCandidates";
 						var dst = "${results.outputDirURL}/eclipseFormat";
   						window.alert(src);window.alert(dst);
+					</script>
 					<%
-  						String src2 = request.getParameter("src");    						
+  						String src2 = "<script>document.writeln(src)</script>";
         						out.println("Source: "+src2);
-						String dst2 = request.getParameter("dst");
+						String dst2 = "<script>document.writeln(dst)</script>";
                                                         out.println("Destination: "+dst2);
 					%>
-					</script>
 					
 					<%--
 					<%      
