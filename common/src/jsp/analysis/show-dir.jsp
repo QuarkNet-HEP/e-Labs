@@ -59,12 +59,12 @@
 				        end testing --%>
 
 					<%
-					File src = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
-				        File dst = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
-					System.out.println("Source file name:  "+ ${results.outputDirURL} + "/eventCandidates");
-					System.out.println("Destination file name:  "+ ${results.outputDirURL} + "/eclipseFormat");
-					//FileUtils.copyFile(src, dst);
-					}
+						System.out.println("Source file name:  "+ ${results.outputDirURL} + "/eventCandidates");
+						System.out.println("Destination file name:  "+ ${results.outputDirURL} + "/eclipseFormat");
+						<%-- do this later 
+						File src = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
+                                                File dst = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
+						FileUtils.copyFile(src, dst); --%>
 					%>
 				</c:if>
 			</td>
