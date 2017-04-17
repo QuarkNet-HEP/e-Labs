@@ -63,10 +63,10 @@
 						String dst = "${results.outputDirURL}"+"/eclipseFormat";
 						File srcFile = new File(src);
                                                 File dstFile = new File(dst);
+						System.out.println(src);
+						System.out.printlin(dst);
 						//FileUtils.copyFile(srcFile, dstFile); 
 					%>
-				Hello!  The source file is <%= src %>
-                                Hello!  The destination file is <%= dst %>
 				</c:if>
 			</td>
 		</tr>
