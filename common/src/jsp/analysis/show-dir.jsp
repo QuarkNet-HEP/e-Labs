@@ -44,9 +44,9 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="hello world"/>
-					
-					String src = "${results.outputDirURL}/eventCandidates";
-                                        String dst = "${results.outputDirURL}/eclipseFormat";
+					<c:out value="${results.outputDirURL}/eventCandidates"/>
+					<c:out value="${results.outputDirURL}/eclipseFormat"/>
+					<%--
 					<%
 						File srcFile = new File(src);
                                                 File dstFile = new File(dst);
@@ -54,6 +54,7 @@
 						out.println(dst);
 						//FileUtils.copyFile(srcFile, dstFile); 
 					%>
+					--%>
 				</c:if>
 			</td>
 		</tr>
