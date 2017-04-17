@@ -45,27 +45,14 @@
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="hello world"/>
 					
-					<%-- testing
-					<script type="text/javascript">
-    						function copy()
-    						{
-						window.alert("hello");
-        					var fileOne, fileTwo; 
-						fileOne = `${results.outputDirURL}/eventCandidates`; window.alert(fileOne);
-						fileTwo = `${results.outputDirURL}/eclipseFormat`; window.alert(fileTwo);
-    						}
-    					</script>					
-					<script type="text/javascript">copy();</script>
-				        end testing --%>
-
+					String src = "${results.outputDirURL}/eventCandidates";
+                                        String dst = "${results.outputDirURL}/eclipseFormat";
 					<%
-						String src = "${results.outputDirURL}"+"/eventCandidates";
-						String dst = "${results.outputDirURL}"+"/eclipseFormat";
 						File srcFile = new File(src);
                                                 File dstFile = new File(dst);
-						System.out.println("src");
-						System.out.println(dst);
-						FileUtils.copyFile(srcFile, dstFile); 
+						out.println(src);
+						out.println(dst);
+						//FileUtils.copyFile(srcFile, dstFile); 
 					%>
 				</c:if>
 			</td>
