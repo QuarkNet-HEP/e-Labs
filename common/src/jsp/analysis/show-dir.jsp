@@ -7,6 +7,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
+<%@ page import="org.apache.commons.io.FileUtils" %>
 
 <%
 	File f = new File(results.getOutputDir());
@@ -43,20 +44,28 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="hello world"/>
+					
+					<%-- testing
 					<script type="text/javascript">
     						function copy()
     						{
 						window.alert("hello");
         					var fileOne, fileTwo; 
-						fileOne = `${results.outputDirURL}/eventCandidates`;
-						window.alert(fileOne);
-						fileTwo = `${results.outputDirURL}/eclipseFormat`;
-						window.alert(fileTwo);
-						var myObject = new ActiveXObject("Scripting.FileSystemObject");
-						myObject.CopyFile(fileOne, fileTwo);
+						fileOne = `${results.outputDirURL}/eventCandidates`; window.alert(fileOne);
+						fileTwo = `${results.outputDirURL}/eclipseFormat`; window.alert(fileTwo);
     						}
-    					</script>
+    					</script>					
 					<script type="text/javascript">copy();</script>
+				        end testing --%>
+
+					<%
+					File src = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
+				        File dst = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
+					System.out.println("Source file name:  "+ ${results.outputDirURL} + "/eventCandidates");
+					System.out.println("Destination file name:  "+ ${results.outputDirURL} + "/eclipseFormat");
+					//FileUtils.copyFile(src, dst);
+					}
+					%>
 				</c:if>
 			</td>
 		</tr>
