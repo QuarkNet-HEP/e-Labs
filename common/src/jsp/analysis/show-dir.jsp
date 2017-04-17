@@ -54,18 +54,10 @@
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst)</script>";
                                                         out.println("Destination: "+dst2);
+						File srcFile = new File(src2);
+                                                File dstFile = new File(dst2);
+						FileUtils.copyFile(srcFile, dstFile); 
 					%>
-					
-					<%--
-					<%      
-						String src = 
-						File srcFile = new File(src);
-                                                File dstFile = new File(dst);
-						out.println(src);
-						out.println(dst);
-						//FileUtils.copyFile(srcFile, dstFile); 
-					%>
-					--%>
 				</c:if>
 			</td>
 		</tr>
