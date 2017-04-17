@@ -50,15 +50,15 @@
   						window.alert(src);window.alert(dst);
 					</script>
 					<%
-  						String src = request.getParameter("src");
-    						if (src != null) 
+  						String src2 = request.getParameter("src");
+    						if (src2 != null) 
     						{
-        						out.println(src);
+        						out.println(src2);
     						}
-						String src = request.getParameter("dst");
-                                                if (dst != null)
+						String dst2 = request.getParameter("dst");
+                                                if (dst2 != null)
                                                 {
-                                                        out.println(dst);
+                                                        out.println(dst2);
                                                 }
 
 					%>
