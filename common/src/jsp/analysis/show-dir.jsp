@@ -60,7 +60,7 @@
 							out.println("Source: "+src2);
 						}
 					%>
-					%--FileUtils.copyFile(srcFile, dstFile);--%>
+				        <%--FileUtils.copyFile(srcFile, dstFile);--%>
 				</c:if>
 			</td>
 		</tr>
