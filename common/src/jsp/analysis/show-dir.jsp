@@ -55,8 +55,8 @@
 						String dst2 = "<script>document.writeln(dst)</script>";
                                                         out.println("Destination: "+dst2);
 						File srcFile = FileUtils.getFile(src2);
-						if (srcFile.length() != 0){
-							out.println("Source is not empty: "+src2);}
+						if (file.exists()){
+							out.println("Source exists: "+src2);}
                                                 File dstFile = new File(dst2);
 						if (dstFile.exists()){
 							out.println("Destination exists:  "+dst2);}
