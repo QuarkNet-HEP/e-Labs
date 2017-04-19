@@ -54,11 +54,12 @@
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst)</script>";
                                                         out.println("Destination: "+dst2);
-						File srcFile = new File(src2);
+						File srcFile = FileUtils.getFile(src2);
+						if (srcFile.length() != 0){
+							out.println("Source is not empty: "+src2);}
                                                 File dstFile = new File(dst2);
-						if (srcFile.exists()){     
-							out.println("Source: "+src2);
-						}
+						if (dstFile.exists()){
+							out.println("Destination exists:  "+dst2);}
 					%>
 				        <%--FileUtils.copyFile(srcFile, dstFile);--%>
 				</c:if>
