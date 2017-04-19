@@ -54,8 +54,8 @@
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst)</script>";
                                                         out.println("Destination: "+dst2);
-						File srcFile = FileUtils.getFile(src2);
-						if (file.exists()){
+						File srcFile = new File(src2);
+						if (srcFile.exists()){
 							out.println("Source exists: "+src2);}
                                                 File dstFile = new File(dst2);
 						if (dstFile.exists()){
