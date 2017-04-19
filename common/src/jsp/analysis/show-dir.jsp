@@ -58,9 +58,9 @@
                                                 File dstFile = new File(dst2);
 						if (srcFile.exists()){     
 							out.println("Source: "+src2);
-							<%--FileUtils.copyFile(srcFile, dstFile);--%> 
 						}
 					%>
+					%--FileUtils.copyFile(srcFile, dstFile);--%>
 				</c:if>
 			</td>
 		</tr>
