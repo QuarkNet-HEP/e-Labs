@@ -51,8 +51,10 @@
 					</script>
 					<%
   						String src2 = "<script>document.writeln(src)</script>";
+							src2 = "/var/lib/tomcat7/webapps"+src2;
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst)</script>";
+							dst2 = "/var/lib/tomcat7/webapps"+dst2;
                                                         out.println("Destination: "+dst2);
 						File srcFile = new File(src2);
 						if (srcFile.exists()){
