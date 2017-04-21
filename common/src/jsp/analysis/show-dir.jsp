@@ -7,7 +7,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
-<%@ page import="java.nio.file.*"%>
+<%@ page import="org.apache.commons.io.FileUtils"%>
 
 <%
 	File f = new File(results.getOutputDir());
@@ -54,6 +54,10 @@
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst);</script>";
 							out.println("Destination: "+dst2);
+						File srcFile = new File(src2);
+						if (srcFile.exists()) {
+						        out.println("a file or directory named 'foo' exists");
+						}
 					%>
 				</c:if>
 			</td>
