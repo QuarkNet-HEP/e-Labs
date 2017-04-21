@@ -43,14 +43,20 @@
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
-					<c:out value="hello world"/>
-					<c:out value="${results.outputDirURL}/${file.name}"/>
+					<c:out value="filename:  eventCandidates"/>	
+				<script type="text/javascript">
+					src = "${results.outputDirURL}/${file.name}";
+					dst = "${results.outputDirURL}/eclipseFormat";
+				</script>
+					
+				<%
+					String s = "<script>document.writeln(src)</script>";
+					out.println("source= "+s);
+					String d = "<script>document.writeln(dst)</script>";
+					out.println("destination= "+d);
+				%>
+				
 				<%--
-					<script type="text/javascript">
-    						var src = "${results.outputDirURL}/eventCandidates";
-						var dst = "${results.outputDirURL}/eclipseFormat";
-  						window.alert(src);window.alert(dst);
-					</script>
 					<%
   						String src2 = "<script>document.writeln(src);</script>";
         						out.println("The source: "+src2);
