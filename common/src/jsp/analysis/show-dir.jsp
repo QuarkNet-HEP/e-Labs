@@ -44,6 +44,8 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="hello world"/>
+					<c:out value="${results.outputDirURL}/${file.name}"/>
+				<%--
 					<script type="text/javascript">
     						var src = "${results.outputDirURL}/eventCandidates";
 						var dst = "${results.outputDirURL}/eclipseFormat";
@@ -51,14 +53,15 @@
 					</script>
 					<%
   						String src2 = "<script>document.writeln(src);</script>";
-        						out.println("Source: "+src2);
+        						out.println("The source: "+src2);
 						String dst2 = "<script>document.writeln(dst);</script>";
-							out.println("Destination: "+dst2);
+							out.println("The destination: "+dst2);
 						File srcFile = new File(src2);
 						if (srcFile.exists()) {
 						        out.println("a file or directory named 'foo' exists");
 						}
 					%>
+				--%>
 				</c:if>
 			</td>
 		</tr>
