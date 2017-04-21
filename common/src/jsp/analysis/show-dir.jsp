@@ -50,11 +50,9 @@
   						window.alert(src);window.alert(dst);
 					</script>
 					<%
-  						String src2 = "<script>document.writeln(src)</script>";
-							src2 = "/var/lib/tomcat7/webapps"+src2;
+  						String src2 = "<script>document.writeln(src);</script>";
         						out.println("Source: "+src2);
-						String dst2 = "<script>document.writeln(dst)</script>";
-							dst2 = "/var/lib/tomcat7/webapps"+dst2;
+						String dst2 = "<script>document.writeln(dst);</script>";
 							out.println("Destination: "+dst2);
 						Path FROM = Paths.get(src2);
     						Path TO = Paths.get(dst2);
