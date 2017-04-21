@@ -7,7 +7,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
-<%@ page import="org.apache.commons.io.FileUtils" %>
+<%@ page import="java.nio.file.*"%>
 
 <%
 	File f = new File(results.getOutputDir());
@@ -54,16 +54,12 @@
 							src2 = "/var/lib/tomcat7/webapps"+src2;
         						out.println("Source: "+src2);
 						String dst2 = "<script>document.writeln(dst)</script>";
-							dst2 = "/var/lib/tomcat7/webapps"+dst2;
-                                                        out.println("Destination: "+dst2);
-						File srcFile = new File(src2);
-						if (srcFile.exists()){
-							out.println("Source exists: "+src2);}
-                                                File dstFile = new File(dst2);
-						if (dstFile.exists()){
-							out.println("Destination exists:  "+dst2);}
+							dst2 = "/var/lib/tomcat7/webapps"+dst2);
+							out.println("Destination: "+dst2);
+						Path FROM = Paths.get(src2);
+    						Path TO = Paths.get(dst2);
+						Files.copy(FROM, TO);
 					%>
-				        <%--FileUtils.copyFile(srcFile, dstFile);--%>
 				</c:if>
 			</td>
 		</tr>
