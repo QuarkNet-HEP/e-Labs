@@ -56,7 +56,8 @@
 							out.println("Destination: "+dst2);
 						Path FROM = Paths.get(src2);
     						Path TO = Paths.get(dst2);
-						Files.copy(FROM, TO);
+						System.out.println("Files.Size(): " + Files.size(FROM));
+						//Files.copy(FROM, TO);
 					%>
 				</c:if>
 			</td>
