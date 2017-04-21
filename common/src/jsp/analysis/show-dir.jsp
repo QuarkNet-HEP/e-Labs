@@ -7,7 +7,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
-<%@ page import="org.apache.commons.io.FileUtils"%>
+<%@ page import="java.nio.file.*" %>
 
 <%
 	File f = new File(results.getOutputDir());
@@ -54,6 +54,10 @@
 					out.println("source= "+s);
 					String d = "<script>document.writeln(dst)</script>";
 					out.println("destination= "+d);
+					Scanner input = new Scanner(new File("s"));
+					while (input.hasNextLine()){
+   						out.println(input.nextLine());
+					}
 				%>
 				
 				<%--
