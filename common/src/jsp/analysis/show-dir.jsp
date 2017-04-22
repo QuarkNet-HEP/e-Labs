@@ -54,7 +54,7 @@
 					out.println("source= "+s);
 					String d = "<script>document.writeln(dst)</script>";
 					out.println("destination= "+d);
-					Scanner input = new Scanner(new File("s"));
+					Scanner input = new Scanner(new File(s));
 					while (input.hasNextLine()){
    						out.println(input.nextLine());
 					}
