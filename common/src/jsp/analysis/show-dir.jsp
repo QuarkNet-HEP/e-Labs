@@ -6,8 +6,7 @@
 <%@ page import="java.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ include file="../analysis/results.jsp" %>
-<%@ page import="java.nio.file.*" %>
+<%@ include file="../analysis/results.jsp" %
 
 <%
 	File f = new File(results.getOutputDir());
@@ -60,7 +59,7 @@
 				    		if (f.exists()) {
 							out.println("Source File exists!");
 						}
-                                        File g = new File(dstD, dstf);
+                                        File g = new File(dstD, dstF);
 						if (g.exists()) {
 							out.println("Destination File exists!");
 						}     
