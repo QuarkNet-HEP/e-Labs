@@ -57,9 +57,9 @@
                                         String dstF="<script>document.writeln(dstFil)</script>";
 					
 					File f = new File(srcD, srcF);
-				    		if (f.exists()) {out.println("Source File exists!"}
+				    		if (f.exists()) {out.println("Source File exists!")}
                                         File g = new File(dstD, dstf);
-						if (g.exists()) {out.println("Destination File exists!"}     
+						if (g.exists()) {out.println("Destination File exists!")}     
 					out.println("Source Directory: "+ srcD); 
 					out.println("Source File: "+srcF);
 					out.println("Destination Directory: "+dstD);
