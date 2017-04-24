@@ -60,7 +60,7 @@
 					out.println("Destination Directory: "+dstD);
                                 	out.println("Destination File: "+dstF);
 
-					ElabUtil.copyFile(srcDir, srcFil, dstDir, dstFil);    
+					ElabUtil.copyFile(srcD, srcF, dstD, dstF);    
 					%>
 				</c:if>
 			</td>
