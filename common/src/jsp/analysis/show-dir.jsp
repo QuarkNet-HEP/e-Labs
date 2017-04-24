@@ -62,11 +62,10 @@
 					out.println("Destination Directory: "+dstD);	
 					out.println("\n");
                                 	out.println("Destination File: "+dstF);
-
-				    File f = new File(srcD, srcF);
-				    if (f.exists()) {
-					out.println("Source exists!");
-				    }
+					
+					if (srcD != null) {
+						ElabUtil.copyFile(srcD, srcF, dstD, dstF);
+		                        }				
 
 					%>
 				</c:if>
