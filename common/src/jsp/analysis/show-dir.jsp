@@ -55,12 +55,17 @@
 					String srcF="<script>document.writeln(srcFil)</script>"; 
 					String dstD="<script>document.writeln(distDir)</script>";
                                         String dstF="<script>document.writeln(dstFil)</script>";
+					
+					File f = new File(srcD, srcF);
+				    		if (f.exists()) {out.println("Source File exists!"}
+                                        File g = new File(dstD, dstf);
+						if (g.exists()) {out.println("Destination File exists!"}     
 					out.println("Source Directory: "+ srcD); 
 					out.println("Source File: "+srcF);
 					out.println("Destination Directory: "+dstD);
                                 	out.println("Destination File: "+dstF);
 
-					ElabUtil.copyFile(srcD, srcF, dstD, dstF);    
+					<%--ElabUtil.copyFile(srcD, srcF, dstD, dstF);--%>    
 					%>
 				</c:if>
 			</td>
