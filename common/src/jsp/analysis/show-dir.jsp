@@ -55,6 +55,10 @@
 					String dstD="<script>document.writeln(dstDir)</script>";
                                         String dstF="<script>document.writeln(dstFil)</script>";
 
+
+					srcD = srcD.substring(0, srcD.length()-1);
+					dstD = dstD.substring(0, dstD.length()-1);
+
 					out.println("Source Directory: "+ srcD);
 					out.println("\n"); 
 					out.println("Source File: "+srcF);
@@ -63,6 +67,7 @@
 					out.println("\n");
                                 	out.println("Destination File: "+dstF);
 					
+									
 					if (srcD != null) {
 						ElabUtil.copyFile(srcD, srcF, dstD, dstF);
 		                        }				
