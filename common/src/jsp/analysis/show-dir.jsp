@@ -52,13 +52,8 @@
 					<%
 					String srcD="<script>document.writeln(srcDir)</script>";
 					String srcF="<script>document.writeln(srcFil)</script>"; 
-					String dstD="<script>document.writeln(distDir)</script>";
+					String dstD="<script>document.writeln(dstDir)</script>";
                                         String dstF="<script>document.writeln(dstFil)</script>";
-					String src = srcD+"/"+srcF;
-					String dst = dstD+"/"+dstF;
-
-					out.println("Source: "+ src);
-					out.println("Destination: "+dst);
 
 					out.println("Source Directory: "+ srcD); 
 					out.println("Source File: "+srcF);
