@@ -50,11 +50,10 @@
 					var dstDir = srcDir;
 					var dstFil = "eclipseFormat";
 				   </script>
-					
-					Source Directory: <%=request.getParameter("srcDir")%><br />
-					Source File:  <%=request.getParameter("srcFil")%><br />
-					Destination Directory: <%=request.getParameter("dstDir")%><br />
-                                	Destination File:  <%=request.getParameter("dstFil")%><br />
+					<% out.println("Source Directory: "+ srcDir); 
+					out.println("Source File: "+srcFil);
+					out.println("Destination Directory: "+dstDir);
+                                	out.println("Destination File: "+dstFil);%>
 
 					<%--<%ElabUtil.copyFile(srcDir, srcFil, dstDir, dstFil);    %>--%>
 				</c:if>
