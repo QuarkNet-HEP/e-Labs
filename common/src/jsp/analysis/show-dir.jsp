@@ -45,7 +45,7 @@
 					<c:out value="filename:  eventCandidates"/>	
 				   <script type="text/javascript">
 					var srcDir = "${results.outputDirURL}";
-					var srcFil = "eventCandidates";
+					var srcFil = "${file.name}";
 					var dstDir = "${results.outputDirURL}";
 					var dstFil = "eclipseFormat";
 				   </script>
