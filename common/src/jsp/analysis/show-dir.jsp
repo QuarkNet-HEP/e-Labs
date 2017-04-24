@@ -47,7 +47,7 @@
 				   <script type="text/javascript">
 					var srcDir = "${results.outputDirURL}";
 					var srcFil = "eventCandidates";
-					var dstDir = srcDir;
+					var dstDir = "${results.outputDirURL}";
 					var dstFil = "eclipseFormat";
 				   </script>
 					<%
@@ -58,9 +58,10 @@
 					out.println("Source Directory: "+ srcD); 
 					out.println("Source File: "+srcF);
 					out.println("Destination Directory: "+dstD);
-                                	out.println("Destination File: "+dstF);%>
+                                	out.println("Destination File: "+dstF);
 
-					<%--<%ElabUtil.copyFile(srcDir, srcFil, dstDir, dstFil);    %>--%>
+					ElabUtil.copyFile(srcDir, srcFil, dstDir, dstFil);    
+					%>
 				</c:if>
 			</td>
 		</tr>
