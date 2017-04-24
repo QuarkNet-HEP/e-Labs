@@ -54,15 +54,12 @@
 					String srcF="<script>document.writeln(srcFil)</script>"; 
 					String dstD="<script>document.writeln(distDir)</script>";
                                         String dstF="<script>document.writeln(dstFil)</script>";
-					
-					File f = new File(srcD, srcF);
-				    		if (f.exists()) {
-							out.println("Source File exists!");
-						}
-                                        File g = new File(dstD, dstF);
-						if (g.exists()) {
-							out.println("Destination File exists!");
-						}     
+					String src = srcD+"/"+srcF;
+					String dst = dstD+"/"+dstF;
+
+					out.println("Source: "+ src);
+					out.println("Destination: "+dst);
+
 					out.println("Source Directory: "+ srcD); 
 					out.println("Source File: "+srcF);
 					out.println("Destination Directory: "+dstD);
