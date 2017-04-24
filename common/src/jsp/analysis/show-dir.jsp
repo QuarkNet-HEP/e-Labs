@@ -6,7 +6,7 @@
 <%@ page import="java.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ include file="../analysis/results.jsp" %
+<%@ include file="../analysis/results.jsp" %>
 
 <%
 	File f = new File(results.getOutputDir());
