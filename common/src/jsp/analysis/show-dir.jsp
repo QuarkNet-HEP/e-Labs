@@ -60,7 +60,7 @@
 					out.println("Source File: "+srcF);
 					out.println("\n");
 					out.println("Destination Directory: "+dstD);	
-					out.println("\n")
+					out.println("\n");
                                 	out.println("Destination File: "+dstF);
 
 				    File f = new File(srcD, srcF);
