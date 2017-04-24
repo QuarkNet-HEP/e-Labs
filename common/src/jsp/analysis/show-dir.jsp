@@ -44,34 +44,19 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="filename:  eventCandidates"/>	
-				<script type="text/javascript">
-					src = "${results.outputDirURL}/${file.name}";
-					dst = "${results.outputDirURL}/eclipseFormat";
-				</script>
+				   <script type="text/javascript">
+					var srcDir = "${results.outputDirURL}";
+					var srcFil = "eventCandidates";
+					var dstDir = srcDir;
+					var dstFil = "eclipseFormat";
+				   </script>
 					
-				<%
-					String s = "<script>document.writeln(src)</script>";
-					out.println("source= "+s);
-					String d = "<script>document.writeln(dst)</script>";
-					out.println("destination= "+d);
-					Scanner input = new Scanner(new File(s));
-					while (input.hasNextLine()){
-   						out.println(input.nextLine());
-					}
-				%>
-				
-				<%--
-					<%
-  						String src2 = "<script>document.writeln(src);</script>";
-        						out.println("The source: "+src2);
-						String dst2 = "<script>document.writeln(dst);</script>";
-							out.println("The destination: "+dst2);
-						File srcFile = new File(src2);
-						if (srcFile.exists()) {
-						        out.println("a file or directory named 'foo' exists");
-						}
-					%>
-				--%>
+					Source Directory: <%=request.getParameter("srcDir")%><br />
+					Source File:  <%=request.getParameter("srcFil")%><br />
+					Destination Directory: <%=request.getParameter("dstDir")%><br />
+                                	Destination File:  <%=request.getParameter("dstFil")%><br />
+
+					<%--<%ElabUtil.copyFile(srcDir, srcFil, dstDir, dstFil);    %>--%>
 				</c:if>
 			</td>
 		</tr>
