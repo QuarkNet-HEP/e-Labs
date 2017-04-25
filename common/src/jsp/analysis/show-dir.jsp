@@ -48,16 +48,16 @@
 					var srcFil = "${file.name}";
 					var dstDir = "${results.outputDirURL}";
 					var dstFil = "eclipseFormat";
+					var src = "${results.outputDirURL}/${file.name}";
+					var dst = "${results.outputDirURL}/eclipseFormat";
 				   </script>
 					<%
 					String srcD="<script>document.writeln(srcDir)</script>";
 					String srcF="<script>document.writeln(srcFil)</script>"; 
 					String dstD="<script>document.writeln(dstDir)</script>";
                                         String dstF="<script>document.writeln(dstFil)</script>";
-
-
-					srcD = srcD.substring(0, srcD.length()-1);
-					dstD = dstD.substring(0, dstD.length()-1);
+					String src2="<script>document.writeln(src)</script>";
+					String dst2="<script>document.writeln(dst)</script>";
 
 					out.println("Source Directory: "+ srcD);
 					out.println("\n"); 
@@ -67,9 +67,8 @@
 					out.println("\n");
                                 	out.println("Destination File: "+dstF);
 					
-									
-					if (srcD != null) {
-						ElabUtil.copyFile(srcD, srcF, dstD, dstF);
+					if (src2 != null) {
+						out.println("Source file exists!");
 		                        }				
 
 					%>
