@@ -8,6 +8,8 @@
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
 
+<%@ page import="java.nio.file.*" %>
+
 <%
 	File f = new File(results.getOutputDir());
 	File[] all = f.listFiles();
