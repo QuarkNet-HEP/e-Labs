@@ -24,7 +24,7 @@
 		out.println("Source: "+src2);
 		out.println("\n");
 		out.println("Destination: "+dst2);
-		ut.println("\n");
+		out.println("\n");
 	%>
 	</body>
 </html>
