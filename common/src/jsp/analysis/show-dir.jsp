@@ -47,9 +47,9 @@
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="${results.outputDirURL}/${file.name}"/>
 					<form action="show-dir.jsp" method="POST">
-						<input type="hidden" name="src" value="<c:out value="${results.outputDirURL}/${file.name}"/>">
-						<input type="hidden" name="dst" value="<c:out value="${results.outputDirURL}/eclipseFormat"/>">
-						<input type="submit" value="Submit" />
+						<input type="hidden" name="src" value="${results.outputDirURL}/${file.name}"/>
+						<input type="hidden" name="dst" value="${results.outputDirURL}/eclipseFormat"/>
+          					<input type="submit"/> 
 					</form>
 					<%
 					/*
