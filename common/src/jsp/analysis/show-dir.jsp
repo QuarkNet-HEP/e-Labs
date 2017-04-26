@@ -46,35 +46,11 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="${results.outputDirURL}/${file.name}"/>
-					<form action="show-dir.jsp" method="POST">
+					<form action="eclipse_Format.jsp" method="POST">
 						<input type="hidden" name="src" value="${results.outputDirURL}/${file.name}"/>
 						<input type="hidden" name="dst" value="${results.outputDirURL}/eclipseFormat"/>
-          					<input type="submit"/> 
+          					<input type="submit" value="eclipseFormat"/> 
 					</form>
-					<%
-					/*
-					String srcD="<script>document.writeln(srcDir)</script>";
-					String srcF="<script>document.writeln(srcFil)</script>"; 
-					String dstD="<script>document.writeln(dstDir)</script>";	
-                                        String dstF="<script>document.writeln(dstFil)</script>";
-
-					out.println("Source Directory: "+ srcD);	
-					out.println("\n"); 
-					out.println("Source File: "+srcF);
-					out.println("\n");
-					out.println("Destination Directory: "+dstD);	
-					out.println("\n");
-                                	out.println("Destination File: "+dstF);
-					*/
-										
-					String src2 = request.getParameter("src");
-					String dst2 = request.getParameter("dst");
-					
-					out.println("\n");
-					out.println("Source file name: "+src2);
-					out.println("\n");
-					out.println("Destination file name: "+dst2);
-					%>
 				</c:if>
 			</td>
 		</tr>
@@ -82,9 +58,6 @@
 
 </table>
 
-<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
-        <br />
-        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a> 
 	
 	</div> <%-- close <div id="content"> --%>
 	</div> <%-- close <div id="container"> --%>
