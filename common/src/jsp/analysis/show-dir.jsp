@@ -74,6 +74,9 @@
 					
 					String src2="<script>document.writeln(src)</script>";
                                         String dst2="<script>document.writeln(dst)</script>";
+					out.println("src2: "+src2);
+					out.println("dst2: "+dst2);				
+	
 					File source = new File(src2);
 					File destination = new File(dst2);
 					if (source != null) {
