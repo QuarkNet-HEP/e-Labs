@@ -8,6 +8,8 @@
 <%@ include file="../login/login-required.jsp" %>
 <%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 
+<%@ page import="java.nio.*" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 	<head>
@@ -17,6 +19,15 @@
 	<body>
 	<%
 	//Original file to copy. Avoid the ability to point to arbitrary files
+		Path source = Paths.get(request.getParameter("src"));
+		Path destination = Paths.get(request.getParameter("dst"));
+
+		try {
+			Files.copy(source, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/*
 		File srcF= new File(request.getParameter("src"));
 		File dstF= new File(request.getParameter("dst"));
 		
@@ -24,6 +35,8 @@
 		out.println("\n");
 		out.println("Destination: "+dstF.getAbsolutePath());
 		out.println("\n");
+		*/
+		
 	%>
 	</body>
 </html>
