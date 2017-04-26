@@ -45,17 +45,9 @@
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
-					<c:out value="filename:  eventCandidates"/>	
-				   <script type="text/javascript">
-					var src = "${results.outputDirURL}/${file.name}";
-					var dst = "${results.outputDirURL}/eclipseFormat";
-				        /*
-					var srcDir = "${results.outputDirURL}";
-					var srcFil = "${file.name}";
-					var dstDir = "${results.outputDirURL}";	
-					var dstFil = "eclipseFormat";
-					*/
-				   </script>
+					<c:out value="filename:  eventCandidates"/>
+					<input type="hidden" name="src" value="${results.outputDirURL}/${file.name}"/>
+					<input type="hidden" name="dst" value="${results.outputDirURL}/eclipseFormat"/>
 					<%
 					/*
 					String srcD="<script>document.writeln(srcDir)</script>";
@@ -72,23 +64,13 @@
                                 	out.println("Destination File: "+dstF);
 					*/
 					
-					String src2="<script>document.writeln(src)</script>";
-                                        String dst2="<script>document.writeln(dst)</script>";
-					out.println("src2: "+src2);
-					out.println("dst2: "+dst2);				
-	
-					File source = new File(src2);
-					File destination = new File(dst2);
-					sName = source.getName();
-					dName = destination.getName();
+					String source = new File(request.getParameter("src")).getName();
+					String destination = new File(request.getParameter("dst")).getName();
 					
-					if (source != null) {
-						out.println("Source file exists: "+sName);
-		                        }
 					out.println("\n");
-					if (destination != null) {
-						out.println("Destination file:  "+dName);
-					}
+					out.println("Source file name: "+source);
+					out.println("\n");
+					out.println("Destination file name: "+destination);
 					%>
 				</c:if>
 			</td>
