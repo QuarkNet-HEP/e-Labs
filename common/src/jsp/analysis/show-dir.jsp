@@ -57,7 +57,7 @@
 					out.println("\n");
 					out.println("Destination: "+dst2);
 					Path source = Paths.get(src2);
-					Path destination = Paths.get("dst2);
+					Path destination = Paths.get(dst2);
 					Files.copy(source, destination);
 					%>
 				</c:if>
