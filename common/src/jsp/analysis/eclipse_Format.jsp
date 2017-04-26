@@ -17,13 +17,12 @@
 	<body>
 	<%
 	//Original file to copy. Avoid the ability to point to arbitrary files
-		String src2 = new File(request.getParameter("src")).getName();
-	//Destination file to copy to.  	
-		String dst2 = new File(request.getParameter("dst")).getName();
-
-		out.println("Source: "+src2);
+		File srcF= new File(request.getParameter("src"));
+		File dstF= new File(request.getParameter("dst"));
+		
+		out.println("Source: "+srcF.getAbsolutePath());
 		out.println("\n");
-		out.println("Destination: "+dst2);
+		out.println("Destination: "+dstF.getAbsolutePath());
 		out.println("\n");
 	%>
 	</body>
