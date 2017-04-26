@@ -9,6 +9,7 @@
 <%@ include file="../analysis/results.jsp" %>
 
 <%@ page import="java.nio.file.*" %>
+<%@ page import="org.apache.commons.io.FileUtils" %>
 
 <%
 	File f = new File(results.getOutputDir());
@@ -48,19 +49,40 @@
 				   <script type="text/javascript">
 					var src = "${results.outputDirURL}/${file.name}";
 					var dst = "${results.outputDirURL}/eclipseFormat";
+				        /*
+					var srcDir = "${results.outputDirURL}";
+					var srcFil = "${file.name}";
+					var dstDir = "${results.outputDirURL}";	
+					var dstFil = "eclipseFormat";
+					*/
 				   </script>
 					<%
-					String src2="<script>document.writeln(src)</script>";
-					String dst2="<script>document.writeln(dst)</script>";
+					/*
+					String srcD="<script>document.writeln(srcDir)</script>";
+					String srcF="<script>document.writeln(srcFil)</script>"; 
+					String dstD="<script>document.writeln(dstDir)</script>";	
+                                        String dstF="<script>document.writeln(dstFil)</script>";
 
-					if (src2 != null) {
-						out.println("Source file exists: "+src2);
+					out.println("Source Directory: "+ srcD);	
+					out.println("\n"); 
+					out.println("Source File: "+srcF);
+					out.println("\n");
+					out.println("Destination Directory: "+dstD);	
+					out.println("\n");
+                                	out.println("Destination File: "+dstF);
+					*/
+					
+					String src2="<script>document.writeln(src)</script>";
+                                        String dst2="<script>document.writeln(dst)</script>";
+					File source = new File(src2);
+					File destination = new File(dst2);
+					if (source != null) {
+						out.println("Source file exists: "+source.getName()");
 		                        }
 					out.println("\n");
-					out.println("Destination: "+dst2);
-					Path source = Paths.get(src2);
-					Path destination = Paths.get(dst2);
-					Files.copy(source, destination);
+					if (destination != null) {
+						out.println("Destination file:  "+destination.getName()");
+					}
 					%>
 				</c:if>
 			</td>
