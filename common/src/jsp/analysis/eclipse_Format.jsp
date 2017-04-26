@@ -8,7 +8,7 @@
 <%@ include file="../login/login-required.jsp" %>
 <%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 
-<%@ page import="java.nio.*" %>
+<%@ page import="java.nio.file.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
