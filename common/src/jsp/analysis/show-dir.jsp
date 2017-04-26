@@ -45,9 +45,10 @@
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
-					<c:out value="filename:  eventCandidates"/>
-					<input type="hidden" name="src" value="${results.outputDirURL}/${file.name}"/>
-					<input type="hidden" name="dst" value="${results.outputDirURL}/eclipseFormat"/>
+					<c:out value="${results.outputDirURL}/${file.name}"/>
+					<input type="hidden" name="src" value="<c:out value="${results.outputDirURL}/${file.name}"/>">
+					<input type="hidden" name="dst" value="<c:out value="${results.outputDirURL}/eclipseFormat"/>">
+
 					<%
 					/*
 					String srcD="<script>document.writeln(srcDir)</script>";
@@ -63,14 +64,14 @@
 					out.println("\n");
                                 	out.println("Destination File: "+dstF);
 					*/
-					
-					String source = new File(request.getParameter("src")).getName();
-					String destination = new File(request.getParameter("dst")).getName();
+										
+					String src2 = request.getParameter("src");
+					String dst2 = request.getParameter("dst");
 					
 					out.println("\n");
-					out.println("Source file name: "+source);
+					out.println("Source file name: "+src2);
 					out.println("\n");
-					out.println("Destination file name: "+destination);
+					out.println("Destination file name: "+dst2);
 					%>
 				</c:if>
 			</td>
