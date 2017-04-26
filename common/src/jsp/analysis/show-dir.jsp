@@ -79,12 +79,15 @@
 	
 					File source = new File(src2);
 					File destination = new File(dst2);
+					sName = source.getName();
+					dName = destination.getName();
+					
 					if (source != null) {
-						out.println("Source file exists: "+source.getName());
+						out.println("Source file exists: "+sName);
 		                        }
 					out.println("\n");
 					if (destination != null) {
-						out.println("Destination file:  "+destination.getName());
+						out.println("Destination file:  "+dName);
 					}
 					%>
 				</c:if>
