@@ -44,33 +44,21 @@
 				<c:if test="${file.name == 'eventCandidates'}">
 					<c:out value="filename:  eventCandidates"/>	
 				   <script type="text/javascript">
-					var srcDir = "${results.outputDirURL}";
-					var srcFil = "${file.name}";
-					var dstDir = "${results.outputDirURL}";
-					var dstFil = "eclipseFormat";
 					var src = "${results.outputDirURL}/${file.name}";
 					var dst = "${results.outputDirURL}/eclipseFormat";
 				   </script>
 					<%
-					String srcD="<script>document.writeln(srcDir)</script>";
-					String srcF="<script>document.writeln(srcFil)</script>"; 
-					String dstD="<script>document.writeln(dstDir)</script>";
-                                        String dstF="<script>document.writeln(dstFil)</script>";
 					String src2="<script>document.writeln(src)</script>";
 					String dst2="<script>document.writeln(dst)</script>";
 
-					out.println("Source Directory: "+ srcD);
-					out.println("\n"); 
-					out.println("Source File: "+srcF);
-					out.println("\n");
-					out.println("Destination Directory: "+dstD);	
-					out.println("\n");
-                                	out.println("Destination File: "+dstF);
-					
 					if (src2 != null) {
-						out.println("Source file exists!");
-		                        }				
-
+						out.println("Source file exists: "+src2);
+		                        }
+					out.println("\n");
+					out.println("Destination: "+dst2);
+					Path source = Paths.get(src2);
+					Path destination = Paths.get("dst2);
+					Files.copy(source, destination);
 					%>
 				</c:if>
 			</td>
