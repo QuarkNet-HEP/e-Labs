@@ -30,17 +30,18 @@
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
-		File file1 = new File("webapps/elab/teacher.html");
-        	File file2 = new File(dst);
+		File file1 = new File("webapps"+src);
+        	File file2 = new File("webapps"+dst);
 		
 		if (file1.exists()){
 			out.println("Source exists!");
 		}		
-		if (file2.exists()){
-                        out.println("Destination exists!");
-		}
 		
-		//FileUtils.copyFile(file1, file2);
+		FileUtils.copyFile(file1, file2);
+		
+		if (!file2.exists()){
+                        out.println("Destination exists!");
+                }
 
 		/*if (sD != null) {
 			ElabUtil.copyFile(sD, sF, dD, dF);
