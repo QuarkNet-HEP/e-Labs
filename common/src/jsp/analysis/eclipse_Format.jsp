@@ -27,9 +27,9 @@
 		out.println("Destination File: "+dF);
                 out.println("Destination Dir: "+dD);
 
-		if (ecDir != null) {
+		if (sD != null) {
 			out.println("Source file exists!");
-			//ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
+			//ElabUtil.copyFile(sD, sF, dD, dF);
                 }				
 	%>
 	</body>
