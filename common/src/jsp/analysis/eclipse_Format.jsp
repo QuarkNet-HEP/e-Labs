@@ -6,7 +6,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %><%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
-<%@ page import="org.apache.commons.io.FileUtils"%>
+<%@ page import="java.nio.file.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -20,28 +20,30 @@
 		String sD = request.getParameter("srcD");
 		String dF = request.getParameter("dstF");
 		String dD = request.getParameter("dstD");
-		String src = sD+"/"+sF;
-		String dst = dD+"/"+dF;
+		String src = "webapps"+sD+"/"+sF;
+		String dst = "webapps"+dD+"/"+dF;
 		
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
-		File file1 = new File("webapps"+src);
-        	File file2 = new File("webapps"+dst);
+		File file1 = new File(src);
+        	File file2 = new File(dst);
 		
 		if (file1.exists()){
 			out.println("Source exists!");
+			Path source = Paths.get(src);
+			Path destination = Paths.get(dst); 
 		}		
-		
-		FileUtils.copyFile(file1, file2);
+		try {
+			Files.copy(source, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+
 		
 		if (file2.exists()){
                         out.println("Destination exists!  Copy successful!");
                 }
-
-		/*if (sD != null) {
-			ElabUtil.copyFile(sD, sF, dD, dF);
-                }*/				
 	%>
 	</body>
 </html>
