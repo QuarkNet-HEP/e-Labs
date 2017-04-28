@@ -5,8 +5,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
-<%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
+<%@ include file="../login/login-required.jsp" %><%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 <%@ page import="org.apache.commons.io.FileUtils"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -31,8 +30,8 @@
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
-		File file1 = new File(src);
-        	File file2 = new File(dst);
+		File file1 = new File("/home/sbalakri/test1.txt");
+        	File file2 = new File("/home/sbalakri/test2.txt");
 		
 		if (file1.exists()){
 			out.println("Source exists!");
