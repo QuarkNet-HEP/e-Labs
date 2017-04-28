@@ -28,8 +28,7 @@
                 out.println("Destination Dir: "+dD);
 
 		if (sD != null) {
-			out.println("Source file exists!");
-			//ElabUtil.copyFile(sD, sF, dD, dF);
+			ElabUtil.copyFile(sD, sF, dD, dF);
                 }				
 	%>
 	</body>
