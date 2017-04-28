@@ -7,7 +7,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
-
+<%@ page import="org.apache.commons.io.FileUtils"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -27,9 +27,14 @@
 		out.println("Destination File: "+dF);
                 out.println("Destination Dir: "+dD);
 
-		if (sD != null) {
+		File file1 = FileUtils.getFile(sD + sF);
+        	File file2 = FileUtils.getFile(dD + dF);
+		out.println("Does the source exist: " + file1.exists());
+
+
+		/*if (sD != null) {
 			ElabUtil.copyFile(sD, sF, dD, dF);
-                }				
+                }*/				
 	%>
 	</body>
 </html>
