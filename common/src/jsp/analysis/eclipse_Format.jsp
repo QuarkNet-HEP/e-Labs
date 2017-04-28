@@ -30,7 +30,7 @@
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
-		File file1 = new File("/elab/teacher.html");
+		File file1 = new File("webapps/elab/teacher.html");
         	File file2 = new File(dst);
 		
 		if (file1.exists()){
