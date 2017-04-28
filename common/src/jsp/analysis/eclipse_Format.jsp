@@ -23,10 +23,6 @@
 		String src = sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
-		out.println("Source File: "+sF);
-		out.println("Source Dir: "+sD);
-		out.println("Destination File: "+dF);
-                out.println("Destination Dir: "+dD);
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
@@ -39,8 +35,8 @@
 		
 		FileUtils.copyFile(file1, file2);
 		
-		if (!file2.exists()){
-                        out.println("Destination exists!");
+		if (file2.exists()){
+                        out.println("Destination exists!  Copy successful!");
                 }
 
 		/*if (sD != null) {
