@@ -34,10 +34,10 @@
 		File file1 = new File(src);
         	File file2 = new File(dst);
 		
-		if (checkExists(file1)){
+		if (file1.exists()){
 			out.println("Source exists!");
 		}		
-		if (checkExists(file2)){
+		if (file2.exists()){
                         out.println("Destination exists!");
 		}
 		
