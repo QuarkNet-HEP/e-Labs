@@ -8,7 +8,6 @@
 <%@ include file="../login/login-required.jsp" %>
 <%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 
-<%@ page import="java.nio.file.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -18,7 +17,6 @@
 	</head>
 	<body>
 	<%
-	//Original file to copy. Avoid the ability to point to arbitrary files
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
 		String dF = request.getParameter("dstF");
@@ -29,25 +27,8 @@
 		out.println("Destination File: "+dF);
                 out.println("Destination Dir: "+dD);
 
-		/*
-		Path source = Paths.get(request.getParameter("src"));
-		Path destination = Paths.get(request.getParameter("dst"));
-		
-		try {
-			Files.copy(source, destination);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		File srcF= new File(request.getParameter("src"));
-		File dstF= new File(request.getParameter("dst"));
-		
-		out.println("Source: "+srcF.getAbsolutePath());
-		out.println("\n");
-		out.println("Destination: "+dstF.getAbsolutePath());
-		out.println("\n");
-		*/
-		
+		File f = new File(sD, sF);
+				    if (f.exists()){out.println("Source file exists!");}
 	%>
 	</body>
 </html>
