@@ -19,7 +19,15 @@
 	<body>
 	<%
 	//Original file to copy. Avoid the ability to point to arbitrary files
-		out.println("Source: "+request.getParameter("src"));
+		String sF = request.getParameter("srcF");
+		String sD = request.getParameter("srcD"));
+		String dF = request.getParameter("dstF"));
+		String dD = request.getParameter("dstD"));
+
+		out.println("Source File: "+sF);
+		out.println("Source Dir: "+sD);
+		out.println("Destination File: "+dF);
+                out.println("Destination Dir: "+dD);
 
 		/*
 		Path source = Paths.get(request.getParameter("src"));
