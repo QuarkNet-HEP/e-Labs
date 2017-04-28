@@ -27,8 +27,10 @@
 		out.println("Destination File: "+dF);
                 out.println("Destination Dir: "+dD);
 
-		File f = new File(sD, sF);
-				    if (f.exists()){out.println("Source file exists!");}
+		if (ecDir != null) {
+			out.println("Source file exists!");
+			//ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
+                }				
 	%>
 	</body>
 </html>
