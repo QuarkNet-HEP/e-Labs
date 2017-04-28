@@ -31,7 +31,7 @@
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
 
-		File file1 = new File(source);
+		File file1 = new File(src);
         	File file2 = new File(dst);
 		
 		if (checkExists(file1)){
