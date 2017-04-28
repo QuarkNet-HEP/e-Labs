@@ -19,10 +19,7 @@
 	<body>
 	<%
 	//Original file to copy. Avoid the ability to point to arbitrary files
-		File s = new File(request.getParameter("src")); 		
-		if(s.exists()){
-			out.println("Source exists!");
-		}
+		out.println("Source: "+request.getParameter("src"));
 
 		/*
 		Path source = Paths.get(request.getParameter("src"));
