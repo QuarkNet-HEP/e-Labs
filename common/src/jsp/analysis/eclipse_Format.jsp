@@ -21,16 +21,27 @@
 		String sD = request.getParameter("srcD");
 		String dF = request.getParameter("dstF");
 		String dD = request.getParameter("dstD");
-
+		String src = sD+"/"+sF;
+		String dst = dD+"/"+dF;
+		
 		out.println("Source File: "+sF);
 		out.println("Source Dir: "+sD);
 		out.println("Destination File: "+dF);
                 out.println("Destination Dir: "+dD);
+		out.println("Source: "+src);
+		out.println("Destination: "+dst);	
 
-		File file1 = FileUtils.getFile(sD + sF);
-        	File file2 = FileUtils.getFile(dD + dF);
-		out.println("Does the source exist: " + file1.exists());
-
+		File file1 = new File(source);
+        	File file2 = new File(dst);
+		
+		if (checkExists(file1)){
+			out.println("Source exists!");
+		}		
+		if (checkExists(file2)){
+                        out.println("Destination exists!");
+		}
+		
+		//FileUtils.copyFile(file1, file2);
 
 		/*if (sD != null) {
 			ElabUtil.copyFile(sD, sF, dD, dF);
