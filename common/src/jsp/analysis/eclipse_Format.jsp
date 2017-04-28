@@ -32,14 +32,13 @@
 		if (file1.exists()){
 			out.println("Source exists!");
 			Path source = Paths.get(src);
-			Path destination = Paths.get(dst); 
+			Path destination = Paths.get(dst);
+			try {
+	                        Files.copy(source, destination);
+        	        } catch (IOException e) {
+                        e.printStackTrace();
+                	}
 		}		
-		try {
-			Files.copy(source, destination);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-
 		
 		if (file2.exists()){
                         out.println("Destination exists!  Copy successful!");
