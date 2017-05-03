@@ -29,6 +29,7 @@
 		File file1 = new File(src);
         	File file2 = new File(dst);
 		
+		//copy eventCandidates file to eFtemp file
 		if (file1.exists()){
 			out.println("Source exists!");
 			Path source = Paths.get(src);
@@ -43,6 +44,33 @@
 		if (file2.exists()){
                         out.println("Destination exists!  Copy successful!");
                 }
+
+		/*Read one line at a time from eFtemp and copy it to eclipseFormat
+		BufferedReader br = null;
+    		BufferedWriter bw = null;
+     
+    		try{
+        		br = new BufferedReader(new FileReader("F:/File_1.txt"));
+        		bw = new BufferedWriter(new FileWriter("F:/File_2.txt"));
+         
+ 		       	String line = br.readLine();
+         
+	        	for( int i = 1; i <= 10 && line != null; i++)
+        		{
+            		bw.write(line);
+            		bw.write("\n");
+            		line = br.readLine();
+        		}
+         
+        		System.out.println("Lines are Successfully copied!");
+         
+	        	br.close();
+        		bw.close();
+    		}
+    		catch(Exception e){
+        		System.out.println("Exception caught : " + e);
+    		}*/
+	
 	%>
 	</body>
 </html>
