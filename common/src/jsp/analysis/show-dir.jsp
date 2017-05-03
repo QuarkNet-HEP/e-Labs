@@ -7,6 +7,8 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
+
+<%@ page import="java.nio.file.*" %>
 <%@ page import="org.apache.commons.io.FileUtils" %>
 
 <%
@@ -43,29 +45,13 @@
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				<c:if test="${file.name == 'eventCandidates'}">
-					<c:out value="hello world"/>
-					
-					<%-- testing
-					<script type="text/javascript">
-    						function copy()
-    						{
-						window.alert("hello");
-        					var fileOne, fileTwo; 
-						fileOne = `${results.outputDirURL}/eventCandidates`; window.alert(fileOne);
-						fileTwo = `${results.outputDirURL}/eclipseFormat`; window.alert(fileTwo);
-    						}
-    					</script>					
-					<script type="text/javascript">copy();</script>
-				        end testing --%>
-
-					<%
-					File src = FileUtils.getFile(${results.outputDirURL} + "/eventCandidates");
-				        File dst = FileUtils.getFile(${results.outputDirURL} + "/eclipseFormat");
-					System.out.println("Source file name:  "+ ${results.outputDirURL} + "/eventCandidates");
-					System.out.println("Destination file name:  "+ ${results.outputDirURL} + "/eclipseFormat");
-					//FileUtils.copyFile(src, dst);
-					}
-					%>
+					<form action="eclipse_Format.jsp" method="POST">
+						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
+						<input type="hidden" name="srcF" value="${file.name}"/>
+						<input type="hidden" name="dstD" value="${results.outputDirURL}"/>
+						<input type="hidden" name="dstF" value="eclipseFormat"/>
+          					<input type="submit" value="eclipseFormat"/> 
+					</form>
 				</c:if>
 			</td>
 		</tr>
@@ -73,9 +59,6 @@
 
 </table>
 
-<%-- SB, 4/5/17:  Add link for eclipseFormat --%>
-        <br />
-        <a href="${results.outputDirURL}/eclipseFormat">eclipseFormat</a> 
 	
 	</div> <%-- close <div id="content"> --%>
 	</div> <%-- close <div id="container"> --%>
