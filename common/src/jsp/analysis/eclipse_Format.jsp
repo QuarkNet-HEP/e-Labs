@@ -53,8 +53,8 @@
 		//Read one line at a time from eFtemp and copy it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
-		String src2 = dst;
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;
+		String src2 = dst;				//eFtemp is new source
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat is new destination
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -62,14 +62,17 @@
          
  		       	String line = br.readLine();
          
-	        	for( int i = 1; i <= 10 && line != null; i++)
-        		{
-            		bw.write(line);
-            		bw.write("\n");
-            		line = br.readLine();
-        		}
+	        	for( int i = 1; i <= 10 && line != null; i++){
+			String delims = "[ ]+";
+			String[] tokens = line.split(delims);
+				for (int j=0; j<tokens.length; j++){
+ 	           		bw.write(tokens[j]);
+        	    		bw.write("\n");
+				}
+				line = br.readLine();        		
+			}
          
-        		System.out.println("Lines are Successfully copied!");
+        		out.println("Lines are Successfully copied!");
          
 	        	br.close();
         		bw.close();
