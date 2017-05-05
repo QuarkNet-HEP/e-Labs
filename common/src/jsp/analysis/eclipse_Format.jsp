@@ -15,21 +15,25 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
-	<%
+	<%	
+		//Create variables src and dst
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
-		String dF = request.getParameter("dstF");
+			GregorianCalendar gc = new GregorianCalendar();
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+			String date = sdf.format(gc.getTime());
+		String dF = request.getParameter("dstF")+"-"+date;
 		String dD = user.getDir("plots");/*This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");*/
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
 		out.println("Source: "+src);
 		out.println("Destination: "+dst);	
-
+		
+		//copy eventCandidates file to eFtemp in user's "plots" directory
 		File file1 = new File(src);
         	File file2 = new File(dst);
 		
-		//copy eventCandidates file to eFtemp in user's "plots" directory
 		if (file1.exists()){
 			out.println("Source exists!");
 			out.println("\n");
