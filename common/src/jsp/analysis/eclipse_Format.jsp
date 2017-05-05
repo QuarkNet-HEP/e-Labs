@@ -62,9 +62,8 @@
          
  		       	String line = br.readLine();
          
-	        	for( int i = 1; i <= 10 && line != null; i++){
-			String delims = "[ ]+";
-			String[] tokens = line.split(delims);
+	        	for( int i = 1; i <= 3 && line != null; i++){
+			String[] tokens = line.split("\\s+");
 				if(tokens[0].charAt(0) != '#'){
 				for (int j=0; j<tokens.length; j++){
 					bw.write(tokens[j]);
