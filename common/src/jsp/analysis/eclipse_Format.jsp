@@ -22,9 +22,12 @@
 		String dD = request.getParameter("dstD");
 		String src = "webapps"+sD+"/"+sF;
 		String dst = "webapps"+dD+"/"+dF;
+		//This is like how it's done in save.jsp 
+		String plotDir = user.getDir("plots");
 		
-		out.println("Source: "+src);
-		out.println("Destination: "+dst);	
+		out.println("Source: "+src+"\n");
+		out.println("Destination: "+dst+"\n");	
+		out.println("plotDir: "+plotDir+"\n");		
 
 		File file1 = new File(src);
         	File file2 = new File(dst);
