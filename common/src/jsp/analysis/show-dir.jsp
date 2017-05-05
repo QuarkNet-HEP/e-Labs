@@ -48,8 +48,6 @@
 					<form action="eclipse_Format.jsp" method="POST">
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
 						<input type="hidden" name="srcF" value="${file.name}"/>
-						<input type="hidden" name="dstD" value="${results.outputDirURL}"/>
-						<input type="hidden" name="dstF" value="eFtemp"/>
           					<input type="submit" value="eclipseFormat"/> 
 					</form>
 				</c:if>

@@ -22,7 +22,7 @@
 			GregorianCalendar gc = new GregorianCalendar();
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
-		String dF = request.getParameter("dstF")+"-"+date;
+		String dF = "eFtemp+"-"+date;
 		String dD = user.getDir("plots");/*This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");*/
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
@@ -47,17 +47,18 @@
 		}		
 		
 		if (file2.exists()){
-                        out.println("Destination exists!  Copy successful!");
-			out.println("\n");
+                        out.println("Copy successful!");
                 }
 
-		/*Read one line at a time from eFtemp and copy it to eclipseFormat
+		//Read one line at a time from eFtemp and copy it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
+		String src2 = dst;
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;
      
     		try{
-        		br = new BufferedReader(new FileReader("F:/File_1.txt"));
-        		bw = new BufferedWriter(new FileWriter("F:/File_2.txt"));
+        		br = new BufferedReader(new FileReader(src);
+        		bw = new BufferedWriter(new FileWriter(dst);
          
  		       	String line = br.readLine();
          
@@ -75,7 +76,7 @@
     		}
     		catch(Exception e){
         		System.out.println("Exception caught : " + e);
-    		}*/
+    		}
 	
 	%>
 	</body>
