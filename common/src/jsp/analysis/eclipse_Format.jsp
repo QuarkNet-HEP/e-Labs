@@ -65,9 +65,11 @@
 	        	for( int i = 1; i <= 10 && line != null; i++){
 			String delims = "[ ]+";
 			String[] tokens = line.split(delims);
+				if( (tokens[0](0)) != "#"){
 				for (int j=0; j<tokens.length; j++){
- 	           		bw.write(tokens[j]);
-        	    		bw.write("\n");
+					bw.write(tokens[j]);
+        	    			bw.write("\n");
+				}
 				}
 				line = br.readLine();        		
 			}
