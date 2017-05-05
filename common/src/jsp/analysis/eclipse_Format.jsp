@@ -19,14 +19,12 @@
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
 		String dF = request.getParameter("dstF");
-		String dD = user.getDir("plots");//This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
+		String dD = user.getDir("plots");/*This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");*/
 		String src = "webapps"+sD+"/"+sF;
-		String dst = "webapps"+dD+"/"+dF;
+		String dst = dD+"/"+dF;
 		
-		out.println("Source: "+src+"\n");
-		out.println("\n");
-		out.println("Destination: "+dst+"\n");	
-		out.println("\n");
+		out.println("Source: "+src);
+		out.println("Destination: "+dst);	
 
 		File file1 = new File(src);
         	File file2 = new File(dst);
