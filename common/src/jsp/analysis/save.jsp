@@ -135,7 +135,7 @@
 					dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
 			%>
 	            	<p>You saved your plot permanently as file <%= userFilename %> 
-	            	filesystem name: <%= plotDir + dstFile %> </p>
+	            	<!--filesystem name: <%= plotDir + dstFile %> --></p>
 	            <%
 			%>
 		</table>
