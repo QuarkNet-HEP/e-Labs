@@ -57,8 +57,8 @@
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;
      
     		try{
-        		br = new BufferedReader(new FileReader(src);
-        		bw = new BufferedWriter(new FileWriter(dst);
+        		br = new BufferedReader(new FileReader(src2));
+        		bw = new BufferedWriter(new FileWriter(dst2));
          
  		       	String line = br.readLine();
          
