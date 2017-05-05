@@ -22,7 +22,7 @@
 			GregorianCalendar gc = new GregorianCalendar();
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
-		String dF = "eFtemp+"-"+date;
+		String dF = "eFtemp-"+date;
 		String dD = user.getDir("plots");/*This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");*/
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
