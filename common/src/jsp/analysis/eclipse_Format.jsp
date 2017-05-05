@@ -19,22 +19,22 @@
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
 		String dF = request.getParameter("dstF");
-		String dD = request.getParameter("dstD");
+		String dD = user.getDir("plots");//This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
 		String src = "webapps"+sD+"/"+sF;
 		String dst = "webapps"+dD+"/"+dF;
-		//This is like how it's done in save.jsp 
-		String plotDir = user.getDir("plots");
 		
 		out.println("Source: "+src+"\n");
+		out.println("\n");
 		out.println("Destination: "+dst+"\n");	
-		out.println("plotDir: "+plotDir+"\n");		
+		out.println("\n");
 
 		File file1 = new File(src);
         	File file2 = new File(dst);
 		
-		//copy eventCandidates file to eFtemp file
+		//copy eventCandidates file to eFtemp in user's "plots" directory
 		if (file1.exists()){
 			out.println("Source exists!");
+			out.println("\n");
 			Path source = Paths.get(src);
 			Path destination = Paths.get(dst);
 			try {
@@ -46,6 +46,7 @@
 		
 		if (file2.exists()){
                         out.println("Destination exists!  Copy successful!");
+			out.println("\n");
                 }
 
 		/*Read one line at a time from eFtemp and copy it to eclipseFormat
