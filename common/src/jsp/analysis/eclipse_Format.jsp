@@ -66,7 +66,7 @@
 			String delims = "[ ]+";
 			String[] tokens = line.split(delims);
 			String firstToken = tokens[0];
-				if(firstToken.charAt(0) != "#"){
+				if(firstToken.charAt(0) != '#'){
 				for (int j=0; j<tokens.length; j++){
 					bw.write(tokens[j]);
         	    			bw.write("\n");
