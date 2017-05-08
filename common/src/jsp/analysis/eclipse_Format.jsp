@@ -70,7 +70,7 @@
          
  		       	String line = br.readLine();
          
-	        	for( line != null){
+	        	if(line != null){
 			String[] tokens = line.split("\\s+");
 				if(tokens[0].charAt(0) != '#'){
 				for (int i=0; i<tokens.length; i++){
