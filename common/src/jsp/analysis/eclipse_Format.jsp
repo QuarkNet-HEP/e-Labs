@@ -29,15 +29,13 @@
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
 		String dF = "eFtemp-"+date;
-
-		/* 
-		SB,5/8/17:  
-		This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
-		"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
-		"plots" is a parameter being passed into the getDir() method.  It isn't previously defined; getDir() knows what to do with it. 
-		I believe that user is an "ElabUser" object, which inherits the getDir() method from common/src/java/gov/fnal/elab/ElabGroup.java.
-		<%@ include file="../include/elab.jsp" %> allows us to use String plotDir = user.getDir("plots"); 
-		*/
+ 
+		//SB,5/8/17:  This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
+		//"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
+		//"plots" is a parameter being passed into the getDir() method.  It isn't previously defined; getDir() knows what to do with it. 
+		//I believe that user is an "ElabUser" object, which inherits the getDir() method from common/src/java/gov/fnal/elab/ElabGroup.java.
+		//<%@ include file="../include/elab.jsp" %> allows us to use String plotDir = user.getDir("plots"); 
+		
 		String dD = user.getDir("plots");
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
