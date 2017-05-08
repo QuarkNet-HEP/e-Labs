@@ -1,3 +1,6 @@
+<%-- Author:  Sudha Balakrishnan, 5/8/17 --%>
+<%-- This program gets called by show-dir.jsp --%>
+
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
@@ -9,6 +12,9 @@
 <%@ page import="java.nio.file.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+
+
 <html>
 	<head>
 		<title>Creating eclipseFormat . . . </title>
@@ -23,7 +29,16 @@
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
 		String dF = "eFtemp-"+date;
-		String dD = user.getDir("plots");/*This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");*/
+
+		/* 
+		SB,5/8/17:  
+		This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
+		"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
+		"plots" is a parameter being passed into the getDir() method.  It isn't previously defined; getDir() knows what to do with it. 
+		I believe that user is an "ElabUser" object, which inherits the getDir() method from common/src/java/gov/fnal/elab/ElabGroup.java.
+		<%@ include file="../include/elab.jsp" %> allows us to use String plotDir = user.getDir("plots"); 
+		*/
+		String dD = user.getDir("plots");
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
@@ -35,8 +50,6 @@
         	File file2 = new File(dst);
 		
 		if (file1.exists()){
-			out.println("Source exists!");
-			out.println("\n");
 			Path source = Paths.get(src);
 			Path destination = Paths.get(dst);
 			try {
@@ -47,14 +60,14 @@
 		}		
 		
 		if (file2.exists()){
-                        out.println("Copy successful!");
+                        out.println("Copy of eventCandidates to eFtemp successful!");
                 }
 
-		//Read one line at a time from eFtemp and copy it to eclipseFormat
+		//Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
-		String src2 = dst;				//eFtemp is new source
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat is new destination
+		String src2 = dst;				//eFtemp is source in this phase
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat is destination in this phase
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -62,18 +75,18 @@
          
  		       	String line = br.readLine();
          
-	        	for( int i = 1; i <= 3 && line != null; i++){
+	        	for( line != null){
 			String[] tokens = line.split("\\s+");
 				if(tokens[0].charAt(0) != '#'){
-				for (int j=0; j<tokens.length; j++){
-					bw.write(tokens[j]);
+				for (int i=0; i<tokens.length; i++){
+					bw.write(tokens[i]);
         	    			bw.write("-");
 				}
 				}
 				line = br.readLine();        		
 			}
          
-        		out.println("Lines are Successfully copied!");
+        		out.println("eclipseFormat file exists!");
          
 	        	br.close();
         		bw.close();
