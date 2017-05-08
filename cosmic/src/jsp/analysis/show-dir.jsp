@@ -43,6 +43,14 @@
 		<tr>
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
+				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
+				<c:if test="${file.name == 'eventCandidates'}">
+					<form action="eclipse_Format.jsp" method="POST">
+						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
+						<input type="hidden" name="srcF" value="${file.name}"/>
+          					<input type="submit" value="eclipseFormat"/> 
+					</form>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>
