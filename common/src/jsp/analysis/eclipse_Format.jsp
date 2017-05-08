@@ -70,11 +70,11 @@
          
  		       	String line = br.readLine();
          
-	        	if(line != null){
+	        	for( int i = 1; line != null; i++){
 			String[] tokens = line.split("\\s+");
 				if(tokens[0].charAt(0) != '#'){
-				for (int i=0; i<tokens.length; i++){
-					bw.write(tokens[i]);
+				for (int j=0; j<tokens.length; j++){
+					bw.write(tokens[j]);
         	    			bw.write("-");
 				}
 				}
