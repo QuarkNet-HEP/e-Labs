@@ -71,13 +71,24 @@
  		       	String line = br.readLine();
          
 	        	for( int i = 1; line != null; i++){
-			String[] tokens = line.split("\\s+");
+				String[] tokens = line.split("\\s+");
 				if(tokens[0].charAt(0) != '#'){
-				for (int j=0; j<tokens.length; j++){
-					bw.write(tokens[j]);
-        	    			bw.write("-");
-				}
-				}
+					int numEvents = Integer.parseInt(tokens[1]);
+                                	int eventNum = Integer.parseInt(tokens[0]);
+					String[] DAQch;
+					for ( int j=0; j<tokens.length; j++){
+						if (j != 0 && j%3 == 0){
+							DAQch = DAQch + tokens[j];
+	                                        }//if
+					}//for
+				
+					//for (int j=0; j<tokens.length; j++){
+					//	bw.write(tokens[j]);
+        	    			//	bw.write("-");
+					//}
+				}//if
+	
+				bw.newLine();
 				line = br.readLine();        		
 			}
          
