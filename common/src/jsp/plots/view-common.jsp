@@ -47,13 +47,15 @@ request.setAttribute("url", url);
 <h2>
 		<%-- Use <c:out> tags to prevent XSS attacks --%>
 		<c:choose>
-			<c:when test="${name != null}">
-					${name}
-			</c:when>
-			<c:otherwise>
-					${param.filename}
-			</c:otherwise>
-	</c:choose>
+				<c:when test="${name != null}">
+						<%-- ${name} --%>
+						<c:out value="${name}" />
+				</c:when>
+				<c:otherwise>
+						<%-- ${param.filename} --%>
+						<c:out value="${param.filename}" />
+				</c:otherwise>
+		</c:choose>
 </h2><br/>
 <img src="${url}"/><br/>
 <a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
