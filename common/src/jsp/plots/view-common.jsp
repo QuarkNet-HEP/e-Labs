@@ -58,16 +58,17 @@ request.setAttribute("url", url);
 		</c:choose>
 </h2><br/>
 <img src="${url}"/><br/>
-<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
-		<c:if test="${provenance != null}">
-			<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
-		</c:if>
-		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
-		<c:if test="${eventCandidates != null }">
-			<a href="../plots/view-events.jsp?filename=${param.filename}">Show Event Candidates</a><br/>
-		</c:if>
-		<c:if test="${dvName != null}">
-			<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}">Run this study again</a><br/>
+<%-- Likewise, use fn:escapeXml(param.blah) to prevent XSS attacks --%>
+<a href="../data/view-metadata.jsp?filename=${fn:escapeXml(param.filename)}&menu=${fn:escapeXml(param.menu)}">Show details (metadata)</a><br/>
+<c:if test="${provenance != null}">
+		<e:popup href="../plots/view-provenance.jsp?filename=${fn:escapeXml(param.filename)}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
+</c:if>
+<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
+<c:if test="${eventCandidates != null }">
+		<a href="../plots/view-events.jsp?filename=${fn:escapeXml(param.filename)}">Show Event Candidates</a><br/>
+</c:if>
+<c:if test="${dvName != null}">
+		<a href="../analysis/rerun.jsp?study=${fn:escapeXml(study)}&dvName=${fn:escapeXml(dvName)}">Run this study again</a><br/>
 		</c:if>
 	<%
 %>
