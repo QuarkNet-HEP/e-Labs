@@ -44,18 +44,21 @@
 	request.setAttribute("dvName", dvName);
 	request.setAttribute("url", url);
 	%> 
-		<h2>
-		<c:choose>
-			<c:when test="${name != null}">
-				${name}
-			</c:when>
-			<c:otherwise>
-				${param.filename}
-			</c:otherwise>
-		</c:choose>
-		</h2><br/>
-		<img src="${url}"/><br/>
-		<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
+<h2>
+	<!-- Use <c:out> tags to prevent XSS attacks -->
+	<c:choose>
+		<c:when test="${name != null}">
+			<%-- ${name} --%>
+			<c:out value="${name}">
+		</c:when>
+		<c:otherwise>
+			<%-- ${param.filename} --%>
+			<c:out value="${param.filename}">
+		</c:otherwise>
+	</c:choose>
+</h2><br/>
+<img src="${url}"/><br/>
+<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
 		<c:if test="${provenance != null}">
 			<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
 		</c:if>
