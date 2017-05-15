@@ -48,12 +48,12 @@
 	<!-- Use <c:out> tags to prevent XSS attacks -->
 	<c:choose>
 			<c:when test="${name != null}">
-					<%-- ${name} --%>
-					<c:out value="${name}" />
+					${name}
+					<%-- <c:out value="${name}" /> --%>
 			</c:when>
 			<c:otherwise>
-					<%-- ${param.filename} --%>
-					<c:out value="${param.filename}" />
+					${param.filename}
+					<%-- <c:out value="${param.filename}" /> --%>
 			</c:otherwise>
 	</c:choose>
 </h2><br/>
