@@ -47,12 +47,14 @@
 <h2>
 	<!-- Use <c:out> tags to prevent XSS attacks -->
 	<c:choose>
-		<c:when test="${name != null}">
-			<c:out value="${name}">
-		</c:when>
-		<c:otherwise>
-			<c:out value="${param.filename}">
-		</c:otherwise>
+			<c:when test="${name != null}">
+					<%-- ${name} --%>
+					<c:out value="${name}" />
+			</c:when>
+			<c:otherwise>
+					<%-- ${param.filename} --%>
+					<c:out value="${param.filename}" />
+			</c:otherwise>
 	</c:choose>
 </h2><br/>
 <img src="${url}"/><br/>
