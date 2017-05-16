@@ -9,7 +9,9 @@ if(filename == null){
 
 CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
 if (entry == null) {
-		throw new ElabJspException("No entry found in the data catalog for " + filename + ".");
+		// Passing back "filename" for display is an XSS vulnerability
+		//throw new ElabJspException("No entry found in the data catalog for " + filename + ".");
+		throw new ElabJspException("No entry found in the data catalog for that filename.");
 }
 ElabGroup plotUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
 
