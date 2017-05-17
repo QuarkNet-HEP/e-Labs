@@ -85,6 +85,7 @@
 					}//for
 					//Displaying array list elements 
 	  				out.println("Currently the array list of DAQs has following elements:"+DAQch);
+					out.println("\n");
 				}//if
 				else {
 					bw.write(line);
