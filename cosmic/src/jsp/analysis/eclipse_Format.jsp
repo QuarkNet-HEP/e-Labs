@@ -95,7 +95,7 @@
 			}
 
          		File file22 = new File(dst2);	
-			if (file22.exists() && File22.length() != 0){
+			if (file22.exists() && file22.length() != 0){
 	        		out.println("eclipseFormat file exists and is not empty!");
                         }
 
