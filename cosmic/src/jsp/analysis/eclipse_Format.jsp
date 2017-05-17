@@ -22,6 +22,7 @@
 	</head>
 	<body>
 	<%	
+		//Phase I:  copy eventCandidates file into eFtemp-date
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
@@ -53,16 +54,17 @@
                         e.printStackTrace();
                 	}
 		}		
+		boolean areTwoEqual = FileUtils.contentEquals(file1, file2);		
 		
-		if (file2.exists()){
+		if (file2.exists() && areTwoEqual){
                         out.println("Copy of eventCandidates to eFtemp successful!");
                 }
 
-		//Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
+		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
-		String src2 = dst;				//eFtemp is source in this phase
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat is destination in this phase
+		String src2 = dst;				//eFtemp-date is source in this phase
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat-date is destination in this phase
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -72,28 +74,30 @@
          
 	        	for( int i = 1; line != null; i++){
 				String[] tokens = line.split("\\s+");
+				
 				if(tokens[0].charAt(0) != '#'){
+					int eventNum = Integer.parseInt(tokens[0]);
 					int numEvents = Integer.parseInt(tokens[1]);
-                                	int eventNum = Integer.parseInt(tokens[0]);
-					String[] DAQch;
+					String[] DAQch=new String[0]; //create an empty array
 					for ( int j=0; j<tokens.length; j++){
 						if (j != 0 && j%3 == 0){
-							DAQch = DAQch + tokens[j];
+							DAQch.add(tokens[j]);
 	                                        }//if
 					}//for
-				
-					//for (int j=0; j<tokens.length; j++){
-					//	bw.write(tokens[j]);
-        	    			//	bw.write("-");
-					//}
 				}//if
-	
+				else {
+					bw.write(line);
+				}//else
+				
 				bw.newLine();
 				line = br.readLine();        		
 			}
-         
-        		out.println("eclipseFormat file exists!");
-         
+
+         		File file22 = new File(dst2);	
+			if (file22.exists() && File22.length() != 0){
+	        		out.println("eclipseFormat file exists and is not empty!");
+                        }
+
 	        	br.close();
         		bw.close();
     		}
