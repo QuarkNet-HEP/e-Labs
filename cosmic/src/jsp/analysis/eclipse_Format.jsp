@@ -75,8 +75,8 @@
 				String[] words = line.split("\\s+");
 				
 				if(words[0].charAt(0) != '#'){
-					int eventNum = Integer.parseInt(tokens[0]);
-					int numEvents = Integer.parseInt(tokens[1]);
+					int eventNum = Integer.parseInt(words[0]);
+					int numEvents = Integer.parseInt(words[1]);
 					List<String> DAQch = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
