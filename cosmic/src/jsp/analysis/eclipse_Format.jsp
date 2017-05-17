@@ -54,9 +54,8 @@
                         e.printStackTrace();
                 	}
 		}		
-		boolean areTwoEqual = FileUtils.contentEquals(file1, file2);		
 		
-		if (file2.exists() && areTwoEqual){
+		if (file2.exists()){
                         out.println("Copy of eventCandidates to eFtemp successful!");
                 }
 
