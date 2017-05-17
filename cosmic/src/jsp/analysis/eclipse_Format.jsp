@@ -72,17 +72,19 @@
  		       	String line = br.readLine();
          
 	        	for( int i = 1; line != null; i++){
-				String[] tokens = line.split("\\s+");
+				String[] words = line.split("\\s+");
 				
-				if(tokens[0].charAt(0) != '#'){
+				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(tokens[0]);
 					int numEvents = Integer.parseInt(tokens[1]);
-					String[] DAQch=new String[0]; //create an empty array
-					for ( int j=0; j<tokens.length; j++){
+					List<String> DAQch = new ArrayList<String>();
+					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
-							DAQch.add(tokens[j]);
+							DAQch.add(words[j]);
 	                                        }//if
 					}//for
+					//Displaying array list elements 
+	  				out.println("Currently the array list of DAQs has following elements:"+DAQch);
 				}//if
 				else {
 					bw.write(line);
@@ -101,7 +103,7 @@
         		bw.close();
     		}
     		catch(Exception e){
-        		System.out.println("Exception caught : " + e);
+        		out.println("Exception caught : " + e);
     		}
 	
 	%>
