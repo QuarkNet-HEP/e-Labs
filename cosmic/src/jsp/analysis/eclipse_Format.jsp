@@ -77,15 +77,32 @@
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
-					List<String> DAQch = new ArrayList<String>();
+					//listDAQ will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
+					List<String> listDAQ = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
-							DAQch.add(words[j]);
+							if (!listDAQ.contains(words[j])){
+								listDAQ.add(words[j]);
+								listDAQ.add(words[j+1]);
+								listDAQ.add(words[j+2]);
+							}//if
 	                                        }//if
 					}//for
-					//Displaying array list elements 
-	  				out.println("Currently the array list of DAQs has following elements:"+DAQch);
-					out.println("\n");
+					String[] arrayDAQ = toArray(listDAQ);
+					
+					String DAQ1 = '0';
+					String DAQ2 = '0';
+					for ( int k=0; k<arrayDAQ.length; k++){
+						if (k%3 == 0){
+							String DAQ = (words[j].split("."))[0];//Find the DAQ #
+                        				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
+                                				if(DAQ1=='0' && DAQ2=='0'){DAQ1 = DAQ;}
+								if(DAQ1!='0' && DAQ2=='0'){DAQ2 = DAQ;}
+							}//if
+						}//if
+					}//for
+					String outline = 'Hello world!"
+				        bw.write(outline);
 				}//if
 				else {
 					bw.write(line);
