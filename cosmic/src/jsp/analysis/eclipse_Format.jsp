@@ -90,8 +90,8 @@
 					}//for
 					String[] arrayDAQ = toArray(listDAQ);
 					
-					String DAQ1 = '0';
-					String DAQ2 = '0';
+					String DAQ1 = "0";
+					String DAQ2 = "0";
 					for ( int k=0; k<arrayDAQ.length; k++){
 						if (k%3 == 0){
 							String DAQ = (words[j].split("."))[0];//Find the DAQ #
@@ -101,7 +101,7 @@
 							}//if
 						}//if
 					}//for
-					String outline = 'Hello world!';
+					String outline = "Hello world!";
 				        bw.write(outline);
 				}//if
 				else {
