@@ -99,8 +99,8 @@
 						if (k%3 == 0){
 							String DAQ = (words[k].split("."))[0];//Find the DAQ #
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
-                                				if(DAQ1=='0' && DAQ2=='0'){DAQ1 = DAQ;}
-								if(DAQ1!='0' && DAQ2=='0'){DAQ2 = DAQ;}
+                                				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
+								if(DAQ1!="0" && DAQ2=="0"){DAQ2 = DAQ;}
 							}//if
 						}//if
 					}//for
