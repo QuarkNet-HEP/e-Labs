@@ -92,7 +92,10 @@
 					
 					String[] arrayDAQ = new String[listDAQ.size()];
 					arrayDAQ = listDAQ.toArray(arrayDAQ);
-					
+					out.println("arrayDAQ:  " + Arrays.toString(arrayDAQ));					
+					out.println("Length of arrayDAQ:  " + String.valueOf(arrayDAQ.length));
+					/*
+					//Populate DAQ1 and DAQ2
 					String DAQ1 = "0";
 					String DAQ2 = "0";
 					for ( int k=0; k<arrayDAQ.length; k++){
@@ -109,6 +112,7 @@
 					int intDAQ1 = Integer.parseInt(DAQ1);
 					int intDAQ2 = Integer.parseInt(DAQ2);
 					if( intDAQ1 > intDAQ2){DAQ1 = String.valueOf(intDAQ2); DAQ2 = String.valueOf(intDAQ1);}
+					*/
 					
 					out.println("DAQ1:  "+DAQ1+" DAQ2:  "+DAQ2);
 					
