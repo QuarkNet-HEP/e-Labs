@@ -97,7 +97,7 @@
 					String DAQ2 = "0";
 					for ( int k=0; k<arrayDAQ.length; k++){
 						if (k%3 == 0){
-							String DAQ = (words[j].split("."))[0];//Find the DAQ #
+							String DAQ = (words[k].split("."))[0];//Find the DAQ #
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=='0' && DAQ2=='0'){DAQ1 = DAQ;}
 								if(DAQ1!='0' && DAQ2=='0'){DAQ2 = DAQ;}
