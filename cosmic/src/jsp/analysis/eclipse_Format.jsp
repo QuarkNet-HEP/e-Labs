@@ -88,7 +88,10 @@
 							}//if
 	                                        }//if
 					}//for
-					String[] arrayDAQ = toArray(listDAQ);
+
+			
+					String[] arrayDAQ = new String[listDAQ.size()];
+					arrayDAQ = listDAQ.toArray(arrayDAQ);
 					
 					String DAQ1 = "0";
 					String DAQ2 = "0";
