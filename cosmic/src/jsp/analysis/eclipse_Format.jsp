@@ -112,10 +112,10 @@
 					int intDAQ1 = Integer.parseInt(DAQ1);
 					int intDAQ2 = Integer.parseInt(DAQ2);
 					if( intDAQ1 > intDAQ2){DAQ1 = String.valueOf(intDAQ2); DAQ2 = String.valueOf(intDAQ1);}
+					
+					
+					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
 					*/
-					
-					out.println("DAQ1:  "+DAQ1+" DAQ2:  "+DAQ2);
-					
 					String outline = "Hello world!";
 				        bw.write(outline);
 				}//if
