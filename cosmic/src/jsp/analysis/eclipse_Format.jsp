@@ -101,7 +101,7 @@
 							}//if
 						}//if
 					}//for
-					String outline = 'Hello world!"
+					String outline = 'Hello world!'
 				        bw.write(outline);
 				}//if
 				else {
