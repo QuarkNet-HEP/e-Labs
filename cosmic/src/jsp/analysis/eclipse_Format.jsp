@@ -101,8 +101,9 @@
 					for ( int k=0; k < arrayDAQ.length; k++){
 						if (k%3 == 0){
 							out.println(arrayDAQ[k]+", ");		
-							/*
 							String DAQ = (arrayDAQ[k].split("."))[0];//Find the DAQ #
+							out.println((arrayDAQ[k].split("."))[0]);
+							/*
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
 								if(DAQ1!="0" && DAQ2=="0"){DAQ2 = DAQ;}
