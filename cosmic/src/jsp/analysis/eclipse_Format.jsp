@@ -70,8 +70,9 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
          
  		       	String line = br.readLine();
-         
-	        	for( int i = 1; line != null; i++){
+         		
+			//for( int i = 1; line != null; i++){
+	        	for( int i = 1; i<4; i++){
 				String[] words = line.split("\\s+");
 				
 				if(words[0].charAt(0) != '#'){
@@ -88,8 +89,8 @@
 							}//if
 	                                        }//if
 					}//for
-
-			
+					out.println(listDAQ);
+					/*			
 					String[] arrayDAQ = new String[listDAQ.size()];
 					arrayDAQ = listDAQ.toArray(arrayDAQ);
 					
@@ -104,6 +105,7 @@
 							}//if
 						}//if
 					}//for
+					*/
 					String outline = "Hello world!";
 				        bw.write(outline);
 				}//if
