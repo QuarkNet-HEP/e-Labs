@@ -94,20 +94,24 @@
 					arrayDAQ = listDAQ.toArray(arrayDAQ);
 					out.println("arrayDAQ:  " + Arrays.toString(arrayDAQ));					
 					out.println("Length of arrayDAQ:  " + String.valueOf(arrayDAQ.length));
-					/*
+					
 					//Populate DAQ1 and DAQ2
 					String DAQ1 = "0";
 					String DAQ2 = "0";
-					for ( int k=0; k<arrayDAQ.length; k++){
+					for ( int k=0; k < arrayDAQ.length; k++){
 						if (k%3 == 0){
+							out.println(arrayDAQ[k]+", ");		
+							/*
 							String DAQ = (arrayDAQ[k].split("."))[0];//Find the DAQ #
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
 								if(DAQ1!="0" && DAQ2=="0"){DAQ2 = DAQ;}
 							}//if
+							*/
 						}//if
 					}//for
-
+					
+					/*
 					//Make DAQ1 the smaller DAQ#
 					int intDAQ1 = Integer.parseInt(DAQ1);
 					int intDAQ2 = Integer.parseInt(DAQ2);
@@ -116,6 +120,7 @@
 					
 					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
 					*/
+					
 					String outline = "Hello world!";
 				        bw.write(outline);
 				}//if
