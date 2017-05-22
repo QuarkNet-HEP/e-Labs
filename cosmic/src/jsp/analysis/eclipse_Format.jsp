@@ -95,7 +95,7 @@
 					out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
 					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
-					//Create List of DAQs and sort it.
+					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
 					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
@@ -104,14 +104,14 @@
 							listDAQ.add(DAQ);
 						}//if
 					}//for
-					Collections.sort(listDAQ);
 					out.println("List of DAQs:  " + listDAQ);
 					
-					//Get set of unique DAQs and convert to an array.
+					//Get set of unique DAQs, convert to array, and sort.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					out.println("Set of DAQs:  " + setDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
-					
+					Arrays.sort(arrayDAQ); 					
+
 					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
