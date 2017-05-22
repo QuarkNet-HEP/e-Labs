@@ -98,17 +98,17 @@
 					//Populate DAQ1 and DAQ2
 					String DAQ1 = "0";
 					String DAQ2 = "0";
+					List<String> listDAQ = new ArrayList<String>();
 					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
 							String numChanDAQ = arrayDJF[k];
 							String DAQ = (numChanDAQ.split("\\."))[0];
-							out.println(DAQ);
-                        				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
-                                				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
-								if(DAQ1!="0" && DAQ2=="0"){DAQ2 = DAQ;}
-							}//if
+							listDAQ.add(DAQ);
 						}//if
 					}//for
+					out.println("List of DAQs:  " + listDAQ);
+					Set<String> setDAQ = new HashSet<String>(listDAQ);
+					out.println("Set of DAQs:  " + setDAQ);
 					
 					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
 					int intDAQ1 = Integer.parseInt(DAQ1);
