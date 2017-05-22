@@ -101,7 +101,8 @@
 					for ( int k=0; k < arrayDAQ.length; k++){
 						if (k%3 == 0){
 							out.println(arrayDAQ[k]+", ");
-							//String numChanDAQ = arrayDAQ[k];	
+							String numChanDAQ = arrayDAQ[k];
+							out.println(numChanDAQ);	
 							//String [] arrayNumChanDAQ = numChanDAQ.split("."); 	
 							//String numDAQ = arrayNumChanDAQ[1];//Find the DAQ number
 							//out.println(numDAQ);
