@@ -113,8 +113,8 @@
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
 					
 					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
-					DAQ1 = arrayDAQ[0];
-					DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
+					String DAQ1 = arrayDAQ[0];
+					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
 					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
 					
 					String outline = "Hello world!";
