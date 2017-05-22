@@ -101,25 +101,21 @@
 					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
 							String numChanDAQ = arrayDJF[k];
-							out.println(numChanDAQ);
-							String[] arrayDAQ = numChanDAQ.split("\\.");
-							out.println(arrayDAQ[0]);
-							/*
+							String DAQ = (numChanDAQ.split("\\."))[0]
+							out.println(DAQ);
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
 								if(DAQ1!="0" && DAQ2=="0"){DAQ2 = DAQ;}
 							}//if
-							*/
 						}//if
 					}//for
 					
-					/*
 					//Make DAQ1 the smaller DAQ#
 					int intDAQ1 = Integer.parseInt(DAQ1);
 					int intDAQ2 = Integer.parseInt(DAQ2);
-					if( intDAQ1 > intDAQ2){DAQ1 = String.valueOf(intDAQ2); DAQ2 = String.valueOf(intDAQ1);}
-					
-					
+					DAQ1 = min(intDAQ1, intDAQ2);
+					DAQ2 = max(intDAQ1, intDAQ2);
+
 					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
 					*/
 					
