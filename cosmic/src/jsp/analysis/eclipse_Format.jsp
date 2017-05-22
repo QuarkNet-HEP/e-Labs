@@ -102,8 +102,8 @@
 						if (k%3 == 0){
 							String numChanDAQ = arrayDJF[k];
 							out.println(numChanDAQ);
-							String[] tokens = numChanDAQ.split(".");
-							out.println(tokens[0]);
+							String[] arrayDAQ = numChanDAQ.split("\\.");
+							out.println(arrayDAQ[0]);
 							/*
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
