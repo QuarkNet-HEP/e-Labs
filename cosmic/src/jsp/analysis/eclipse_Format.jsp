@@ -78,34 +78,32 @@
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
-					//listDAQ will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
-					List<String> listDAQ = new ArrayList<String>();
+					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
+					List<String> listDJF = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
-							if (!listDAQ.contains(words[j])){
-								listDAQ.add(words[j]);
-								listDAQ.add(words[j+1]);
-								listDAQ.add(words[j+2]);
+							if (!listDJF.contains(words[j])){
+								listDJF.add(words[j]);
+								listDJF.add(words[j+1]);
+								listDJF.add(words[j+2]);
 							}//if
 	                                        }//if
 					}//for
 					
-					String[] arrayDAQ = new String[listDAQ.size()];
-					arrayDAQ = listDAQ.toArray(arrayDAQ);
-					out.println("arrayDAQ:  " + Arrays.toString(arrayDAQ));					
-					out.println("Length of arrayDAQ:  " + String.valueOf(arrayDAQ.length));
+					String[] arrayDJF = new String[listDJF.size()];
+					arrayDJF = listDJF.toArray(arrayDJF);
+					out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
+					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//Populate DAQ1 and DAQ2
 					String DAQ1 = "0";
 					String DAQ2 = "0";
-					for ( int k=0; k < arrayDAQ.length; k++){
+					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
-							String numChanDAQ = arrayDAQ[k];
+							String numChanDAQ = arrayDJF[k];
 							out.println(numChanDAQ);
-							String[] arrayNumChanDAQ = new String[2];	
-							arrayNumChanDAQ = numChanDAQ.split("."); 	
-							String numDAQ = arrayNumChanDAQ[0];//Find the DAQ number
-							out.println(numDAQ);
+							String[] tokens = numChanDAQ.split(".");
+							out.println(tokens[0]);
 							/*
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
