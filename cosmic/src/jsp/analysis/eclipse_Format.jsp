@@ -103,7 +103,7 @@
 							String numChanDAQ = arrayDAQ[k];
 							out.println(numChanDAQ);
 							String[] arrayNumChanDAQ = new String[2];	
-							String[] arrayNumChanDAQ = numChanDAQ.split("."); 	
+							arrayNumChanDAQ = numChanDAQ.split("."); 	
 							String numDAQ = arrayNumChanDAQ[0];//Find the DAQ number
 							out.println(numDAQ);
 							/*
