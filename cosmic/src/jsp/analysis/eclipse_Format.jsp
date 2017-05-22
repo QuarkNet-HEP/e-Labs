@@ -100,12 +100,12 @@
 					String DAQ2 = "0";
 					for ( int k=0; k < arrayDAQ.length; k++){
 						if (k%3 == 0){
-							out.println(arrayDAQ[k]+", ");
 							String numChanDAQ = arrayDAQ[k];
-							out.println(numChanDAQ);	
-							//String [] arrayNumChanDAQ = numChanDAQ.split("."); 	
-							//String numDAQ = arrayNumChanDAQ[1];//Find the DAQ number
-							//out.println(numDAQ);
+							out.println(numChanDAQ);
+							String[] arrayNumChanDAQ = new String[2];	
+							String[] arrayNumChanDAQ = numChanDAQ.split("."); 	
+							String numDAQ = arrayNumChanDAQ[0];//Find the DAQ number
+							out.println(numDAQ);
 							/*
                         				if(!DAQ1.equals(DAQ) && !DAQ2.equals(DAQ)){
                                 				if(DAQ1=="0" && DAQ2=="0"){DAQ1 = DAQ;}
