@@ -22,6 +22,7 @@
 	</head>
 	<body>
 	<%	
+		//Phase I:  copy eventCandidates file into eFtemp-date
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");
 		String sD = request.getParameter("srcD");
@@ -58,47 +59,82 @@
                         out.println("Copy of eventCandidates to eFtemp successful!");
                 }
 
-		//Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
+		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
-		String src2 = dst;				//eFtemp is source in this phase
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat is destination in this phase
+		String src2 = dst;				//eFtemp-date is source in this phase
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat-date is destination in this phase
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
          
  		       	String line = br.readLine();
-         
-	        	for( int i = 1; line != null; i++){
-				String[] tokens = line.split("\\s+");
-				if(tokens[0].charAt(0) != '#'){
-					int numEvents = Integer.parseInt(tokens[1]);
-                                	int eventNum = Integer.parseInt(tokens[0]);
-					String[] DAQch;
-					for ( int j=0; j<tokens.length; j++){
+         		
+			//for( int i = 1; line != null; i++){
+	        	for( int i = 1; i<4; i++){
+				String[] words = line.split("\\s+");
+				
+				if(words[0].charAt(0) != '#'){
+					int eventNum = Integer.parseInt(words[0]);
+					int numEvents = Integer.parseInt(words[1]);
+					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
+					List<String> listDJF = new ArrayList<String>();
+					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
-							DAQch = DAQch + tokens[j];
+							if (!listDJF.contains(words[j])){
+								listDJF.add(words[j]);
+								listDJF.add(words[j+1]);
+								listDJF.add(words[j+2]);
+							}//if
 	                                        }//if
 					}//for
-				
-					//for (int j=0; j<tokens.length; j++){
-					//	bw.write(tokens[j]);
-        	    			//	bw.write("-");
-					//}
+					
+					String[] arrayDJF = new String[listDJF.size()];
+					arrayDJF = listDJF.toArray(arrayDJF);
+					out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
+					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
+					
+					//Create List of DAQs.
+					List<String> listDAQ = new ArrayList<String>();
+					for ( int k=0; k < arrayDJF.length; k++){
+						if (k%3 == 0){
+							String numChanDAQ = arrayDJF[k];
+							String DAQ = (numChanDAQ.split("\\."))[0];
+							listDAQ.add(DAQ);
+						}//if
+					}//for
+					
+					//Get set of unique DAQs, convert to array, and sort.
+					Set<String> setDAQ = new HashSet<String>(listDAQ);
+					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
+					Arrays.sort(arrayDAQ); 					
+
+					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
+					String DAQ1 = arrayDAQ[0];
+					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
+					
+					String outline = "Hello world!";
+				        bw.write(outline);
 				}//if
-	
+				else {
+					bw.write(line);
+				}//else
+				
 				bw.newLine();
 				line = br.readLine();        		
 			}
-         
-        		out.println("eclipseFormat file exists!");
-         
+
+         		File file22 = new File(dst2);	
+			if (file22.exists() && file22.length() != 0){
+	        		out.println("eclipseFormat file exists and is not empty!");
+                        }
+
 	        	br.close();
         		bw.close();
     		}
     		catch(Exception e){
-        		System.out.println("Exception caught : " + e);
+        		out.println("Exception caught : " + e);
     		}
 	
 	%>
