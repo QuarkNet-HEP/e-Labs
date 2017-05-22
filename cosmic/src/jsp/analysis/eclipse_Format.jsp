@@ -95,9 +95,7 @@
 					out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
 					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
-					//Populate DAQ1 and DAQ2
-					String DAQ1 = "0";
-					String DAQ2 = "0";
+					//Create List of DAQs and sort it.
 					List<String> listDAQ = new ArrayList<String>();
 					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
@@ -106,20 +104,18 @@
 							listDAQ.add(DAQ);
 						}//if
 					}//for
+					Collections.sort(listDAQ);
 					out.println("List of DAQs:  " + listDAQ);
+					
+					//Get set of unique DAQs and convert to an array.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					out.println("Set of DAQs:  " + setDAQ);
+					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
 					
 					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
-					int intDAQ1 = Integer.parseInt(DAQ1);
-					int intDAQ2 = Integer.parseInt(DAQ2);
-					if (intDAQ1 > intDAQ2){
-						DAQ1 = String.valueOf(intDAQ2); 
-						DAQ2 = String.valueOf(intDAQ1);
-                                        }
-
+					DAQ1 = arrayDAQ[0];
+					DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
 					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
-					
 					
 					String outline = "Hello world!";
 				        bw.write(outline);
