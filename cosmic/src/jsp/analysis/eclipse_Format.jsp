@@ -39,6 +39,7 @@
 		String dst = dD+"/"+dF;
 		
 		out.println("Source: "+src);
+		out.printf("%n");
 		out.println("Destination: "+dst);	
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
@@ -73,6 +74,11 @@
          		
 			//for( int i = 1; line != null; i++){
 	        	for( int i = 1; i<4; i++){
+				//Write heading after writing 2 lines that begin with '#'.  
+				if (i == 3){
+					bw.write("DAQ1.ch1   "+"DAQ1.ch2   "+"DAQ1.ch3   "+"DAQ1.ch4"+"DAQ2.ch1   "+"DAQ2.ch2"+"DAQ2.ch3   "+"DAQ2.ch4");         
+				}
+
 				String[] words = line.split("\\s+");
 				
 				if(words[0].charAt(0) != '#'){
@@ -104,20 +110,47 @@
 							listDAQ.add(DAQ);
 						}//if
 					}//for
-					out.println("List of DAQs:  " + listDAQ);
 					
-					//Get set of unique DAQs, convert to array, and sort.
+					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
-					out.println("Set of DAQs:  " + setDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
 					Arrays.sort(arrayDAQ); 					
-
-					//DAQ1 will have smaller DAQ# and DAQ2 will have bigger DAQ#.
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
-					out.println("DAQ1:  " + DAQ1 + " DAQ2:  " + DAQ2);
 					
-					String outline = "Hello world!";
+					//output array
+					String [] outArray = new String[8];
+					for (k=0; k<outArray.length; k++){outArray[k] = -1;}
+					for (k=0; k<arrayDJF.length; k++){
+						if (k%3 == 0){
+						switch (arrayDJF[k]) {
+  						case (DAQ1+".ch1"): outArray[0]=arrayDJF[k+2];
+        						break;
+  						case (DAQ1+".ch2"): outArray[1]=arrayDJF[k+2]; 
+        						break;
+  						case (DAQ1+".ch3"): outArray[2]=arrayDJF[k+2];
+							break;
+  						case (DAQ1+".ch4"): outArray[3]=arrayDJF[k+2]; 
+        						break;
+						case (DAQ2+".ch1"): outArray[4]=arrayDJF[k+2];
+                                                        break;
+                                                case (DAQ2+".ch2"): outArray[5]=arrayDJF[k+2];                 
+                                                        break;
+                                                case (DAQ2+".ch3"): outArray[6]=arrayDJF[k+2];
+                                                        break;
+                                                case (DAQ2+".ch4"): outArray[7]=arrayDJF[k+2];                                    
+                                                        break;
+						//default: statement
+        						//break;
+						}//switch
+					}//for
+					//write to output file.
+					StringBuffer result = new StringBuffer();
+					for (int i = 0; i < outArray.length; i++) {
+   						result.append( outArray[i] );
+   						result.append(" ");
+					}
+					String outline = result.toString(); 
 				        bw.write(outline);
 				}//if
 				else {
