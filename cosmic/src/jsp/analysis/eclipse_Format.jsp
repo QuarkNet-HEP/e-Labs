@@ -120,7 +120,7 @@
 					
 					//output array
 					String [] outArray = new String[8];
-					for (int k=0; k<outArray.length; k++){outArray[k] = -1;}
+					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
 					for (int k=0; k<arrayDJF.length; k++){
 						if (k%3 == 0){
 						switch (arrayDJF[k]) {
