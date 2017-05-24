@@ -39,7 +39,7 @@
 		String dst = dD+"/"+dF;
 		
 		out.println("Source: "+src);
-		out.printf("%n");
+		out.print('\n');
 		out.println("Destination: "+dst);	
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
@@ -120,8 +120,8 @@
 					
 					//output array
 					String [] outArray = new String[8];
-					for (k=0; k<outArray.length; k++){outArray[k] = -1;}
-					for (k=0; k<arrayDJF.length; k++){
+					for (int k=0; k<outArray.length; k++){outArray[k] = -1;}
+					for (int k=0; k<arrayDJF.length; k++){
 						if (k%3 == 0){
 						switch (arrayDJF[k]) {
   						case (DAQ1+".ch1"): outArray[0]=arrayDJF[k+2];
