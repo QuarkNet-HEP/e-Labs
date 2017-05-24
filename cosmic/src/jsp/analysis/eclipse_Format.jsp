@@ -134,8 +134,8 @@
 					}//for
 					//write to output file.
 					StringBuffer result = new StringBuffer();
-					for (int i = 0; i < outArray.length; i++) {
-   						result.append( outArray[i] );
+					for (int n = 0; n < outArray.length; n++) {
+   						result.append( outArray[n] );
    						result.append(" ");
 					}
 					String outline = result.toString(); 
