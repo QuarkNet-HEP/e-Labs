@@ -123,22 +123,22 @@
 					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
 					for (int k=0; k<arrayDJF.length; k++){
 						if (k%3 == 0){
-						switch (arrayDJF[k]) {
-  						case (DAQ1+".ch1"): outArray[0]=arrayDJF[k+2];
+						switch (Float.valueOf(arrayDJF[k])) {
+  						case (Float.valueOf(DAQ1+".ch1")): outArray[0]=arrayDJF[k+2];
         						break;
-  						case (DAQ1+".ch2"): outArray[1]=arrayDJF[k+2]; 
+  						case (Float.valueOf(DAQ1+".ch2")): outArray[1]=arrayDJF[k+2]; 
         						break;
-  						case (DAQ1+".ch3"): outArray[2]=arrayDJF[k+2];
+  						case (Float.valueOf(DAQ1+".ch3")): outArray[2]=arrayDJF[k+2];
 							break;
-  						case (DAQ1+".ch4"): outArray[3]=arrayDJF[k+2]; 
+  						case (Float.valueOf(DAQ1+".ch4")): outArray[3]=arrayDJF[k+2]; 
         						break;
-						case (DAQ2+".ch1"): outArray[4]=arrayDJF[k+2];
+						case (Float.valueOf(DAQ2+".ch1")): outArray[4]=arrayDJF[k+2];
                                                         break;
-                                                case (DAQ2+".ch2"): outArray[5]=arrayDJF[k+2];                 
+                                                case (Float.valueOf(DAQ2+".ch2")): outArray[5]=arrayDJF[k+2];                 
                                                         break;
-                                                case (DAQ2+".ch3"): outArray[6]=arrayDJF[k+2];
+                                                case (Float.valueOf(DAQ2+".ch3")): outArray[6]=arrayDJF[k+2];
                                                         break;
-                                                case (DAQ2+".ch4"): outArray[7]=arrayDJF[k+2];                                    
+                                                case (Float.valueOf(DAQ2+".ch4")): outArray[7]=arrayDJF[k+2];                                    
                                                         break;
 						//default: statement
         						//break;
