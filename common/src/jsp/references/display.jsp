@@ -9,20 +9,22 @@
 
 
 <%
-	String title;
-	String name = request.getParameter("name");  //label you want to show
-	String type = request.getParameter("type");  //label you want to show
-	String file;
-	
-	if ("glossary".equals(type)) {
-		file = "Glossary_" + name;
-	}
-	else if ("reference".equals(type)) {
-		file = "Reference_" + name;
-	}
-	else {
-		throw new ElabJspException("Invalid reference type: " + type);
-	}
+  String title;
+  String name = request.getParameter("name");  //label you want to show
+  String type = request.getParameter("type");  //label you want to show
+  String file;
+
+  if ("glossary".equals(type)) {
+    file = "Glossary_" + name;
+  }
+  else if ("reference".equals(type)) {
+    file = "Reference_" + name;
+  }
+  else {
+    // XSS vulnerability
+    //throw new ElabJspException("Invalid reference type: " + type);
+    throw new ElabJspException("Invalid reference type");
+  }
 	title = name.replaceAll("_"," ");
 	file = file.replaceAll(" ", "_") + ".html";
 	request.setAttribute("title", title);
