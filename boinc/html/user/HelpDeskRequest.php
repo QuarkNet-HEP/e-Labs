@@ -89,7 +89,7 @@ $role_list=array('Student', 'Teacher', 'QuarkNet Fellow',
 //
 $elab_forum_id= array('any' => 52,
                       'cosmic' => 57,
-	              'cms' => 60,
+											'cms' => 60,
                       'ligo' => 58);
 
 // For testing.  If the server name contains "spy-hill"
@@ -106,8 +106,8 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
 
 $self = $_SERVER['PHP_SELF'];                           // who we are (path only)
 $my_url = "http://" . $_SERVER['SERVER_NAME'] . $self;  // this form (full URL)
-$referer = $_SERVER['HTTP_REFERER'];                 // from whence we came (full URL)
-$user_agent = $_SERVER['HTTP_USER_AGENT'];           // User's browser
+$referer = $_SERVER['HTTP_REFERER'];                 		// from whence we came (full URL)
+$user_agent = $_SERVER['HTTP_USER_AGENT'];           		// User's browser
 
 
 $input_error=array();           // empty means no errors (yet)
@@ -245,12 +245,12 @@ function get_default($name, $tag=''){
 
     if( !empty($tag) ){ // first try by short 'tag'
         if( isset($_GET[$tag]) ){
-            $$name = trim($_GET[$tag]);
+            $$name = htmlentities(trim($_GET[$tag]), ENT_QUOTES);
             debug_msg(3,"set $name to '".$$name."' from URL");
         }
     }
     if( isset($_GET[$name]) ){ // then try by full variable name
-        $$name = trim($_GET[$name]);
+        $$name = htmlentities(trim($_GET[$name]), ENT_QUOTES);
         debug_msg(3,"set $name to '".$$name."' from URL");
     }
 }
@@ -405,7 +405,7 @@ function setup_referer_button(){
 }
 
 
-// Use referer() to create a button with lable $label
+// Use referer() to create a button with label $label
 // to insert the referer URL, if there is one.
 //
 function use_referer_button($label){
@@ -415,7 +415,7 @@ function use_referer_button($label){
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
-    return "<input name='now'  type='button' value='$label'
+    return "<input name='now' type='button' value='$label'
                 onClick='insertRefererURL()'>\n\n";
 }
 
@@ -604,7 +604,7 @@ function send_report_via_email($thread_id=0){
 
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
-	$headers .= "BCC: " .$Email_BCC."\n";
+		$headers .= "BCC: " .$Email_BCC."\n";
 
     if( !empty($user_name) && $user_id > 0 ) {
         $body .= "User '$user_name' (id# $user_id)";
@@ -803,7 +803,6 @@ function do_post($url, $data)
 //
 get_default('elab');
 get_default('component', 'part');
-
 
 // Process form input via POST
 //
