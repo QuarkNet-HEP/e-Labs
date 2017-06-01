@@ -245,12 +245,12 @@ function get_default($name, $tag=''){
 
     if( !empty($tag) ){ // first try by short 'tag'
         if( isset($_GET[$tag]) ){
-            $$name = htmlentities(trim($_GET[$tag]), ENT_QUOTES);
+            $$name = htmlentities(trim($_GET[$tag]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
             debug_msg(3,"set $name to '".$$name."' from URL");
         }
     }
     if( isset($_GET[$name]) ){ // then try by full variable name
-        $$name = htmlentities(trim($_GET[$name]), ENT_QUOTES);
+        $$name = htmlentities(trim($_GET[$name]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         debug_msg(3,"set $name to '".$$name."' from URL");
     }
 }
@@ -1296,7 +1296,7 @@ echo "\n
    updateClassVisibility();\n";
 
 // If there are arguments in the URL (ie GET) then automatically insert
-// the refering URL
+// the referring URL
 //
 if( !empty($_GET) && !empty($referer) ){
     echo "insertRefererURL();\n";
