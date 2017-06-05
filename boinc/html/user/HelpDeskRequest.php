@@ -1287,7 +1287,7 @@ echo "\n<p style='color:grey; text-align: right;'>"
 // Form adjustments:  set initial visibility of sections,
 // Fill in some blanks with client-side scripting, if we can:
 //
-<!-- Testing fixes -->
+echo "<!-- Testing fixes -->";
 echo "\n
   <script type=\"text/javascript\">
    setClassVisibility(\"cosmics_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"Cosmic Rays\" ) );
