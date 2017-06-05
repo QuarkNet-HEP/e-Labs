@@ -76,7 +76,7 @@
 				//Write heading after writing 2 lines that begin with '#'.  
 				if (i == 3){
 					bw.write("DAQ1.ch1   "+"DAQ1.ch2   "+"DAQ1.ch3   "+"DAQ1.ch4"+"DAQ2.ch1   "+"DAQ2.ch2"+"DAQ2.ch3   "+"DAQ2.ch4");         
-				}
+				}//if
 
 				String[] words = line.split("\\s+");
 				
@@ -92,7 +92,7 @@
 								listDJF.add(words[j+1]);
 								listDJF.add(words[j+2]);
 							}//if
-	                                        }//if
+	                     }//if
 					}//for
 					
 					String[] arrayDJF = new String[listDJF.size()];
@@ -130,15 +130,16 @@
 							else if (DAQ2+".ch2" == arrayDJF[k]){outArray[5]=arrayDJF[k+2];}
 							else if (DAQ2+".ch3" == arrayDJF[k]){outArray[6]=arrayDJF[k+2];}
 							else if (DAQ2+".ch4" == arrayDJF[k]){outArray[7]=arrayDJF[k+2];}
-					}//for
-					//write to output file.
-					StringBuffer result = new StringBuffer();
-					for (int n = 0; n < outArray.length; n++) {
-   						result.append( outArray[n] );
-   						result.append(" ");
-					}//for
-					String outline = result.toString(); 
+						}//if
+						//write to output file.
+						StringBuffer result = new StringBuffer();
+						for (int n = 0; n < outArray.length; n++) {
+   							result.append( outArray[n] );
+   							result.append(" ");
+						}//for
+						String outline = result.toString(); 
 				        bw.write(outline);
+					}//for
 				}//if
 				else {
 					bw.write(line);
@@ -149,13 +150,13 @@
 			}//for
 
          		File file22 = new File(dst2);	
-			if (file22.exists() && file22.length() != 0){
+				if (file22.exists() && file22.length() != 0){
 	        		out.println("eclipseFormat file exists and is not empty!");
-                        }
+                }//if
 
 	        	br.close();
         		bw.close();
-    			}//for
+    			
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
