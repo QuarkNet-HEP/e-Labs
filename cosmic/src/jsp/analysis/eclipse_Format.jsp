@@ -72,7 +72,6 @@
          
  		       	String line = br.readLine();
          		
-			//for( int i = 1; line != null; i++){
 	        	for( int i = 1; i<4; i++){
 				//Write heading after writing 2 lines that begin with '#'.  
 				if (i == 3){
@@ -156,7 +155,7 @@
 
 	        	br.close();
         		bw.close();
-    		}//for
+    			}//for
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
