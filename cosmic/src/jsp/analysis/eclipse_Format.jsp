@@ -137,7 +137,7 @@
 					for (int n = 0; n < outArray.length; n++) {
    						result.append( outArray[n] );
    						result.append(" ");
-					}
+					}//for
 					String outline = result.toString(); 
 				        bw.write(outline);
 				}//if
@@ -147,7 +147,7 @@
 				
 				bw.newLine();
 				line = br.readLine();        		
-			}
+			}//for
 
          		File file22 = new File(dst2);	
 			if (file22.exists() && file22.length() != 0){
@@ -156,10 +156,11 @@
 
 	        	br.close();
         		bw.close();
-    		}
+    		}//for
+    		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
-    		}
+    		}//catch
 	
 	%>
 	</body>
