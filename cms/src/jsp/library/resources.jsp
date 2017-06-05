@@ -84,17 +84,6 @@
 								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Single Event Display</e:popup> - how Z Boson decays are displayed in data.
 							</li>
 							<li>
-								<e:popup href="../video/demos-calibration.html?video=data-selection" target="tryit" width="800" height="800">Data Selection: Calibration Studies</e:popup>
- - how to select data.
-							</li>
-							<li>
-								<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Plot Selection: Calibration Studies</e:popup>
- - how to select plots.
-							</li>
-							<li>
-								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies and Exploration</e:popup> - how to plot.
-							</li>
-							<li>
 								<e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Dataset Selection: Exploration Studies</e:popup>
  - how to select datasets.
 							</li>
@@ -119,7 +108,7 @@
 								<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display</e:popup> - Manipulate CMS events. See screencast demo above.
 							</li>
 							<li>
-								<e:popup href="http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup>- Test your skill.
+								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup>- Play this game to test your skill.
 							</li>
 						</ul>
 					</div>
