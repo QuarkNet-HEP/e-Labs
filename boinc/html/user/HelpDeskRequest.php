@@ -1289,9 +1289,9 @@ echo "\n<p style='color:grey; text-align: right;'>"
 //
 echo "\n
   <script type=\"text/javascript\">
-   setClassVisibility(\"cosmics_elab\", ( \"$elab\"==\"Cosmic Rays\" ) );
-   setClassVisibility(\"ligo_elab\", ( \"$elab\"==\"LIGO\" ) );
-   setClassVisibility(\"cms_elab\", ( \"$elab\"==\"CMS\" ) );
+   setClassVisibility(\"cosmics_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"Cosmic Rays\" ) );
+   setClassVisibility(\"ligo_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"LIGO\" ) );
+   setClassVisibility(\"cms_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"CMS\" ) );
    makeClassInvisible(\"networking_part\");
    updateClassVisibility();\n";
 
