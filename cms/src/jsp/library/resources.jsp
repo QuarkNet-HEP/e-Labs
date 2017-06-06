@@ -86,7 +86,7 @@
 								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k dimuon mass plot</e:popup>.
 							</li>
 							<li>
-                                				<e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">Intro</e:popup>3-D Event Display demo: </e:popup> - Introduction to tool usage. 
+                                				<e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">3-D Event Display demo: </e:popup> - Introduction to tool usage. 
                             				</li>
 						</ul>
 					<h2>Single Events</h2>
