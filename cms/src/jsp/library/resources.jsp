@@ -80,15 +80,14 @@
 								<e:popup href="https://www.screencast.com/t/gLVOiKezG" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup> - Introduction to navigating the e-Lab, including Project Map and logbook.
 							</li>
 							<li>
-								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Decays</e:popup> - different decays seen in the detector.
+								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Decays</e:popup> - Introduction to various decays seen in the detector.
 							</li>
 							<li>
 								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k dimuon mass plot</e:popup>.
 							</li>
 							<li>
-                                3-D Event Display: <e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">Intro</e:popup> - how to use the tool. 
-                            </li>
-								
+                                				<e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">Intro</e:popup>3-D Event Display demo: </e:popup> - Introduction to tool usage. 
+                            				</li>
 						</ul>
 					<h2>Single Events</h2>
 						<ul class="simple">
