@@ -116,6 +116,7 @@
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
+					out.println("DAQ1:  " + DAQ1 + "DAQ2:  " + DAQ2);		
 					
 					//output array
 					String [] outArray = new String[8];
