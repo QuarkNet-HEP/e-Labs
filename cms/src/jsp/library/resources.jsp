@@ -83,7 +83,7 @@
 								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Decays</e:popup> - different decays seen in the detector.
 							</li>
 							<li>
-								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k diumuon mass plot</e:popup>.
+								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k dimuon mass plot</e:popup>.
 							</li>
 							<li>
                                 3-D Event Display: <e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">Intro</e:popup> - how to use the tool. 
@@ -109,7 +109,7 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="http://cms.web.cern.ch/" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN
+								<e:popup href="http://cms.web.cern.ch/" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN.
 							</li>
 							<li>
 								<e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
@@ -130,20 +130,20 @@
 								<e:popup href="http://physicsmasterclasses.org/exercises/hands-on-cern/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
 							</li>
 							<li>
-								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain							
+								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain.							
 							</li>
 							<li>
 								<e:popup href="http://cern50.web.cern.ch/cern50/multimedia/LHCGame/StartGame.html" target="website" width="875" height="610">LHC Game (CERN)</e:popup> 
 							</li>
 							<li>
-								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN
+								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN.
 							</li>
 							<li>
-								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN
+								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN.
 							</li>
 							<li>
 								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
-								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>.
 							</li>
 								
 						</ul>
@@ -152,29 +152,29 @@
 				</div>
 			
 				<div class="tab" id="tab-video">
-					<span class="tab-title">Video</span>
+					<span class="tab-title">Videos</span>
 					<div class="tab-contents-sublevel">
 						<ul  class="simple">
 							<li>
-								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - from the BBC
+								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - from the BBC.
 							</li>
 							<li>
-								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
+								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube.
 							</li>
 							<li>
-								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
+								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel.
 							</li>
 							<li>
 								<e:popup href="http://www.phdcomics.com/comics/archive.php?comicid=1489" target="video" width="800" height="800">The Higgs Boson Explained</e:popup> - Animated Comic from PhDComics.
 							</li>
 							<li>
-								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
+								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist.
 							</li>
 							<li>
-								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
+								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions.
 							</li>
 							<li>
-								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
+								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube.
 							</li>
 						</ul>
 					</div>
@@ -255,10 +255,10 @@
 								from Microsoft Learning.
 							</li>
 							<li>
-								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco
+								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> from Cisco.
 							</li>
 							<li>
-								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education								
+								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education.								
 							</li>
 						</ul>
 					</div>							
