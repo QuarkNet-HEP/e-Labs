@@ -78,37 +78,25 @@
 						<h2>Screencast Demos</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup> - a good introduction to navigating the e-Lab including the Project Map and logbook.
+								<e:popup href="https://www.screencast.com/t/gLVOiKezG" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup> - an introduction to navigating the e-Lab, including the Project Map and logbook.
 							</li>
 							<li>
-								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Single Event Display</e:popup> - how Z Boson decays are displayed in data.
+								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Decays</e:popup> - different decays seen in the detector.
 							</li>
 							<li>
-								<e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Dataset Selection: Exploration Studies</e:popup>
- - how to select datasets.
+								<e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">Explorarion Studies - J/Psi mass plot</e:popup>.
 							</li>
 							<li>
-								<e:popup href="../video/demos-exploration.html?video=data-selection" target="tryit" width="800" height="800">Data Selection: Exploration Studies</e:popup>
- - how to select data.
-							</li>
-							<li>
-								<e:popup href="../video/demos-exploration.html?video=plot-selection" target="tryit" width="800" height="800">Plot Selection: Exploration Studies</e:popup>
- - how to select plots.
-							</li>
-							<li>
-								3-D Event Display: <e:popup href="http://screencast.com/t/X2WGL5ru8wMX" target="tryit" width="775" height="625">Intro</e:popup> -
-								<e:popup href="http://screencast.com/t/7wFGMWXVpdOM" target="tryit" width="775" height="625">More Features</e:popup>
-								- how to use the tool.
-
+								<e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">Explorarion Studies - 100k diumuon mass plot</e:popup>.
 							</li>
 						</ul>
 					<h2>Single Events</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display</e:popup> - Manipulate CMS events. See screencast demo above.
-							</li>
+                                                                3-D Event Display: <e:popup href="http://screencast.com/t/X2WGL5ru8wMX" target="tryit" width="775" height="625">Intro</e:popup> - how to use the tool to manipulate CMS events.
+                                                        </li>
 							<li>
-								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup>- Play this game to test your skill.
+								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup> - Play this game to test your skill.
 							</li>
 						</ul>
 					</div>
