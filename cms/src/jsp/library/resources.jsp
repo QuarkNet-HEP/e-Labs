@@ -62,10 +62,9 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
+		<td><%-- LEFT COLUMN --%>
 			<div id="left">
-					
-
+			
 				<div class="tab" id="tab-online">
 					<span class="tab-title">e-Lab Resources</span>
 					<div class="tab-contents-sublevel">
@@ -84,19 +83,20 @@
 								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Decays</e:popup> - different decays seen in the detector.
 							</li>
 							<li>
-								<e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">Explorarion Studies - J/Psi mass plot</e:popup>.
+								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k diumuon mass plot</e:popup>.
 							</li>
 							<li>
-								<e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">Explorarion Studies - 100k diumuon mass plot</e:popup>.
-							</li>
+                                3-D Event Display: <e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">Intro</e:popup> - how to use the tool. 
+                            </li>
+								
 						</ul>
 					<h2>Single Events</h2>
 						<ul class="simple">
 							<li>
-                                                                3-D Event Display: <e:popup href="http://screencast.com/t/X2WGL5ru8wMX" target="tryit" width="775" height="625">Intro</e:popup> - how to use the tool to manipulate CMS events.
-                                                        </li>
+                            	<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display</e:popup> - Manipulate CMS events. See screencast demo above.
+                            </li>
 							<li>
-								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup> - Play this game to test your skill.
+								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</e:popup> - Play this game to test your skill.
 							</li>
 						</ul>
 					</div>
@@ -150,13 +150,42 @@
 
 					</div>
 				</div>
-				
-				
-			</div>
+			
+				<div class="tab" id="tab-video">
+					<span class="tab-title">Video</span>
+					<div class="tab-contents-sublevel">
+						<ul  class="simple">
+							<li>
+								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - from the BBC
+							</li>
+							<li>
+								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
+							</li>
+							<li>
+								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
+							</li>
+							<li>
+								<e:popup href="http://www.phdcomics.com/comics/archive.php?comicid=1489" target="video" width="800" height="800">The Higgs Boson Explained</e:popup> - Animated Comic from PhDComics.
+							</li>
+							<li>
+								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
+							</li>
+							<li>
+								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
+							</li>
+							<li>
+								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div><%-- close <div id="left"> --%>
 		</td>
-		<td>
+		
+		
+		<td><%-- RIGHT COLUMN --%>
 			<div id="right">
-<%-- 
+				<%-- 
 				<div class="tab" id="tab-tutorials">
 					<span class="tab-title">Tutorials - Coming Soon</span>
 					<div class="tab-contents-sublevel">
@@ -167,46 +196,10 @@
 							</li>
 							</ul>
 					</div>
---%>
 				</div>
+				--%>
+			
 
-				
-							<div class="tab" id="tab-video">
-					<span class="tab-title">Video</span>
-					<div class="tab-contents-sublevel">
-						<ul  class="simple">
-
-							<li>
-								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - from the BBC
-							</li>
-							<li>
-								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
-							</li>
-							<li>
-								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
-							</li>
-						<li>
-								<e:popup href="http://www.phdcomics.com/comics/archive.php?comicid=1489" target="video" width="800" height="800">The Higgs Boson Explained</e:popup> - Animated Comic from PhDComics.
-							</li>
-
-
-
-
-							<li>
-								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
-							</li>
-							<li>
-								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
-							</li>
-							<li>
-								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
-							</li>
-							</ul>
-							</div>
-							</div>
-							
-
-				
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -237,8 +230,6 @@
 					</div>
 				</div>
 				
-
-				
 				<div class="tab" id="tab-slideshows">
 					<span class="tab-title">Slideshows</span>
 					<div class="tab-contents-sublevel">
@@ -253,8 +244,7 @@
 				</div>
 
 
-
-					<div class="tab" id="tab-it-careers">
+				<div class="tab" id="tab-it-careers">
 					<span class="tab-title">IT Careers</span>
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
@@ -271,12 +261,11 @@
 								<A href="https://www.education.ne.gov/nce/careerclusters/2013/INFOTE.pdf" target="_blank">Career cluster</a> from Nebraska Department of Education								
 							</li>
 						</ul>
-					</div>			
-				
-	             </div>			
+					</div>							
+	        	</div>			
 
 
-							<div class="tab" id="tab-grid-computing">
+				<div class="tab" id="tab-grid-computing">
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
 					<p>The grid is critical for providing the data to all the CMS researchers.</p>
@@ -294,14 +283,11 @@
 								<e:popup href="http://www.wikipedia.org/wiki/Grid_computing" target="website" width="850" height="600">Grid Computing</e:popup> - 
 								Read the Wikipedia article on the grid computing. 
 							</li>			
-							</ul>
-							</div>
-							</div>
+						</ul>
+					</div>
+				</div>
 
-
-
-
-			</div>
+			</div><%-- close <div id="right"> --%>
 		</td>
 	</tr>
 </table>
