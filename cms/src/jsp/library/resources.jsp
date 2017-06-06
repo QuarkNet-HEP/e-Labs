@@ -113,7 +113,7 @@
 							</li>
 							<li>
 								<e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
-								- From CERN site.
+								- From CERN website.
 							</li>
 
 							<li>
@@ -122,8 +122,8 @@
 							</li>
 
 							<li>
-								<e:popup href="http://www.fnal.gov/pub/inquiring/matter/madeof/index.html" target="website" width="850" height="600">What&apos;s the world made of?</e:popup>
-								- From Fermilab&apos;s Inquiring Minds.
+								<e:popup href="http://www.fnal.gov/pub/inquiring/matter/madeof/index.html" target="website" width="850" height="600">What is the world made of?</e:popup>
+								- Fermilab&apos;s Inquiring Minds.
 							</li>
 
     						<li>
@@ -251,7 +251,7 @@
 							<li>
 								ACM's <A href="http://computingcareers.acm.org" target="_blank">Computing Degrees & Careers</a>
 							</li>
-							<li><A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a> - Microsoft.
+							<li><A target="_blank" href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a> - From Microsoft.
 							</li>
 							<li>
 								<A href="http://www.cisco.com/c/en/us/training-events/training-certifications/overview.html" target="_blank">Training & Certifications</a> - From Cisco.
@@ -271,7 +271,7 @@
 						<ul  class="simple">
 							<li>
 							<li>
-								Go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a> - From CERN.
+								Go to <a href="http://www.gridtalk.org/">Grid Talk</a>, where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a>, and explore the <a href="http://www.gridguide.org/">Grid Guide</a> - From CERN.
 							</li>							
 							</li>
 							<li>
