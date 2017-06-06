@@ -49,7 +49,7 @@ $Email_From = "e-labs@fnal.gov";
 
 // BCC the following people
 //
-$Email_BCC = "phongn@fnal.gov";
+//$Email_BCC = "";
 
 /********
  * Lists for input selectors:
@@ -89,7 +89,7 @@ $role_list=array('Student', 'Teacher', 'QuarkNet Fellow',
 //
 $elab_forum_id= array('any' => 52,
                       'cosmic' => 57,
-	              'cms' => 60,
+											'cms' => 60,
                       'ligo' => 58);
 
 // For testing.  If the server name contains "spy-hill"
@@ -106,8 +106,8 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
 
 $self = $_SERVER['PHP_SELF'];                           // who we are (path only)
 $my_url = "http://" . $_SERVER['SERVER_NAME'] . $self;  // this form (full URL)
-$referer = $_SERVER['HTTP_REFERER'];                 // from whence we came (full URL)
-$user_agent = $_SERVER['HTTP_USER_AGENT'];           // User's browser
+$referer = $_SERVER['HTTP_REFERER'];                 		// from whence we came (full URL)
+$user_agent = $_SERVER['HTTP_USER_AGENT'];           		// User's browser
 
 
 $input_error=array();           // empty means no errors (yet)
@@ -125,8 +125,6 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 *************************************************/
 
 
-
-
 //
 /*******************************
  * reCAPTCHA: so we know it is humans.
@@ -135,28 +133,15 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 
 require_once("../include/recaptchalib.php");
 
-
 // The keys are kept in these separate files instead of
 // in the source code because the source code may be publicly
 // available via SVN or CVS.  Please keep it that way!
 // These are (for now) the Spy Hill keys.
 //
-$pub_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_public_key";
-$priv_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_private_key";
-$mailhide_pub_key_file  = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_public_key";
-$mailhide_priv_key_file = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_private_key";
-
-
-// If the server name contains i2u2.org then we need
-// to use the keys for i2u2.org, not spy-hill.net.
-//
-if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" )){
-	$pub_key_file = "../../keys/www13.reCAPTCHA_public_key";
-  $priv_key_file = "../../keys/www13.reCAPTCHA_private_key";
-  $mailhide_pub_key_file  = "../../keys/reCAPTCHA_Mailhide_public_key";
-  $mailhide_priv_key_file = "../../keys/reCAPTCHA_Mailhide_private_key";
-}
-
+$pub_key_file = "../../keys/reCAPTCHA_public_key";
+$priv_key_file = "../../keys/reCAPTCHA_private_key";
+$mailhide_pub_key_file  = "../../keys/reCAPTCHA_public_key";
+$mailhide_priv_key_file = "../../keys/reCAPTCHA_private_key";
 
 // Verify the keys exist and are usable
 //
@@ -164,7 +149,7 @@ if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
     !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
     error_page("Server configuration error. Cannot access keys.
         Please report this to the project administrators.");
- }
+}
 
 $public_key = file_get_contents($pub_key_file);
 $private_key = file_get_contents($priv_key_file);
@@ -233,7 +218,6 @@ function report_checkbox_item($name,$text,$marker='x'){
     }
     return $x;
 }
-
 
 
 // Get a default value set in the URL (i.e. via GET)
@@ -405,7 +389,7 @@ function setup_referer_button(){
 }
 
 
-// Use referer() to create a button with lable $label
+// Use referer() to create a button with label $label
 // to insert the referer URL, if there is one.
 //
 function use_referer_button($label){
@@ -415,7 +399,7 @@ function use_referer_button($label){
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
-    return "<input name='now'  type='button' value='$label'
+    return "<input name='now' type='button' value='$label'
                 onClick='insertRefererURL()'>\n\n";
 }
 
@@ -604,7 +588,7 @@ function send_report_via_email($thread_id=0){
 
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
-	$headers .= "BCC: " .$Email_BCC."\n";
+		$headers .= "BCC: " .$Email_BCC."\n";
 
     if( !empty($user_name) && $user_id > 0 ) {
         $body .= "User '$user_name' (id# $user_id)";
@@ -803,7 +787,6 @@ function do_post($url, $data)
 //
 get_default('elab');
 get_default('component', 'part');
-
 
 // Process form input via POST
 //
@@ -1288,16 +1271,18 @@ echo "\n<p style='color:grey; text-align: right;'>"
 // Form adjustments:  set initial visibility of sections,
 // Fill in some blanks with client-side scripting, if we can:
 //
+// htmlentities() prevents XSS attacks
+$elab_he = htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 echo "\n
   <script type=\"text/javascript\">
-   setClassVisibility(\"cosmics_elab\", ( \"$elab\"==\"Cosmic Rays\" ) );
-   setClassVisibility(\"ligo_elab\", ( \"$elab\"==\"LIGO\" ) );
-   setClassVisibility(\"cms_elab\", ( \"$elab\"==\"CMS\" ) );
+   setClassVisibility(\"cosmics_elab\", ( \"$elab_he\"==\"Cosmic Rays\" ) );
+   setClassVisibility(\"ligo_elab\", ( \"$elab_he\"==\"LIGO\" ) );
+   setClassVisibility(\"cms_elab\", ( \"$elab_he\"==\"CMS\" ) );
    makeClassInvisible(\"networking_part\");
    updateClassVisibility();\n";
 
 // If there are arguments in the URL (ie GET) then automatically insert
-// the refering URL
+// the referring URL
 //
 if( !empty($_GET) && !empty($referer) ){
     echo "insertRefererURL();\n";
