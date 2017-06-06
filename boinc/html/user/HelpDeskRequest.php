@@ -49,7 +49,7 @@ $Email_From = "e-labs@fnal.gov";
 
 // BCC the following people
 //
-$Email_BCC = "phongn@fnal.gov";
+//$Email_BCC = "";
 
 /********
  * Lists for input selectors:
@@ -125,8 +125,6 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 *************************************************/
 
 
-
-
 //
 /*******************************
  * reCAPTCHA: so we know it is humans.
@@ -135,28 +133,15 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 
 require_once("../include/recaptchalib.php");
 
-
 // The keys are kept in these separate files instead of
 // in the source code because the source code may be publicly
 // available via SVN or CVS.  Please keep it that way!
 // These are (for now) the Spy Hill keys.
 //
-$pub_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_public_key";
-$priv_key_file = "/users/edit/ep_home/ep_keys/www13.reCAPTCHA_private_key";
-$mailhide_pub_key_file  = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_public_key";
-$mailhide_priv_key_file = "/users/edit/ep_home/ep_keys/reCAPTCHA_Mailhide_private_key";
-
-
-// If the server name contains i2u2.org then we need
-// to use the keys for i2u2.org, not spy-hill.net.
-//
-if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" )){
-	$pub_key_file = "../../keys/www13.reCAPTCHA_public_key";
-  $priv_key_file = "../../keys/www13.reCAPTCHA_private_key";
-  $mailhide_pub_key_file  = "../../keys/reCAPTCHA_Mailhide_public_key";
-  $mailhide_priv_key_file = "../../keys/reCAPTCHA_Mailhide_private_key";
-}
-
+$pub_key_file = "../../keys/reCAPTCHA_public_key";
+$priv_key_file = "../../keys/reCAPTCHA_private_key";
+$mailhide_pub_key_file  = "../../keys/reCAPTCHA_public_key";
+$mailhide_priv_key_file = "../../keys/reCAPTCHA_private_key";
 
 // Verify the keys exist and are usable
 //
@@ -164,7 +149,7 @@ if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
     !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
     error_page("Server configuration error. Cannot access keys.
         Please report this to the project administrators.");
- }
+}
 
 $public_key = file_get_contents($pub_key_file);
 $private_key = file_get_contents($priv_key_file);
@@ -235,7 +220,6 @@ function report_checkbox_item($name,$text,$marker='x'){
 }
 
 
-
 // Get a default value set in the URL (i.e. via GET)
 // Here $tag is a shorthand name for variable $name.
 // But you can also use the full name
@@ -245,12 +229,12 @@ function get_default($name, $tag=''){
 
     if( !empty($tag) ){ // first try by short 'tag'
         if( isset($_GET[$tag]) ){
-            $$name = htmlentities(trim($_GET[$tag]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $$name = trim($_GET[$tag]);
             debug_msg(3,"set $name to '".$$name."' from URL");
         }
     }
     if( isset($_GET[$name]) ){ // then try by full variable name
-        $$name = htmlentities(trim($_GET[$name]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $$name = trim($_GET[$name]);
         debug_msg(3,"set $name to '".$$name."' from URL");
     }
 }
@@ -1287,12 +1271,13 @@ echo "\n<p style='color:grey; text-align: right;'>"
 // Form adjustments:  set initial visibility of sections,
 // Fill in some blanks with client-side scripting, if we can:
 //
-echo "<p>Test echo</p>";
+// htmlentities() prevents XSS attacks
+$elab_he = htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 echo "\n
   <script type=\"text/javascript\">
-   setClassVisibility(\"cosmics_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"Cosmic Rays\" ) );
-   setClassVisibility(\"ligo_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"LIGO\" ) );
-   setClassVisibility(\"cms_elab\", ( \"htmlentities($elab, ENT_QUOTES | ENT_HTML5, 'UTF-8')\"==\"CMS\" ) );
+   setClassVisibility(\"cosmics_elab\", ( \"$elab_he\"==\"Cosmic Rays\" ) );
+   setClassVisibility(\"ligo_elab\", ( \"$elab_he\"==\"LIGO\" ) );
+   setClassVisibility(\"cms_elab\", ( \"$elab_he\"==\"CMS\" ) );
    makeClassInvisible(\"networking_part\");
    updateClassVisibility();\n";
 
