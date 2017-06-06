@@ -86,13 +86,13 @@
 								Exploration Studies - <e:popup href="http://screencast.com/t/m9QDaF4p" target="tryit" width="655" height="500">J/Psi mass plot</e:popup>, <e:popup href="https://www.screencast.com/t/OyrNQ2iqs" target="tryit" width="655" height="500">100k dimuon mass plot</e:popup>.
 							</li>
 							<li>
-                                				<e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">3-D Event Display demo: </e:popup> - Introduction to tool usage. 
+                                				<e:popup href="https://www.screencast.com/t/SLQyyXy8" target="tryit" width="775" height="625">3-D Event Display Demo</e:popup> - Introduction to tool usage. 
                             				</li>
 						</ul>
 					<h2>Single Events</h2>
 						<ul class="simple">
 							<li>
-                            	<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display</e:popup> - Manipulate CMS events. See screencast demo above.
+                            	<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display Tool</e:popup> - Manipulate CMS events. See screencast demo above.
                             </li>
 							<li>
 								<e:popup href="../games/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</e:popup> - Play this game to test your skill.
