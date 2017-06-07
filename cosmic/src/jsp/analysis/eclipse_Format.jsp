@@ -122,7 +122,7 @@
 					String [] outArray = new String[8];
 					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
 					
-					for (int p=3; p<arrayDJF.length; p++){	
+					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							out.println(arrayDJF[p]); 
 							if((DAQ1+".1").equals(arrayDJF[p])){outArray[0]=arrayDJF[p+2];}
