@@ -73,10 +73,6 @@
  		       	String line = br.readLine();
          		
 	        	for( int i = 1; i<5; i++){
-				//Write heading after writing 2 lines that begin with '#'.  
-				if (i == 3){
-					bw.write("DAQ1.ch1   "+"DAQ1.ch2   "+"DAQ1.ch3   "+"DAQ1.ch4"+"DAQ2.ch1   "+"DAQ2.ch2"+"DAQ2.ch3   "+"DAQ2.ch4");         
-				}//if
 
 				String[] words = line.split("\\s+");
 				
@@ -142,6 +138,10 @@
    							result.append( outArray[n] ); result.append("       ");
 						}//for
 						String outline = result.toString(); 
+						//Write heading after writing 2 lines that begin with '#'.  
+						if (i == 3){
+							bw.write(DAQ1+".1     "+DAQ1+".2     "+DAQ1+".3     "+DAQ1+".4     "+DAQ2+".1     "+DAQ2+".2     "+DAQ2+".3     "+DAQ2+".4     ");         
+						}//if
 				        bw.write(outline);
 				}//if
 				else {
