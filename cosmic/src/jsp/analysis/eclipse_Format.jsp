@@ -124,6 +124,7 @@
 					
 					for (int p=3; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
+							out.println(arrayDJF[p]);
 							if(DAQ1+".ch1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
   							else if (DAQ1+".ch2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
         					else if (DAQ1+".ch3" == arrayDJF[p]){outArray[2]=arrayDJF[p+2];}
@@ -139,7 +140,7 @@
 						StringBuffer result = new StringBuffer();
 						result.append("\n");
 						for (int n = 0; n < outArray.length; n++) {
-   							result.append( outArray[n] ); result.append("     ");
+   							result.append( outArray[n] ); result.append("       ");
 						}//for
 						String outline = result.toString(); 
 				        bw.write(outline);
