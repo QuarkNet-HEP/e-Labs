@@ -124,15 +124,14 @@
 					
 					for (int p=3; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
-							out.println(arrayDJF[p]);
-							if(DAQ1+".ch1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
-  							else if (DAQ1+".ch2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
-        					else if (DAQ1+".ch3" == arrayDJF[p]){outArray[2]=arrayDJF[p+2];}
-							else if (DAQ1+".ch4" == arrayDJF[p]){outArray[3]=arrayDJF[p+2];}
-							else if (DAQ2+".ch1" == arrayDJF[p]){outArray[4]=arrayDJF[p+2];}
-							else if (DAQ2+".ch2" == arrayDJF[p]){outArray[5]=arrayDJF[p+2];}
-							else if (DAQ2+".ch3" == arrayDJF[p]){outArray[6]=arrayDJF[p+2];}
-							else if (DAQ2+".ch4" == arrayDJF[p]){outArray[7]=arrayDJF[p+2];}
+							if(DAQ1+".1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
+  							else if (DAQ1+".2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
+        					else if (DAQ1+".3" == arrayDJF[p]){outArray[2]=arrayDJF[p+2];}
+							else if (DAQ1+".4" == arrayDJF[p]){outArray[3]=arrayDJF[p+2];}
+							else if (DAQ2+".1" == arrayDJF[p]){outArray[4]=arrayDJF[p+2];}
+							else if (DAQ2+".2" == arrayDJF[p]){outArray[5]=arrayDJF[p+2];}
+							else if (DAQ2+".3" == arrayDJF[p]){outArray[6]=arrayDJF[p+2];}
+							else if (DAQ2+".4" == arrayDJF[p]){outArray[7]=arrayDJF[p+2];}
 						}//if
 					}//for
 					
