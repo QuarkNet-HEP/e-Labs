@@ -121,26 +121,28 @@
 					//output array
 					String [] outArray = new String[8];
 					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
-					for (int k=0; k<arrayDJF.length; k++){
-						if (k%3 == 0){
-							if(DAQ1+".ch1" == arrayDJF[k]){outArray[0]=arrayDJF[k+2];}
-  							else if (DAQ1+".ch2" == arrayDJF[k]){outArray[1]=arrayDJF[k+2];}
-        						else if (DAQ1+".ch3" == arrayDJF[k]){outArray[2]=arrayDJF[k+2];}
-							else if (DAQ1+".ch4" == arrayDJF[k]){outArray[3]=arrayDJF[k+2];}
-							else if (DAQ2+".ch1" == arrayDJF[k]){outArray[4]=arrayDJF[k+2];}
-							else if (DAQ2+".ch2" == arrayDJF[k]){outArray[5]=arrayDJF[k+2];}
-							else if (DAQ2+".ch3" == arrayDJF[k]){outArray[6]=arrayDJF[k+2];}
-							else if (DAQ2+".ch4" == arrayDJF[k]){outArray[7]=arrayDJF[k+2];}
+					/*
+					for (int p=0; p<arrayDJF.length; p++){	
+						if (p%3 == 0){
+							if(DAQ1+".ch1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
+  							else if (DAQ1+".ch2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
+        					else if (DAQ1+".ch3" == arrayDJF[p]){outArray[2]=arrayDJF[p+2];}
+							else if (DAQ1+".ch4" == arrayDJF[p]){outArray[3]=arrayDJF[p+2];}
+							else if (DAQ2+".ch1" == arrayDJF[p]){outArray[4]=arrayDJF[p+2];}
+							else if (DAQ2+".ch2" == arrayDJF[p]){outArray[5]=arrayDJF[p+2];}
+							else if (DAQ2+".ch3" == arrayDJF[p]){outArray[6]=arrayDJF[p+2];}
+							else if (DAQ2+".ch4" == arrayDJF[p]){outArray[7]=arrayDJF[p+2];}
 						}//if
-						//write to output file.
+					}//for
+					*/
+					//write to output file.
 						StringBuffer result = new StringBuffer();
+						result.append("\n");
 						for (int n = 0; n < outArray.length; n++) {
-   							result.append( outArray[n] );
-   							result.append(" ");
+   							result.append( outArray[n] ); 
 						}//for
 						String outline = result.toString(); 
 				        bw.write(outline);
-					}//for
 				}//if
 				else {
 					bw.write(line);
