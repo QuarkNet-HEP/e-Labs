@@ -134,6 +134,9 @@
 					//write to output file.
 						StringBuffer result = new StringBuffer();
 						result.append("\n");
+						int dataRow = i - 2;
+						String dRow = Integer.toString(dataRow);
+						result.append(dRow+"   "); 
 						for (int n = 0; n < outArray.length; n++) {
    							result.append( outArray[n] ); result.append(" ");
 						}//for
@@ -147,9 +150,8 @@
 							+DAQ2+".3             "+DAQ2+".4             ");  
 							bw.newLine();      
 						}//if
-						int dataRow = i - 2;
-						String dRow = Integer.toString(dataRow);
-				        bw.write(dRow + "   " + outline); bw.newLine();
+						
+				        bw.write(outline); bw.newLine();
 				}//if
 				else {
 					bw.write(line);bw.newLine();
