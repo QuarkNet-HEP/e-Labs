@@ -147,7 +147,7 @@
 							+DAQ2+".3               "+DAQ2+".4              ");         
 						}//if
 						int dataRow = i - 2;
-						String dRow Integer.toString(dataRow);
+						String dRow = Integer.toString(dataRow);
 				        bw.write(dRow); bw.write(outline);
 				}//if
 				else {
