@@ -116,13 +116,13 @@
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
-					out.println("DAQ1:  " + DAQ1 + "DAQ2:  " + DAQ2);		
+					out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
 					//output array
 					String [] outArray = new String[8];
 					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
-					/*
-					for (int p=0; p<arrayDJF.length; p++){	
+					
+					for (int p=3; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							if(DAQ1+".ch1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
   							else if (DAQ1+".ch2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
@@ -134,12 +134,12 @@
 							else if (DAQ2+".ch4" == arrayDJF[p]){outArray[7]=arrayDJF[p+2];}
 						}//if
 					}//for
-					*/
+					
 					//write to output file.
 						StringBuffer result = new StringBuffer();
 						result.append("\n");
 						for (int n = 0; n < outArray.length; n++) {
-   							result.append( outArray[n] ); 
+   							result.append( outArray[n] ); result.append("     ");
 						}//for
 						String outline = result.toString(); 
 				        bw.write(outline);
