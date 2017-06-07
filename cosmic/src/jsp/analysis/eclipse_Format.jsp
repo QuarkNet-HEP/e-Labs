@@ -144,14 +144,15 @@
 							bw.write(DAQ1+".1               "+DAQ1+".2               "
 							+DAQ1+".3               "+DAQ1+".4               "
 							+DAQ2+".1               "+DAQ2+".2               "
-							+DAQ2+".3               "+DAQ2+".4              ");         
+							+DAQ2+".3               "+DAQ2+".4              ");  
+							bw.newLine();      
 						}//if
 						int dataRow = i - 2;
 						String dRow = Integer.toString(dataRow);
 				        bw.write(dRow); bw.write(outline);
 				}//if
 				else {
-					bw.write(line);
+					bw.write(line);bw.newLine();
 				}//else
 				
 				line = br.readLine();        		
