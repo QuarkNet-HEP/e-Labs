@@ -141,7 +141,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write(DAQ1+".1             "+DAQ1+".2             "
+							bw.write("Data Row "+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
@@ -149,7 +149,7 @@
 						}//if
 						int dataRow = i - 2;
 						String dRow = Integer.toString(dataRow);
-				        bw.write(dRow + " " + outline);
+				        bw.write(dRow + "   " + outline); bw.newLine();
 				}//if
 				else {
 					bw.write(line);bw.newLine();
