@@ -124,6 +124,7 @@
 					
 					for (int p=3; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
+							out.println(arrayDJF[p]); out.println(DAQ1+".1");
 							if(DAQ1+".1" == arrayDJF[p]){outArray[0]=arrayDJF[p+2];}
   							else if (DAQ1+".2" == arrayDJF[p]){outArray[1]=arrayDJF[p+2];}
         					else if (DAQ1+".3" == arrayDJF[p]){outArray[2]=arrayDJF[p+2];}
