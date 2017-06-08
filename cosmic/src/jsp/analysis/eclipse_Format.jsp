@@ -61,6 +61,7 @@
                 }
 
 		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
+		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
     		BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
@@ -96,7 +97,7 @@
 					String[] arrayDJF = new String[listDJF.size()]; //DJF represents DAQ, Julian, Fraction
 					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF can have different length for each line.
 					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
-					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
+					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -121,7 +122,8 @@
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
 					
-					boolean JD = true;//Assume it is true that all Julian Day values are the same for the whole line.
+					boolean JD = true;//assume true all Julian Day values are same for whole line
+					float minFracDay = Float.parseFloat(arrayDJF[2]); //assume 1st fraction day is min
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							if((DAQ1+".1").equals(arrayDJF[p])){outArray[0]=arrayDJF[p+2];}
@@ -133,30 +135,50 @@
 							else if ((DAQ2+".3").equals(arrayDJF[p])){outArray[6]=arrayDJF[p+2];}
 							else if ((DAQ2+".4").equals(arrayDJF[p])){outArray[7]=arrayDJF[p+2];}
 						}//if		
-						//check if all the Julian Day values are the same for the whole line.								
-						if (p%3 == 1 && !arrayDJF[1].equals(arrayDJF[p]) && JD){
-							JD = false;
-						}
 						
+						//check if all the Julian Day values are the same for the whole line.								
+						if (p%3 == 1){
+							if(!arrayDJF[1].equals(arrayDJF[p])){
+								JD = false;
+							}//if
+						}//if
+						
+						//find smallest fraction of day in arrayDJF 
+						if (p%3 == 2){
+							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
+								minFracDay = Float.parseFloat(arrayDJF[p]);
+							}//if
+						}//if
 					}//for
+
 					
-					//write to output file.
-						StringBuffer result = new StringBuffer();
-						int dataRow = i - 2;
-						String dRow = Integer.toString(dataRow);
-						result.append(dRow+"    ");
-						if (JD == true){result.append(arrayDJF[1]+"    ");}//if
-							else{result.append("          ");}//else
-														 
+					//Write to output file.
+						StringBuffer result = new StringBuffer();						
+						
+						//Event number
+						String eventNum = Integer.toString(i-2);
+						result.append(eventNum+"    ");
+						
+						//JulianDay
+						if (JD){result.append(arrayDJF[1]+"    ");}//if
+							else{result.append("          ");}//else	
+						
+						//SecSinDayBeg
+						//convert minFracDay to sec
+						double SecSinDayBeg = 3600*24*minFracDay;
+						result.append(Double.toString(SecSinDayBeg)+"    ");
+						
+						//Data													 
 						for (int n = 0; n < outArray.length; n++) {
    							result.append( outArray[n] ); result.append(" ");
 						}//for
 						result.append("\n");
+						
 						String outline = result.toString();
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event JulianDay   "+DAQ1+".1             "+DAQ1+".2             "
+							bw.write("Event JulianDay  SecSinceDayBegin  "+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
@@ -165,6 +187,7 @@
 						
 				        bw.write(outline); 
 				}//if
+				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
 				}//else
