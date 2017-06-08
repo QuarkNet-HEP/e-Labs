@@ -60,7 +60,7 @@
                         out.println("Copy of eventCandidates to eFtemp successful!");
                 }
 
-		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and copy it to eclipseFormat
+		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
 		BufferedReader br = null;
     		BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
@@ -71,48 +71,51 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
          
  		       	String line = br.readLine();
-         		
-	        	for( int i = 1; i<5; i++){
+         		int i = 0; //i represents line number
+         		while (line != null){ 
+         		i++;
 
 				String[] words = line.split("\\s+");
 				
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
+					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
 							if (!listDJF.contains(words[j])){
-								listDJF.add(words[j]);
-								listDJF.add(words[j+1]);
-								listDJF.add(words[j+2]);
+								listDJF.add(words[j]); //DAQ.ch
+								listDJF.add(words[j+1]); //JulianDay
+								listDJF.add(words[j+2]); //FractionDay
 							}//if
 	                     }//if
 					}//for
 					
-					String[] arrayDJF = new String[listDJF.size()];
-					arrayDJF = listDJF.toArray(arrayDJF);
-					out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
-					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
+					String[] arrayDJF = new String[listDJF.size()]; //DJF represents DAQ, Julian, Fraction
+					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF will have different length for each line.
+					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
+					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
 					for ( int k=0; k < arrayDJF.length; k++){
 						if (k%3 == 0){
-							String numChanDAQ = arrayDJF[k];
-							String DAQ = (numChanDAQ.split("\\."))[0];
+							String DAQnumChan = arrayDJF[k];
+							String DAQ = (DAQnumChan.split("\\."))[0];
 							listDAQ.add(DAQ);
 						}//if
 					}//for
 					
 					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
+					//Note:  This code was written assuming 2 unique DAQs would exist.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
-					out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
+					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
 					//output array
 					String [] outArray = new String[8];
@@ -144,7 +147,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Data Row "+DAQ1+".1             "+DAQ1+".2             "
+							bw.write("Event "+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
@@ -158,7 +161,7 @@
 				}//else
 				
 				line = br.readLine();        		
-			}//for
+			}//while
 
          		File file22 = new File(dst2);	
 				if (file22.exists() && file22.length() != 0){
