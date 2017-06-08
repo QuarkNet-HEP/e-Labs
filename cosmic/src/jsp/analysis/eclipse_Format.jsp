@@ -81,7 +81,7 @@
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
 					
-					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for unique DAQ.ch.
+					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
 						if (j != 0 && j%3 == 0){
@@ -94,9 +94,9 @@
 					}//for
 					
 					String[] arrayDJF = new String[listDJF.size()]; //DJF represents DAQ, Julian, Fraction
-					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF will have different length for each line.
+					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF can have different length for each line.
 					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
-					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
+					out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -119,8 +119,9 @@
 					
 					//output array
 					String [] outArray = new String[8];
-					for (int k=0; k<outArray.length; k++){outArray[k] = "-1";}
+					for (int m=0; m<8; m++){outArray[m] = "-1";}
 					
+					boolean JD = true;//Assume it is true that all Julian Day values are the same for the whole line.
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							if((DAQ1+".1").equals(arrayDJF[p])){outArray[0]=arrayDJF[p+2];}
@@ -131,14 +132,22 @@
 							else if ((DAQ2+".2").equals(arrayDJF[p])){outArray[5]=arrayDJF[p+2];}
 							else if ((DAQ2+".3").equals(arrayDJF[p])){outArray[6]=arrayDJF[p+2];}
 							else if ((DAQ2+".4").equals(arrayDJF[p])){outArray[7]=arrayDJF[p+2];}
-						}//if
+						}//if		
+						//check if all the Julian Day values are the same for the whole line.								
+						if (p%3 == 1 && !arrayDJF[1].equals(arrayDJF[p]) && JD){
+							JD = false;
+						}
+						
 					}//for
 					
 					//write to output file.
 						StringBuffer result = new StringBuffer();
 						int dataRow = i - 2;
 						String dRow = Integer.toString(dataRow);
-						result.append(dRow+"   "); 
+						result.append(dRow+"    ");
+						if (JD == true){result.append(arrayDJF[1]+"    ");}//if
+							else{result.append("          ");}//else
+														 
 						for (int n = 0; n < outArray.length; n++) {
    							result.append( outArray[n] ); result.append(" ");
 						}//for
@@ -147,7 +156,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event "+DAQ1+".1             "+DAQ1+".2             "
+							bw.write("Event JulianDay   "+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
