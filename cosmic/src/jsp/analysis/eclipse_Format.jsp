@@ -133,14 +133,14 @@
 					
 					//write to output file.
 						StringBuffer result = new StringBuffer();
-						result.append("\n");
+						//result.append("\n");
 						int dataRow = i - 2;
 						String dRow = Integer.toString(dataRow);
 						result.append(dRow+"   "); 
 						for (int n = 0; n < outArray.length; n++) {
    							result.append( outArray[n] ); result.append(" ");
 						}//for
-						String outline = " "+result.toString();
+						String outline = result.toString();
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
@@ -148,10 +148,9 @@
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
-							bw.newLine();      
 						}//if
 						
-				        bw.write(outline); bw.newLine();
+				        bw.write(outline); 
 				}//if
 				else {
 					bw.write(line);bw.newLine();
