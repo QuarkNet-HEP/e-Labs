@@ -70,11 +70,9 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
-         
  		       	String line = br.readLine();
-         		int i = 0; //i represents line number
+         		
          		while (line != null){ 
-         		i++;
 
 				String[] words = line.split("\\s+");
 				
@@ -156,8 +154,7 @@
 						StringBuffer result = new StringBuffer();						
 						
 						//Event number
-						String eventNum = Integer.toString(i-2);
-						result.append(eventNum+"    ");
+						result.append(Integer.toString(eventNum)+"    ");
 						
 						//JulianDay
 						if (JD){result.append(arrayDJF[1]+"    ");}//if
