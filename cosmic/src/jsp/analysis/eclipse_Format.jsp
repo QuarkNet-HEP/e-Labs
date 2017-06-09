@@ -206,10 +206,10 @@
     		}//catch
     		
     		//Output contents of eclipseFormat file to the screen.
-    		try (BufferedReader br = new BufferedReader(new FileReader(dst2))) {
-				String line = null;
-   				while ((line = br.readLine()) != null) {
-       				System.out.println(line);
+    		try (BufferedReader buffr = new BufferedReader(new FileReader(dst2))) {
+				String line2 = null;
+   				while ((line2 = buffr.readLine()) != null) {
+       				System.out.println(line2);
    				}
 			}
 					
