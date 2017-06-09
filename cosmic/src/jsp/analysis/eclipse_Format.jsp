@@ -10,7 +10,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %><%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 <%@ page import="java.nio.file.*" %>
-<%@ page import="static java.lang.System.*"%>
+<%--<%@ page import="static java.lang.System.*"%>--%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
@@ -183,20 +183,22 @@
 						}//if
 						
 				        bw.write(outline); 
+				        out.println(outline);
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
+					out.println(line);
 				}//else
 				
 				line = br.readLine();        		
 			}//while
-				
+				/*
          		File file22 = new File(dst2);	
 				if (file22.exists() && file22.length() != 0){
-	        		System.out.println("eclipseFormat file exists and is not empty!");
+	        		out.println("eclipseFormat file exists and is not empty!");
                 }//if
-  					
+  				*/	
 				
 	        	br.close();
         		bw.close();
