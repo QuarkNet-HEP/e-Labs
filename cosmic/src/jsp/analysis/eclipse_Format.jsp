@@ -71,9 +71,9 @@
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
-         		
+         		int i = 0;
          		while (line != null){ 
-
+				i++;
 				String[] words = line.split("\\s+");
 				
 				if(words[0].charAt(0) != '#'){
