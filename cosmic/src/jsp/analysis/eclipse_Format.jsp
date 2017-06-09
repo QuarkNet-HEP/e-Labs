@@ -10,6 +10,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %><%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 <%@ page import="java.nio.file.*" %>
+<%@ page import="static java.lang.System.*"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
@@ -182,10 +183,12 @@
 						}//if
 						
 				        bw.write(outline); 
+				        System.out.println(outline);
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
+					System.out.println(line);
 				}//else
 				
 				line = br.readLine();        		
@@ -199,15 +202,7 @@
 				
 	        	br.close();
         		bw.close();
-    			
-    			
-    			//Output contents of eclipseFormat file to the screen.
-    			try (BufferedReader buffR = new BufferedReader(new FileReader(dst2))) {
-					String line2 = null;
-   					while ((line2 = buffR.readLine()) != null) {
-       					System.out.println(line2);
-   					}
-				}
+
 					
     		}//try
     		catch(Exception e){
