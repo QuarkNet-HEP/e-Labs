@@ -129,24 +129,31 @@
 								<e:popup href="http://physicsmasterclasses.org/exercises/hands-on-cern/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
 							</li>
 							<li>
-								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, U.K.							
-							</li>
-							<li>
-								<e:popup href="http://cern50.web.cern.ch/cern50/multimedia/LHCGame/StartGame.html" target="website" width="875" height="610">LHC Game (CERN)</e:popup> 
+								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> - from the Science and Technology Facilities Council, U.K.							
 							</li>
 							<li>
 								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN.
 							</li>
 							<li>
-								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN.
-							</li>
-							<li>
 								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
 								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>.
 							</li>
-								
+							<li>
+								<a target="_blank" href="http://cms.physicsmasterclasses.org/cms.html">CMS Masterclass</a>
+							</li>								
 						</ul>
-
+						<h2>Tutorials</h2>
+						<ul class="simple">
+							<li>
+								<e:popup href="http://quarknet.i2u2.org/page/geometry-collider-detector" target="website" width="850" height="600">Geometry</e:popup> - Collider Detector.
+							</li>
+							<li>
+								<e:popup href="http://quarknet.i2u2.org/page/using-kaufmann-and-bucherers-data-relate-e-p-m" target="website" width="850" height="600">Relate E, p, and m</e:popup> - Using Kaufmann and Bucherer's Data.
+							</li>
+							<li>
+								<e:popup href="http://quarknet.i2u2.org/page/energy-momentum-and-mass" target="website" width="850" height="600">Energy, Momentum, and Mass</e:popup>.
+							</li>
+						</ul>
 					</div>
 				</div>
 			
@@ -154,9 +161,6 @@
 					<span class="tab-title">Videos</span>
 					<div class="tab-contents-sublevel">
 						<ul  class="simple">
-							<li>
-								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - From the BBC.
-							</li>
 							<li>
 								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube.
 							</li>
