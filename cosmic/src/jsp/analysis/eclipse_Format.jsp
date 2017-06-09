@@ -38,9 +38,8 @@
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
-		out.println("Source: "+src);
-		out.print('\n');
-		out.println("Destination: "+dst);	
+		//out.println("Source: "+src);
+		//out.println("Destination: "+dst);	
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
 		File file1 = new File(src);
@@ -56,9 +55,9 @@
                 	}
 		}		
 		
-		if (file2.exists()){
+		/*if (file2.exists()){
                         out.println("Copy of eventCandidates to eFtemp successful!");
-                }
+                }*/
 
 		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
 		//Code assumes the first 2 lines of input file start with '#'.
@@ -191,12 +190,13 @@
 				
 				line = br.readLine();        		
 			}//while
-
+				/*
          		File file22 = new File(dst2);	
 				if (file22.exists() && file22.length() != 0){
 	        		out.println("eclipseFormat file exists and is not empty!");
                 }//if
-
+				*/
+				
 	        	br.close();
         		bw.close();
     			
@@ -204,7 +204,15 @@
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
-	
+    		
+    		//Output contents of eclipseFormat file to the screen.
+    		try (BufferedReader br = new BufferedReader(new FileReader(dst2))) {
+				String line = null;
+   				while ((line = br.readLine()) != null) {
+       				System.out.println(line);
+   				}
+			}
+					
 	%>
 	</body>
 </html>
