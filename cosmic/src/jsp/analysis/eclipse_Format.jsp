@@ -191,18 +191,13 @@
 				
 				line = br.readLine();        		
 			}//while
-				/*
+				
          		File file22 = new File(dst2);	
 				if (file22.exists() && file22.length() != 0){
 	        		System.out.println("eclipseFormat file exists and is not empty!");
                 }//if
-  				*/		
+  					
 				
-				Scanner input = new Scanner(new File(dst2));
-					while (input.hasNextLine())
-					{
-   						System.out.println(input.nextLine());
-					}    		
 	        	br.close();
         		bw.close();
 					
