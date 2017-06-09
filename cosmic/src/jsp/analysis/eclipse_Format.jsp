@@ -183,12 +183,10 @@
 						}//if
 						
 				        bw.write(outline); 
-				        System.out.println(outline);
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
-					System.out.println(line);
 				}//else
 				
 				line = br.readLine();        		
@@ -202,13 +200,17 @@
 				
 	        	br.close();
         		bw.close();
-
 					
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
     		
+    		Scanner input = new Scanner(new File(dst2));
+			while (input.hasNextLine())
+			{
+   				System.out.println(input.nextLine());
+			}    		
 	%>
 	</body>
 </html>
