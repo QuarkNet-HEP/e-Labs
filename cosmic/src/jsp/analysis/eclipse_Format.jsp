@@ -211,11 +211,11 @@
     		//parse dst2 to remove /var/lib/tomcat7/
     		String phrase = dst2;
 			String[] tokens = phrase.split("/");
-			String[] tokens = tokens.Skip(1).ToArray();
-    		String[] tokens = tokens.Skip(1).ToArray();
-    		String[] tokens = tokens.Skip(1).ToArray();
+			String[] tokens_1 = tokens.Skip(1).ToArray();
+    		String[] tokens_2 = tokens_1.Skip(1).ToArray();
+    		String[] tokens_3 = tokens_2.Skip(1).ToArray();
     		
-    		String dst2prime = Arrays.stream(tokens).collect(Collectors.joining("/"));
+    		String dst2prime = Arrays.stream(tokens_3).collect(Collectors.joining("/"));
 	%>
 	<a href="${dst2prime}">Download eclipseFormat file</a>
 	</body>
