@@ -213,7 +213,7 @@
 			String[] tokensArray = phrase.split("/");
 			List<String> tokensList = Arrays.asList(tokensArray);
 			for (int q = 0; q<3; q++){tokensList.remove(0);}
-			String[] dst2v2Array = tokensList.toArray(new String[setDAQ.size()]);
+			String[] dst2v2Array = tokensList.toArray(new String[tokensList.size()]);
     		String dst2v2 = Arrays.stream(dst2v2Array).collect(Collectors.joining("/"));
 	%>
 	<a href="${dst2v2}">Download eclipseFormat file</a>
