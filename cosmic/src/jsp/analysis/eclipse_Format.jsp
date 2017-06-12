@@ -218,7 +218,7 @@
 			for (int q = 0; q<dst2v2Array.length-1; q++){
     			dst2v2 = dst2v2 + dst2v2Array[q] + "/";
     		}//for
-    		ds2v2 = dst2v2 + dst2v2Array[dst2v2Array.length];
+    		dst2v2 = dst2v2 + dst2v2Array[dst2v2Array.length];
 	%>
 	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
