@@ -39,9 +39,8 @@
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
-		out.println("Source: "+src);
-		out.println("<br>");
-		out.println("Destination: "+dst);	
+		//out.println("Source: "+src);
+		//out.println("Destination: "+dst);	
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
 		File file1 = new File(src);
@@ -184,10 +183,12 @@
 						}//if
 						
 				        bw.write(outline); 
+				        out.println(outline); out.println("<br>");
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
+					out.println(outline); out.println("<br>");
 				}//else
 				
 				line = br.readLine();        		
