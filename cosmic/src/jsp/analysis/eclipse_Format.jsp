@@ -209,7 +209,7 @@
     		}//catch
     		
 	%>
-	<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
+	<a href="http://home.cern">CERN</a>
 	</body>
 </html>
 
