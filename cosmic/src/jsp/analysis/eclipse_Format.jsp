@@ -208,16 +208,15 @@
         		out.println("Exception caught : " + e);
     		}//catch
     		
-    		//parse dst2 to remove /var/lib/tomcat7/
+    		//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     		String phrase = dst2;
-			String[] tokens = phrase.split("/");
-			String[] tokens_1 = tokens.Skip(1).ToArray();
-    		String[] tokens_2 = tokens_1.Skip(1).ToArray();
-    		String[] tokens_3 = tokens_2.Skip(1).ToArray();
-    		
-    		String dst2prime = Arrays.stream(tokens_3).collect(Collectors.joining("/"));
+			String[] tokensArray = phrase.split("/");
+			List<String> tokensList = Arrays.asList(tokensArray);
+			for (int q = 0; q<3; q++){List.remove(0);}
+			String[] dst2v2Array = tokensList.toArray(new String[setDAQ.size()]);
+    		String dst2v2 = Arrays.stream(dst2v2Array).collect(Collectors.joining("/"));
 	%>
-	<a href="${dst2prime}">Download eclipseFormat file</a>
+	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
 </html>
 
