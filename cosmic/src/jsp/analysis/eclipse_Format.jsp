@@ -209,7 +209,7 @@
     		}//catch
     		
 	%>
-	<a href="dst2">Download eclipseFormat file</a>
+	<a href="${dst2}">Download eclipseFormat file</a>
 	</body>
 </html>
 
