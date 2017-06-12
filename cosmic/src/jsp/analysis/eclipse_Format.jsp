@@ -215,7 +215,7 @@
 			for (int q = 0; q<3; q++){tokensList.remove(0);}
 			String[] dst2v2Array = tokensList.toArray(new String[tokensList.size()]);
 			String dst2v2;
-			for (q = 0; q<dst2v2Array.length-1; q++){
+			for (int q = 0; q<dst2v2Array.length-1; q++){
     			dst2v2 = dst2v2 + dst2v2Array[q] + "/";
     		}//for
     		ds2v2 = dst2v2 + dst2v2Array[dst2v2Array.length];
