@@ -194,13 +194,12 @@
 				line = br.readLine();        		
 			}//while
 				
-         		File file22 = new File(dst2);	
-				/*
+         		/*File file22 = new File(dst2);	
 				if (file22.exists() && file22.length() != 0){
 	        		out.println("eclipseFormat file exists and is not empty!");
                 }//if
   				*/	
-				out.println(<a href="dst2" target ="_blank">Download the eclipseFormat file</a>  );
+				
 	        	br.close();
         		bw.close();
 					
