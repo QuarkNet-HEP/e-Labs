@@ -209,7 +209,7 @@
     		}//catch
     		
 	%>
-	<a href="http://home.cern">CERN</a>
+	<a href="dst2">Download eclipseFormat file</a>
 	</body>
 </html>
 
