@@ -208,8 +208,16 @@
         		out.println("Exception caught : " + e);
     		}//catch
     		
+    		//parse dst2 to remove /var/lib/tomcat7/
+    		String phrase = dst2;
+			String[] tokens = phrase.split("/");
+			String[] tokens = tokens.Skip(1).ToArray();
+    		String[] tokens = tokens.Skip(1).ToArray();
+    		String[] tokens = tokens.Skip(1).ToArray();
+    		
+    		String dst2prime = Arrays.stream(tokens).collect(Collectors.joining("/"));
 	%>
-	<a href="${dst2}">Download eclipseFormat file</a>
+	<a href="${dst2prime}">Download eclipseFormat file</a>
 	</body>
 </html>
 
