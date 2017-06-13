@@ -212,9 +212,9 @@
     		String phrase = dst2;
 			String[] tokensArray = phrase.split("/");
 			List<String> tokensList = Arrays.asList(tokensArray);
-			for (int q = 0; q<3; q++){tokensList.remove(0);}
+			for (int q = 0; q<3; q++){tokensList.remove(0);}//remove 1st element 3 times
 			String[] dst2v2Array = tokensList.toArray(new String[tokensList.size()]);
-			String dst2v2;
+			String dst2v2 = "";
 			for (int q = 0; q<dst2v2Array.length-1; q++){
     			dst2v2 = dst2v2 + dst2v2Array[q] + "/";
     		}//for
