@@ -211,14 +211,23 @@
     		//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     		String phrase = dst2;
 			String[] tokensArray = phrase.split("/");
+			String[] tokensArray2 = new String[tokensArray.length-3];
+			for (int q=0; q < tokensArray2.length; q++){
+				tokensArray2[q] = tokensArray[q+3];
+			}
+			
+			/*
 			List<String> tokensList = Arrays.asList(tokensArray);
 			for (int q = 0; q<3; q++){tokensList.remove(0);}//remove 1st element 3 times
 			String[] dst2v2Array = tokensList.toArray(new String[tokensList.size()]);
-			String dst2v2 = "";
-			for (int q = 0; q<dst2v2Array.length-1; q++){
-    			dst2v2 = dst2v2 + dst2v2Array[q] + "/";
+			*/
+			
+			String dst2v2 = "";	
+			for (int q = 0; q<tokensArray2.length-1; q++){
+    			dst2v2 = dst2v2 + tokensArray2[q] + "/";
     		}//for
-    		dst2v2 = dst2v2 + dst2v2Array[dst2v2Array.length];
+    		dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
+    		
 	%>
 	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
