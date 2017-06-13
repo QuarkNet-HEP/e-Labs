@@ -218,7 +218,7 @@
 			
 			String[] tokensArray2 = new String[tokensArray.length-3];
 			for (int q=0; q < tokensArray2.length; q++){
-				tokensArray2[q] = tokensArray[q+3];
+				tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
 			}
 			
 			/*
