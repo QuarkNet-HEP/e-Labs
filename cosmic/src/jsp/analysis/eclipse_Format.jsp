@@ -211,6 +211,11 @@
     		//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     		String phrase = dst2;
 			String[] tokensArray = phrase.split("/");
+			
+			for (int q=0; q<tokensArray.length; q++){
+				out.println(tokensArray[q]+" "); 
+			}
+			
 			String[] tokensArray2 = new String[tokensArray.length-3];
 			for (int q=0; q < tokensArray2.length; q++){
 				tokensArray2[q] = tokensArray[q+3];
