@@ -202,8 +202,8 @@
 				
 	        	br.close();
         		bw.close();
+        		
 				request.setAttribute("dst2", dst2);
-				
 				//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     		String phrase = dst2;
 			String[] tokensArray = phrase.split("/");
@@ -222,13 +222,13 @@
     		out.println("dst2v2:  " + dst2v2);
 			request.setAttribute("dst2v2", dst2v2);	
 					
+					
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
     		
 	%>
-	
 	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
 </html>
