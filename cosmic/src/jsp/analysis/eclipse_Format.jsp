@@ -216,7 +216,7 @@
 				out.println("q:  "+tokensArray[q]+" "); 
 			}
 			
-			String[] tokensArray2 = new String[tokensArray.length-3];
+			String[] tokensArray2 = new String[tokensArray.length-4];
 			for (int q=0; q < tokensArray2.length; q++){
 				tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
 			}
