@@ -227,7 +227,7 @@
     			dst2v2 = dst2v2 + tokensArray2[q] + "/";
     		}//for
     		dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
-    		
+    		out.println("dst2v2:  " + dst2v2);
 	%>
 	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
