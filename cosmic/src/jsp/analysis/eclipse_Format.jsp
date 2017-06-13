@@ -203,6 +203,24 @@
 	        	br.close();
         		bw.close();
 				request.setAttribute("dst2", dst2);
+				
+				//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
+    		String phrase = dst2;
+			String[] tokensArray = phrase.split("/");
+			for (int q=0; q<tokensArray.length; q++){
+				out.println("q:  "+tokensArray[q]+" "); 	
+			}
+			String[] tokensArray2 = new String[tokensArray.length-4];
+			for (int q=0; q < tokensArray2.length; q++){
+				tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
+			}
+			String dst2v2 = "";	
+			for (int q = 0; q<tokensArray2.length-1; q++){	
+    			dst2v2 = dst2v2 + tokensArray2[q] + "/";
+    		}//for
+    		dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
+    		out.println("dst2v2:  " + dst2v2);
+			request.setAttribute("dst2v2", dst2v2);	
 					
     		}//try
     		catch(Exception e){
@@ -211,7 +229,7 @@
     		
 	%>
 	
-	<a href="${dst2}">Download eclipseFormat file</a>
+	<a href="${dst2v2}">Download eclipseFormat file</a>
 	</body>
 </html>
 
