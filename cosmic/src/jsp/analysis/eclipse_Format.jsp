@@ -213,7 +213,7 @@
 			String[] tokensArray = phrase.split("/");
 			
 			for (int q=0; q<tokensArray.length; q++){
-				out.println(tokensArray[q]+" "); 
+				out.println("q:  "+tokensArray[q]+" "); 
 			}
 			
 			String[] tokensArray2 = new String[tokensArray.length-3];
