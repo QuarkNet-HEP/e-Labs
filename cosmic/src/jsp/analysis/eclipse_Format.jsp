@@ -166,9 +166,9 @@
 						result.append(Integer.toString(eventNum)+"    ");
 						
 						//num of hits for each DAQ
-						if (numEvents == numHits1 + numHits2){
+						//if (numEvents == numHits1 + numHits2){
 							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
-						}
+						//}
 						
 						//JulianDay
 						if (JD){result.append(arrayDJF[1]+"    ");}//if
