@@ -119,6 +119,7 @@
 					//Calculate number of hits for each DAQ.
 					int numHits1 = 0;
 					int numHits2 = 0;	
+					out.println("listDAQ.size:  " + listDAQ.size());
 					for (int k=0; k<listDAQ.size(); k++){
 						if (listDAQ.get(k) == DAQ1){numHits1++;}
 						else if (listDAQ.get(k) == DAQ2){numHits2++;}	
