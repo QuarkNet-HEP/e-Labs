@@ -130,6 +130,7 @@
 					
 					boolean JD = true;//assume true all Julian Day values are same for whole line
 					float minFracDay = Float.parseFloat(arrayDJF[2]); //assume 1st fraction day is min
+					
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							if((DAQ1+".1").equals(arrayDJF[p])){outArray[0]=arrayDJF[p+2];}
@@ -165,9 +166,8 @@
 						result.append(Integer.toString(eventNum)+"    ");
 						
 						//num of hits for each DAQ
-						if (numEvents == numHits1 + numHits2){
-							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
-						}
+						result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
+						
 						
 						//JulianDay
 						if (JD){result.append(arrayDJF[1]+"    ");}//if
