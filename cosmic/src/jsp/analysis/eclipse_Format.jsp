@@ -166,8 +166,9 @@
 						result.append(Integer.toString(eventNum)+"    ");
 						
 						//num of hits for each DAQ
-						result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
-						
+						if (numEvents = numHits1 + numHits2){
+							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
+						}
 						
 						//JulianDay
 						if (JD){result.append(arrayDJF[1]+"    ");}//if
@@ -188,7 +189,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event JulianDay  SecSinceDayBegin  #HitsDAQ1   #HitsDAQ2   "
+							bw.write("Event #Hits1 #Hits2 JulDay  SecSinceDayBegin    "
 							+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
