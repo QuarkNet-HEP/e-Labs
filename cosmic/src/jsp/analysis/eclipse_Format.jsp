@@ -114,13 +114,14 @@
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
-					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
+					out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
 					//Calculate number of hits for each DAQ.
 					int numHits1 = 0;
 					int numHits2 = 0;	
-					out.println("listDAQ.size:  " + listDAQ.size());
+					
 					for (int k=0; k<listDAQ.size(); k++){
+						out.println("listDAQ.get("+k+"):  " + listDAQ.get(k));
 						if (listDAQ.get(k) == DAQ1){numHits1++;}
 						else if (listDAQ.get(k) == DAQ2){numHits2++;}	
 					}			
