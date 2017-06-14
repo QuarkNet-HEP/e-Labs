@@ -116,6 +116,10 @@
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
 					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
+					//Calculate number of hits for each DAQ.
+					int numHits1 = Collections.frequency(listDAQ, DAQ1);
+					int numHits2 = Collections.frequency(listDAQ, DAQ2);						
+					
 					//output array
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
@@ -156,6 +160,10 @@
 						//Event number
 						result.append(Integer.toString(eventNum)+"    ");
 						
+						//num of hits for each DAQ
+						if (numEvents = numHits1 + numHits2){
+							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
+						
 						//JulianDay
 						if (JD){result.append(arrayDJF[1]+"    ");}//if
 							else{result.append("          ");}//else	
@@ -175,7 +183,8 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event JulianDay  SecSinceDayBegin  "+DAQ1+".1             "+DAQ1+".2             "
+							bw.write("Event JulianDay  SecSinceDayBegin  #HitsDAQ1   #HitsDAQ2   "
+							+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ");  
@@ -203,26 +212,25 @@
 	        	br.close();
         		bw.close();
         		
-				request.setAttribute("dst2", dst2);
+        	//Phase III:  Provide link to download file eclipseFormat
 				//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
-    		String phrase = dst2;
-			String[] tokensArray = phrase.split("/");
-			for (int q=0; q<tokensArray.length; q++){
-				out.println("q:  "+tokensArray[q]+" "); 	
-			}
-			String[] tokensArray2 = new String[tokensArray.length-4];
-			for (int q=0; q < tokensArray2.length; q++){
-				tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
-			}
-			String dst2v2 = "";	
-			for (int q = 0; q<tokensArray2.length-1; q++){	
-    			dst2v2 = dst2v2 + tokensArray2[q] + "/";
-    		}//for
-    		dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
-    		out.println("dst2v2:  " + dst2v2);
-			request.setAttribute("dst2v2", dst2v2);	
-					
-					
+    			String phrase = dst2;
+				String[] tokensArray = phrase.split("/");
+				for (int q=0; q<tokensArray.length; q++){
+					out.println("q:  "+tokensArray[q]+" "); 	
+				}
+				String[] tokensArray2 = new String[tokensArray.length-4];
+				for (int q=0; q < tokensArray2.length; q++){
+					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
+				}
+				String dst2v2 = "";	
+				for (int q = 0; q<tokensArray2.length-1; q++){	
+    				dst2v2 = dst2v2 + tokensArray2[q] + "/";
+    			}//for
+    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
+    			out.println("dst2v2:  " + dst2v2);
+				request.setAttribute("dst2v2", dst2v2);	
+						
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
