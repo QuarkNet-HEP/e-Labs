@@ -117,8 +117,12 @@
 					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
 					//Calculate number of hits for each DAQ.
-					int numHits1 = Collections.frequency(listDAQ, DAQ1);
-					int numHits2 = Collections.frequency(listDAQ, DAQ2);						
+					int numHits1 = 0;
+					int numHits2 = 0;	
+					for (int k=0; k<listDAQ.size(); k++){
+						if (listDAQ.get(k) == DAQ1){numHits1++;}
+						else if (listDAQ.get(k) == DAQ2){numHits2++;}	
+					}			
 					
 					//output array
 					String [] outArray = new String[8];
