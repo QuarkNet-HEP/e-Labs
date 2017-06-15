@@ -139,18 +139,28 @@
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
 					
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
-					float minFracDay = Float.parseFloat(arrayDJF[2]); //assume 1st fraction day is min
+					double minFracDay = Double.parseDouble(arrayDJF[2]); //assume 1st fraction day is min
 					
+					double FracDayToNs = 0.0;
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
-							if((DAQ1+".1").equals(arrayDJF[p])){outArray[0]=arrayDJF[p+2];}
-  							else if ((DAQ1+".2").equals(arrayDJF[p])){outArray[1]=arrayDJF[p+2];}
-        					else if ((DAQ1+".3").equals(arrayDJF[p])){outArray[2]=arrayDJF[p+2];}
-							else if ((DAQ1+".4").equals(arrayDJF[p])){outArray[3]=arrayDJF[p+2];}
-							else if ((DAQ2+".1").equals(arrayDJF[p])){outArray[4]=arrayDJF[p+2];}
-							else if ((DAQ2+".2").equals(arrayDJF[p])){outArray[5]=arrayDJF[p+2];}
-							else if ((DAQ2+".3").equals(arrayDJF[p])){outArray[6]=arrayDJF[p+2];}
-							else if ((DAQ2+".4").equals(arrayDJF[p])){outArray[7]=arrayDJF[p+2];}
+							FracDayToNs = 3600*24*10^(-9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+							if((DAQ1+".1").equals(arrayDJF[p]))
+								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+  							else if ((DAQ1+".2").equals(arrayDJF[p]))
+  								{outArray[1]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+        					else if ((DAQ1+".3").equals(arrayDJF[p]))
+        						{outArray[2]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+							else if ((DAQ1+".4").equals(arrayDJF[p]))
+								{outArray[3]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+							else if ((DAQ2+".1").equals(arrayDJF[p]))
+								{outArray[4]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+							else if ((DAQ2+".2").equals(arrayDJF[p]))
+								{outArray[5]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+							else if ((DAQ2+".3").equals(arrayDJF[p]))
+								{outArray[6]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+							else if ((DAQ2+".4").equals(arrayDJF[p]))
+								{outArray[7]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
 						}//if		
 						
 						//check if all the Julian Day values are the same for the whole line.								
@@ -187,7 +197,7 @@
 						result.append(Double.toString(SecSinDayBeg)+"    ");
 						
 						
-						result.append(eventDateTime);
+						result.append(eventDateTime + "          ");
 						
 						//Data													 
 						for (int n = 0; n < outArray.length; n++) {
@@ -199,12 +209,13 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event #Hits1 #Hits2 JulDay  SSDB  eventDateTime  "
+							String heading = "Evnt #Hit1 #Hit2 JulDay  SSDB           eventDateTime  "
 							+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
-							+DAQ2+".3             "+DAQ2+".4             ");  
-							bw.newLine();
+							+DAQ2+".3             "+DAQ2+".4             ";  
+							bw.write(heading); bw.newLine();
+							out.println(heading);
 						}//if
 						
 				        bw.write(outline); 
