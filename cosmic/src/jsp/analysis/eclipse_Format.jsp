@@ -144,7 +144,7 @@
 					
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
-							double FracDayToNs = 3600*24*Math.pow(10,-9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
@@ -215,7 +215,7 @@
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ";  
 							bw.write(heading); bw.newLine();
-							out.println(heading);
+							out.println(heading); out.println("<br>");
 						}//if
 						
 				        bw.write(outline); 
