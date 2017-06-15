@@ -141,10 +141,10 @@
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					double minFracDay = Double.parseDouble(arrayDJF[2]); //assume 1st fraction day is min
 					
-					double FracDayToNs = 0.0;
+					
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
-							FracDayToNs = 3600*24*10^(-9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+							double FracDayToNs = 3600*24*Math.pow(10,-9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
