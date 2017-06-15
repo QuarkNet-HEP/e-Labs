@@ -79,6 +79,8 @@
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
+					String jd = words[4];
+					String partial = words[5];
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -116,7 +118,7 @@
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
 					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
 					
-					//Calculate number of hits for each DAQ.
+					//Calculate number of hits for each DAQ.  Note: Only considering UNIQUE DAQ.ch combos.
 					int numHits1 = 0;
 					int numHits2 = 0;	
 					for (int k=0; k<listDAQ.size(); k++){
@@ -124,11 +126,17 @@
 						else if (DAQ2.equals(listDAQ.get(k))){numHits2++;}	
 					}			
 					
+					// get the date and time of the shower in human readable form
+	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
+    	            String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+        	        TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
+        	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);//
+        	        
 					//output array
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
 					
-					boolean JD = true;//assume true all Julian Day values are same for whole line
+					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					float minFracDay = Float.parseFloat(arrayDJF[2]); //assume 1st fraction day is min
 					
 					for (int p=0; p<arrayDJF.length; p++){	
@@ -145,12 +153,12 @@
 						
 						//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
-							if(!arrayDJF[1].equals(arrayDJF[p])){
-								JD = false;
+							if(!jd.equals(arrayDJF[p])){
+								jdBool = false;
 							}//if
 						}//if
 						
-						//find smallest fraction of day in arrayDJF 
+						//find smallest fraction of day in arrayDJF - should be partial = words[5]
 						if (p%3 == 2){
 							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
 								minFracDay = Float.parseFloat(arrayDJF[p]);
@@ -158,7 +166,6 @@
 						}//if
 					}//for
 
-					
 					//Write to output file.
 						StringBuffer result = new StringBuffer();						
 						
@@ -169,13 +176,16 @@
 							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
 						
 						//JulianDay
-						if (JD){result.append(arrayDJF[1]+"    ");}//if
+						if (jdBool){result.append(jd+"    ");}//if
 							else{result.append("          ");}//else	
 						
-						//SecSinDayBeg
+						//SecSinDayBeg (SSDB)
 						//convert minFracDay to sec
 						double SecSinDayBeg = 3600*24*minFracDay;
 						result.append(Double.toString(SecSinDayBeg)+"    ");
+						
+						
+						result.append(eventDateTime);
 						
 						//Data													 
 						for (int n = 0; n < outArray.length; n++) {
@@ -187,7 +197,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							bw.write("Event #Hits1 #Hits2 JulDay  SecSinceDayBegin    "
+							bw.write("Event #Hits1 #Hits2 JulDay  SSDB  eventDateTime  "
 							+DAQ1+".1             "+DAQ1+".2             "
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
