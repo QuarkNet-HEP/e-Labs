@@ -238,6 +238,7 @@
 				
 	        	br.close();
         		bw.close();
+        		request.setAttribute("dst2", dst2);	
         		
         	//Phase III:  Provide link to download file eclipseFormat
 			/*parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
@@ -257,7 +258,7 @@
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
 				request.setAttribute("dst2v2", dst2v2);					
-				request.setAttribute("dst2", dst2);	
+				
 			*/	
     		}//try
     		catch(Exception e){
