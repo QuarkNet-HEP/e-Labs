@@ -238,10 +238,10 @@
 				
 	        	br.close();
         		bw.close();
-        		request.setAttribute("dst2", dst2);	
+        		//request.setAttribute("dst2", dst2);	
         		
         	//Phase III:  Provide link to download file eclipseFormat
-			/*parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
+			parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     			String phrase = dst2;
 				String[] tokensArray = phrase.split("/");
 				for (int q=0; q<tokensArray.length; q++){
@@ -252,14 +252,13 @@
 					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
 				}
 				String dst2v2 = "";	
-				for (int q = 0; q<tokensArray2.length-1; q++){	
+				for (int q = 0; q<tokensArray2.length; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
     			}//for
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
-				request.setAttribute("dst2v2", dst2v2);					
+				request.setAttribute("dst2v2", dst2v2);						
 				
-			*/	
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
@@ -267,7 +266,7 @@
     		
 	%>
 	
-	<form method="get" action="${dst2}">
+	<form method="get" action="${dst2v2}">
    		<button type="submit">Download!</button>
 	</form>
 	</body>
