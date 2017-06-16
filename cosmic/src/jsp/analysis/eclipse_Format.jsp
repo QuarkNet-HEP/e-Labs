@@ -257,7 +257,7 @@
     			}//for
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
-    			dstv2 = "../../../" + dst2v2;
+    			dst2v2 = "../../../" + dst2v2;
     			out.print("<a href='dst2v2'>Download</a>");
 				//request.setAttribute("dst2v2", dst2v2);						
 				
