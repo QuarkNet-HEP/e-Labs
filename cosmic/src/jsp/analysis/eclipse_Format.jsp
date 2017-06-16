@@ -247,9 +247,9 @@
 				for (int q=0; q<tokensArray.length; q++){
 					out.println("q:  "+tokensArray[q]+" "); 	
 				}
-				String[] tokensArray2 = new String[tokensArray.length-4];
+				String[] tokensArray2 = new String[tokensArray.length-5];
 				for (int q=0; q < tokensArray2.length; q++){
-					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
+					tokensArray2[q] = tokensArray[q+5];//tokensArray[0] is a space
 				}
 				String dst2v2 = "";	
 				for (int q = 0; q<tokensArray2.length; q++){	
@@ -257,8 +257,9 @@
     			}//for
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
-    			String downLoad = "../../../" + dst2v2;
-    			out.print("<a href='downLoad'>Download!</a>");
+    			
+    			out.print(<a href="<%= response.encodeURL(request.getContextPath()) + dst2v2%>">Download</a>);
+
 				//request.setAttribute("dst2v2", dst2v2);						
 				
     		}//try
