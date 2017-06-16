@@ -266,9 +266,11 @@
     		
 	%>
 	
-	<form method="get" action="${dst2v2}">
-   		<button type="submit">Download!</button>
-	</form>
+	/*<form method="get" action="${dst2v2}">
+   		<button type="submit">Download eclipseFormat</button>
+	</form>*/
+	
+	<button type="submit" onclick="window.open('${dst2v2}')">Download eclipseFormat</button>
 	</body>
 </html>
 
