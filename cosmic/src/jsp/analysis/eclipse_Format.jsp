@@ -256,18 +256,19 @@
     			}//for
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
-				request.setAttribute("dst2v2", dst2v2);	
-				
+				request.setAttribute("dst2v2", dst2v2);					
+				request.setAttribute("dst2", dst2);	
 			*/	
-			request.setAttribute("dst2", dst2);	
-		
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
     		
 	%>
-	<a href="${dst2}">Download eclipseFormat file</a>
+	
+	<form method="get" action="${dst2}">
+   		<button type="submit">Download!</button>
+	</form>
 	</body>
 </html>
 
