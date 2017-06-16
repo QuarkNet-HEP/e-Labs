@@ -257,7 +257,8 @@
     			}//for
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			out.println("dst2v2:  " + dst2v2);
-				request.setAttribute("dst2v2", dst2v2);						
+    			out.print("<a href='dst2v2'>Download</a>");
+				//request.setAttribute("dst2v2", dst2v2);						
 				
     		}//try
     		catch(Exception e){
@@ -266,11 +267,9 @@
     		
 	%>
 	
-	/*<form method="get" action="${dst2v2}">
+	<%--<form method="get" action="${dst2v2}">
    		<button type="submit">Download eclipseFormat</button>
-	</form>*/
-	
-	<button type="submit" onclick="window.open('${dst2v2}')">Download eclipseFormat</button>
+	</form>--%>
 	</body>
 </html>
 
