@@ -241,7 +241,7 @@
         		//request.setAttribute("dst2", dst2);	
         		
         	//Phase III:  Provide link to download file eclipseFormat
-			parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
+			//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
     			String phrase = dst2;
 				String[] tokensArray = phrase.split("/");
 				for (int q=0; q<tokensArray.length; q++){
