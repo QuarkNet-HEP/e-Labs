@@ -246,21 +246,19 @@
 				for (int q=0; q<tokensArray.length; q++){
 					out.println("q:  "+tokensArray[q]+" "); 	
 				}
-	
-				String[] tokensArray2 = new String[tokensArray.length-4];
+				String[] tokensArray2 = new String[tokensArray.length-5];
 				for (int q=0; q < tokensArray2.length; q++){
-					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
-				}
-	
-				String dst2v2 = "";	
+					tokensArray2[q] = tokensArray[q+5];//tokensArray[0] is a space
+				}	
+				String dst2v2 = "/";	
 				for (int q = 0; q<tokensArray2.length; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
-    			}//for
-	
-    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
-	
-    			out.println("dst2v2:  " + dst2v2);
-	
+    			}//for	
+    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	
+    			
+                
+                String dst2v2 = "http://" + request.getServerName()	+ dst2v2;
+                out.println("dst2v2:  " + dst2v2);
 				request.setAttribute("dst2v2", dst2v2);						
 	
 				
@@ -271,8 +269,11 @@
     		
 	%>
 	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
-			<%--<a href = "'request.getServerName()'+${dst2}">Download!</a>	--%>	
+			<a href = "${dst2v2}">Download!</a>
 			Server host name is: <b><%=request.getServerName() %></b>
+			<%
+			String 
+			%>
 
 	</body>
 </html>
