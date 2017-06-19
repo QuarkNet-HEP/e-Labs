@@ -67,7 +67,7 @@
 		BufferedReader br = null;
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat-date is destination in this phase
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -231,19 +231,19 @@
 				
 				line = br.readLine();        		
 			}//while
-				
+				request.setAttribute("dst2", dst2);	
 	        	br.close();
 	        	bw.close();
         		
-        	//Phase III:  Provide link to download file eclipseFormat		
-				
+        	
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
     		
 	%>
-
+	//Phase III:  Provide link to download file eclipseFormat		
+			<a href = "http://${dst2}">Download!</a>	
 	</body>
 </html>
 
