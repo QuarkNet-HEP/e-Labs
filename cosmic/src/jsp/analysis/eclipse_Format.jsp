@@ -74,7 +74,7 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
          		int i = 0;
-         		while (line != null){ 
+         	while (line != null){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -82,7 +82,8 @@
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
 					String jd = words[4];
-					String partial = words[5];//minimum fractional day				
+					String partial = words[5];//minimum fractional day		
+					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min		
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -100,6 +101,15 @@
 					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF can have different length for each line.
 					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
 					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
+					
+					//confirm smallest fraction of day in arrayDJF is partial = words[5]
+					for (int p=0; p<arrayDJF.length; p++){	
+						if (p%3 == 2){
+							if(Double.parseDouble(arrayDJF[p]) < minFracDay){
+								minFracDay = Double.parseDouble(arrayDJF[p]);
+							}//if
+						}//if--p%3 == 2
+					}//for-p
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -137,16 +147,6 @@
 					//output array
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
-					
-					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min
-					//confirm smallest fraction of day in arrayDJF is partial = words[5]
-					for (int p=0; p<arrayDJF.length; p++){	
-						if (p%3 == 2){
-							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
-								minFracDay = Float.parseFloat(arrayDJF[p]);
-							}//if
-						}//if--p%3 == 2
-					}//for-p
 					
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					for (int p=0; p<arrayDJF.length; p++){	
