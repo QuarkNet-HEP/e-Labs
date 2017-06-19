@@ -72,7 +72,6 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
-        		pw = new PrintWriter (bw);
  		       	String line = br.readLine();
  		       	
          		int i = 0;
@@ -217,19 +216,16 @@
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ";  
-							//bw.write(heading); bw.newLine();
-							pw.write(heading); pw.newLine();
+							bw.write(heading); bw.newLine();
 							out.println(heading); out.println("<br>");
 						}//if
 						
-				        //bw.write(outline);
-				        pw.write(outline); 
+				        bw.write(outline); 
 				        out.println(outline); out.println("<br>");
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
-					//bw.write(line);bw.newLine();
-					pw.write(line);pw.newLine();
+					bw.write(line);bw.newLine();
 					out.println(line); out.println("<br>");
 				}//else
 				
@@ -237,8 +233,7 @@
 			}//while
 				
 	        	br.close();
-	        	pw.close();
-        		//bw.close();
+	        	bw.close();
         		
         	//Phase III:  Provide link to download file eclipseFormat		
 				
