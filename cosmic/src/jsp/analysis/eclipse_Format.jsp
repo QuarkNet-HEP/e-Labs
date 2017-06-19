@@ -140,7 +140,7 @@
 					
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min
 					//confirm smallest fraction of day in arrayDJF is partial = words[5]
-					for (int p=0; p<arraDJF.length; p++){	
+					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 2){
 							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
 								minFracDay = Float.parseFloat(arrayDJF[p]);
