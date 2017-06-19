@@ -72,8 +72,11 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
+        		pw = new PrintWriter (bw);
  		       	String line = br.readLine();
+ 		       	
          		int i = 0;
+         	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
 				i++;
 				String[] words = line.split("\\s+");
@@ -102,13 +105,13 @@
 					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
 					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
-					//confirm smallest fraction of day in arrayDJF is partial = words[5]
+					//find smallest fraction of day in arrayDJF
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 2){
 							if(Double.parseDouble(arrayDJF[p]) < minFracDay){
 								minFracDay = Double.parseDouble(arrayDJF[p]);
 							}//if
-						}//if--p%3 == 2
+						}//if
 					}//for-p
 					
 					//Create List of DAQs.
@@ -152,7 +155,7 @@
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
-						
+												
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
@@ -169,21 +172,21 @@
 								{outArray[6]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
 								{outArray[7]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
-						}//if-p%3 == 0		
+						}//if		
 						
 						//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
 							if(!jd.equals(arrayDJF[p])){
 								jdBool = false;
 							}//if
-						}//if-p%3 == 1						
+						}//if				
 					}//for-p
 
 					//Write to output file.
 						StringBuffer result = new StringBuffer();						
 						
 						//Event number
-						result.append(Integer.toString(eventNum)+"    ");
+						result.append(Integer.toString(eventNum)+"    "); 
 						
 						//num of hits for each DAQ
 							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
@@ -195,8 +198,7 @@
 						//SecSinDayBeg (SSDB)
 						//convert minFracDay to sec
 						double SecSinDayBeg = 3600*24*minFracDay;
-						result.append(Double.toString(SecSinDayBeg)+"    ");
-						
+						result.append(Double.toString(SecSinDayBeg)+"    ");						
 						
 						result.append(eventDateTime + "          ");
 						
@@ -219,47 +221,24 @@
 							out.println(heading); out.println("<br>");
 						}//if
 						
-				        bw.write(outline); 
+				        //bw.write(outline);
+				        pw.write(outline); 
 				        out.println(outline); out.println("<br>");
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
-					bw.write(line);bw.newLine();
+					//bw.write(line);bw.newLine();
+					pw.write(line);pw.newLine();
 					out.println(line); out.println("<br>");
 				}//else
 				
 				line = br.readLine();        		
 			}//while
 				
-         		/*File file22 = new File(dst2);	
-				if (file22.exists() && file22.length() != 0){
-	        		out.println("eclipseFormat file exists and is not empty!");
-                }//if
-  				*/	
-				
 	        	br.close();
         		bw.close();
-        		//request.setAttribute("dst2", dst2);	
         		
-        	//Phase III:  Provide link to download file eclipseFormat
-			//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
-    			/*String phrase = dst2;
-				String[] tokensArray = phrase.split("/");
-				for (int q=0; q<tokensArray.length; q++){
-					out.println("q:  "+tokensArray[q]+" "); 	
-				}
-				String[] tokensArray2 = new String[tokensArray.length-4];
-				for (int q=0; q < tokensArray2.length; q++){
-					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
-				}
-				String dst2v2 = "";	
-				for (int q = 0; q<tokensArray2.length; q++){	
-    				dst2v2 = dst2v2 + tokensArray2[q] + "/";
-    			}//for
-    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
-    			out.println("dst2v2:  " + dst2v2);*/
-
-				//request.setAttribute("dst2v2", dst2v2);						
+        	//Phase III:  Provide link to download file eclipseFormat		
 				
     		}//try
     		catch(Exception e){
