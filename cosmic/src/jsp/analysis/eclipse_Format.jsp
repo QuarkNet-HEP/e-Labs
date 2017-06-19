@@ -271,10 +271,7 @@
 	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
 			<a href = "${dst2v2}">Download!</a>
 			Server host name is: <b><%=request.getServerName() %></b>
-			<%
-			String 
-			%>
-
+			
 	</body>
 </html>
 
