@@ -65,7 +65,7 @@
 		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
-    		BufferedWriter bw = null;
+    	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date;	//eclipseFormat-date is destination in this phase
      
@@ -217,7 +217,8 @@
 							+DAQ1+".3             "+DAQ1+".4             "
 							+DAQ2+".1             "+DAQ2+".2             "
 							+DAQ2+".3             "+DAQ2+".4             ";  
-							bw.write(heading); bw.newLine();
+							//bw.write(heading); bw.newLine();
+							pw.write(heading); pw.newLine();
 							out.println(heading); out.println("<br>");
 						}//if
 						
@@ -236,7 +237,8 @@
 			}//while
 				
 	        	br.close();
-        		bw.close();
+	        	pw.close();
+        		//bw.close();
         		
         	//Phase III:  Provide link to download file eclipseFormat		
 				
