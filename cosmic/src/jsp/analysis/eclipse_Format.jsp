@@ -257,7 +257,7 @@
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	
     			
                 
-                String dst2v2 = "http://" + request.getServerName()	+ dst2v2;
+                dst2v2 = "http://" + request.getServerName()	+ dst2v2;
                 out.println("dst2v2:  " + dst2v2);
 				request.setAttribute("dst2v2", dst2v2);						
 	
