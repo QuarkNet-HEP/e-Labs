@@ -82,7 +82,7 @@
 					int eventNum = Integer.parseInt(words[0]);
 					int numEvents = Integer.parseInt(words[1]);
 					String jd = words[4];
-					String partial = words[5];
+					String partial = words[5];//minimum fractional day				
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -94,7 +94,7 @@
 								listDJF.add(words[j+2]); //FractionDay
 							}//if
 	                     }//if
-					}//for
+					}//for-j
 					
 					String[] arrayDJF = new String[listDJF.size()]; //DJF represents DAQ, Julian, Fraction
 					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF can have different length for each line.
@@ -138,13 +138,21 @@
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
 					
+					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min
+					//confirm smallest fraction of day in arrayDJF is partial = words[5]
+					for (int p=0; p<arraDJF.length; p++){	
+						if (p%3 == 2){
+							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
+								minFracDay = Float.parseFloat(arrayDJF[p]);
+							}//if
+						}//if--p%3 == 2
+					}//for-p
+					
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
-					double minFracDay = Double.parseDouble(arrayDJF[2]); //assume 1st fraction day is min
-					
-					
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+						
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
@@ -161,22 +169,15 @@
 								{outArray[6]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
 								{outArray[7]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
-						}//if		
+						}//if-p%3 == 0		
 						
 						//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
 							if(!jd.equals(arrayDJF[p])){
 								jdBool = false;
 							}//if
-						}//if
-						
-						//find smallest fraction of day in arrayDJF - should be partial = words[5]
-						if (p%3 == 2){
-							if(Float.parseFloat(arrayDJF[p]) < minFracDay){
-								minFracDay = Float.parseFloat(arrayDJF[p]);
-							}//if
-						}//if
-					}//for
+						}//if-p%3 == 1						
+					}//for-p
 
 					//Write to output file.
 						StringBuffer result = new StringBuffer();						
