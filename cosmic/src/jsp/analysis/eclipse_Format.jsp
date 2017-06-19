@@ -41,8 +41,8 @@
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
-		//out.println("Source: "+src);
-		//out.println("Destination: "+dst);	
+		out.println("Source: "+src);
+		out.println("Destination: "+dst);	
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
 		File file1 = new File(src);
@@ -68,6 +68,8 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
+        out.println("Source2: "+src2);
+		out.println("Destination2: "+dst2);     
      
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -235,15 +237,43 @@
 	        	br.close();
 	        	bw.close();
         		
-        	
+        	//Phase III:  Provide link to download file eclipseFormat
+
+			//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
+			String phrase = dst2;
+	
+				String[] tokensArray = phrase.split("/");	
+				for (int q=0; q<tokensArray.length; q++){
+					out.println("q:  "+tokensArray[q]+" "); 	
+				}
+	
+				String[] tokensArray2 = new String[tokensArray.length-4];
+				for (int q=0; q < tokensArray2.length; q++){
+					tokensArray2[q] = tokensArray[q+4];//tokensArray[0] is a space
+				}
+	
+				String dst2v2 = "";	
+				for (int q = 0; q<tokensArray2.length; q++){	
+    				dst2v2 = dst2v2 + tokensArray2[q] + "/";
+    			}//for
+	
+    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
+	
+    			out.println("dst2v2:  " + dst2v2);
+	
+				request.setAttribute("dst2v2", dst2v2);						
+	
+				
     		}//try
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
     		
 	%>
-	//Phase III:  Provide link to download file eclipseFormat		
-			<a href = "http://${dst2}">Download!</a>	
+	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
+			<%--<a href = "'request.getServerName()'+${dst2}">Download!</a>	--%>	
+			Server host name is: <b><%=request.getServerName() %></b>
+
 	</body>
 </html>
 
