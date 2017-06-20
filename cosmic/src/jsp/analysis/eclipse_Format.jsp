@@ -149,23 +149,23 @@
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
-												
+										
 							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(FracDayToNs);}
+								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(round(FracDayToNs,2));}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(FracDayToNs);}
+  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(round(FracDayToNs,2));}
         					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(FracDayToNs);}
+        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(round(FracDayToNs,2));}
 							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(FracDayToNs);}
+								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(round(FracDayToNs,2));}
 							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(FracDayToNs);}
+								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(round(FracDayToNs,2));}
 							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(FracDayToNs);}
+								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(round(FracDayToNs,2));}
 							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(FracDayToNs);}
+								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(round(FracDayToNs,2));}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(FracDayToNs);}
+								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(round(FracDayToNs,2));}
 						}//if		
 						
 						//check if all the Julian Day values are the same for the whole line.								
