@@ -62,9 +62,8 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
-		int t = 1; //t represents units of 10 minutes 
-		double tenMinFrac = 10.0/(24.0*60.0);//fraction of the day that 10 min represents       
-		
+		int t = 1;
+		     
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
@@ -109,7 +108,11 @@
 						}//if
 					}//for-p
 					
-					if(tenMinFrac*t < minFracDay){
+					//convert minFracDay to sec
+					double SecSinDayBeg = 3600*24*minFracDay;
+					
+					//6*10^11 ns = 10 min
+					if(SecSinDayBeg > 6.0*Math.pow(10,11)*t){
 						out.println(Integer.toString(t*10)+"minutes have gone by."); out.println("<br>");
 						bw.write(Integer.toString(t*10)+"minutes have gone by.");bw.newLine();
 						t = t++;
@@ -199,8 +202,6 @@
 							else{result.append("Not 1 JD"); result.append("\t");}//else	
 						
 						//SecSinDayBeg (SSDB)
-						//convert minFracDay to sec
-						double SecSinDayBeg = 3600*24*minFracDay;
 						result.append(Double.toString(SecSinDayBeg)); result.append("\t"); 						
 						
 						result.append(eventDateTime); result.append("\t"); 
