@@ -184,26 +184,26 @@
 						StringBuffer result = new StringBuffer();						
 						
 						//Event number
-						result.append(Integer.toString(eventNum)); result.append("    "); 
+						result.append(Integer.toString(eventNum)); result.append("\t"); 
 						
 						//num of hits for each DAQ
-							result.append(Integer.toString(numHits1)); result.append("    "); 
-							result.append(Integer.toString(numHits2)); result.append("    "); 
+							result.append(Integer.toString(numHits1)); result.append("\t"); 
+							result.append(Integer.toString(numHits2)); result.append("\t"); 
 						
 						//JulianDay
-						if (jdBool){result.append(jd); result.append("    ");}//if
-							else{result.append("          ");}//else	
+						if (jdBool){result.append(jd); result.append("\t");}//if
+							else{result.append("Not 1 JD"); result.append("\t");}//else	
 						
 						//SecSinDayBeg (SSDB)
 						//convert minFracDay to sec
 						double SecSinDayBeg = 3600*24*minFracDay;
-						result.append(Double.toString(SecSinDayBeg)); result.append("    "); 						
+						result.append(Double.toString(SecSinDayBeg)); result.append("\t"); 						
 						
-						result.append(eventDateTime); result.append("    "); 
+						result.append(eventDateTime); result.append("\t"); 
 						
 						//Data													 
 						for (int p = 0; p < outArray.length; p++) {
-   							result.append( outArray[p] ); result.append(" "); result.append( outArrayNs[p] );
+   							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] );
 						}//for
 						result.append("\n");
 						
