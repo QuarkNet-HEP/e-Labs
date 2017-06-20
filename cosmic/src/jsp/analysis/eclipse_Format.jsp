@@ -41,12 +41,9 @@
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
-		out.println("Source: "+src);
-		out.println("Destination: "+dst);	
-		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
 		File file1 = new File(src);
-        	File file2 = new File(dst);
+       	File file2 = new File(dst);
 		
 		if (file1.exists()){
 			Path source = Paths.get(src);
@@ -68,9 +65,7 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
-        out.println("Source2: "+src2);
-		out.println("Destination2: "+dst2);     
-     
+       
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
@@ -148,9 +143,11 @@
         	        TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
         	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);//
         	        
-					//output array
+					//output arrays
 					String [] outArray = new String[8];
 					for (int m=0; m<8; m++){outArray[m] = "-1";}
+					String [] outArrayNs = new String[8];
+					for (int m=0; m<8; m++){outArrayNs[m] = "-1";}
 					
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					for (int p=0; p<arrayDJF.length; p++){	
@@ -158,21 +155,21 @@
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 												
 							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(FracDayToNs);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(FracDayToNs);}
         					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(FracDayToNs);}
 							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(FracDayToNs);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]+" "+String.valueOf(FracDayToNs);}
+								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(FracDayToNs);}
 						}//if		
 						
 						//check if all the Julian Day values are the same for the whole line.								
@@ -205,8 +202,8 @@
 						result.append(eventDateTime); result.append("    "); 
 						
 						//Data													 
-						for (int n = 0; n < outArray.length; n++) {
-   							result.append( outArray[n] ); result.append(" ");
+						for (int p = 0; p < outArray.length; p++) {
+   							result.append( outArray[p] ); result.append(" "); result.append( outArrayNs[p] );
 						}//for
 						result.append("\n");
 						
@@ -214,7 +211,7 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							String heading = "Evnt #Hit1 #Hit2 JulDay  SSDB           eventDateTime  "
+							String heading = "Evnt #Hit1 #Hit2 JulDay    SSDB                eventDateTime              "
 							+DAQ1+".1FracDay             ns After 1st Hit         "+DAQ1+".2FracDay             ns After 1st Hit         "
 							+DAQ1+".3FracDay             ns After 1st Hit         "+DAQ1+".4FracDay             ns After 1st Hit         "
 							+DAQ2+".1FracDay             ns After 1st Hit         "+DAQ2+".2FracDay             ns After 1st Hit         "
