@@ -27,17 +27,17 @@
 	<%	
 		//Phase I:  copy eventCandidates file into eFtemp-date
 		//Create variables src and dst
-		String sF = request.getParameter("srcF");
-		String sD = request.getParameter("srcD");
+		String sF = request.getParameter("srcF");//sF = source Filename
+		String sD = request.getParameter("srcD");//sD = source Directory
 			GregorianCalendar gc = new GregorianCalendar();
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
-		String dF = "eFtemp-"+date;
+		String dF = "eFtemp-"+date;//dF = destination Filename
  
 		//SB,5/8/17:  This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
 		//"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
 		
-		String dD = user.getDir("plots");
+		String dD = user.getDir("plots");//dD = destination Directory
 		String src = "webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
@@ -55,11 +55,8 @@
                 	}
 		}		
 		
-		/*if (file2.exists()){
-                        out.println("Copy of eventCandidates to eFtemp successful!");
-                }*/
-
 		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
+		if (file2.exists()){               
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
     	BufferedWriter bw = null;
@@ -126,8 +123,7 @@
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
-					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];				
-					//out.println("DAQ1:  " + DAQ1 + "    DAQ2:  " + DAQ2);		
+					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];					
 					
 					//Calculate number of hits for each DAQ.  Note: Only considering UNIQUE DAQ.ch combos.
 					int numHits1 = 0;
@@ -212,10 +208,10 @@
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
 							String heading = "Evnt #Hit1 #Hit2 JulDay    SSDB                eventDateTime              "
-							+DAQ1+".1FracDay             ns After 1st Hit         "+DAQ1+".2FracDay             ns After 1st Hit         "
-							+DAQ1+".3FracDay             ns After 1st Hit         "+DAQ1+".4FracDay             ns After 1st Hit         "
-							+DAQ2+".1FracDay             ns After 1st Hit         "+DAQ2+".2FracDay             ns After 1st Hit         "
-							+DAQ2+".3FracDay             ns After 1st Hit         "+DAQ2+".4FracDay             ns After 1st Hit         ";  
+							+DAQ1+".1FracDay             nsAfter1stHit         "+DAQ1+".2FracDay             nsAfter1stHit         "
+							+DAQ1+".3FracDay             nsAfter1st Hit         "+DAQ1+".4FracDay            nsAfter1stHit         "
+							+DAQ2+".1FracDay             nsAfter1st Hit         "+DAQ2+".2FracDay            nsAfter1stHit         "
+							+DAQ2+".3FracDay             nsAfter1st Hit         "+DAQ2+".4FracDay            nsAfter1stHit         ";  
 							bw.write(heading); bw.newLine();
 							out.println(heading); out.println("<br>");
 						}//if
@@ -240,7 +236,6 @@
 				String phrase = dst2;
 				String[] tokensArray = phrase.split("/");	
 				for (int q=0; q<tokensArray.length; q++){
-					out.println("q:  "+tokensArray[q]+" "); 	
 				}
 				String[] tokensArray2 = new String[tokensArray.length-5];
 				for (int q=0; q < tokensArray2.length; q++){
@@ -260,11 +255,14 @@
     		catch(Exception e){
         		out.println("Exception caught : " + e);
     		}//catch
-    		
+    	}//if-file2 exists
+    	else{
+    		out.println("eventCandidates file did not copy over to plots/ from scratch/!");
+    	}//else
 	%>
 	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
 			<a href = "${dst2v2}">Download!</a>
-			//Server host name is: <b><%=request.getServerName() %></b>
+			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
 	</body>
 </html>
