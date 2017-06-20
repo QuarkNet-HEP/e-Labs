@@ -65,16 +65,16 @@
 					</ul>								
 				</p>
 				<p>
-			<%
-				String subject = "Question/Comment";
-				String body = URLEncoder.encode("Please complete each of the fields below:"
-					+ "First Name:\n\n"
-					+ "Last Name:\n\n"
-					+ "City:\n\n"
-					+ "State:\n\n"
-					+ "School:\n");
-				String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
-			%>
+						<%
+						String subject = "Question/Comment";
+						String body = URLEncoder.encode("Please complete each of the fields below:\n\n"
+								+ "First Name:\n\n"
+								+ "Last Name:\n\n"
+								+ "City:\n\n"
+								+ "State:\n\n"
+								+ "School:\n").replace("+", "%20");
+						String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+						%>
 					If you have any questions or comments, contact us at <a href="<%= mailURL %>">e-labs@fnal.gov</a>.
 				</p>
 				<br /><br />
