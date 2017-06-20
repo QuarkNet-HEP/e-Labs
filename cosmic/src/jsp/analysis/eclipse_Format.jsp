@@ -207,13 +207,22 @@
 						
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
-							String heading = "Evnt #Hit1 #Hit2 JulDay    SSDB                eventDateTime              "
-							+DAQ1+".1FracDay             nsAfter1stHit         "+DAQ1+".2FracDay             nsAfter1stHit         "
-							+DAQ1+".3FracDay             nsAfter1st Hit         "+DAQ1+".4FracDay            nsAfter1stHit         "
-							+DAQ2+".1FracDay             nsAfter1st Hit         "+DAQ2+".2FracDay            nsAfter1stHit         "
-							+DAQ2+".3FracDay             nsAfter1st Hit         "+DAQ2+".4FracDay            nsAfter1stHit         ";  
-							bw.write(heading); bw.newLine();
-							out.println(heading); out.println("<br>");
+							StringBuffer heading = new StringBuffer();
+							heading.append("Evnt"); heading.append("\t"); heading.append("#Hit1"); heading.append("\t");
+							heading.append("#Hit2"); heading.append("\t"); heading.append("JulDay"); heading.append("\t");
+							heading.append("SSDB"); heading.append("\t"); heading.append("eventDateTime"); heading.append("\t");
+							heading.append(DAQ1+".1FracDay); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
+							heading.append(DAQ1+".2FracDay); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
+							heading.append(DAQ1+".3FracDay); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ1+".4FracDay); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");	
+							heading.append(DAQ2+".1FracDay); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".2FracDay); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".3FracDay); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".4FracDay); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");		
+							String outHeading = heading.toString();
+							
+							bw.write(outHeading); bw.newLine();
+							out.println(outHeading); out.println("<br>");
 						}//if
 						
 				        bw.write(outline); 
