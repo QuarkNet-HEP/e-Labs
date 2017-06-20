@@ -62,7 +62,9 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
-       
+		int t = 1; //t represents units of 10 minutes 
+		double tenMinFrac = 10.0/(24.0*60.0);//fraction of the day that 10 min represents       
+		
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
@@ -106,6 +108,12 @@
 							}//if
 						}//if
 					}//for-p
+					
+					if(tenMinFrac*t < minFracDay){
+						out.println(Integer.toString(t*10)+"minutes have gone by."); out.println("<br>");
+						bw.write(Integer.toString(t*10)+"minutes have gone by.");bw.newLine();
+						t = t++;
+					}//if
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -151,21 +159,21 @@
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 										
 							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
         					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*100.0)/100.0);}
+								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 						}//if		
 						
 						//check if all the Julian Day values are the same for the whole line.								
