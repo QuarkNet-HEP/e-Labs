@@ -67,7 +67,7 @@
 				<p>
 						<%
 						String subject = "Question/Comment";
-						String body = URLEncoder.encode("Please complete each of the fields below:"
+						String body = URLEncoder.encode("Please complete each of the fields below:\n\n"
 								+ "First Name:\n\n"
 								+ "Last Name:\n\n"
 								+ "City:\n\n"
