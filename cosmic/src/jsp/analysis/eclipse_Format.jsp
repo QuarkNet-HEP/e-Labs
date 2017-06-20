@@ -190,11 +190,11 @@
 						result.append(Integer.toString(eventNum)); result.append("    "); 
 						
 						//num of hits for each DAQ
-							result.append(Integer.toString(numHits1); result.append("    "); 
-							result.append(Integer.toString(numHits2); result.append("    "); 
+							result.append(Integer.toString(numHits1)); result.append("    "); 
+							result.append(Integer.toString(numHits2)); result.append("    "); 
 						
 						//JulianDay
-						if (jdBool){result.append(jd); result.append("    "); }//if
+						if (jdBool){result.append(jd); result.append("    ");}//if
 							else{result.append("          ");}//else	
 						
 						//SecSinDayBeg (SSDB)
