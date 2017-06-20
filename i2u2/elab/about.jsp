@@ -67,12 +67,12 @@
 				<p>
 						<%
 						String subject = "Question/Comment";
-						String body = URLEncoder.encode("Please%20complete%20each%20of%20the%20fields%20below:"
-								+ "First%20Name:\n\n"
-								+ "Last%20Name:\n\n"
+						String body = URLEncoder.encode("Please complete each of the fields below:"
+								+ "First Name:\n\n"
+								+ "Last Name:\n\n"
 								+ "City:\n\n"
 								+ "State:\n\n"
-								+ "School:\n");
+								+ "School:\n").replace("+", "%20"));
 						String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 						%>
 						If you have any questions or comments, contact us at <a href="<%= mailURL %>">e-labs@fnal.gov</a>.
