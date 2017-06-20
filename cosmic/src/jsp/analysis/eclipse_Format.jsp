@@ -187,21 +187,22 @@
 						StringBuffer result = new StringBuffer();						
 						
 						//Event number
-						result.append(Integer.toString(eventNum)+"    "); 
+						result.append(Integer.toString(eventNum)); result.append("    "); 
 						
 						//num of hits for each DAQ
-							result.append(Integer.toString(numHits1)+"   "+Integer.toString(numHits2)+"   " );
+							result.append(Integer.toString(numHits1); result.append("    "); 
+							result.append(Integer.toString(numHits2); result.append("    "); 
 						
 						//JulianDay
-						if (jdBool){result.append(jd+"    ");}//if
+						if (jdBool){result.append(jd); result.append("    "); }//if
 							else{result.append("          ");}//else	
 						
 						//SecSinDayBeg (SSDB)
 						//convert minFracDay to sec
 						double SecSinDayBeg = 3600*24*minFracDay;
-						result.append(Double.toString(SecSinDayBeg)+"    ");						
+						result.append(Double.toString(SecSinDayBeg)); result.append("    "); 						
 						
-						result.append(eventDateTime + "          ");
+						result.append(eventDateTime); result.append("    "); 
 						
 						//Data													 
 						for (int n = 0; n < outArray.length; n++) {
@@ -214,10 +215,10 @@
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
 							String heading = "Evnt #Hit1 #Hit2 JulDay  SSDB           eventDateTime  "
-							+DAQ1+".1             "+DAQ1+".2             "
-							+DAQ1+".3             "+DAQ1+".4             "
-							+DAQ2+".1             "+DAQ2+".2             "
-							+DAQ2+".3             "+DAQ2+".4             ";  
+							+DAQ1+".1FracDay             ns After 1st Hit         "+DAQ1+".2FracDay             ns After 1st Hit         "
+							+DAQ1+".3FracDay             ns After 1st Hit         "+DAQ1+".4FracDay             ns After 1st Hit         "
+							+DAQ2+".1FracDay             ns After 1st Hit         "+DAQ2+".2FracDay             ns After 1st Hit         "
+							+DAQ2+".3FracDay             ns After 1st Hit         "+DAQ2+".4FracDay             ns After 1st Hit         ";  
 							bw.write(heading); bw.newLine();
 							out.println(heading); out.println("<br>");
 						}//if
@@ -237,11 +238,9 @@
 	        	br.close();
 	        	bw.close();
         		
-        	//Phase III:  Provide link to download file eclipseFormat
-
-			//parse dst2 to remove /var/lib/tomcat7/ and create dst2v2
-			String phrase = dst2;
-	
+        	//Phase III:  Create link to download file eclipseFormat
+				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
+				String phrase = dst2;
 				String[] tokensArray = phrase.split("/");	
 				for (int q=0; q<tokensArray.length; q++){
 					out.println("q:  "+tokensArray[q]+" "); 	
@@ -255,12 +254,8 @@
 				for (int q = 0; q<tokensArray2.length-1; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
     			}//for-q	
-    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	
-    			
-                String serverName = request.getServerName();
-                out.println("Server Name:  " + serverName);
-                dst2v2 = "http://" + serverName	+ dst2v2;
-                out.println("dst2v2:  " + dst2v2);
+    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	            
+                dst2v2 = "http://" + request.getServerName() + dst2v2;
 				request.setAttribute("dst2v2", dst2v2);						
 	
 				
@@ -272,8 +267,8 @@
 	%>
 	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
 			<a href = "${dst2v2}">Download!</a>
-			Server host name is: <b><%=request.getServerName() %></b>
-			
+			//Server host name is: <b><%=request.getServerName() %></b>
+	
 	</body>
 </html>
 
