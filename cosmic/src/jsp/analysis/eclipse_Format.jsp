@@ -250,14 +250,15 @@
 				for (int q=0; q < tokensArray2.length; q++){
 					tokensArray2[q] = tokensArray[q+5];//tokensArray[0] is a space
 				}	
-				String dst2v2 = "/";	
-				for (int q = 0; q<tokensArray2.length; q++){	
+				String dst2v2 = "/";
+				//Don't concatenate last element of tokensArray2 since we don't need slash after it.	
+				for (int q = 0; q<tokensArray2.length-1; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
-    			}//for	
+    			}//for-q	
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	
     			
                 String serverName = request.getServerName();
-                out.println("Server Name:  "+serverName);
+                out.println("Server Name:  " + serverName);
                 dst2v2 = "http://" + serverName	+ dst2v2;
                 out.println("dst2v2:  " + dst2v2);
 				request.setAttribute("dst2v2", dst2v2);						
