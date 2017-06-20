@@ -72,7 +72,7 @@
 								+ "Last Name:\n\n"
 								+ "City:\n\n"
 								+ "State:\n\n"
-								+ "School:\n").replace("+", "%20"));
+								+ "School:\n").replace("+", "%20");
 						String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 						%>
 						If you have any questions or comments, contact us at <a href="<%= mailURL %>">e-labs@fnal.gov</a>.
