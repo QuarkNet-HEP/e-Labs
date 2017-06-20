@@ -211,14 +211,14 @@
 							heading.append("Evnt"); heading.append("\t"); heading.append("#Hit1"); heading.append("\t");
 							heading.append("#Hit2"); heading.append("\t"); heading.append("JulDay"); heading.append("\t");
 							heading.append("SSDB"); heading.append("\t"); heading.append("eventDateTime"); heading.append("\t");
-							heading.append(DAQ1+".1FracDay); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
-							heading.append(DAQ1+".2FracDay); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
-							heading.append(DAQ1+".3FracDay); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ1+".4FracDay); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append(DAQ2+".1FracDay); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".2FracDay); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".3FracDay); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".4FracDay); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ1+".1FracDay"); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
+							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
+							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");	
+							heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");		
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
