@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="https://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="e" uri="https://www.i2u2.org/jsp/elabtl" %>
-<%@ taglib prefix="fmt" uri="https://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
