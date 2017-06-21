@@ -200,7 +200,7 @@
 							result.append(Integer.toString(numHits2)); result.append("\t"); 
 						
 						//partial
-						result.append(partial);
+						result.append(partial); result.append("\t"); 
 						
 						//JulianDay
 						if (jdBool){result.append(jd); result.append("\t");}//if
