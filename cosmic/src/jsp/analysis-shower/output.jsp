@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="https://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="e" uri="https://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fmt" uri="https://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -11,145 +11,132 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
-ElabAnalysis analysis = results.getAnalysis();
-request.setAttribute("analysis", analysis);
+	long startTime = System.currentTimeMillis();
+	ElabAnalysis analysis = results.getAnalysis();
+	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
 
-String showerId = request.getParameter("showerId");
-AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
-request.setAttribute("showerResults", showerResults);
-
-String es = (String) request.getParameter("eventStart");
-int eventStart;
-if (es == null || es.equals("")) {
+	String es = (String) request.getParameter("eventStart");
+	int eventStart;
+	if (es == null || es.equals("")) {
 		eventStart = 1;
-}
-else {
+	}
+	else {
 		eventStart = Integer.parseInt(es);
-}
-
-/*
- * Pull the Parameter "sort" and map it to the Attribute "sort"
- * Attribute "sort" \in (0,1,2,3,4) indicates which column to sort on.
- *  0 = Event Date (default)
- *  1 = Hit Coincidence
- *  2 = Detector Coincidence
- *  3 = Delta-t 
- *  4 = Multiplicity Totals (hidden by default)
- */
-String sc = request.getParameter("sort");
-int sortCol = 0;
-if (sc != null) {
-	  sortCol = Integer.parseInt(sc);
-}
-if (sortCol < 0) {
-	  sortCol = 0;
-}
-/* Number of columns is hardcoded here.  Change if that number changes. */
-if (sortCol > 4) {
-	  sortCol = 4;
-}
-request.setAttribute("sort", new Integer(sortCol));
-
-/* Define and set csc equal to sortCol.  Why?  This seems redundant */
-int csc = sortCol;
-
-/* direction of sort */
-int dir;
-if (request.getParameter("dir") == null) {
-		/* If not specified in the request, set sort direction to that 
-			 column's default */
-		dir = EventCandidates.defDir[csc];
-}
-else {
-		/* If the request specifies "a" (ascending), set dir = +1
-			 Else set to -1 (descending) */
-		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
-}
-
-String eventNum = (String) analysis.getParameter("eventNum");
-if ("0".equals(eventNum)) {
+	}
+	
+	String sc = request.getParameter("sort");
+	int sortCol = 0;
+	if (sc != null) {
+	    sortCol = Integer.parseInt(sc);
+	}
+	if (sortCol < 0) {
+	    sortCol = 0;
+	}
+	if (sortCol > 3) {
+	    sortCol = 3;
+	}
+	request.setAttribute("sort", new Integer(sortCol));
+	String eventNum = (String) analysis.getParameter("eventNum");
+	if ("0".equals(eventNum)) {
 		eventNum = null;
-}
-int lineNo = 1;
-
-// Initialize the eventCandidates file on i2u2-data:/disks/...
-File ecFile = new File((String) analysis.getParameter("eventCandidates"));
-String ecPath = ecFile.getAbsolutePath();
-// Output will be to the same directory as eventCandidates
-String outputDir = ecPath.replaceAll("eventCandidates", "");
-File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-// Read in eventCandidates and write out multiplicitySummary
-EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
-
-Collection rows = ec.getRows();
-String message = ec.getUserFeedback();
-/*
- * Decide whether and how to display the Multiplicity Totals column.
- * displayMultiplicity will be the CSS "display" value of entries in the column.
- */
-String mFilter = request.getParameter("mFilter");
-String restore = request.getParameter("restore");
-String displayMultiplicity = "none";
-if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
+	}
+	int lineNo = 1;
+	int csc = sortCol;
+	
+	int dir;
+	if (request.getParameter("dir") == null) {
+		dir = EventCandidates.defDir[csc];
+	}
+	else {
+		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
+	}
+	
+	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
+	String ecPath = ecFile.getAbsolutePath();
+	String outputDir = ecPath.replaceAll("eventCandidates", "");
+	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
+	
+	Collection rows = ec.getRows();
+	String message = ec.getUserFeedback();
+	String mFilter = request.getParameter("mFilter");
+	String restore = request.getParameter("restore");
+	String displayMultiplicity = "none";
+	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
 		rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
 		displayMultiplicity = "block";
-} else {
+	} else {
 		if (mFilter != null && mFilter.equals("0")) {
-				if (restore != null && restore.equals("yes")) {
-						displayMultiplicity = "none";
-						mFilter = "";
-				} else {
-						displayMultiplicity = "block";				
-				}
+			if (restore != null && restore.equals("yes")) {
+				displayMultiplicity = "none";
+				mFilter = "";
+			} else {
+				displayMultiplicity = "block";				
+			}
 		} else {
-				mFilter = (String) analysis.getAttribute("mFilter");
-				if (!mFilter.equals("") && !mFilter.equals("0")) {
-						rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
-						displayMultiplicity = "block";
-				} else {
-						// Number of columns hardcoded here
-						//if (sortCol == 3) {
-						if (sortCol == 4) {
-								displayMultiplicity = "block";		
-								if (mFilter.equals("")) {
-										mFilter = "0";
-								}
-						}
+			mFilter = (String) analysis.getAttribute("mFilter");
+			if (!mFilter.equals("") && !mFilter.equals("0")) {
+				rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+				displayMultiplicity = "block";
+			} else {
+				if (sortCol == 3) {
+					displayMultiplicity = "block";		
+					if (mFilter.equals("")) {
+						mFilter = "0";
+					}
 				}
+			}
 		}
-}
-//added to keep track of the page where the last event is
-int eventNdx = ec.getEventIndex();
-int pageLength = 30;
-if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
+	}
+	//added to keep track of the page where the last event is
+	int eventNdx = ec.getEventIndex();
+	int pageLength = 30;
+	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
 		if (eventNdx > rows.size()) {
 	    	Object[] filteredRows = rows.toArray();
 	    	for (int i = 0; i < filteredRows.length; i++) {
-	    			EventCandidates.Row r = (EventCandidates.Row) filteredRows[i];
-	    			if (r.getEventNum() == Integer.parseInt(eventNum)) {
-	    					eventNdx = i;
-	    					break;
-	    			}
+	    		EventCandidates.Row r = (EventCandidates.Row) filteredRows[i];
+	    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
+	    			eventNdx = i;
+	    			break;
+	    		}
 	    	}		
 		}
-}
-int	pageStart = (eventNdx / pageLength) * pageLength;
-int totalPages = rows.size() / 30;
-request.setAttribute("pageStart", pageStart);	
-request.setAttribute("totalPages", totalPages);	
-request.setAttribute("message", message);
-request.setAttribute("eventDir", ecPath);
-request.setAttribute("rows", rows);
-request.setAttribute("pageLength", pageLength);
-request.setAttribute("eventNum", eventNum);
-request.setAttribute("crtEventRow", ec.getCurrentRow());		
-request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
-request.setAttribute("mFilter", mFilter);
-request.setAttribute("displayMultiplicity", displayMultiplicity);
+	}
+	int	pageStart = (eventNdx / pageLength) * pageLength;
+	int totalPages = rows.size() / 30;
+	long endTime = System.currentTimeMillis();
+	long totalTime = endTime - startTime;
+
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
+	request.setAttribute("memory", memory);
+
+	
+	request.setAttribute("pageStart", pageStart);	
+	request.setAttribute("totalPages", totalPages);	
+	request.setAttribute("message", message);
+	request.setAttribute("eventDir", ecPath);
+	request.setAttribute("rows", rows);
+	request.setAttribute("pageLength", pageLength);
+	request.setAttribute("eventNum", eventNum);
+	request.setAttribute("crtEventRow", ec.getCurrentRow());		
+	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
+	request.setAttribute("mFilter", mFilter);
+	request.setAttribute("displayMultiplicity", displayMultiplicity);
+	request.setAttribute("totalTime", totalTime);
 
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Shower Study Analysis Results</title>
@@ -178,19 +165,19 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 					advanced.style.display = display;
 				}
 			});
-		});
+		});			
 		function addMultiplicityOption(link) {
 			var viewMultiplicity = document.getElementById("viewAdvanced");
 			//console.log(viewMultiplicity);
 			if (viewMultiplicity.checked) {
 				link.href += "&viewAdvanced=yes"
 			}
-		}
+		}		
 		</script>
 	</head>
-
+	
 	<body id="shower-study-output" class="data, analysis-output">
-		<%-- entire page container --%>
+		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
 				<div id="header">
@@ -198,117 +185,63 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-
+			
 			<div id="content">
 <c:choose>
-	<c:when test="${not empty rows}">
-		<h1><%= rows.size()%> shower study candidates <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
-		<c:if test='${message != "" }'>
-			<div>${message }</div>
-		</c:if>
+<c:when test="${not empty rows}">
+<h1><%= rows.size()%> shower study candidates <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
+<c:if test='${message != "" }'>
+	<div>${message }</div>
+</c:if>
 <table id="shower-results">
-	<tr>
-		Read <e:popup href="eventInfoDef.html" target="Event Info Def" width="700" height="400">Event Information Definitions</e:popup> to understand the columns.<br>
-	</tr>
 	<tr>
 		<td valign="top" width="70%">
 			<table id="shower-events">
-				<%-- Column header row --%>
 				<tr>
-					<%-- Column 1: Event Date --%>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >
-							Event Date
-						</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
 					</th>
-
-					<%-- Column 2: Hit Coincidence --%>
 					<th width="10%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >
-		  				Hit Coincidence
-						</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
 					</th>
-
-					<%-- Column 3: Detector Coincidence --%>
-					<%--<th width="40%">--%>
-					<th width="30%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >
-						  Detector Coincidence<br />
-						</a>
-						[Channel Multiplicity]			
+					<th width="40%">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
 					</th>
-
-					<%-- Column 4: Delta t --%>
-					<th width="10%"><%-- 10% removed from 3 --%>
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'a') ? 'd' : 'a' }" >
-							&Delta;t&nbsp;(ns)
-						</a>
-					</th>
-
-					<%-- Column 5: Multiplicity Totals --%>
-					<th width="10%" style="display: ${displayMultiplicity};"
-							name="advanced">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=4&dir=${(param.sort == '4' && param.dir == 'd') ? 'a' : 'd' }" >
-							Multiplicity Totals
-						</a>
+					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
 					</th>
 				</tr>
-
-				<%-- Subheader row --%>
 				<tr>
-					<%-- Columns 1 & 2: nothing --%>
 					<td colspan="2"></td>
-
-					<%-- Column 3: "View Multiplicity Totals" checkbox --%>
 					<td>
-						<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}">
-						</input>
+					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
 							<c:when test='${mFilter != null && mFilter != "" }'>
-								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" checked>
-									View Multiplicity Totals
-								</input>
+								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" checked> View Multiplicity Totals</input>
 							</c:when>
 							<c:otherwise>
-								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" >
-									View Multiplicity Totals
-								</input>
+								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" > View Multiplicity Totals</input>
 							</c:otherwise>
 						</c:choose>					
 					</td>
-
-					<%-- Column 4: nothing --%>
-					<td colspan="1"></td>
-
-					<%-- Optional Column 5: Multiplicity Totals --%>
 					<td style="display: ${displayMultiplicity};" name="advanced">
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
 									<c:when test='${param.mFilter != null && param.mFilter== "" }'>
-										<option value="output.jsp?id=${param.id}
-																							&showerId=${param.showerId}
-																							&mFilter=0" selected>
-											All
-										</option>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
 									</c:when>
 									<c:otherwise>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">
-											All
-										</option>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">All</option>
 									</c:otherwise>
 								</c:choose>
 								<c:forEach items="${multiplicityFilter }" var="filter">
 									<c:choose>
 										<c:when test='${mFilter != null && mFilter == filter}'>
-											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>
-												${filter }
-											</option>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>${filter }</option>
 										</c:when>
 										<c:otherwise>
-											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">
-												${filter }
-											</option>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">${filter }</option>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -316,9 +249,6 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 						</c:if>					
 					</td>
 				</tr>
-				
-				<%-- Table data rows (JSP preamble) --%>
-				<%-- Selecting which 30-event chunk of data to display --%>
 				<c:choose>
 					<c:when test="${pageStart != null && param.start == null}">
 						<c:set var="start" value="${pageStart}"/>
@@ -337,65 +267,36 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 						</c:choose>
 					</c:otherwise>
 				</c:choose>
-
-				<%-- Table data rows (actual HTML) --%>
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
-						
-						<%-- Column 1: Event Date --%>
 						<td>
 							<c:if test="${row.eventNum == eventNum}">
 								<img src="../graphics/Tright.gif"></img>
 							</c:if>
-							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}
-												&eventNum=${row.eventNum}
-												&mFilter=${mFilter}
-												&eventDir=${eventDir}
-												&eventDateTime=${row.dateF}
-												&submit=true">
-								${row.dateF}
-							</a>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
 						</td>
-						
-						<%-- Column 2: Hit Coincidence --%>
-						<td>${row.eventCoincidence}</td>
-						
-						<%-- Column 3: Detector Coincidence --%>
+						<td>
+							${row.eventCoincidence}
+						</td>
 						<td>
 							${row.numDetectors}
-							(<c:forEach items="${row.idsMult}" var="detectorId">
-						  	<e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">
-						  		${detectorId.key}
-								</e:popup>
-								[${detectorId.value }]
-							</c:forEach>)
+								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
 						</td>
-						
-						<%-- Column 4: Delta t --%>
-						<td>${row.deltaTShower}</td>
-
-						<%-- Column 5: Multiplicity Totals --%>
 						<td style="display: ${displayMultiplicity};" name="advanced">
-							${row.multiplicityCount}
+							${row.multiplicityCount }
 						</td>
 					</tr>
 				</c:forEach>
-				
-				<%-- Footer row for page navigation --%>
-				<%-- Always 3 columns --%>
 				<tr>
-					<td colspan="3">
-						Page <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />  of <fmt:formatNumber pattern="#####0" value="${totalPages + 1}" />
-					</td>
+					<td colspan="3">Page <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />  of <fmt:formatNumber pattern="#####0" value="${totalPages + 1}" /></td>
 				</tr>
 				<tr>
 					<td colspan="3">
 						<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
 					</td>
-					<td style="display: ${displayMultiplicity};" name="advanced">
-					</td>
+					<td style="display: ${displayMultiplicity};" name="advanced"></td>
 				</tr>
-			</table><%-- id="shower-events" --%>
+			</table>
 		</td>
 		<td align="center" valign="top">
 			<p>
@@ -415,7 +316,9 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 	</tr>
 </table>
 <p>
-	Analysis run time: ${showerResults.formattedRunTime}<%--; estimated: ${showerResults.formattedEstimatedRunTime}--%>
+	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
+	EventCandidates Time: ${totalTime }<br />
+	${memory }
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
@@ -431,7 +334,7 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 <% } %>
 
 			</div>
-			<%-- end content --%>	
+			<!-- end content -->	
 	
 			<div id="footer">
 			</div>
@@ -441,6 +344,6 @@ request.setAttribute("displayMultiplicity", displayMultiplicity);
 	${message }
 </c:otherwise>
 </c:choose>
-		<%-- end container --%>
+		<!-- end container -->
 	</body>
 </html>
