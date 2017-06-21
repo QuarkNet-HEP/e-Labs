@@ -111,12 +111,14 @@
 					//convert minFracDay to sec
 					double SecSinDayBeg = 3600*24*minFracDay;
 					
+					/*
 					//6*10^11 ns = 10 min
 					if(SecSinDayBeg > 6.0*Math.pow(10,11)*t){
 						out.println(Integer.toString(t*10)+"minutes have gone by."); out.println("<br>");
 						bw.write(Integer.toString(t*10)+"minutes have gone by.");bw.newLine();
 						t = t++;
 					}//if
+					*/
 					
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -197,6 +199,9 @@
 							result.append(Integer.toString(numHits1)); result.append("\t"); 
 							result.append(Integer.toString(numHits2)); result.append("\t"); 
 						
+						//partial
+						result.append(partial);
+						
 						//JulianDay
 						if (jdBool){result.append(jd); result.append("\t");}//if
 							else{result.append("Not 1 JD"); result.append("\t");}//else	
@@ -218,8 +223,9 @@
 						if (i == 3){
 							StringBuffer heading = new StringBuffer();
 							heading.append("Evnt"); heading.append("\t"); heading.append("#Hit1"); heading.append("\t");
-							heading.append("#Hit2"); heading.append("\t"); heading.append("JulDay"); heading.append("\t");
-							heading.append("SSDB"); heading.append("\t"); heading.append("eventDateTime"); heading.append("\t");
+							heading.append("#Hit2"); heading.append("\t"); heading.append("Partial"); heading.append("\t"); 
+							heading.append("JulDay"); heading.append("\t"); heading.append("SSDB"); heading.append("\t"); 
+							heading.append("eventDateTime"); heading.append("\t");
 							heading.append(DAQ1+".1FracDay"); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
 							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
 							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
