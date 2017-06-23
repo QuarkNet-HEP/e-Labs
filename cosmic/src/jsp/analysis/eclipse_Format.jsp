@@ -83,7 +83,7 @@
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
-					String timeMssg = " ";//initialized to space because that's what it is most of the time
+					String timeMssg = "Yes! ";//initialized to space because that's what it is most of the time
 					
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 
 					if (i == 3){
