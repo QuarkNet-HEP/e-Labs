@@ -70,6 +70,7 @@
  		       	
          		int i = 0; int t = 1; 
          		double startTen = 0.0;//fraction that represents start of ten min block	
+         		String lastJD = " ";
          		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -86,7 +87,7 @@
 					
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 
 					if (i == 3){
-						String lastJD = jd;
+						lastJD = jd;
 						startTen = minFracDay;
 					}
 						
