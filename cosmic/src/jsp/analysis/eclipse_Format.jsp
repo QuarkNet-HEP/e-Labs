@@ -184,8 +184,7 @@
 					if (jd.equals(lastJD) && (minFracDay-startTen > 1.0/144.0) ){
 						timeMssg = Integer.toString(t*10) + "minutes elapsed!";
 						startTen = minFracDay;
-						//timeMssg = "10 minutes elapsed";
-						t = t++; 
+						t = ++t; 
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
