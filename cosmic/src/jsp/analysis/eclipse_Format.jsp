@@ -68,7 +68,7 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0; int t = 1; 
+         		int i = 0; 
          		String lastJD = " ";
          		double startTen = 0.0;
          		
@@ -182,9 +182,8 @@
 						startTen = minFracDay;
 					}//if		
 					if (jd.equals(lastJD) && (minFracDay-startTen > 1.0/144.0) ){
-						timeMssg = Integer.toString(t*10) + "minutes elapsed!";
+						timeMssg = "Over 10 minutes elapsed!";
 						startTen = minFracDay;
-						t = ++t; 
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
