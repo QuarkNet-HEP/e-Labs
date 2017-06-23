@@ -68,7 +68,7 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0; int t = 1; int lastJD = 0; 
+         		int i = 0; int t = 1; 
          		double startTen = 0.0;//fraction that represents start of ten min block	
          		
          	//loop through each line of input file src2 (eFtemp-date)
@@ -86,7 +86,7 @@
 					
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 
 					if (i == 3){
-						lastJD = jd;
+						String lastJD = jd;
 						startTen = minFracDay;
 					}
 						
@@ -120,7 +120,7 @@
 					double SecSinDayBeg = 3600*24*minFracDay;
 					
 					//6*10^11 ns = 10 min
-					if (jd == lastJD){
+					if (jd.equals(lastJD)){
 						if(minFracDay - startTen > 6.0*Math.pow(10,11)*t){
 							timeMssg = Integer.toString(t*10) + "minutes elapsed.";
 							t = t++; 
