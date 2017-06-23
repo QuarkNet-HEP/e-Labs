@@ -122,7 +122,7 @@
 					
 					//6*10^11 ns = 10 min
 					if (jd.equals(lastJD)){
-						if(minFracDay - startTen > 6.0*Math.pow(10,11)*t){
+						if(minFracDay - startTen > 6.0*Math.pow(10,11)){
 							timeMssg = Integer.toString(t*10) + "minutes elapsed.";
 							t = t++; 
 							startTen = minFracDay;
