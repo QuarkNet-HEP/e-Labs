@@ -182,7 +182,7 @@
 						startTen = minFracDay;
 					}//if		
 					if (jd.equals(lastJD) && (minFracDay-startTen > 1.0/144.0) ){
-						timeMssg = Integer.toString(t*10) + "minutes elapsed.";
+						timeMssg = Integer.toString(t*10) + "minutes elapsed!";
 						//timeMssg = "10 minutes elapsed";
 						t = t++; 
 					}//if
