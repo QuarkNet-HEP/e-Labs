@@ -181,10 +181,17 @@
 						lastJD = jd;
 						startTen = minFracDay;
 					}//if		
-					if (jd.equals(lastJD) && (minFracDay-startTen > 1.0/144.0) ){
-						timeMssg = "Over 10 minutes elapsed!";
-						startTen = minFracDay;
-					}//if
+					if (jd.equals(lastJD)){
+						if (minFracDay-startTen > 1.0/144.0){
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+						}//if
+					else{
+						if ((1-startTen)+minFracDay > 1.0/144.0){
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+						}//if
+					}//else
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
