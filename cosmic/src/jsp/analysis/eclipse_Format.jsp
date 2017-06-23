@@ -62,14 +62,15 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
-		int t = 1;
-		     
+				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0;
+         		int i = 0; int t = 1; int lastJD = 0; 
+         		double startTen = 0.0;//fraction that represents start of ten min block	
+         		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
 				i++;
@@ -80,8 +81,15 @@
 					int numEvents = Integer.parseInt(words[1]);
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
-					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min		
+					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
+					String timeMssg = " ";//initialized to space because that's what it is most of the time
 					
+					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 
+					if (i == 3){
+						lastJD = jd;
+						startTen = minFracDay;
+					}
+						
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
@@ -111,15 +119,15 @@
 					//convert minFracDay to sec
 					double SecSinDayBeg = 3600*24*minFracDay;
 					
-					/*
 					//6*10^11 ns = 10 min
-					if(SecSinDayBeg > 6.0*Math.pow(10,11)*t){
-						out.println(Integer.toString(t*10)+"minutes have gone by."); out.println("<br>");
-						bw.write(Integer.toString(t*10)+"minutes have gone by.");bw.newLine();
-						t = t++;
+					if (jd == lastJD){
+						if(minFracDay - startTen > 6.0*Math.pow(10,11)*t){
+							timeMssg = Integer.toString(t*10) + "minutes elapsed.";
+							t = t++; 
+							startTen = minFracDay;
+						}//if
 					}//if
-					*/
-					
+						
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
 					for ( int k=0; k < arrayDJF.length; k++){
@@ -217,6 +225,9 @@
 						}//for
 						result.append("\n");
 						
+						//elapsed time message
+						result.append(timeMssg);
+						
 						String outline = result.toString();
 						
 						//Write heading after writing 2 lines that begin with '#'.  
@@ -233,7 +244,8 @@
 							heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");		
+							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
+							heading.append("Elapsed Time Message");	
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
@@ -242,6 +254,7 @@
 						
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>");
+				        lastJD = jd;
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
