@@ -83,14 +83,8 @@
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
-					String timeMssg = "Yes! ";//initialized to space because that's what it is most of the time
+					String timeMssg = " ";//initialized to space because that's what it is most of the time
 					
-					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 
-					if (i == 3){
-						lastJD = jd;
-						startTen = minFracDay;
-					}
-						
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
 					for ( int j=0; j<words.length; j++){
@@ -119,15 +113,6 @@
 					
 					//convert minFracDay to sec
 					double SecSinDayBeg = 3600*24*minFracDay;
-					
-					//6*10^11 ns = 10 min
-					if (jd.equals(lastJD)){
-						if(minFracDay - startTen > 6.0*Math.pow(10,11)){
-							timeMssg = Integer.toString(t*10) + "minutes elapsed.";
-							t = t++; 
-							startTen = minFracDay;
-						}//if
-					}//if
 						
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
@@ -190,7 +175,22 @@
 								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 						}//if		
 						
-						//check if all the Julian Day values are the same for the whole line.								
+					//Time Message	
+					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
+					if (i == 3){
+						lastJD = jd;
+						startTen = minFracDay;
+					}//if					
+					if (jd.equals(lastJD) && (minFracDay - startTen > 6.0*Math.pow(10,11)) ){
+						if(){
+							//timeMssg = Integer.toString(t*10) + "minutes elapsed.";
+							timeMssg = "10 minutes elapsed";
+							t = t++; 
+							startTen = minFracDay;
+						}//if
+					}//if
+					
+					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
 							if(!jd.equals(arrayDJF[p])){
 								jdBool = false;
