@@ -175,6 +175,7 @@
 								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 						}//if		
 						
+						
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
@@ -186,12 +187,14 @@
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
 						}//if
+					}//if
 					else{
 						if ((1-startTen)+minFracDay > 1.0/144.0){
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
 						}//if
 					}//else
+					
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
