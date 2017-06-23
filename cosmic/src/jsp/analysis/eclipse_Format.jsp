@@ -69,8 +69,8 @@
  		       	String line = br.readLine();
  		       	
          		int i = 0; int t = 1; 
-         		double startTen = 0.0;//fraction that represents start of ten min block	
          		String lastJD = " ";
+         		double firstFrac = 0.0;
          		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -179,14 +179,12 @@
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
 						lastJD = jd;
-						startTen = minFracDay;
-					}//if
-										
-					if (jd.equals(lastJD) && (minFracDay - startTen > 6.0*Math.pow(10,11)) ){
+						firstFrac = minFracDay;
+					}//if		
+					if (jd.equals(lastJD) && (minFracDay-firstFrac > t/144.0) ){
 						//timeMssg = Integer.toString(t*10) + "minutes elapsed.";
 						timeMssg = "10 minutes elapsed";
 						t = t++; 
-						startTen = minFracDay;
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
