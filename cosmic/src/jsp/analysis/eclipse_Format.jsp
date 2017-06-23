@@ -180,14 +180,13 @@
 					if (i == 3){
 						lastJD = jd;
 						startTen = minFracDay;
-					}//if					
+					}//if
+										
 					if (jd.equals(lastJD) && (minFracDay - startTen > 6.0*Math.pow(10,11)) ){
-						if(){
-							//timeMssg = Integer.toString(t*10) + "minutes elapsed.";
-							timeMssg = "10 minutes elapsed";
-							t = t++; 
-							startTen = minFracDay;
-						}//if
+						//timeMssg = Integer.toString(t*10) + "minutes elapsed.";
+						timeMssg = "10 minutes elapsed";
+						t = t++; 
+						startTen = minFracDay;
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
