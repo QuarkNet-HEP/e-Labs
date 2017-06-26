@@ -192,7 +192,7 @@
 					}//if
 					else{
 						elapsFracDay = elapsFracDay + (1+minFracDay-lastMinFracDay);
-						if (elapsTime > 1.0/144.0){
+						if (elapsFracDay > 1.0/144.0){
 							timeMssg = "Over 10 minutes elapsed!";				
 							elapsFracDay = 0.0;
 						}//if
