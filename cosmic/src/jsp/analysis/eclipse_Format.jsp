@@ -234,12 +234,9 @@
    							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
 						}//for
 						
-						//elapsed time message
-						result.append(timeMssg); result.append("\t");
-						
-						//last min fractional day
-						result.append(lastMinFracDay);
-						
+						//elapsed time message, last min fractional day, elapsFracDay
+						result.append(timeMssg); result.append("\t"); result.append(lastMinFracDay); result.append("\t"); result.append(elapsFracDay);
+												
 						result.append("\n");
 						
 						String outline = result.toString();
@@ -259,7 +256,8 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("LastMinFracDay");
+							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("LastMinFracDay"); heading.append("\t");
+							heading.append("ElapsedFracDay"); 
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
@@ -267,7 +265,7 @@
 						}//if
 						
 				        bw.write(outline); 
-				        out.println(outline); out.println("<br>");
+				        out.println(outline); out.println("<br>"); 
 				        lastJD = jd;
 				        lastMinFracDay = minFracDay;
 				}//if
