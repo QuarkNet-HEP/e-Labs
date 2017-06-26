@@ -70,7 +70,7 @@
  		       	
          		int i = 0; 
          		String lastJD = " ";
-         		double startTen = 0.0;
+         		double elapsFracDay = 0.0;
          		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -180,19 +180,26 @@
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
 						lastJD = jd;
-						startTen = minFracDay;
+						elapseFracDay = 0.0;
+						lastMinFracDay = minFracDay;
 					}//if		
 					if (jd.equals(lastJD)){
-						if (minFracDay-startTen > 1.0/144.0){
+						elapsFracDay = elapsFracDay + minFracDay-lastMinFracDay;
+						if (elapsFracDay > 1.0/144.0){
 							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
+							elapsFracDay = 0.0;
 						}//if
 					}//if
 					else{
-						if ((1-startTen)+minFracDay > 1.0/144.0){
-							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
+						elapsFracDay = elapseFracDay + (1+minFracDay-lastMinFracDay);
+						if (elapsTime > 1.0/144.0){
+							timeMssg = "Over 10 minutes elapsed!";				
+							elapsFracDay = 0.0;
 						}//if
+					}//else	
+							
+							
+						}//else	
 					}//else
 					
 					
@@ -234,6 +241,9 @@
 						//elapsed time message
 						result.append(timeMssg);
 						
+						//last min fractional day
+						result.append(lastMinFracDay);
+						
 						result.append("\n");
 						
 						String outline = result.toString();
@@ -253,7 +263,7 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	
+							heading.append("Elapsed Time Message");	heading.append("LastMinFracDay");
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
@@ -263,6 +273,7 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>");
 				        lastJD = jd;
+				        lastMinFracDay = minFracDay;
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
