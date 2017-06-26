@@ -180,9 +180,10 @@
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
 						lastJD = jd;
-						elapseFracDay = 0.0;
-						lastMinFracDay = minFracDay;
+						lastMinFracDay = minFracDay; 
+						elapsFracDay = 0.0;
 					}//if		
+					
 					if (jd.equals(lastJD)){
 						elapsFracDay = elapsFracDay + minFracDay-lastMinFracDay;
 						if (elapsFracDay > 1.0/144.0){
@@ -191,7 +192,7 @@
 						}//if
 					}//if
 					else{
-						elapsFracDay = elapseFracDay + (1+minFracDay-lastMinFracDay);
+						elapsFracDay = elapsFracDay + (1+minFracDay-lastMinFracDay);
 						if (elapsTime > 1.0/144.0){
 							timeMssg = "Over 10 minutes elapsed!";				
 							elapsFracDay = 0.0;
