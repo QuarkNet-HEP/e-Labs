@@ -198,10 +198,6 @@
 						}//if
 					}//else	
 							
-							
-						}//else	
-					}//else
-					
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
