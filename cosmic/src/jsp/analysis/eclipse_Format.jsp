@@ -235,7 +235,7 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg);
+						result.append(timeMssg); result.append("\t");
 						
 						//last min fractional day
 						result.append(lastMinFracDay);
