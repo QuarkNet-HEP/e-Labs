@@ -69,8 +69,6 @@
  		       	String line = br.readLine();
  		       	
          		int i = 0; 
-         		String lastJD = " ";
-         		double elapsFracDay = 0.0;
          		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -179,9 +177,9 @@
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
-						lastJD = jd;
-						lastMinFracDay = minFracDay; 
-						elapsFracDay = 0.0;
+						String lastJD = jd;
+						double lastMinFracDay = minFracDay; 
+						double elapsFracDay = 0.0;
 					}//if		
 					
 					if (jd.equals(lastJD)){
