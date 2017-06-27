@@ -236,7 +236,7 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg); result.append("\t"); result.append(elapsFracDay);
+						result.append(timeMssg); result.append("\t"); result.append(accumFracDay);
 												
 						result.append("\n");
 						
@@ -257,7 +257,7 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Elapsed FracDay");
+							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Accum FracDay");
 							
 							String outHeading = heading.toString();
 							
