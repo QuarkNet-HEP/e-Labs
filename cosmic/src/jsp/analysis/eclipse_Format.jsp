@@ -237,8 +237,8 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg); result.append("\t"); result.append(accumFracDay); result.append("\t");
-						result.append(lastMinFracDay); result.append("\t"); result.append(minFracDay);	
+						result.append(timeMssg); result.append("\t"); result.append(Double.toString(accumFracDay)); result.append("\t");
+						result.append(Double.toString(lastMinFracDay)); result.append("\t"); result.append(Double.toString(minFracDay));	
 												
 						result.append("\n");
 						
