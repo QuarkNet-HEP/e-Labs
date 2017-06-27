@@ -68,9 +68,10 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0; String lastJD = " ";
-         		double lastMinFracDay = 0.0; double elapsFracDay = 0.0;						
-         		
+         		int i = 0; 
+         		String lastJD = " "; 
+         		double startTen = 0.0;
+       		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
 				i++;
@@ -178,25 +179,15 @@
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
-						elapsFracDay = 0.0;
+						lastJD = jd;
+						startTen = minFracDay;
 					}//if		
 					
-					if (i > 3){
-						if (jd.equals(lastJD)){
-							elapsFracDay = elapsFracDay + minFracDay-lastMinFracDay;
-							if (elapsFracDay > 1.0/144.0){
-								timeMssg = "Over 10 minutes elapsed & jd == lastJD";
-								elapsFracDay = 0.0;
-							}//if
-						}//if
-						else{
-							elapsFracDay = elapsFracDay + (1+minFracDay-lastMinFracDay);
-							if (elapsFracDay > 1.0/144.0){
-								timeMssg = "Over 10 minutes elapsed!";				
-								elapsFracDay = 0.0;
-							}//if
-						}//else	
-					}//if - i>3		
+					String elapsFracDay = minFracDay-starTen;
+					if (jd.equals(lastJD) && (elapsFracDay > 1.0/144.0) ){
+						timeMssg = "Over 10 minutes elapsed!";
+						startTen = minFracDay;
+					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
@@ -221,7 +212,7 @@
 						
 						//JulianDay
 						if (jdBool){result.append(jd); result.append("\t");}//if
-							else{result.append("Not 1 JD"); result.append("\t");}//else	
+							else{result.append("Not1JD"); result.append("\t");}//else	
 						
 						//SecSinDayBeg (SSDB)
 						result.append(Double.toString(SecSinDayBeg)); result.append("\t"); 						
@@ -233,10 +224,8 @@
    							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
 						}//for
 						
-						//elapsed time message, last min fractional day, elapsFracDay
-						result.append(timeMssg); result.append("\t"); result.append(Double.toString(lastMinFracDay)); result.append("\t"); 
-						result.append(Double.toString(minFracDay)); result.append("\t"); 
-						result.append(Double.toString(elapsFracDay));result.append("\t"); result.append(lastJD); 
+						//elapsed time message
+						result.append(timeMssg); 
 												
 						result.append("\n");
 						
@@ -257,9 +246,8 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("LastMinFracDay"); heading.append("\t");
-							heading.append("MinFracDay"); heading.append("\t");	heading.append("ElapsedFracDay"); heading.append("\t");
-							heading.append("lastJD"); 
+							heading.append("Elapsed Time Message");	heading.append("\t"); 
+							
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
@@ -269,8 +257,8 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
 				        
-				        //store info about jd and minFracDay before reading next line
-						lastJD = jd; lastMinFracDay = minFracDay;	
+				        //store info about jd before reading next line
+						lastJD = jd; 
 					
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
