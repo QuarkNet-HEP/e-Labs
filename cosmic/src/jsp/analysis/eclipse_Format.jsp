@@ -192,13 +192,14 @@
 							accumFracDay = 0.0;
 						}//if	
 					}//if	
-					if (!jd.equals(lastJD)){
+					
+					/*if (!jd.equals(lastJD)){
 						accumFracDay = accumFracDay + (1 + minFracDay - lastMinFracDay);
 						if (accumFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							accumFracDay = 0.0;
 						}//if
-					}//if
+					}//if*/
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
@@ -236,7 +237,8 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg); result.append("\t"); result.append(accumFracDay);
+						result.append(timeMssg); result.append("\t"); result.append(accumFracDay); result.append("\t");
+						result.append(lastMinFracDay); result.append("\t"); result.append(minFracDay);	
 												
 						result.append("\n");
 						
@@ -257,8 +259,8 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Accum FracDay");
-							
+							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Accum FracDay"); heading.append("\t");
+							heading.append("Last minFracDay"); heading.append("\t");heading.append("Min FracDay"); 
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
@@ -268,7 +270,7 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
 				        
-				        //store info about jd before reading next line
+				        //store info before reading next line
 						lastJD = jd; lastMinFracDay = minFracDay;
 					
 				}//if
