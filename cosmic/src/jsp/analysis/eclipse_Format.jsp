@@ -183,7 +183,7 @@
 						startTen = minFracDay;
 					}//if		
 					
-					String elapsFracDay = minFracDay-startTen;
+					double elapsFracDay = minFracDay-startTen;
 					if (jd.equals(lastJD) && (elapsFracDay > 1.0/144.0) ){
 						timeMssg = "Over 10 minutes elapsed!";
 						startTen = minFracDay;
