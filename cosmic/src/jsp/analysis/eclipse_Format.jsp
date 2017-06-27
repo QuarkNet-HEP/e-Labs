@@ -180,13 +180,11 @@
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
-						lastJD = jd;
-						lastMinFracDay = minFracDay;
 						accumFracDay = 0.0;
 					}//if		
 					
-					if (jd.equals(lastJD)){
-						accumFracDay = accumFracDay + minFracDay-lastMinFracDay;
+					if (jd.equals(lastJD) && i>3){
+						accumFracDay = accumFracDay + (minFracDay-lastMinFracDay);
 						if (accumFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							accumFracDay = 0.0;
@@ -208,7 +206,8 @@
 							}//if
 						}//if				
 					}//for-p
-
+					
+					
 					//Write to output file.
 						StringBuffer result = new StringBuffer();						
 						
@@ -272,7 +271,7 @@
 				        
 				        //store info before reading next line
 						lastJD = jd; lastMinFracDay = minFracDay;
-					
+									        
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
@@ -282,6 +281,7 @@
 				
 				line = br.readLine();        		
 			}//while
+			
 				request.setAttribute("dst2", dst2);	
 	        	br.close();
 	        	bw.close();
