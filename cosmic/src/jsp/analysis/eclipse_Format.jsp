@@ -237,7 +237,7 @@
 						
 						//elapsed time message, last min fractional day, elapsFracDay
 						result.append(timeMssg); result.append("\t"); result.append(Double.toString(lastMinFracDay)); result.append("\t"); 
-						result.append(Double.toString(MinFracDay)); result.append("\t"); result.append(Double.toString(elapsFracDay));
+						result.append(Double.toString(minFracDay)); result.append("\t"); result.append(Double.toString(elapsFracDay));
 												
 						result.append("\n");
 						
