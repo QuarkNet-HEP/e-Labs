@@ -178,27 +178,25 @@
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
-						lastJD = jd;
-						lastMinFracDay = minFracDay; 
 						elapsFracDay = 0.0;
 					}//if		
-					
-					if (jd.equals(lastJD)){
-						elapsFracDay = elapsFracDay + minFracDay-lastMinFracDay;
-						if (elapsFracDay > 1.0/144.0){
-							timeMssg = "Over 10 minutes elapsed!";
-							elapsFracDay = 0.0;
+					else if (i > 3) {
+						if (jd.equals(lastJD)){
+							elapsFracDay = elapsFracDay + minFracDay-lastMinFracDay;
+							if (elapsFracDay > 1.0/144.0){
+								timeMssg = "Over 10 minutes elapsed!";
+								elapsFracDay = 0.0;
+							}//if
 						}//if
-					}//if
-					else{
-						elapsFracDay = elapsFracDay + (1+minFracDay-lastMinFracDay);
-						if (elapsFracDay > 1.0/144.0){
-							timeMssg = "Over 10 minutes elapsed!";				
-							elapsFracDay = 0.0;
-						}//if
-					}//else	
+						else{
+							elapsFracDay = elapsFracDay + (1+minFracDay-lastMinFracDay);
+							if (elapsFracDay > 1.0/144.0){
+								timeMssg = "Over 10 minutes elapsed!";				
+								elapsFracDay = 0.0;
+							}//if
+						}//else	
+					}//else-if
 							
-					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
 							if(!jd.equals(arrayDJF[p])){
