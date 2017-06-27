@@ -71,6 +71,7 @@
          		int i = 0; 
          		String lastJD = " "; 
          		double startTen = 0.0;
+         		boolean tryAgain = false;
        		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -183,10 +184,24 @@
 						startTen = minFracDay;
 					}//if		
 					
-					double elapsFracDay = minFracDay-startTen;
-					if (jd.equals(lastJD) && (elapsFracDay > 1.0/144.0) ){
-						timeMssg = "Over 10 minutes elapsed!";
-						startTen = minFracDay;
+					if (jd.equals(lastJD) && !tryAgain){
+						double elapsFracDay = minFracDay-startTen;
+						if (elapsFracDay > 1.0/144.0) {
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+						}//if	
+					}//if	
+					
+					if (!jd.equals(lastJD) || tryAgain){
+						elapsFracDay = 1-startTen + minFracDay;
+						if (elapsFracDay > 1.0/144.0) {
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+							tryAgain = false;
+						}//if
+						else {
+							tryAgain = true;
+						}//else
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
@@ -225,7 +240,7 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg); 
+						result.append(timeMssg); result.append("\t"); result.append(elapsFracDay);
 												
 						result.append("\n");
 						
@@ -246,7 +261,7 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); 
+							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Elapsed FracDay");
 							
 							String outHeading = heading.toString();
 							
