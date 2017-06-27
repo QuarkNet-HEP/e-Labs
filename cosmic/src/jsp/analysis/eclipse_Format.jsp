@@ -72,6 +72,7 @@
          		String lastJD = " "; 
          		double startTen = 0.0;
          		boolean tryAgain = false;
+         		double elapsFracDay = 0.0;
        		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -185,7 +186,7 @@
 					}//if		
 					
 					if (jd.equals(lastJD) && !tryAgain){
-						double elapsFracDay = minFracDay-startTen;
+						elapsFracDay = minFracDay-startTen;
 						if (elapsFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
