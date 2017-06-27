@@ -70,9 +70,8 @@
  		       	
          		int i = 0; 
          		String lastJD = " "; 
-         		double startTen = 0.0;
-         		boolean tryAgain = false;
-         		double elapsFracDay = 0.0;
+         		double accumFracDay = 0.0;
+         		double lastMinFracDay = 0.0;
        		
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -182,27 +181,23 @@
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
 					if (i == 3){
 						lastJD = jd;
-						startTen = minFracDay;
+						lastMinFracDay = minFracDay;
+						accumFracDay = 0.0;
 					}//if		
 					
-					if (jd.equals(lastJD) && !tryAgain){
-						elapsFracDay = minFracDay-startTen;
+					if (jd.equals(lastJD)){
+						accumFracDay = accumFracDay + minFracDay-lastMinFracDay;
 						if (elapsFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
+							accumFracDay = 0.0;
 						}//if	
 					}//if	
-					
-					if (!jd.equals(lastJD) || tryAgain){
-						elapsFracDay = 1-startTen + minFracDay;
+					if (!jd.equals(lastJD)){
+						accumFracDay = accumFracDay + (1 + minFracDay - lastMinFracDay);
 						if (elapsFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
-							tryAgain = false;
+							accumFracDay = 0.0;
 						}//if
-						else {
-							tryAgain = true;
-						}//else
 					}//if
 					
 					//check if all the Julian Day values are the same for the whole line.								
@@ -274,7 +269,7 @@
 				        out.println(outline); out.println("<br>"); 
 				        
 				        //store info about jd before reading next line
-						lastJD = jd; 
+						lastJD = jd; lastMinFracDay = minFracDay;
 					
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
