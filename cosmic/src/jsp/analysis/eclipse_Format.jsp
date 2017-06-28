@@ -71,8 +71,7 @@
          		int i = 0;  double startTen = 0.0;
 
          	//loop through each line of input file src2 (eFtemp-date)
-         	//while (line != null){
-         	while (i<6){ 
+         	while (line != null){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
