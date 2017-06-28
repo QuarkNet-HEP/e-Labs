@@ -196,7 +196,7 @@
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
 						}//if
-					//else
+					}//else
 					
 					
 					//Write to output file.
@@ -258,7 +258,6 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
 				        			        
-				}//else
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
