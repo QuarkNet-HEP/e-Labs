@@ -123,9 +123,18 @@
 					}//for
 					
 					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
-					//Note:  This code was written assuming 2 unique DAQs would exist.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
+					//check that number of DAQs chosen is not greater than 2.  
+					try{
+    					if (arrayDAQ.length > 2) {
+         					throw new NumDAQException;
+       					}//if
+    				}//try
+ 					catch (NumDAQException e2) {
+  						System.out.println("Too many DAQs were chosen. "+e2);
+  						System.exit(1);
+  					}//catch
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];					
@@ -150,7 +159,7 @@
 					String [] outArrayNs = new String[8];
 					for (int m=0; m<8; m++){outArrayNs[m] = "-1";}
 					
-					boolean jdBool = true;//assume true all Julian Day values are same for whole line
+					//convert fraction of julian day to ns
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
@@ -171,31 +180,35 @@
 								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
 								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-						}//if			
+						}//if	
+					}//for		
 					
-					//check if all the Julian Day values are the same for the whole line.								
+					//check if all the Julian Day values are the same for the whole line
+					boolean jdBool = true;//assume true all Julian Day values are same for whole line
+					for (int p=0; p<arrayDJF.length; p++){						
 						if (p%3 == 1){
 							if(!jd.equals(arrayDJF[p])){
 								jdBool = false;
 							}//if
 						}//if				
-					}//for-p
+					}//for
 					
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
-					if (i == 3){startTen = minFracDay;}		
-									
+					if (i == 3){startTen = minFracDay;}											
 					if (minFracDay-startTen > 0) {
 						if (minFracDay-startTen > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
 						}//if
+						else {timeMssg = " ";}
 					}//if	
 					else {
 						if (1 + minFracDay-startTen > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							startTen = minFracDay;
 						}//if
+						else {timeMssg = " ";}
 					}//else
 					
 					
@@ -252,7 +265,7 @@
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
-							out.println(outHeading); out.println("<br>");
+							
 						}//if
 						
 				        bw.write(outline); 
@@ -262,7 +275,7 @@
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
-					out.println(line); out.println("<br>");
+					
 				}//else
 				
 				line = br.readLine();        		
