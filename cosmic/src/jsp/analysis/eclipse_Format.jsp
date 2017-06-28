@@ -80,6 +80,7 @@
 				String[] words = line.split("\\s+");
 				
 				out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay);
+				out.println("accumFracDay: "+accumFracDay);out.println("<br>");
 
 				
 				if(words[0].charAt(0) != '#'){
@@ -275,7 +276,9 @@
 				        
 				        //store info before reading next line
 						lastJD = jd; lastMinFracDay = minFracDay;
-						out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay);
+						out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay); 
+						out.println("accumFracDay: "+accumFracDay);out.println("<br>");
+
 									        
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
