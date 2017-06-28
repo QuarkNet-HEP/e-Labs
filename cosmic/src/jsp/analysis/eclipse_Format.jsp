@@ -258,13 +258,7 @@
 						
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
-				        
-				        //store info before reading next line
-						lastJD = jd; lastMinFracDay = minFracDay;
-						out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay); 
-						out.println("accumFracDay: "+accumFracDay);out.println("<br>");
-
-									        
+				        			        
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
