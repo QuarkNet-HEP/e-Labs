@@ -74,9 +74,13 @@
          		double lastMinFracDay = 0.0;
        		
          	//loop through each line of input file src2 (eFtemp-date)
-         	while (line != null){ 
+         	//while (line != null){
+         	while (i<6){ 
 				i++;
 				String[] words = line.split("\\s+");
+				
+				out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay);
+
 				
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
@@ -271,6 +275,7 @@
 				        
 				        //store info before reading next line
 						lastJD = jd; lastMinFracDay = minFracDay;
+						out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay);
 									        
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
