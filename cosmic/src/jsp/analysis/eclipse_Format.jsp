@@ -68,20 +68,13 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0; 
-         		String lastJD = " "; 
-         		double accumFracDay = 0.0;
-         		double lastMinFracDay = 0.0;
-       		
+         		int i = 0;  double startTen = 0.0;
+
          	//loop through each line of input file src2 (eFtemp-date)
          	//while (line != null){
          	while (i<6){ 
 				i++;
 				String[] words = line.split("\\s+");
-				
-				out.println("i:  "+i); out.println("lastJD: "+lastJD); out.println("lastMinFracDay:  "+lastMinFracDay);
-				out.println("accumFracDay: "+accumFracDay);out.println("<br>");
-
 				
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
@@ -179,30 +172,7 @@
 								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
 								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-						}//if		
-						
-						
-					//Time Message	
-					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
-					if (i == 3){
-						accumFracDay = 0.0;
-					}//if		
-					
-					if (jd.equals(lastJD) && i>3){
-						accumFracDay += (minFracDay-lastMinFracDay);
-						if (accumFracDay > 1.0/144.0) {
-							timeMssg = "Over 10 minutes elapsed!";
-							accumFracDay = 0.0;
-						}//if	
-					}//if	
-					
-					/*if (!jd.equals(lastJD)){
-						accumFracDay = accumFracDay + (1 + minFracDay - lastMinFracDay);
-						if (accumFracDay > 1.0/144.0) {
-							timeMssg = "Over 10 minutes elapsed!";
-							accumFracDay = 0.0;
-						}//if
-					}//if*/
+						}//if			
 					
 					//check if all the Julian Day values are the same for the whole line.								
 						if (p%3 == 1){
@@ -211,6 +181,23 @@
 							}//if
 						}//if				
 					}//for-p
+					
+					//Time Message	
+					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
+					if (i == 3){startTen = minFracDay;}		
+									
+					if (minFracDay-startTen > 0) {
+						if (minFracDay-startTen > 1.0/144.0) {
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+						}//if
+					}//if	
+					else {
+						if (1 + minFracDay-startTen > 1.0/144.0) {
+							timeMssg = "Over 10 minutes elapsed!";
+							startTen = minFracDay;
+						}//if
+					//else
 					
 					
 					//Write to output file.
