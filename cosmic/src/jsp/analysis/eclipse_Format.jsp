@@ -184,7 +184,7 @@
 					}//if		
 					
 					if (jd.equals(lastJD) && i>3){
-						accumFracDay = accumFracDay + (minFracDay-lastMinFracDay);
+						accumFracDay += (minFracDay-lastMinFracDay);
 						if (accumFracDay > 1.0/144.0) {
 							timeMssg = "Over 10 minutes elapsed!";
 							accumFracDay = 0.0;
