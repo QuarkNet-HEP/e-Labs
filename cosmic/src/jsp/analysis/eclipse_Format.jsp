@@ -228,9 +228,8 @@
 						}//for
 						
 						//elapsed time message
-						result.append(timeMssg); result.append("\t"); result.append(Double.toString(accumFracDay)); result.append("\t");
-						result.append(Double.toString(lastMinFracDay)); result.append("\t"); result.append(Double.toString(minFracDay));	
-												
+						result.append(timeMssg); result.append("\t"); result.append(Double.toString(startTen)); 
+						
 						result.append("\n");
 						
 						String outline = result.toString();
@@ -250,8 +249,7 @@
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Accum FracDay"); heading.append("\t");
-							heading.append("Last minFracDay"); heading.append("\t");heading.append("Min FracDay"); 
+							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Start10"); 
 							String outHeading = heading.toString();
 							
 							bw.write(outHeading); bw.newLine();
