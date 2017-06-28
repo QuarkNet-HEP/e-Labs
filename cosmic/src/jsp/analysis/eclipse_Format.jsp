@@ -259,6 +259,7 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
 				        			        
+				}//else
 				}//if
 				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
 				else {
