@@ -1,0 +1,568 @@
+<HTML>
+<HEAD>
+<TITLE>Particle Parents Game</TITLE>
+<link href="css/game-reorg2.css" rel="stylesheet" type="text/css" />
+
+
+<script language="JavaScript">
+<!-- hide this script from non-javascript-enabled browsers
+
+//To convert this game to use for other sets of events, you have to set 
+noOfGames=2; // number of different games available.
+noOfEventTypes=4; // number of event types player needs to identify.
+var noEventsPerGame=10;
+var badNoCorrect=3;
+
+eventPat=new Array(noOfGames);  // array of 2 patterns of Zs, J/Psi, Upsilons and none in a particular game i.
+for (i=0;i<noOfGames;i++)
+  {eventPat[i]=new Array(noOfEventTypes);}
+  
+  //  Game 1    4 Z, 3 J/Psi, 2 Upsilons, 1 None  (new)
+eventPat[0][0]=4;
+eventPat[0][1]=3;
+eventPat[0][2]=2;
+eventPat[0][3]=1;
+  //  Game 2    3 Z, 4 J/Psi, 2 Upsilons, 1 None  (new)
+eventPat[1][0]=3;
+eventPat[1][1]=4;
+eventPat[1][2]=2;
+eventPat[1][3]=1;
+
+  
+
+nAvailable = new Array(noOfEventTypes);  // then number of available events of each event type 0-3
+nAvailable[0]=4;
+nAvailable[1]=4;
+nAvailable[2]=4;
+nAvailable[3]=2;
+
+usedEvents=new Array(noOfEventTypes);  // 2 dimensional array  i-represents the event type 0 -3 if 4 event types, j represents available slots j to nAvailable[i]
+for (i=0;i<noOfEventTypes;i++)
+  {usedEvents[i]=new Array(nAvailable[i]);}
+  
+for (i=0;i<noOfEventTypes;i++)
+  {
+  for (j=0;j<nAvailable[i];j++)
+    {usedEvents[i][j]=false;
+    }
+  }
+     
+statusMessages = new Array();
+correctMessages = new Array();
+wrongMessages = new Array();
+
+
+statusMessages[0]="<p><p>Identify the most likely parent particle for the two muons.</p><p>Click a blue button under the event. Then look at the red line to see the bin where their mass falls in the histogram.</p>";
+statusMessages[1]="<p>Game done.</p><p>To play again, click <b>New Game</b></p>";
+statusMessages[2]="<p>Getting a new event ...</p>";
+statusMessages[3]="<p>Game done. You're score is low.</p><p>Try clicking <b>Help</b> before starting a new game.</p>";
+statusMessages[4]="<p>Hurry, another event is coming!</p>";
+statusMessages[5]="<p>Transmission slow.</p><p> Another event is coming...</p>";
+correctMessages[0]="<img src='graphics/star.png'><p>It's most likely a Z!</p>";
+correctMessages[1]="<img src='graphics/star.png'><p>It's most likely a J/Psi!</p>";
+correctMessages[2]="<img src='graphics/star.png'><p>It's most likely an Upsilon!</p>";
+correctMessages[3]="<img src='graphics/star.png'><p>It's most likely none of them!</p>";
+wrongMessages[0]="<p>No,it's probably a Z!</p><p>Notice the mass is high.</p>";
+wrongMessages[1]="<p>No,it's probably a J/Psi!</p><p>The mass is very small.</p>";
+wrongMessages[2]="<p>No,it's probably a Upsilon!</p><p>The mass is near 9.46 GeV/c<sup>2</sup>. .</p>";
+wrongMessages[3]="<p>No,it's probably none of them!</p><p>Its mass is not consistent with any of them.</p>";
+
+correctScore = new Array(); //no of points added on for each event type when a correct answer is given.
+correctScore[0]=150;
+correctScore[1]=100;
+correctScore[2]=75;
+correctScore[3]=50;
+
+eventImageNames = new Array(); // convention for name of an event for each event type.
+eventImageNames[0]="graphics/z400new-enhanced/z";
+eventImageNames[1]="graphics/jpsi400new-enhanced/jpsi";
+eventImageNames[2]="graphics/upsilon400new-enhanced/upsilon";
+eventImageNames[3]="graphics/none400new-enhanced/none";
+
+//location of the masses on the graph calculated using Excel:
+massPosition=new Array(noOfEventTypes);  // 2 dimensional array  i-represents the event type 0 -3 if 4 event types, j represents the associated position for the each event of the different types
+for (i=0;i<noOfEventTypes;i++)
+  {massPosition[i]=new Array(nAvailable[i]);}
+
+//location of the masses on the graph calculated using Excel:
+masses=new Array(noOfEventTypes);  // 2 dimensional array  i-represents the event type 0 -3 if 4 event types, j represents the associated masses for the each event of the different types
+for (i=0;i<noOfEventTypes;i++)
+  {masses[i]=new Array(nAvailable[i]);}
+
+//Zs
+masses[0][0]=92.4;
+masses[0][1]=91.2;
+masses[0][2]=91.1;
+masses[0][3]=87.2;
+//J/Psis
+masses[1][0]=3.1;
+masses[1][1]=3.;
+masses[1][2]=2.9;
+masses[1][3]=2.7;
+//Upsilon
+masses[2][0]=10.1;
+masses[2][1]=10.;
+masses[2][2]=9.9;
+masses[2][3]=9.8;
+
+//none event
+masses[3][0]=64.5;
+masses[3][1]=56.9;
+var tickWidth =46.; //This is the width between tick marks in pixels (e.g., between 10-20 or 20-30, but not the y-axis and 10 because this is smaller)
+var plotWidth =10*46.; // This is the width in pixels between 0 and 100 value in plot, assuming that all widths between tick marks were the same.  We will need to have a correction for this.
+var xWidth = 100.; // this is the width in the scaled units (in this case 0 to 100)
+var conversionFactor = plotWidth/xWidth;
+//alert(conversionFactor);
+//location of the masses on the graph calculated using Excel:
+massPosition=new Array(noOfEventTypes);  // 2 dimensional array  i-represents the event type 0 -3 if 4 event types, j represents the associated position for the each event of the different types
+for (i=0;i<noOfEventTypes;i++)
+  {massPosition[i]=new Array(nAvailable[i]);
+  for (j=0; j<nAvailable[i];j++)
+	  {
+	  massPosition[i][j]=(masses[i][j] * conversionFactor)
+	  }
+  }
+//alert(massPosition);
+var newX = 0.//defining a global value so we can track
+initMassX = 41 - 8;  // 41 is the left position in the css of barMass245 div. Note: because the plot has the y axis not at 0 for the mass, 
+//we have make a correction.  So instead of 41, we will need to put it at 41-8 (8 is the difference in pixel size
+// between the distance between the 10 and 20 mark (46) and the 10 and y-axis (38).
+var debug=false;
+var gameNo=0;
+var noCorrect=0;
+var noEvents=0;
+pat = new Array(noEventsPerGame); // contains the noEventsPerGame (e.g. 12 for CMS Game) values for event types for one game
+// (e.g., Dielectron, Ditau, Dijet, Dielectron, Ditau, Dielectron, Ditau, Dijet,Dimuon, Dijet)
+for (i=0;i<=(noEventsPerGame-1);i++)
+   {pat[i]=-1;}  // initialize
+
+mass= new Array(noEventsPerGame); // stores the mass associated with each event in a game.  Has the same index as pat and evntImages
+
+var timerID=null; // used with clearTimout function and set with setTimeout.
+var nTrials=-1;  // number of trials  played within a game  (it goes up to noEventsPerGame)
+var score=500; // start the score at 500 because you lose points on errors
+var wrong=25; // number of points deducted if wrong
+var skip=50; // number of points deducted if player times out before answering
+var waitForAns=false; // indicates waiting for an answer (Dielectron, J, etc.) 
+// buttons are active if true
+var doneGame=false; // logical to indicate game is done so it is o.k. to go onto next game.
+var eventTypeNo;  // current event type being processed.
+// Cache the status images
+ 
+
+
+  // This array will store the names of the evntImages for the 12 events 
+ //per game.
+ evntImages= new Array();
+  for (i=0; i<=(noEventsPerGame-1); i++) 
+  {
+   evntImages[i]= new Image();
+  }
+
+//var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=400,height=350");
+//wHelp.location = "help_stub.html";
+//wHelp.close();
+ 
+
+
+// function that displays status bar message
+
+function dm(msgStr) {
+  document.returnValue = false;
+        	var object = document.getElementById("messages");
+            object.innerHTML = msgStr;
+}
+// functions that swap images
+
+
+// 
+function putType(ind) // ind changed to an index.  It sets pat(random number) to the eventTypeNo and returns the random no.
+   {
+   var n;
+   n=Math.round(Math.random()*(noEventsPerGame-1));
+   while (!(pat[n]==-1))
+   {
+   n=Math.round(Math.random()*(noEventsPerGame-1));}
+   pat[n]=ind;
+   return n;
+   }   
+
+// waits 3 seconds so message shows before going to next event
+function myWait()
+   {
+   timerID=setTimeout("newEvent()",5*1000);  
+    }
+   
+
+function getEvent(eventTypeN,np) //np is the index into pat,evntImages and mass arrays
+ {
+   var imageName;
+   var n;
+   var tries=0;
+   n=Math.round(Math.random()*(nAvailable[eventTypeN]-1));
+   while (usedEvents[eventTypeN][n])
+   {
+   n=Math.round(Math.random()*(nAvailable[eventTypeN]-1));
+   tries=tries+1;
+   if (tries>100) //if you try 100 times to get an event, then
+       //make all the events of that type available again, we have probably used them all.
+        {
+           for (j=0;j<nAvailable[eventTypeN];j++)
+           { usedEvents[eventTypeN][j]=false;}
+         }
+  }
+   usedEvents[eventTypeN][n]=true;
+   imageName=eventImageNames[eventTypeN]+(n+1)+".png";
+  // alert(imageName);
+   evntImages[np].src=imageName;
+   mass[np]=massPosition[eventTypeN][n];
+}   
+
+
+
+
+
+function makePat() {
+  var eventGif=" ";
+  var np;// the index into the pat array for that event
+  for (i=0;i<=(noEventsPerGame-1); i++)  //zero out the array
+      {pat[i]=-1;}
+    mess= " EventPat "+eventPat[gameNo][0]+" "+eventPat[gameNo][1]+" "+eventPat[gameNo][2]+" "+
+          eventPat[gameNo][3]+"\n";
+    //  alert(mess);
+    for (evtTypeInd=0;evtTypeInd<noOfEventTypes-1;evtTypeInd++)  // for all but the last event type, loop through and fill pat and evntImages array.
+	   {for (j=1;j<=(eventPat[gameNo][evtTypeInd]);j++)
+		 {
+		  np=putType(evtTypeInd); //  np is the index into evntImages for this event and for pat
+		  getEvent(evtTypeInd,np);
+		 }
+	   }
+for (i=0;i<=(noEventsPerGame-1);i++)   // Fill any unfilled cells in pat and evntImages with the last event type.
+     {
+      if ( pat[i]==-1)
+       {pat[i]=noOfEventTypes-1;
+       getEvent(noOfEventTypes-1,i);
+       }
+      }
+	  if (debug)
+	  {
+		for (k=0;k<=(noEventsPerGame-1);k++)
+		{
+			mess = k+" "+evntImages[k].src+" "+ pat[k];
+			
+					alert(mess);
+		}
+
+	  }
+			
+   }
+
+
+function wrongAns()
+   {
+    score=score-wrong;
+    setScore();
+    var object = document.getElementById("messages");
+    object.innerHTML = wrongMessages[eventTypeNo];
+   }
+
+
+function checkEventAnswer(eventTypeIndex)
+{
+   if (waitForAns)
+       {
+         clearTimeout(timerID);
+         waitForAns=false;
+        showMassPlot();
+        if (eventTypeNo==eventTypeIndex)
+         {
+         noCorrect++;
+         score=score+correctScore[eventTypeNo];
+         setScore();
+          dm(correctMessages[eventTypeNo]);
+    }
+    else
+    {
+    wrongAns();
+    }
+   myWait();
+   }
+
+
+}
+
+function tooSlow()  //tells them they took too much time.
+   {
+         waitForAns=false; // turn off accepting answers
+         //score=score-skip;
+         setScore();
+        dm("You're too slow.<p>Wait for another event.");
+             timerID=setTimeout("newEvent()",5*1000);
+   }
+
+function hurry()  //get here on a timeout
+                  //warns them that another event will be coming soon and sets timeout again.
+   {
+         if (waitForAns)
+         { 
+             dm(statusMessages[4]);
+             timerID=setTimeout("tooSlow()",5*1000);
+         }
+}
+
+
+ function newEvent() {
+     nTrials=nTrials+1;
+     if (nTrials>(noEventsPerGame-1)) 
+      {
+         //alert("difference=" + (noCorrect > badNoCorrect));
+         if (noCorrect > badNoCorrect)
+            {
+             dm(statusMessages[1]);
+             }
+         else
+            {
+             dm(statusMessages[3]);
+             } 
+       }  
+      else  // more events
+       {
+          setDisplay("barMass245","none");
+         // setDisplay("barMass245","block");  //for debugging
+		  noEvents++;
+          eventTypeNo=pat[nTrials];
+		  dm(statusMessages[0]);
+		 // put the time,date and event number into eventInfo cell in form
+		 // document.cmsGame.eventinfo.value="Event "+(nTrials+1) + 
+						  "  "+dateStuff();
+		  document.cmsGame.cdfEvent.src=evntImages[nTrials].src;
+         waitForAns=true;
+         if (nTrials==0)
+          {timerID=setTimeout("hurry()",40*1000); // allow a little more time on 
+                                           // 1st event because it takes longer to load.
+                                             }
+          else
+          {timerID=setTimeout("hurry()",20*1000); //was 10
+          }  
+        }   // more events test    
+ 
+  }
+
+
+
+function initMultipleGameCycle() {
+ 
+ for (i=0;i<noOfEventTypes;i++)
+  {
+  for (j=0;j<nAvailable[i];j++)
+    {usedEvents[i][j]=false;
+    }
+  }
+  
+ 
+} 
+function initGame() {
+      makePat();
+      //alert(pat);
+	  t=5*1000;
+      dm("Starting New Game.");
+      document.cmsGame.cdfEvent.src="graphics/eventstub.gif";
+      dm(statusMessages[2]); //loading Event
+      noCorrect=0;
+      noEvents=0;
+      nTrials=-1;
+      score=500;
+      setScore();  //sets the value in score and also the form text         
+      newEvent();
+ }
+
+
+  function newGameOld()   {
+   clearTimeout(timerID);
+   gameNo=gameNo+1;
+   if (gameNo==noOfGames) 
+      {
+       gameNo=0;
+       initMultipleGameCycle();
+       }
+     initGame();
+   
+   }
+   
+  function newGame()   {
+   clearTimeout(timerID);
+   initMultipleGameCycle();
+   initGame();
+   
+   }
+   // we don't really need start anymore because new game will take care of both.
+   function start()
+   {
+   initMultipleGameCycle();
+   initGame();
+   // The following commented out code does not work because offsetLeft returns 0.
+   // var plotName = "barMass";
+	//var plotObject = document.getElementById(plotName);
+	//initMassX = plotObject.offsetLeft;
+	//alert(initMassX);
+
+   }
+
+function dateStuff()
+{
+var curDate= new Date();
+return curDate.toLocaleString();
+}
+
+function signal(mess) {
+   if (mess=="Error in Transfer") 
+	     {
+	     clearTimeout(timerID);
+         waitForAns=false;
+// Get new event file of same event type
+        evntImages[nTrials].src=getEvent(eventTypeNo);
+             curDate= new Date();
+              document.cdfEvent.src=evntImages[nTrials].src;
+              document.cmsGame.eventinfo.value="Event "+(nTrials+1) + 
+                              "  "+dateStuff();
+  
+		 //alert("Error in data transmission of "+evntImages[nTrials].src+"  Wait for another event");
+         waitForAns=true;
+         timerID=setTimeout("hurry()",20*1000);
+		 
+	     }
+		   
+ }
+
+function help()
+{ 
+  var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=425,height=600");
+  wHelp.location = "help-new.html";
+  wHelp.focus()
+ }
+
+function closehelp()
+{ 
+  if (navigator.appVersion >="4")
+  { var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=425,height=550");
+   if (wHelp.closed==false) 
+    wHelp.close();}
+ }
+ 
+ 
+function setScore() {
+		var objectScore = document.getElementById("scoreBox");
+        var scoreMessage = "<br>Score: " + score + " Points";
+       		//alert(noEvents);
+       		if (noEvents == 0 )
+       		{objectScore.innerHTML = "<br>Score: 500 Points";}
+       		else
+       		{
+       		scoreMessage = scoreMessage + "<br>You identified correctly the most likely <b>Parent</b> particle for<br>"+ noCorrect + " out of "+ (nTrials+1) + " events."
+       		objectScore.innerHTML = scoreMessage;}
+		}
+
+function setDisplay(objectID,state) {
+	var object = document.getElementById(objectID);	
+	object.style.display = state;
+}
+
+function moveObjectTo(objectID,x)
+{
+var object = document.getElementById(objectID);
+object.style.left = x + 'px';
+}
+
+function showMassPlot() {
+setDisplay('plot','block');
+newX = initMassX + mass[nTrials];
+//alert(mass[nTrials]+ " " + newX + " " + initMassX)
+moveObjectTo('barMass245',newX);
+setDisplay('barMass245','block');
+
+}
+
+//This does not seem to work.
+function findPos(obj) 
+{
+alert(obj);
+  var curleft=curtop=0;
+  alert(obj.offsetParent);
+  if (obj.offsetParent)
+//Every time we find a new object, we add its offsetLeft and offsetTop to curleft and curtop.
+  {
+  do {
+  curleft += obj.offsetLeft;
+  curtop += obj.offsetTop;
+  } while (obj = obj.offsetParent);
+  return [curleft,curtop]
+  }
+}
+  
+//<BODY bgcolor="#1b127d" text="#FFFFFF" ALINK="#33FFFF" onload="start()" onUnload="closehelp()">
+
+// stop hiding -->
+</script>
+
+</HEAD>
+<!-- 
+<BODY bgcolor="#000000" text="#FFFFFF" onload="start()">
+ -->
+<BODY bgcolor="#000000" text="#FFFFFF">
+<P>
+<FORM name="cmsGame">
+<CENTER><TABLE bgcolor="#000000" border="0" cellspacing="0" cellpadding="0">
+
+<TR bgcolor="#000000" align=center>
+<TD colspan=3><FONT color="#FFFFFF" size="+3">
+Finding the Mass of Particle Parents</FONT><br></TD></TR>
+<TR><TD width="250" height="650" align="center" valign="top">
+<div id="intro"><div id="introduction">When a particle decays, its mass is converted into energy inherited by its daughter particles. Using the CMS detector, we can measure this energy and calculate the parent mass shown as <span style="color:#fc3624;weight:bold;">m</span> in the dimuon event displays to the right.</div>
+<div id="messages">For each event, identify the most likely parent particle using the histogram to the right as a key. Click <b>New Game</b> to play.</div>
+<div id="scoreBox">Score</div>
+<div align="center">
+
+<!-- 
+<a href="javascript:start()"><input   onclick="javascript:start();" type="button" class="dynamic_button" value="Start" /></a>
+ -->
+<a href="javascript:newGameX()"><input onclick="javascript:newGame();" type="button" class="dynamic_button" value="New Game" /></a>
+<a href="javascript:help()"><input  onclick="javascript:help();"  type="button" class="dynamic_button_help" value="Help?" /></a>
+
+
+
+</div>
+
+</TD>
+<td width="10">&nbsp</td>
+<TD  valign="top">
+<TABLE border="0" cellspacing="1" cellpadding="0">
+<TR>
+<TD  align=center valign="top"><div id="cdfEvent"><IMG SRC="graphics/z400new-enhanced/z1.png" 
+name="cdfEvent" width="400" height="294"  onError="signal('Error in Transfer')"></div></TD></TR>
+<!-- 
+<TD  align=center valign="top"><div id="cdfEvent"><IMG SRC="graphics/eventstub-daddy400.gif" 
+name="cdfEvent" width="400" height="294"  onError="signal('Error in Transfer')"></div></TD></TR>
+ -->
+<!-- 
+<TR>
+<TD align=center valign=center height="30">
+<INPUT type="text" name="eventinfo" size=55 value="Event Info"></TD></TR>
+ -->
+<tr><td align="center"><a href="javascript:checkEventAnswer(1)"><input  onclick="javascript:checkEventAnswer(1);" type="button" class="dynamic_button" value="J/Psi" /></a>
+<a href="javascript:checkEventAnswer(0)"><input onclick="javascript:checkEventAnswer(0);" type="button" class="dynamic_button" value="Z" /></a>
+<a href="javascript:checkEventAnswer(2)"><input  onclick="javascript:checkEventAnswer(2);" type="button" class="dynamic_button" value="Upsilon" /></a>
+<a href="javascript:checkEventAnswer(3)"><input  onclick="javascript:checkEventAnswer(3);" type="button" class="dynamic_button" value="None" /></a>
+</td></tr>
+<tr><td><div id="plot"><img src="graphics/542pxDimuonMassSpec3.png"></div><br><div id="barMass245"><img src="graphics/barlinear245.png" width="2" height="245"></div></td></tr>
+</TABLE>
+
+
+
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+
+</BODY>
+</HTML>
