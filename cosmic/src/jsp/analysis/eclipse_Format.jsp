@@ -126,8 +126,8 @@
 					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
-    				if (arrayDAQ.length > 2) {
-    					out.println("More than 2 DAQs were chosen.  Program will exit.");
+    				if (arrayDAQ.length != 2) {
+    					out.println("2 DAQs were not chosen.  Program will exit.");
     					System.exit(1);//code to end program
        				}//if
 					Arrays.sort(arrayDAQ); 					
