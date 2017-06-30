@@ -127,8 +127,7 @@
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
     				if (arrayDAQ.length != 2) {
-    					out.println("2 DAQs were not chosen.  Program will exit.");
-    					System.exit(1);//code to end program
+    					out.println("2 DAQs were not chosen!");
        				}//if
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
