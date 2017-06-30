@@ -44,7 +44,7 @@ document.getElementById("glossary").innerHTML=txt;
 
 					<img src="../graphics/DielectronMassSpectrum.png" border="1">
 
-					<p>Try this exercise (<a href="javascript:showRefLink('http://ed.fnal.gov/work/event-id-new/cms_game_daddy-bars.html',850,750)">Safari/Firefox</a> - <a href="javascript:showRefLink('http://ed.fnal.gov/work/event-id-new/cms_game_daddy-newgame.html',850,750)">Internet Explorer</a>) 
+					<p>Try this exercise (<a href="javascript:showRefLink('../games/event-id-new/cms_game_daddy-bars.html',850,750)">Safari/Firefox</a> - <a href="javascript:showRefLink('http://ed.fnal.gov/work/event-id-new/cms_game_daddy-newgame.html',850,750)">Internet Explorer</a>) 
 						to practice associating the invariant mass of individual dimuon events with the histogram.</p>
 					
 					<p>Try the <a href="http://quarknet.i2u2.org/data-portfolio/activity/cms-data-express">CMS Data Express</a> activity to practice putting invariant masses into a histogram.</p>
