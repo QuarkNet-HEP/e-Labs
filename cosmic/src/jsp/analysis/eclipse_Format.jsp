@@ -189,22 +189,26 @@
 					
 					//Time Message	
 					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
-					if (i == 3){startTen = minFracDay;}											
-					if (minFracDay-startTen > 0) {
-						if (minFracDay-startTen > 1.0/144.0) {
-							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
-						}//if
-						else {timeMssg = " ";}
-					}//if	
-					else {
-						if (1 + minFracDay-startTen > 1.0/144.0) {
-							timeMssg = "Over 10 minutes elapsed!";
-							startTen = minFracDay;
-						}//if
-						else {timeMssg = " ";}
-					}//else
-					
+					if (i == 3){
+						startTen = minFracDay;
+						timeMssg = " ";
+					}
+					if (i > 3){						
+						if (minFracDay-startTen > 0) {
+							if (minFracDay-startTen > 1.0/144.0) {
+								timeMssg = "Over 10 minutes elapsed!";
+								startTen = minFracDay;
+							}//if
+							else {timeMssg = " ";}
+						}//if	
+						else {
+							if (1 + minFracDay-startTen > 1.0/144.0) {
+								timeMssg = "Over 10 minutes elapsed!";
+								startTen = minFracDay;
+							}//if
+							else {timeMssg = " ";}
+						}//else
+					}//if
 					
 					//Write to output file.
 						StringBuffer result = new StringBuffer();						
