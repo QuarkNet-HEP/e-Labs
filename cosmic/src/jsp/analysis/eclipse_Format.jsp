@@ -26,7 +26,7 @@
 	</head>
 	<body>
 	<%	
-		//Phase I:  copy eventCandidates file into eFtemp-date
+		//******Phase I:  copy eventCandidates file into eFtemp-date******
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");//sF = source Filename
 		String sD = request.getParameter("srcD");//sD = source Directory
@@ -55,8 +55,8 @@
                         e.printStackTrace();
                 	}
 		}		
-		
-		//Phase II:  Read one line at a time from eFtemp; parse, perform calculations, and write it to eclipseFormat
+
+		//******Phase II:  Read one line at a time from eFtemp; parse, perform calculations, & write to eclipseFormat******
 		if (file2.exists()){               
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
@@ -69,20 +69,27 @@
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	String line = br.readLine();
  		       	
-         		int i = 0;  double startTen = 0.0;
-
+         		int i = 0;           
+				double endTen = 0.0; //endTen represents the end of a 10-min period, measured in fractional day after 1st event
+				double tenMin = 1.0/144.0;
+				int numBlankTen = 0;
+				List<String> listRate = new ArrayList<String>(); 
+				int numEvents = 1;//number of events in a 10-min window
+				
          	//loop through each line of input file src2 (eFtemp-date)
-         	while (line != null){ 
+         	//while (line != null){ 
+         	while (i < 50){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
+				//1st time through this section of code, i=3 (after 2 lines that begin with '#').
 				if(words[0].charAt(0) != '#'){
 					int eventNum = Integer.parseInt(words[0]);
-					int numEvents = Integer.parseInt(words[1]);
+					int numHits = Integer.parseInt(words[1]);
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
-					String timeMssg = " ";//initialized to space because that's what it is most of the time
+					double numBlankTen= 0.0; 
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -187,61 +194,45 @@
 						}//if				
 					}//for
 					
-					//Time Message	
-					//1st time through this section of code, i=3 (after 2 lines that begin with '#'). 6*10^11 ns = 10 min
-					if (i == 3){
-						startTen = minFracDay;
-						timeMssg = " ";
-					}
-					if (i > 3){						
-						if (minFracDay-startTen > 0) {
-							if (minFracDay-startTen > 1.0/144.0) {
-								timeMssg = "Over 10 minutes elapsed!";
-								startTen = minFracDay;
-							}//if
-							else {timeMssg = " ";}
+					//Calculate rates
+					if (i == 3){endTen = minFracDay + tenMin;} // 10 min = 6*10^11 ns = 1.0/144.0			
+					if (i > 3){
+						if (minFracDay > endTen){
+							listRate.add(String.valueOf(endTen)); listRate.add(String.valueOf(numEvents));	
+							numBlankTen = (int)  ((minFracDay - endTen)/tenMin);
+							endTen = endTen + tenMin;
+							//append numBlankTen number of "0 event" lines
+							for (int j = 0; j < numBlankTen; j++){	
+								listRate.add(String.valueOf(endTen)); listRate.add("0");	
+								endTen = endTen + tenMin;
+							}//for		
+							numEvents = 1;												
 						}//if	
 						else {
-							if (1 + minFracDay-startTen > 1.0/144.0) {
-								timeMssg = "Over 10 minutes elapsed!";
-								startTen = minFracDay;
-							}//if
-							else {timeMssg = " ";}
-						}//else
+							numEvents++;
+						}//else					
 					}//if
 					
-					//Write to output file.
-						StringBuffer result = new StringBuffer();						
-						
+					//Write to output file and console.
+						StringBuffer result = new StringBuffer();												
 						//Event number
 						result.append(Integer.toString(eventNum)); result.append("\t"); 
-						
 						//num of hits for each DAQ
 							result.append(Integer.toString(numHits1)); result.append("\t"); 
 							result.append(Integer.toString(numHits2)); result.append("\t"); 
-						
 						//partial
 						result.append(partial); result.append("\t"); 
-						
 						//JulianDay
 						if (jdBool){result.append(jd); result.append("\t");}//if
 							else{result.append("Not1JD"); result.append("\t");}//else	
-						
 						//SecSinDayBeg (SSDB)
 						result.append(Double.toString(SecSinDayBeg)); result.append("\t"); 						
-						
 						result.append(eventDateTime); result.append("\t"); 
-						
 						//Data													 
 						for (int p = 0; p < outArray.length; p++) {
-   							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
+   							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); 
 						}//for
-						
-						//elapsed time message
-						result.append(timeMssg); result.append("\t"); result.append(Double.toString(startTen)); 
-						
 						result.append("\n");
-						
 						String outline = result.toString();
 						
 						//Write heading after writing 2 lines that begin with '#'.  
@@ -258,32 +249,36 @@
 							heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append("Elapsed Time Message");	heading.append("\t"); heading.append("Start10"); 
+							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); 
+
 							String outHeading = heading.toString();
-							
 							bw.write(outHeading); bw.newLine();
-							
 						}//if
 						
 				        bw.write(outline); 
-				        out.println(outline); out.println("<br>"); 
-				        			        
-				}//if
-				//The first 2 lines from eventCandidates file fall into 'else' - they start with '#'.
+				        out.println(outline); out.println("<br>");         			        
+				}//if (i >= 3)
+				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
-					
+					listRate.add("*"); listRate.add(line);
 				}//else
 				
 				line = br.readLine();        		
 			}//while
-			
+				
+				//Write second section	
+				for (int j = 0; j < listRate.size(); j++){
+					result.append(listRate.get(j)); result.append("\t"); result.append(j+1); result.append("\n");	
+					String outline = result.toString();
+					bw.write(outline);				
+				}//for				
+				
 				request.setAttribute("dst2", dst2);	
 	        	br.close();
 	        	bw.close();
         		
-        	//Phase III:  Create link to download file eclipseFormat
+        	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
 				String phrase = dst2;
 				String[] tokensArray = phrase.split("/");	
