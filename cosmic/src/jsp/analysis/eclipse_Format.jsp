@@ -230,7 +230,7 @@
 						result.append(eventDateTime); result.append("\t"); 
 						//Data													 
 						for (int p = 0; p < outArray.length; p++) {
-   							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); 
+   							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
 						}//for
 						result.append("\n");
 						String outline = result.toString();
