@@ -71,10 +71,9 @@
  		       	
          		int i = 0;           
 				double endTen = 0.0; //endTen represents the end of a 10-min period, measured in fractional day after 1st event
-				double tenMin = 1.0/144.0;
+				double tenMin = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				int numBlankTen= 0; 
 				List<String> listRate = new ArrayList<String>(); 
-				listRate.add("*"); listRate.add(line);
 				int numEvents = 1;//number of events in a 10-min window
 				
          	//loop through each line of input file src2 (eFtemp-date)
@@ -196,7 +195,10 @@
 					}//for
 					
 					//Calculate rates
-					if (i == 3){endTen = minFracDay + tenMin;} // 10 min = 6*10^11 ns = 1.0/144.0			
+					if (i == 3){
+						endTen = minFracDay + tenMin;
+					}//if
+					 			
 					if (i > 3){
 						if (minFracDay > endTen){
 							listRate.add(String.valueOf(endTen)); listRate.add(String.valueOf(numEvents));	
@@ -261,6 +263,7 @@
 				}//if (i >= 3)
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else {
+					listRate.add("*"); listRate.add(line);
 					bw.write(line);bw.newLine();
 				}//else
 				
@@ -269,7 +272,7 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size(); j++){
+				for (int j = 0; j < listRate.size(); j+=2){
 					result2.append(listRate.get(j)); result2.append("\t"); result2.append(j+1); result2.append("\n");	
 					String outline2 = result2.toString();
 					bw.write(outline2);				
