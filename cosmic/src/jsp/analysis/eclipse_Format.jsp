@@ -74,6 +74,7 @@
 				double tenMin = 1.0/144.0;
 				int numBlankTen= 0; 
 				List<String> listRate = new ArrayList<String>(); 
+				listRate.add("*"); listRate.add(line);
 				int numEvents = 1;//number of events in a 10-min window
 				
          	//loop through each line of input file src2 (eFtemp-date)
@@ -261,7 +262,6 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else {
 					bw.write(line);bw.newLine();
-					listRate.add("*"); listRate.add(line);
 				}//else
 				
 				line = br.readLine();        		
