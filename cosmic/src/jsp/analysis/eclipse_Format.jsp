@@ -72,7 +72,7 @@
          		int i = 0;           
 				double endTen = 0.0; //endTen represents the end of a 10-min period, measured in fractional day after 1st event
 				double tenMin = 1.0/144.0;
-				int numBlankTen = 0;
+				int numBlankTen= 0; 
 				List<String> listRate = new ArrayList<String>(); 
 				int numEvents = 1;//number of events in a 10-min window
 				
@@ -89,7 +89,7 @@
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
-					int numBlankTen= 0; 
+					
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
