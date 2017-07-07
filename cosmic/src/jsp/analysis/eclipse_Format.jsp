@@ -89,7 +89,7 @@
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
-					double numBlankTen= 0.0; 
+					int numBlankTen= 0; 
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -268,10 +268,11 @@
 			}//while
 				
 				//Write second section	
+				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size(); j++){
-					result.append(listRate.get(j)); result.append("\t"); result.append(j+1); result.append("\n");	
-					String outline = result.toString();
-					bw.write(outline);				
+					result2.append(listRate.get(j)); result2.append("\t"); result2.append(j+1); result2.append("\n");	
+					String outline2 = result.toString();
+					bw.write(outline2);				
 				}//for				
 				
 				request.setAttribute("dst2", dst2);	
