@@ -202,7 +202,7 @@
 						if (minFracDay > endInterval){
 							listRate.add(String.valueOf(endInterval)); listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
-							endInterval = (endInterval + rateInterval) * 24.0 * 60.0;
+							endInterval = endInterval + rateInterval;
 							//append numBlankInt number of "0 event" lines
 							for (int j = 0; j < numBlankInt; j++){	
 								listRate.add(String.valueOf(endInterval)); listRate.add("0");	
@@ -214,6 +214,7 @@
 							numEvents++;
 						}//else					
 					}//else if
+					
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -272,7 +273,7 @@
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=2){
-						result2.append(listRate.get(j)); result2.append("\t"); 
+						result2.append(listRate.get(j)*24.0*60.0); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\n");		
 				}//for	
 				String outline2 = result2.toString();
