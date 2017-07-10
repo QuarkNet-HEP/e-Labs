@@ -195,10 +195,10 @@
 					}//for
 					
 					//Calculate rates
-					/*if (i == 3){
+					if (i == 3){
 						endInterval = minFracDay + rateInterval;
 					}//if			
-					if (i > 3){
+					else if (i > 3){
 						if (minFracDay > endInterval){
 							listRate.add(String.valueOf(endInterval)); listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
@@ -213,7 +213,7 @@
 						else {
 							numEvents++;
 						}//else					
-					}//if*/
+					}//else if
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -271,13 +271,9 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				out.println("listRate.size() = " + Integer.toString(listRate.size()));
-				for (int j = 0; j < listRate.size()  ; j++){
-					if (j%2 == 0){
-						result2.append(Integer.toString(j)); result2.append("\t"); 
+				for (int j = 0; j < listRate.size()  ; j+=2){
 						result2.append(listRate.get(j)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\n");		
-					}//if	
 				}//for	
 				String outline2 = result2.toString();
 				bw.write(outline2);						
