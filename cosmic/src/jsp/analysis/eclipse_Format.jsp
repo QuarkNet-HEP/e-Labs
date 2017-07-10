@@ -271,7 +271,7 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				out.println("listRate.size() = " + Integer.toString(listRate.size());
+				out.println("listRate.size() = " + Integer.toString(listRate.size()));
 				for (int j = 0; j < listRate.size()  ; j+=2){
 					result2.append(listRate.get(j)); result2.append("\t"); result2.append(listRate.get(j+1)); result2.append("\n");	
 					String outline2 = result2.toString();
