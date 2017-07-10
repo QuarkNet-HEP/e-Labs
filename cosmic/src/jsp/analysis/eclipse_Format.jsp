@@ -272,10 +272,12 @@
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
 				out.println("listRate.size() = " + Integer.toString(listRate.size()));
-				for (int j = 0; j < listRate.size()  ; j = j+2){
-					result2.append(listRate.get(j)); result2.append("\t"); result2.append(listRate.get(j+1)); result2.append("\n");	
-					String outline2 = result2.toString();
-					bw.write(outline2);				
+				for (int j = 0; j < listRate.size()  ; j++){
+					if (j%2 == 0){
+						result2.append(listRate.get(j)); result2.append("\t"); result2.append(listRate.get(j+1)); result2.append("\n");	
+						String outline2 = result2.toString();
+						bw.write(outline2);				
+					//if
 				}//for				
 				
 				request.setAttribute("dst2", dst2);	
