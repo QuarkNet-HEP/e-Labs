@@ -276,12 +276,11 @@
 					if (j%2 == 0){
 						result2.append(Integer.toString(j)); result2.append("\t"); 
 						result2.append(listRate.get(j)); result2.append("\t"); 
-						result2.append(listRate.get(j+1)); result2.append("\n");	
-						String outline2 = result2.toString();
-						bw.write(outline2);			
-					}	
-					//if
-				}//for				
+						result2.append(listRate.get(j+1)); result2.append("\n");		
+					}//if	
+				}//for	
+				String outline2 = result2.toString();
+				bw.write(outline2);						
 				
 				request.setAttribute("dst2", dst2);	
 	        	br.close();
