@@ -273,7 +273,8 @@
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=2){
-						result2.append(listRate.get(j)*24.0*60.0); result2.append("\t"); 
+						double endIntMin = Double.parseDouble(listRate.get(j)) * 24.0 * 60.0;
+						result2.append(Double.toString(endIntMin)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\n");		
 				}//for	
 				String outline2 = result2.toString();
