@@ -206,7 +206,7 @@
 							//append numBlankTen number of "0 event" lines
 							for (int j = 0; j < numBlankTen; j++){	
 								listRate.add(String.valueOf(endTen)); listRate.add("0");	
-								endTen = endTen + tenMin;
+								endTen = endTen + rateInterval;
 							}//for		
 							numEvents = 1;												
 						}//if	
