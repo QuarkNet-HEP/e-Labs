@@ -71,10 +71,10 @@
  		       	
          		int i = 0;           
 				double endTen = 0.0; //endTen represents the end of a 10-min period, measured in fractional day after 1st event
-				double tenMin = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				int numBlankTen= 0; 
-				List<String> listRate = new ArrayList<String>(); 
-				int numEvents = 1;//number of events in a 10-min window
+				List<String> listRate = new ArrayList<String>(); //endTen, numEvents
+				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	//while (line != null){ 
@@ -83,7 +83,7 @@
 				String[] words = line.split("\\s+");
 				
 				//1st time through this section of code, i=3 (after 2 lines that begin with '#').
-				if(words[0].charAt(0) != '#'){
+				if(words[0].charAt(0) != '#' && i >= 3){
 					int eventNum = Integer.parseInt(words[0]);
 					int numHits = Integer.parseInt(words[1]);
 					String jd = words[4];
@@ -196,14 +196,14 @@
 					
 					//Calculate rates
 					if (i == 3){
-						endTen = minFracDay + tenMin;
+						endTen = minFracDay + rateInterval;
 					}//if
 					 			
 					if (i > 3){
 						if (minFracDay > endTen){
 							listRate.add(String.valueOf(endTen)); listRate.add(String.valueOf(numEvents));	
-							numBlankTen = (int)  ((minFracDay - endTen)/tenMin);
-							endTen = endTen + tenMin;
+							numBlankTen = (int)  ((minFracDay - endTen)/rateInterval);
+							endTen = endTen + rateInterval;
 							//append numBlankTen number of "0 event" lines
 							for (int j = 0; j < numBlankTen; j++){	
 								listRate.add(String.valueOf(endTen)); listRate.add("0");	
@@ -260,11 +260,11 @@
 						
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>");         			        
-				}//if (i >= 3)
+				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
-				else {
-					listRate.add("*"); listRate.add(line);
+				else if (i < 3)  {
 					bw.write(line);bw.newLine();
+					listRate.add("*"); listRate.add(line);
 				}//else
 				
 				line = br.readLine();        		
