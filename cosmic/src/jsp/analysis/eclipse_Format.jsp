@@ -274,7 +274,9 @@
 				out.println("listRate.size() = " + Integer.toString(listRate.size()));
 				for (int j = 0; j < listRate.size()  ; j++){
 					if (j%2 == 0){
-						result2.append(listRate.get(j)); result2.append("\t"); result2.append(listRate.get(j+1)); result2.append("\n");	
+						result2.append(Integer.toString(j)); result2.append("\t"); 
+						result2.append(listRate.get(j)); result2.append("\t"); 
+						result2.append(listRate.get(j+1)); result2.append("\n");	
 						String outline2 = result2.toString();
 						bw.write(outline2);			
 					}	
