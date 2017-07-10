@@ -70,10 +70,10 @@
  		       	String line = br.readLine();
  		       	
          		int i = 0;           
-				double endTen = 0.0; //endTen represents the end of a 10-min period, measured in fractional day after 1st event
+				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
-				int numBlankTen= 0; 
-				List<String> listRate = new ArrayList<String>(); //endTen, numEvents
+				int numBlankInt= 0; 
+				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				
          	//loop through each line of input file src2 (eFtemp-date)
@@ -195,25 +195,25 @@
 					}//for
 					
 					//Calculate rates
-					if (i == 3){
-						endTen = minFracDay + rateInterval;
+					/*if (i == 3){
+						endInterval = minFracDay + rateInterval;
 					}//if			
 					if (i > 3){
-						if (minFracDay > endTen){
-							listRate.add(String.valueOf(endTen)); listRate.add(String.valueOf(numEvents));	
-							numBlankTen = (int)  ((minFracDay - endTen)/rateInterval);
-							endTen = (endTen + rateInterval) * 24.0 * 60.0;
-							//append numBlankTen number of "0 event" lines
-							for (int j = 0; j < numBlankTen; j++){	
-								listRate.add(String.valueOf(endTen)); listRate.add("0");	
-								endTen = endTen + rateInterval;
+						if (minFracDay > endInterval){
+							listRate.add(String.valueOf(endInterval)); listRate.add(String.valueOf(numEvents));	
+							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
+							endInterval = (endInterval + rateInterval) * 24.0 * 60.0;
+							//append numBlankInt number of "0 event" lines
+							for (int j = 0; j < numBlankInt; j++){	
+								listRate.add(String.valueOf(endInterval)); listRate.add("0");	
+								endInterval = endInterval + rateInterval;
 							}//for		
 							numEvents = 1;												
 						}//if	
 						else {
 							numEvents++;
 						}//else					
-					}//if
+					}//if*/
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
