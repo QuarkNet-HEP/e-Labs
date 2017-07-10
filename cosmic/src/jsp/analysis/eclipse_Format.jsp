@@ -272,7 +272,7 @@
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
 				out.println("listRate.size() = " + Integer.toString(listRate.size()));
-				for (int j = 0; j < listRate.size()  ; j+=2){
+				for (int j = 0; j < listRate.size()  ; j = j+2){
 					result2.append(listRate.get(j)); result2.append("\t"); result2.append(listRate.get(j+1)); result2.append("\n");	
 					String outline2 = result2.toString();
 					bw.write(outline2);				
@@ -299,8 +299,7 @@
     			}//for-q	
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	            
                 dst2v2 = "http://" + request.getServerName() + dst2v2;
-				request.setAttribute("dst2v2", dst2v2);						
-	
+				request.setAttribute("dst2v2", dst2v2);							
 				
     		}//try
     		catch(Exception e){
@@ -311,7 +310,6 @@
     		out.println("eventCandidates file did not copy over to plots/ from scratch/!");
     	}//else
 	%>
-	<%--<Phase III:  Provide link to download file eclipseFormat--%>	
 			<a href = "${dst2v2}">Download!</a>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
