@@ -197,13 +197,12 @@
 					//Calculate rates
 					if (i == 3){
 						endTen = minFracDay + rateInterval;
-					}//if
-					 			
+					}//if			
 					if (i > 3){
 						if (minFracDay > endTen){
 							listRate.add(String.valueOf(endTen)); listRate.add(String.valueOf(numEvents));	
 							numBlankTen = (int)  ((minFracDay - endTen)/rateInterval);
-							endTen = endTen + rateInterval;
+							endTen = (endTen + rateInterval) * 24.0 * 60.0;
 							//append numBlankTen number of "0 event" lines
 							for (int j = 0; j < numBlankTen; j++){	
 								listRate.add(String.valueOf(endTen)); listRate.add("0");	
