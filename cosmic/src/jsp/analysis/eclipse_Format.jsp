@@ -277,7 +277,7 @@
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=3){
 						result2.append(listRate.get(j)); result2.append("\t"); 
-						result2.append(listRate.get(j+1); result2.append("\t");
+						result2.append(listRate.get(j+1)); result2.append("\t");
 						result2.append(listRate.get(j+2)); result2.append("\n");		
 				}//for	
 				String outline2 = result2.toString();
