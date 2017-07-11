@@ -195,22 +195,13 @@
 					}//for
 					
 					//Calculate rates
-					// get the date and time of the end of intervals in human readable form
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("FractionalDay"); 
-						listRate.add("Time(min)"); 
-						//listRate.add("eventDateTime"); 
-						listRate.add("numEvents");
+						listRate.add("Time(min)"); listRate.add("numEvents");
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
-							listRate.add(String.valueOf(endInterval));
-							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							//NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-    	            		//String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);//
-							//listRate.add(eventDateTime2);
-							listRate.add(String.valueOf(numEvents));	
+							listRate.add(String.valueOf(endInterval*24.0*60.0)); listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 							endInterval = endInterval + rateInterval;
 							//append numBlankInt number of "0 event" lines
@@ -274,7 +265,7 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					//listRate.add("*");  listRate.add(line); listRate.add("*");
+					listRate.add("*"); listRate.add(line);
 				}//else
 				
 				line = br.readLine();        		
@@ -282,10 +273,9 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=3){
+				for (int j = 0; j < listRate.size()  ; j+=2){
 						result2.append(listRate.get(j)); result2.append("\t"); 
-						result2.append(listRate.get(j+1)); result2.append("\t"); 
-						result2.append(listRate.get(j+2)); result2.append("\n");						
+						result2.append(listRate.get(j+1)); result2.append("\n");		
 				}//for	
 				String outline2 = result2.toString();
 				bw.write(outline2);						
