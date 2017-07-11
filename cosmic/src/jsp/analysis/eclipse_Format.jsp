@@ -78,7 +78,7 @@
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	//while (line != null){ 
-         	while (i < 10){ 
+         	while (i < 50){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -152,7 +152,7 @@
 	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
     	            String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
         	        TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-        	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);//
+        	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
         	        
 					//output arrays
 					String [] outArray = new String[8];
@@ -197,12 +197,15 @@
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("numEvents");
+						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("eventDateTime2"); listRate.add("numEvents");
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
 							listRate.add(String.valueOf(endInterval)); 
 							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+							String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+							listRate.add(eventDateTime2);
 							listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 							endInterval = endInterval + rateInterval;
@@ -210,6 +213,7 @@
 							for (int j = 0; j < numBlankInt; j++){	
 								listRate.add(String.valueOf(endInterval));
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								listRate.add(eventDateTime2);
 								listRate.add("0");	
 								endInterval = endInterval + rateInterval;
 							}//for		
@@ -277,10 +281,11 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=3){
+				for (int j = 0; j < listRate.size()  ; j+=4){
 						result2.append(listRate.get(j)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\t");
-						result2.append(listRate.get(j+2)); result2.append("\n");		
+						result2.append(listRate.get(j+2)); result2.append("\t");		
+						result2.append(listRate.get(j+3)); result2.append("\n");	
 				}//for	
 				String outline2 = result2.toString();
 				bw.write(outline2);						
