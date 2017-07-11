@@ -199,15 +199,16 @@
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
 						listRate.add("FractionalDay"); listRate.add("Time(min)"); 
-						listRate.add("eventDateTime"); listRate.add("numEvents");
+						//listRate.add("eventDateTime"); 
+						listRate.add("numEvents");
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
 							listRate.add(String.valueOf(endInterval));
 							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-    	            		String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);//
-							listRate.add(eventDateTime2);
+							//NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+    	            		//String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);//
+							//listRate.add(eventDateTime2);
 							listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 							endInterval = endInterval + rateInterval;
@@ -280,11 +281,10 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=4){
+				for (int j = 0; j < listRate.size()  ; j+=3){
 						result2.append(listRate.get(j)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\t"); 
-						result2.append(listRate.get(j+2)); result2.append("\t");						
-						result2.append(listRate.get(j+3)); result2.append("\n");		
+						result2.append(listRate.get(j+2)); result2.append("\n");						
 				}//for	
 				String outline2 = result2.toString();
 				bw.write(outline2);						
