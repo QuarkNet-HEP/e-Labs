@@ -208,7 +208,9 @@
 							endInterval = endInterval + rateInterval;
 							//append numBlankInt number of "0 event" lines
 							for (int j = 0; j < numBlankInt; j++){	
-								listRate.add(String.valueOf(endInterval*24.0*60.0)); listRate.add("0");	
+								listRate.add(String.valueOf(endInterval));
+								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								listRate.add("0");	
 								endInterval = endInterval + rateInterval;
 							}//for		
 							numEvents = 1;												
