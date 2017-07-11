@@ -198,7 +198,8 @@
 					// get the date and time of the end of intervals in human readable form
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("FractionalDay"); listRate.add("Time(min)"); 
+						listRate.add("FractionalDay"); 
+						listRate.add("Time(min)"); 
 						//listRate.add("eventDateTime"); 
 						listRate.add("numEvents");
 					}//if			
@@ -273,7 +274,7 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					listRate.add("*"); listRate.add(line);
+					listRate.add("*"); listRate.add(line);listRate.add("*");
 				}//else
 				
 				line = br.readLine();        		
