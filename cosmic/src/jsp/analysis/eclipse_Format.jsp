@@ -280,7 +280,7 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=3){
+				for (int j = 0; j < listRate.size()  ; j+=4){
 						result2.append(listRate.get(j)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\t"); 
 						result2.append(listRate.get(j+2)); result2.append("\t");						
