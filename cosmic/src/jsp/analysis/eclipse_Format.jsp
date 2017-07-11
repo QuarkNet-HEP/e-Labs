@@ -205,7 +205,7 @@
 						if (minFracDay > endInterval){
 							listRate.add(String.valueOf(endInterval));
 							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(endInterval));
+							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
     	            		String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);//
 							listRate.add(eventDateTime2);
 							listRate.add(String.valueOf(numEvents));	
