@@ -71,14 +71,15 @@
  		       	
          		int i = 0;           
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				//double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				
          	//loop through each line of input file src2 (eFtemp-date)
-         	//while (line != null){ 
-         	while (i < 50){ 
+         	while (line != null){ 
+         	//while (i < 50){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -201,10 +202,10 @@
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
-							listRate.add(String.valueOf(endInterval)); 
-							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
 							String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+							listRate.add(String.valueOf(endInterval)); 
+							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							listRate.add(eventDateTime2);
 							listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
