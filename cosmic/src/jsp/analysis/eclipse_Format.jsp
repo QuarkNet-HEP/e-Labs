@@ -197,7 +197,7 @@
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("Time(min)"); listRate.add("numEvents");
+						listRate.add("Time(frac)"); listRate.add("Time(min)"); listRate.add("numEvents");
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
