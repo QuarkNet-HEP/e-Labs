@@ -146,7 +146,7 @@
 					int numHits1 = 0;
 					int numHits2 = 0;	
 					for (int j=0; j<listDAQ.size(); j++){
-						if (DAQ1.equals(listDAQ.get(k))){numHits1++;}
+						if (DAQ1.equals(listDAQ.get(j))){numHits1++;}
 						else if (DAQ2.equals(listDAQ.get(j))){numHits2++;}	
 					}			
 					
@@ -158,9 +158,9 @@
         	        
 					//output arrays
 					String [] outArray = new String[8];
-					for (int j=0; j<8; m++){outArray[j] = "-1";}
+					for (int j=0; j<8; j++){outArray[j] = "-1";}
 					String [] outArrayNs = new String[8];
-					for (int j=0; j<8; m++){outArrayNs[j] = "-1";}
+					for (int j=0; j<8; j++){outArrayNs[j] = "-1";}
 					
 					//convert fraction of julian day to ns
 					for (int p=0; p<arrayDJF.length; p++){	
