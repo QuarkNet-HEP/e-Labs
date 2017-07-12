@@ -76,7 +76,7 @@
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
-			    String lastJD; 
+				String lastJD = " ";
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -309,7 +309,9 @@
 						}//if
 						
 				        bw.write(outline); 
-				        out.println(outline); out.println("<br>");         			        
+				        out.println(outline); out.println("<br>"); 
+				        
+						lastJD = jd; lastMinFracDay = minFracDay;   //store info before reading next line     			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
