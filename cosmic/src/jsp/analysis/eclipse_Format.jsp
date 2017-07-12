@@ -232,39 +232,15 @@
 								numEvents++;
 							}//else											
 						}//if
+						
 						else if (endInterval > 1.0 ){					
-							endInterval = endInterval - 1;
-							if (minFracDay > endInterval){
-								listRate.add(String.valueOf(endInterval)); 
-								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							
-								//NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								//String eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-								//listRate.add(eventDateTime3);
-								listRate.add("*");
-								
-								listRate.add(String.valueOf(numEvents));	
-								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
-								endInterval = endInterval + rateInterval;
-								//append numBlankInt number of "0 event" lines
-								for (int j = 0; j < numBlankInt; j++){	
-									listRate.add(String.valueOf(endInterval));
-									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-								
-									//nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-									//eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-									//listRate.add(eventDateTime3);	
-									listRate.add("*");
-								
-									listRate.add("0");	
-									endInterval = endInterval + rateInterval;
-								}//for	
-								numEvents = 1;	
-							}//if	
-							else {
-								numEvents++;
-							}//else											
-						}//else if																						
+							endInterval = endInterval - 1.0;
+							listRate.add(String.valueOf(endInterval));
+							listRate.add(String.valueOf(endInterval * 24.0 * 60.0));
+							listRate.add("*");
+							listRate.add("*");
+							endInterval = endInterval + rateInterval;
+						}//else if 																						
 					}//else if (i>3)
 					
 					//Write to output file and console.
