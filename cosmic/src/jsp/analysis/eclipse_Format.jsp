@@ -33,7 +33,7 @@
 			GregorianCalendar gc = new GregorianCalendar();
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
-		String dF = "eFtemp-"+date;//dF = destination Filename
+		String dF = "eventCandidates-"+date;//dF = destination Filename
  
 		//SB,5/8/17:  This is like how it's done in save.jsp:  String plotDir = user.getDir("plots");
 		//"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
@@ -239,9 +239,10 @@
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							
-								NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								String eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime3);
+								//NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								//String eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
+								//listRate.add(eventDateTime3);
+								listRate.add("*");
 								
 								listRate.add(String.valueOf(numEvents));	
 								numBlankInt = (int)  ((minFracDay+1 - endInterval)/rateInterval);
@@ -251,9 +252,10 @@
 									listRate.add(String.valueOf(endInterval));
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
-									nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-									eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime3);
+									//nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									//eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
+									//listRate.add(eventDateTime3);
+	       							listRate.add("*");						
 								
 									listRate.add("0");	
 									endInterval = endInterval + rateInterval;
