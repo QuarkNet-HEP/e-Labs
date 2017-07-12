@@ -202,11 +202,13 @@
 					}//if			
 					else if (i > 3){
 						if (minFracDay > endInterval){
-							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-							String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 							listRate.add(String.valueOf(endInterval)); 
 							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+							
+							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+							String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 							listRate.add(eventDateTime2);
+							
 							listRate.add(String.valueOf(numEvents));	
 							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 							endInterval = endInterval + rateInterval;
@@ -214,7 +216,11 @@
 							for (int j = 0; j < numBlankInt; j++){	
 								listRate.add(String.valueOf(endInterval));
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								
+								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime2);
+								
 								listRate.add("0");	
 								endInterval = endInterval + rateInterval;
 							}//for		
