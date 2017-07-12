@@ -311,15 +311,13 @@
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
 				        
-						lastJD = jd; lastMinFracDay = minFracDay;   //store info before reading next line     			        
+						lastJD = jd;   //store info before reading next line     			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
 					listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add(line);
 				}//else
-				
-				lastJD = jd;//store before going to next line
 				
 				line = br.readLine();        		
 			}//while
