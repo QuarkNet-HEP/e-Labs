@@ -202,7 +202,7 @@
 						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
 					else if(i > 3){
-						if (endInterval < 1){			
+						if (endInterval < 1.0){			
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
@@ -232,7 +232,7 @@
 								numEvents++;
 							}//else											
 						}//if
-						else if (endInterval > 1 ){					
+						else if (endInterval > 1.0 ){					
 							endInterval = endInterval - 1;
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
