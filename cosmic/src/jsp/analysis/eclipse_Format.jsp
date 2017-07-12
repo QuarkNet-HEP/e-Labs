@@ -111,10 +111,10 @@
 					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//find smallest fraction of day in arrayDJF
-					for (int p=0; p<arrayDJF.length; p++){	
-						if (p%3 == 2){
-							if(Double.parseDouble(arrayDJF[p]) < minFracDay){
-								minFracDay = Double.parseDouble(arrayDJF[p]);
+					for (int j=0; j<arrayDJF.length; j++){	
+						if (j%3 == 2){
+							if(Double.parseDouble(arrayDJF[j]) < minFracDay){
+								minFracDay = Double.parseDouble(arrayDJF[j]);
 							}//if
 						}//if
 					}//for-p
@@ -124,9 +124,9 @@
 						
 					//Create List of DAQs.
 					List<String> listDAQ = new ArrayList<String>();
-					for ( int k=0; k < arrayDJF.length; k++){
-						if (k%3 == 0){
-							String DAQnumChan = arrayDJF[k];
+					for ( int j=0; j < arrayDJF.length; j++){
+						if (j%3 == 0){
+							String DAQnumChan = arrayDJF[j];
 							String DAQ = (DAQnumChan.split("\\."))[0];
 							listDAQ.add(DAQ);
 						}//if
@@ -145,9 +145,9 @@
 					//Calculate number of hits for each DAQ.  Note: Only considering UNIQUE DAQ.ch combos.
 					int numHits1 = 0;
 					int numHits2 = 0;	
-					for (int k=0; k<listDAQ.size(); k++){
+					for (int j=0; j<listDAQ.size(); j++){
 						if (DAQ1.equals(listDAQ.get(k))){numHits1++;}
-						else if (DAQ2.equals(listDAQ.get(k))){numHits2++;}	
+						else if (DAQ2.equals(listDAQ.get(j))){numHits2++;}	
 					}			
 					
 					// get the date and time of the shower in human readable form
@@ -158,9 +158,9 @@
         	        
 					//output arrays
 					String [] outArray = new String[8];
-					for (int m=0; m<8; m++){outArray[m] = "-1";}
+					for (int j=0; j<8; m++){outArray[j] = "-1";}
 					String [] outArrayNs = new String[8];
-					for (int m=0; m<8; m++){outArrayNs[m] = "-1";}
+					for (int j=0; j<8; m++){outArrayNs[j] = "-1";}
 					
 					//convert fraction of julian day to ns
 					for (int p=0; p<arrayDJF.length; p++){	
@@ -188,9 +188,9 @@
 					
 					//check if all the Julian Day values are the same for the whole line
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
-					for (int p=0; p<arrayDJF.length; p++){						
-						if (p%3 == 1){
-							if(!jd.equals(arrayDJF[p])){
+					for (int j=0; j<arrayDJF.length; j++){						
+						if (j%3 == 1){
+							if(!jd.equals(arrayDJF[j])){
 								jdBool = false;
 							}//if
 						}//if				
@@ -201,7 +201,7 @@
 						endInterval = minFracDay + rateInterval;
 						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
-					if (jd.equals(lastJD) && jdBool){			
+					if (jd.equals(lastJD) ){			
 						if (i > 3){
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
@@ -233,7 +233,7 @@
 							}//else					
 						}//if (i>3)
 					}//if
-					else if (!jd.equals(lastJD) && jdBool){
+					else if (!jd.equals(lastJD) ){
 						if (i > 3){
 							if (minFracDay+1 > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
