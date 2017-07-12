@@ -76,6 +76,7 @@
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
+			    String lastJD; 
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -198,39 +199,72 @@
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("eventDateTime2"); listRate.add("numEvents");
-					}//if			
-					else if (i > 3){
-						if (minFracDay > endInterval){
-							listRate.add(String.valueOf(endInterval)); 
-							listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							
-							NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-							String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-							listRate.add(eventDateTime2);
-							
-							listRate.add(String.valueOf(numEvents));	
-							numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
-							endInterval = endInterval + rateInterval;
-							//append numBlankInt number of "0 event" lines
-							for (int j = 0; j < numBlankInt; j++){	
-								listRate.add(String.valueOf(endInterval));
+						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
+					}//if
+					if (jd.equals(lastJD) && jdBool){			
+						if (i > 3){
+							if (minFracDay > endInterval){
+								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-								
-								nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+							
+								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime2);
-								
-								listRate.add("0");	
+							
+								listRate.add(String.valueOf(numEvents));	
+								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
-							}//for		
-							numEvents = 1;												
-						}//if	
-						else {
-							numEvents++;
-						}//else					
-					}//else if
-					
+								//append numBlankInt number of "0 event" lines
+								for (int j = 0; j < numBlankInt; j++){	
+									listRate.add(String.valueOf(endInterval));
+									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								
+									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime2);
+								
+									listRate.add("0");	
+									endInterval = endInterval + rateInterval;
+								}//for		
+								numEvents = 1;												
+							}//if	
+							else {
+								numEvents++;
+							}//else					
+						}//if (i>3)
+					}//if
+					else if (!jd.equals(lastJD) && jdBool){
+						if (i > 3){
+							if (minFracDay+1 > endInterval){
+								listRate.add(String.valueOf(endInterval)); 
+								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+							
+								NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								String eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime3);
+								
+								listRate.add(String.valueOf(numEvents));	
+								numBlankInt = (int)  ((minFracDay+1 - endInterval)/rateInterval);
+								endInterval = endInterval + rateInterval;
+								//append numBlankInt number of "0 event" lines
+								for (int j = 0; j < numBlankInt; j++){	
+									listRate.add(String.valueOf(endInterval));
+									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								
+									nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime3);
+								
+									listRate.add("0");	
+									endInterval = endInterval + rateInterval;
+								}//for	
+								numEvents = 1;	
+							}//if	
+							else {
+								numEvents++;
+							}//else					
+						}//if (i>3)
+					}//else if																						
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -282,6 +316,8 @@
 					bw.write(line);bw.newLine();
 					listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add(line);
 				}//else
+				
+				lastJD = jd;//store before going to next line
 				
 				line = br.readLine();        		
 			}//while
