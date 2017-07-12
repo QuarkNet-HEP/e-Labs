@@ -234,7 +234,7 @@
 						}//if
 						
 						else if (endInterval > 1.0 ){					
-							endInterval = endInterval - 1.0;
+							//endInterval = endInterval - 1.0;
 							listRate.add(String.valueOf(endInterval));
 							listRate.add(String.valueOf(endInterval * 24.0 * 60.0));
 							listRate.add("*");
