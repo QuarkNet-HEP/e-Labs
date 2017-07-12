@@ -201,8 +201,8 @@
 						endInterval = minFracDay + rateInterval;
 						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
-					if (jd.equals(lastJD) ){			
-						if (i > 3){
+					else if(i > 3){
+						if (endInterval < 1){			
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
@@ -230,11 +230,9 @@
 							}//if	
 							else {
 								numEvents++;
-							}//else					
-						}//if (i>3)
-					}//if
-					else if (!jd.equals(lastJD) ){
-						if (i > 3){
+							}//else											
+						}//if
+						else if (endInterval > 1 ){					
 							endInterval = endInterval - 1;
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
@@ -246,7 +244,7 @@
 								listRate.add("*");
 								
 								listRate.add(String.valueOf(numEvents));	
-								numBlankInt = (int)  ((minFracDay+1 - endInterval)/rateInterval);
+								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
 								//append numBlankInt number of "0 event" lines
 								for (int j = 0; j < numBlankInt; j++){	
@@ -255,8 +253,8 @@
 								
 									//nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
 									//eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-									//listRate.add(eventDateTime3);
-	       							listRate.add("*");						
+									//listRate.add(eventDateTime3);	
+									listRate.add("*");
 								
 									listRate.add("0");	
 									endInterval = endInterval + rateInterval;
@@ -265,9 +263,9 @@
 							}//if	
 							else {
 								numEvents++;
-							}//else					
-						}//if (i>3)
-					}//else if																						
+							}//else											
+						}//else if																						
+					}//else if (i>3)
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -313,8 +311,8 @@
 						
 				        bw.write(outline); 
 				        out.println(outline); out.println("<br>"); 
-				        
-						lastJD = jd;   //store info before reading next line     			        
+				        lastJD = jd;
+						   			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
