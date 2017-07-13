@@ -259,11 +259,7 @@
 							else {
 								numEvents++;
 							}//else
-						}//elseif		
-								
-								//append numBlankInt number of "0 event" lines
-								for (int j = 0; j < numB
-						}//else if 																						
+						}//elseif		 																						
 					}//else if (i>3)
 					
 					//Write to output file and console.
