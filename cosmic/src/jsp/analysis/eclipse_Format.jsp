@@ -202,7 +202,7 @@
 						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
 					else if(i > 3){
-						if (endInterval < 1.0){			
+						if (jd.equals(lastJD)){			
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
@@ -233,13 +233,36 @@
 							}//else											
 						}//if
 						
-						else if (endInterval > 1.0 ){					
-							//endInterval = endInterval - 1.0;
-							listRate.add(String.valueOf(endInterval));
-							listRate.add(String.valueOf(endInterval * 24.0 * 60.0));
-							listRate.add("*");
-							listRate.add("*");
-							endInterval = endInterval + rateInterval;
+						else if (!jd.equals(lastJD)){					
+							endInterval = endInterval - 1.0;
+							if (minFracDay > endInterval){
+								listRate.add(String.valueOf(endInterval));
+								listRate.add(String.valueOf(endInterval * 24.0 * 60.0));
+								
+								listRate.add("*");
+								
+								listRate.add(String.valueOf(numEvents));
+								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
+								endInterval = endInterval + rateInterval;
+								//append numBlankInt number of "0 event" lines
+								for (int j = 0; j < numBlankInt; j++){	
+									listRate.add(String.valueOf(endInterval));
+									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								
+									listRate.add("*");
+									listRate.add("0");	
+									
+									endInterval = endInterval + rateInterval;
+								}//for
+								numEvents = 1;
+							}//if
+							else {
+								numEvents++;
+							}//else
+						}//elseif		
+								
+								//append numBlankInt number of "0 event" lines
+								for (int j = 0; j < numB
 						}//else if 																						
 					}//else if (i>3)
 					
