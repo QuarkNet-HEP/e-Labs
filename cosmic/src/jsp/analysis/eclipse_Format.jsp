@@ -177,12 +177,7 @@
 						for (int p=0; p<arrayDJF.length; p++){	
 							if (p%3 == 0){
 					
-								if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0) {
-									double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2]) + 1 - minFracDay);
-								}//if
-								else {
-									double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
-								}//else
+								double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 																	
 								if((DAQ1+".1").equals(arrayDJF[p]))
 									{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
