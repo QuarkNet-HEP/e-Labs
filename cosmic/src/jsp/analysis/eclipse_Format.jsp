@@ -77,6 +77,7 @@
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				String lastJD = " ";
+				double FracDayToNs = 0.0;
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -166,10 +167,10 @@
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
 							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
-								double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1-minFracDay);
+								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1-minFracDay);
 							}//if
 							else{
-								double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 							}//else
 																
 							if((DAQ1+".1").equals(arrayDJF[p]))
