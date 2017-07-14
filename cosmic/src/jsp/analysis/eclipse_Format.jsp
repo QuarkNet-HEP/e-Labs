@@ -71,8 +71,8 @@
  		       	
          		int i = 0;           
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				//double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
-				double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
+				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
@@ -165,8 +165,13 @@
 					//convert fraction of julian day to ns
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
-							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
-										
+							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
+								double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1-minFracDay);
+							}//if
+							else{
+								double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+							}//else
+																
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
