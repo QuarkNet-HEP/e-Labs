@@ -236,8 +236,8 @@
 						else if (!jd.equals(lastJD)){					
 							endInterval = endInterval - 1.0;
 							if (minFracDay > endInterval){
-								listRate.add(String.valueOf(endInterval));
-								listRate.add(String.valueOf(endInterval * 24.0 * 60.0));
+								listRate.add(String.valueOf(endInterval+1));
+								listRate.add(String.valueOf((endInterval+1) * 24.0 * 60.0));
 								
 								listRate.add("*");
 								
