@@ -162,30 +162,6 @@
 					String [] outArrayNs = new String[8];
 					for (int j=0; j<8; j++){outArrayNs[j] = "-1";}
 					
-					//convert fraction of julian day to ns
-					for (int p=0; p<arrayDJF.length; p++){	
-						if (p%3 == 0){
-							double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
-										
-							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-  							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-        					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
-						}//if	
-					}//for		
-					
 					//check if all the Julian Day values are the same for the whole line
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					for (int j=0; j<arrayDJF.length; j++){						
@@ -196,6 +172,39 @@
 						}//if				
 					}//for
 					
+					//convert fraction of julian day to ns
+					
+						for (int p=0; p<arrayDJF.length; p++){	
+							if (p%3 == 0){
+					
+								if (Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0) {
+									double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2]) + 1 - minFracDay);
+								}//if
+								else {
+									double FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+								}//else
+																	
+								if((DAQ1+".1").equals(arrayDJF[p]))
+									{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+  								else if ((DAQ1+".2").equals(arrayDJF[p]))
+  									{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+        						else if ((DAQ1+".3").equals(arrayDJF[p]))
+        							{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								else if ((DAQ1+".4").equals(arrayDJF[p]))
+									{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								else if ((DAQ2+".1").equals(arrayDJF[p]))
+									{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								else if ((DAQ2+".2").equals(arrayDJF[p]))
+									{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								else if ((DAQ2+".3").equals(arrayDJF[p]))
+									{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								else if ((DAQ2+".4").equals(arrayDJF[p]))
+									{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+							}//if (p%3)	
+						}//for	
+					
+					
+					}
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
