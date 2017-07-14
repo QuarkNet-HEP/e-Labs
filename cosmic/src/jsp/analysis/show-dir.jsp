@@ -46,7 +46,7 @@
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
 				
 				<c:if test="${file.name == 'eventCandidates'}">
-					Rate Interval:  
+					<br/>Rate Interval:  
 					<form action="eclipse_Format.jsp" method="GET">
 						<input type="text" name="rate_Int" >
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
