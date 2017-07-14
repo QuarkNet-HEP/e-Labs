@@ -71,7 +71,7 @@
  		       	
          		int i = 0;           
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				double rateInterval = request.getParameter("rate_Int");
+				double rateInterval = Double.parseDouble((request.getParameter("rate_Int"));
 				//double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				int numBlankInt= 0; 

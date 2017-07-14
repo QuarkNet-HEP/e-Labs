@@ -44,7 +44,9 @@
 			<td>
 				<a href="${results.outputDirURL}/${file.name}">${file.name}</a>
 				<%-- SB, 4/5/17:  copy eventCandidates to eclipseFormat --%> 
+				
 				<c:if test="${file.name == 'eventCandidates'}">
+					Rate Interval:  
 					<form action="eclipse_Format.jsp" method="GET">
 						<input type="text" name="rate_Int" >
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
