@@ -236,10 +236,12 @@
 						else if (!jd.equals(lastJD)){					
 							endInterval = endInterval - 1.0;
 							if (minFracDay > endInterval){
-								listRate.add(String.valueOf(endInterval+1));
-								listRate.add(String.valueOf((endInterval+1) * 24.0 * 60.0));
+								listRate.add(String.valueOf(endInterval+1.0));
+								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
 								
-								listRate.add("*");
+								nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+								eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime2);
 								
 								listRate.add(String.valueOf(numEvents));
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
@@ -249,7 +251,11 @@
 									listRate.add(String.valueOf(endInterval));
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
-									listRate.add("*");
+									//listRate.add("*");
+									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime2);
+									
 									listRate.add("0");	
 									
 									endInterval = endInterval + rateInterval;
