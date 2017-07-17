@@ -71,13 +71,20 @@
  		       	
          		int i = 0;           
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
-				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
+				
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				String lastJD = " ";
 				double FracDayToNs = 0.0;
+				 
+				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
+				//ask user to input rateInterval 
+				//Scanner scan = new Scanner(System.in);
+				//String s;
+				//out.println("Enter time interval in min:");
+				//s = scan.next();
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -349,17 +356,11 @@
 					result2.append(listRate.get(j+2)); result2.append("\t");		
 					result2.append(listRate.get(j+3)); result2.append("\n");	
 			}//for
-			//numEndRows = listRate.size()-((int) listRate.size()/4);
+			
 			//append last row with a partial interval
-			result2.append(minFracDay); result2.append("\t"); 
-			result2.append(String.valueOf(endInterval*24.0*60.0)); result2.append("\t");	
-			
-			nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-			eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-			result2.append(eventDateTime2);
-			
-			result2.append(String.valueOf(numEvents));	
-			
+			//numEndRows = listRate.size()-((int) listRate.size()/4);
+			out.println(listRate.get(listRate.size()-1);
+			out.println(arrayDJF[0];
 				
 			String outline2 = result2.toString();
 			bw.write(outline2);						
