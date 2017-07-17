@@ -77,10 +77,14 @@
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				String lastJD = " ";
 				double FracDayToNs = 0.0;
+				double minFracDay; 
 				 
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
 				//ask user to input rateInterval 
+				//System.out.print("Enter rate interval: ");
+    			//String rateInterval = System.console().readLine();
+				
 				//Scanner scan = new Scanner(System.in);
 				//String s;
 				//out.println("Enter time interval in min:");
@@ -98,7 +102,7 @@
 					int numHits = Integer.parseInt(words[1]);
 					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
-					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
+					minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
 					
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
@@ -358,10 +362,12 @@
 			}//for
 			
 			//append last row with a partial interval
-			//numEndRows = listRate.size()-((int) listRate.size()/4);
-			out.println(listRate.get(listRate.size()-1));
-			out.println(arrayDJF[0]);
-				
+			int numEndRows = listRate.size()-((int) listRate.size()/4);
+			result2.append(minFracDay); result2.append("\t");
+			result2.append(minFracDay*24.0*60.0); result2.append("\t");
+			result2.append("*"); result2.append("\t");
+			result2.append(Integer.toString(numEndRows);
+							
 			String outline2 = result2.toString();
 			bw.write(outline2);						
 				
