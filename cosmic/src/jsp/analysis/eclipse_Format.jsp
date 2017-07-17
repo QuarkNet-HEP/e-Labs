@@ -109,7 +109,6 @@
 					String[] arrayDJF = new String[listDJF.size()]; //DJF represents DAQ, Julian, Fraction
 					arrayDJF = listDJF.toArray(arrayDJF); //arrayDJF can have different length for each line.
 					//out.println("arrayDJF:  " + Arrays.toString(arrayDJF));					
-					//out.println("Length of arrayDJF:  " + String.valueOf(arrayDJF.length));
 					
 					//find smallest fraction of day in arrayDJF
 					for (int j=0; j<arrayDJF.length; j++){	
@@ -136,9 +135,13 @@
 					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
-    				if (arrayDAQ.length != 2) {
-    					out.println("2 DAQs were not chosen!");
+    				if (arrayDAQ.length < 2) {
+    					out.println("Only 1 DAQ was chosen!");
        				}//if
+       				else if (arrayDAQ.length > 2) {
+       					out.println("More than 2 DAQs were chosen!");
+       					Runtime.exit();
+       				}
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
 					String DAQ2 = arrayDAQ[arrayDAQ.length - 1];					
@@ -299,25 +302,33 @@
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
 							StringBuffer heading = new StringBuffer();
-							heading.append("Evnt"); heading.append("\t"); heading.append("#Hit1"); heading.append("\t");
-							heading.append("#Hit2"); heading.append("\t"); heading.append("Partial"); heading.append("\t"); 
+							heading.append("Evnt"); heading.append("\t"); heading.append("#HitDAQ1"); heading.append("\t");
+							heading.append("#HitDAQ2"); heading.append("\t"); heading.append("Partial"); heading.append("\t"); 
 							heading.append("JulDay"); heading.append("\t"); heading.append("SSDB"); heading.append("\t"); 
 							heading.append("eventDateTime"); heading.append("\t");
 							heading.append(DAQ1+".1FracDay"); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
 							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
 							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");	
-							heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); 
-
+							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");
+							if (DAQ1.equals(DAQ2) && (arrayDAQ.length).equals(1)){	
+								heading.append("*.1FracDay"); heading.append("\t");heading.append("*.1nsAfter1stHit"); heading.append("\t");	
+								heading.append("*.2FracDay"); heading.append("\t");heading.append("*.2nsAfter1stHit"); heading.append("\t");
+								heading.append("*.3FracDay"); heading.append("\t");heading.append("*.3nsAfter1stHit"); heading.append("\t");
+								heading.append("*.4FracDay"); heading.append("\t");heading.append("*.4nsAfter1stHit"); heading.append("\t");	
+							}//
+							else {
+								heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");
+								heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
+								heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
+								heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); 
+							}//else
+							
 							String outHeading = heading.toString();
 							bw.write(outHeading); bw.newLine();
 						}//if
 						
 				        bw.write(outline); 
-				        out.println(outline); out.println("<br>"); 
+				        //out.println(outline); out.println("<br>"); 
 				        lastJD = jd;
 						   			        
 				}//if 
