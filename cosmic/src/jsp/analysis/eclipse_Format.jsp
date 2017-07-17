@@ -139,8 +139,7 @@
     					out.println("Only 1 DAQ was chosen!");
        				}//if
        				else if (arrayDAQ.length > 2) {
-       					out.println("More than 2 DAQs were chosen!");
-       					Runtime.exit(1);
+       					out.println("More than 2 DAQs were chosen!");//add line to exit
        				}
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
@@ -310,7 +309,7 @@
 							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
 							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");
-							if (DAQ1.equals(DAQ2) && (arrayDAQ.length).equals(1)){	
+							if (DAQ1.equals(DAQ2) && arrayDAQ.length==1){	
 								heading.append("*.1FracDay"); heading.append("\t");heading.append("*.1nsAfter1stHit"); heading.append("\t");	
 								heading.append("*.2FracDay"); heading.append("\t");heading.append("*.2nsAfter1stHit"); heading.append("\t");
 								heading.append("*.3FracDay"); heading.append("\t");heading.append("*.3nsAfter1stHit"); heading.append("\t");
