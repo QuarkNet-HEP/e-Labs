@@ -362,11 +362,11 @@
 			}//for
 			
 			//append last row with a partial interval
-			int numEndRows = listRate.size()-((int) listRate.size()/4);
+			//int numEndRows = listRate.size()-((int) listRate.size()/4);			
 			result2.append(minFracDay); result2.append("\t");
 			result2.append(minFracDay*24.0*60.0); result2.append("\t");
 			result2.append("*"); result2.append("\t");
-			result2.append(Integer.toString(numEndRows);
+			result2.append(Integer.toString(listRate.size()%4));//listRate.size()%4 is number of end rows
 							
 			String outline2 = result2.toString();
 			bw.write(outline2);						
