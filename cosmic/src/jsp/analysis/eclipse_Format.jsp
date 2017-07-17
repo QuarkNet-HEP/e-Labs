@@ -78,6 +78,7 @@
 				String lastJD = " ";
 				double FracDayToNs = 0.0;
 				double minFracDay = 0.0; 
+				int numEndRows = 0;
 				 
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
@@ -347,7 +348,10 @@
 					listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add(line);
 				}//else
 				
-				line = br.readLine();        		
+				line = br.readLine();     
+				if (line == null){
+					numEndRows = numEvents;
+				} 		
 			}//while
 				
 			  
@@ -360,13 +364,12 @@
 					result2.append(listRate.get(j+3)); result2.append("\n");	
 			}//for
 			
-			//append last row with a partial interval
-			//int numEndRows = listRate.size()-((int) listRate.size()/4);			
+			//append last row with a partial interval			
 			result2.append(minFracDay); result2.append("\t");
 			result2.append(minFracDay*24.0*60.0); result2.append("\t");
 			result2.append("*"); result2.append("\t");
-			result2.append(Integer.toString(listRate.size()%4));//listRate.size()%4 is number of end rows
-							
+			result2.append(Integer.toString(numEndRows));
+			
 			String outline2 = result2.toString();
 			bw.write(outline2);						
 				
