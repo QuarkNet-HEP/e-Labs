@@ -75,9 +75,9 @@
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
-				String lastJD = " ";
 				double FracDayToNs = 0.0;
 				double minFracDay = 0.0; 
+				String jd = " "; String lastJD = " ";
 				 
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
@@ -99,7 +99,7 @@
 				if(words[0].charAt(0) != '#' && i >= 3){
 					int eventNum = Integer.parseInt(words[0]);
 					int numHits = Integer.parseInt(words[1]);
-					String jd = words[4];
+					jd = words[4];
 					String partial = words[5];//minimum fractional day		
 					minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min
 					
@@ -225,9 +225,9 @@
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							
-								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime2);
+								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime);
 							
 								listRate.add(String.valueOf(numEvents));	
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
@@ -237,9 +237,9 @@
 									listRate.add(String.valueOf(endInterval));
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
-									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime2);
+									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime);
 								
 									listRate.add("0");	
 									endInterval = endInterval + rateInterval;
@@ -257,9 +257,9 @@
 								listRate.add(String.valueOf(endInterval+1.0));
 								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
 								
-								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime2);
+								NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+								String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime);
 								
 								listRate.add(String.valueOf(numEvents));
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
@@ -270,9 +270,9 @@
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
 									//listRate.add("*");
-									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime2);
+									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime);
 									
 									listRate.add("0");	
 									
@@ -363,6 +363,11 @@
 			//append last row with a partial interval			
 			result2.append(minFracDay); result2.append("\t");
 			result2.append(minFracDay*24.0*60.0); result2.append("\t");
+			
+			NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
+			String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+			result2.append(eventDateTime2);
+			
 			result2.append("*"); result2.append("\t");
 			result2.append(Integer.toString(numEvents));
 			
