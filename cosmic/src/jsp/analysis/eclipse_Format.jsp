@@ -359,8 +359,8 @@
 			
 			//append last row with a partial interval
 			//numEndRows = listRate.size()-((int) listRate.size()/4);
-			out.println(listRate.get(listRate.size()-1);
-			out.println(arrayDJF[0];
+			out.println(listRate.get(listRate.size()-1));
+			out.println(arrayDJF[0]);
 				
 			String outline2 = result2.toString();
 			bw.write(outline2);						
