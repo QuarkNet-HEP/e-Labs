@@ -89,7 +89,7 @@
  		       	Scanner reader = new Scanner(System.in);  // Reading from System.in
 				out.println("Enter a time interval in min: ");
 				int n = reader.nextInt(); 
-				out.prinln("You entered: "+Integer.toString(n));
+				out.println("You entered: "+Integer.toString(n));
 
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -352,7 +352,7 @@
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
 					// get the date and time of the shower in human readable form
-		            NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(minFracDay));
+		            NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
         		    String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 				result2.append(eventDateTime2); result2.append("\t");
 				result2.append(numEvents); 
