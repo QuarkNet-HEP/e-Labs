@@ -50,11 +50,12 @@
 			Path source = Paths.get(src);
 			Path destination = Paths.get(dst);
 			try {
-	                        Files.copy(source, destination);
-        	        } catch (IOException e) {
-                        e.printStackTrace();
-                	}
-		}		
+	                Files.copy(source, destination);
+        	}//try 
+        	catch (IOException e) {
+                    e.printStackTrace();
+            }//catch
+		}//if
 
 		//******Phase II:  Read one line at a time from eFtemp; parse, perform calculations, & write to eclipseFormat******
 		if (file2.exists()){               
@@ -85,11 +86,11 @@
 				int eventNum = 1; 
 				int numHits = 1;
 				int numBlankInt= 0;
-					
- 		       	Scanner reader = new Scanner(System.in);  // Reading from System.in
+				
+				Scanner in = new Scanner(System.in);	
 				out.println("Enter a time interval in min: ");
-				int n = reader.nextInt(); 
-				out.println("You entered: "+Integer.toString(n));
+				String in = reader.next(); 
+				out.println("You entered: "+in);
 
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
