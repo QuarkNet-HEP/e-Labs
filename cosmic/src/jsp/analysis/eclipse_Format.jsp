@@ -71,29 +71,17 @@
  		       	
          		int i = 0;           
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				
+				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				int numBlankInt= 0; 
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
+				String lastJD = " ";
 				double FracDayToNs = 0.0;
-				double minFracDay = 0.0; 
-				String jd = " "; String lastJD = " ";
-				String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
-        	    TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-				 
-				double rateInterval = 3.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
-				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
-				//ask user to input rateInterval 
-				//System.out.print("Enter rate interval: ");
-    			//String rateInterval = System.console().readLine();
-				
-				//Scanner scan = new Scanner(System.in);
-				//String s;
-				//out.println("Enter time interval in min:");
-				//s = scan.next();
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
+         	//while (i < 50){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -101,9 +89,9 @@
 				if(words[0].charAt(0) != '#' && i >= 3){
 					int eventNum = Integer.parseInt(words[0]);
 					int numHits = Integer.parseInt(words[1]);
-					jd = words[4];
+					String jd = words[4];
 					String partial = words[5];//minimum fractional day		
-					minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min
+					double minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min; check later	
 					
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
@@ -151,7 +139,8 @@
     					out.println("Only 1 DAQ was chosen!");
        				}//if
        				else if (arrayDAQ.length > 2) {
-       					out.println("More than 2 DAQs were chosen!");//add line to exit
+       					out.println("More than 2 DAQs were chosen!");
+       					Runtime.exit();
        				}
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
@@ -167,6 +156,8 @@
 					
 					// get the date and time of the shower in human readable form
 	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
+    	            String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+        	        TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
         	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
         	        
 					//output arrays
@@ -217,7 +208,7 @@
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("EndTime"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
+						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
 					else if(i > 3){
 						if (jd.equals(lastJD)){			
@@ -225,9 +216,9 @@
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							
-								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime);
+								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime2);
 							
 								listRate.add(String.valueOf(numEvents));	
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
@@ -237,9 +228,9 @@
 									listRate.add(String.valueOf(endInterval));
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
-									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime);
+									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime2);
 								
 									listRate.add("0");	
 									endInterval = endInterval + rateInterval;
@@ -257,9 +248,9 @@
 								listRate.add(String.valueOf(endInterval+1.0));
 								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
 								
-								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime);
+								NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+								String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime2);
 								
 								listRate.add(String.valueOf(numEvents));
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
@@ -270,9 +261,9 @@
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
 									//listRate.add("*");
-									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime);
+									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime2);
 									
 									listRate.add("0");	
 									
@@ -319,12 +310,12 @@
 							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
 							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");
-							if (DAQ1.equals(DAQ2) && arrayDAQ.length==1){	
+							if (DAQ1.equals(DAQ2) && (arrayDAQ.length).equals(1)){	
 								heading.append("*.1FracDay"); heading.append("\t");heading.append("*.1nsAfter1stHit"); heading.append("\t");	
 								heading.append("*.2FracDay"); heading.append("\t");heading.append("*.2nsAfter1stHit"); heading.append("\t");
 								heading.append("*.3FracDay"); heading.append("\t");heading.append("*.3nsAfter1stHit"); heading.append("\t");
 								heading.append("*.4FracDay"); heading.append("\t");heading.append("*.4nsAfter1stHit"); heading.append("\t");	
-							}//if
+							}//
 							else {
 								heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");
 								heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
@@ -347,34 +338,23 @@
 					listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add(line);
 				}//else
 				
-				line = br.readLine();     
+				line = br.readLine();        		
 			}//while
 				
-			  
-			//Write second section	
-			StringBuffer result2 = new StringBuffer();
-			for (int j = 0; j < listRate.size()  ; j+=4){
-					result2.append(listRate.get(j)); result2.append("\t"); 
-					result2.append(listRate.get(j+1)); result2.append("\t");
-					result2.append(listRate.get(j+2)); result2.append("\t");		
-					result2.append(listRate.get(j+3)); result2.append("\n");	
-			}//for
-			
-			//append last row with a partial interval			
-			result2.append(minFracDay); result2.append("\t");
-			result2.append(minFracDay*24.0*60.0); result2.append("\t");
-			
-			NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
-			String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-			result2.append(eventDateTime2); result2.append("\t");
-			result2.append(Integer.toString(numEvents));
-			
-			String outline2 = result2.toString();
-			bw.write(outline2);						
+				//Write second section	
+				StringBuffer result2 = new StringBuffer();
+				for (int j = 0; j < listRate.size()  ; j+=4){
+						result2.append(listRate.get(j)); result2.append("\t"); 
+						result2.append(listRate.get(j+1)); result2.append("\t");
+						result2.append(listRate.get(j+2)); result2.append("\t");		
+						result2.append(listRate.get(j+3)); result2.append("\n");	
+				}//for	
+				String outline2 = result2.toString();
+				bw.write(outline2);						
 				
-			request.setAttribute("dst2", dst2);	
-	       	br.close();
-	       	bw.close();
+				request.setAttribute("dst2", dst2);	
+	        	br.close();
+	        	bw.close();
         		
         	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
