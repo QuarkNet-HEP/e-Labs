@@ -310,7 +310,7 @@
 							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
 							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
 							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");
-							if (DAQ1.equals(DAQ2) && (arrayDAQ.length).equals(1)){	
+							if ( DAQ1.equals(DAQ2) && arrayDAQ.length == 1 ){	
 								heading.append("*.1FracDay"); heading.append("\t");heading.append("*.1nsAfter1stHit"); heading.append("\t");	
 								heading.append("*.2FracDay"); heading.append("\t");heading.append("*.2nsAfter1stHit"); heading.append("\t");
 								heading.append("*.3FracDay"); heading.append("\t");heading.append("*.3nsAfter1stHit"); heading.append("\t");
