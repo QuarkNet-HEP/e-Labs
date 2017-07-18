@@ -140,7 +140,7 @@
        				}//if
        				else if (arrayDAQ.length > 2) {
        					out.println("More than 2 DAQs were chosen!");
-       					Runtime.exit();
+       					//Runtime.exit();
        				}
 					Arrays.sort(arrayDAQ); 					
 					String DAQ1 = arrayDAQ[0];
