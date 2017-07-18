@@ -88,9 +88,14 @@
 				int numBlankInt= 0;
 				
 				Console console = System.console();
-		        String line = console.readLine("Enter time interval: ");
-      			System.out.print("You entered: "+line);
-	
+				if (console==null){
+      				out.println("console not available ");
+   				}//if
+   				else {
+		        	String input = console.readLine("Enter time interval: ");
+      				out.println("You entered: "+input);
+				}//else
+				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
          	//while (i < 50){ 
