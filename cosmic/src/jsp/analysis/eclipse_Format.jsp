@@ -87,11 +87,10 @@
 				int numHits = 1;
 				int numBlankInt= 0;
 				
-				Scanner sc = new Scanner(System.in);	
-				out.println("Enter a time interval in min: ");
-				String input = sc.next(); 
-				out.println("You entered: "+input);
-
+				Console console = System.console();
+		        String line = console.readLine("Enter time interval: ");
+      			System.out.print("You entered: "+line);
+	
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
          	//while (i < 50){ 
