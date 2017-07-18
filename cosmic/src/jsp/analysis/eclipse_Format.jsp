@@ -67,20 +67,24 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
- 		       	String line = br.readLine();
+ 		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
  		       	
-         		int i = 0;           
+ 		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+ 		       	String line = br.readLine();        		        				 
+				String lastJD = " "; String jd = " ";	
+				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
+				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
-				int numBlankInt= 0; 
-				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
+				double FracDayToNs = 0.0; 
+				double minFracDay = 0.0;
+				
+				int i = 0;   
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
-				String lastJD = " "; String jd = " ";
-				double FracDayToNs = 0.0; double minFracDay = 0.0;
-				int eventNum = 1; int numHits = 1;
-				String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
-        	    TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
+				int eventNum = 1; 
+				int numHits = 1;
+				int numBlankInt= 0;
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -199,7 +203,7 @@
 					//Calculate rates
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("Time"); listRate.add("Time(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
+						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
 					}//if
 					else if(i > 3){
 						if (jd.equals(lastJD)){			
@@ -340,6 +344,11 @@
 						result2.append(listRate.get(j+2)); result2.append("\t");		
 						result2.append(listRate.get(j+3)); result2.append("\n");	
 				}//for	
+				result2.append(minFracDay); result2.append("\t");
+				result2.append(minFracDay*24.0*60.0); result2.append("\t");
+				result2.append("*"); result2.append("\t");
+				result2.append(numEvents); 
+				
 				String outline2 = result2.toString();
 				bw.write(outline2);						
 				
