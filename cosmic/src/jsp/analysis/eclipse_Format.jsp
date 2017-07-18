@@ -25,6 +25,11 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
+	<form action = "main.jsp" method = "GET">
+         Rate Interval (min): <input type = "text" name = "rate_int">
+         <input type = "submit" value = "Submit" />
+    </form>
+    
 	<%	
 		//******Phase I:  copy eventCandidates file into eFtemp-date******
 		//Create variables src and dst
@@ -58,6 +63,7 @@
 		}//if
 
 		//******Phase II:  Read one line at a time from eFtemp; parse, perform calculations, & write to eclipseFormat******
+		
 		if (file2.exists()){               
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
@@ -75,8 +81,12 @@
 				String lastJD = " "; String jd = " ";	
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				
+				//testing
+				String myText = request.getParameter("rate_int");
+				out.println("You input: "+myText);				
+				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				double rateInterval = 2.5/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				double rateInterval = 1.5/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				double FracDayToNs = 0.0; 
 				double minFracDay = 0.0;
@@ -86,15 +96,6 @@
 				int eventNum = 1; 
 				int numHits = 1;
 				int numBlankInt= 0;
-				
-				Console console = System.console();
-				if (console==null){
-      				out.println("console not available ");
-   				}//if
-   				else {
-		        	String input = console.readLine("Enter time interval: ");
-      				out.println("You entered: "+input);
-				}//else
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
