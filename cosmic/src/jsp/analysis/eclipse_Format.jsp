@@ -239,8 +239,8 @@
 								listRate.add(String.valueOf(endInterval+1.0));
 								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
 								
-								NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-								String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime);
 								
 								listRate.add(String.valueOf(numEvents));
