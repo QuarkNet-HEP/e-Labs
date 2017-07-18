@@ -68,7 +68,7 @@
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
  		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
- 		       	
+ 		       	 		       	
  		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
  		       	String line = br.readLine();        		        				 
 				String lastJD = " "; String jd = " ";	
@@ -85,7 +85,12 @@
 				int eventNum = 1; 
 				int numHits = 1;
 				int numBlankInt= 0;
-				
+					
+ 		       	Scanner reader = new Scanner(System.in);  // Reading from System.in
+				out.println("Enter a time interval in min: ");
+				int n = reader.nextInt(); 
+				out.prinln("You entered: "+Integer.toString(n));
+
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
          	//while (i < 50){ 
@@ -151,7 +156,7 @@
 						else if (DAQ2.equals(listDAQ.get(j))){numHits2++;}	
 					}			
 					
-					// get the date and time of the shower in human readable form
+					// get the date and time of the event in human readable form
 	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
         	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
         	        
@@ -346,7 +351,10 @@
 				}//for	
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
-				result2.append("*"); result2.append("\t");
+					// get the date and time of the shower in human readable form
+		            NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(minFracDay));
+        		    String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
+				result2.append(eventDateTime2); result2.append("\t");
 				result2.append(numEvents); 
 				
 				String outline2 = result2.toString();
