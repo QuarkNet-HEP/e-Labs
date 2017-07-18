@@ -78,6 +78,8 @@
 				double FracDayToNs = 0.0;
 				double minFracDay = 0.0; 
 				String jd = " "; String lastJD = " ";
+				String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+        	    TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
 				 
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
@@ -165,8 +167,6 @@
 					
 					// get the date and time of the shower in human readable form
 	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
-    	            String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
-        	        TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
         	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
         	        
 					//output arrays
