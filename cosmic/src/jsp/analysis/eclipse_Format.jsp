@@ -25,10 +25,6 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
-	<form action = "main.jsp" method = "GET">
-         Rate Interval (min): <input type = "text" name = "rate_int">
-         <input type = "submit" value = "Submit" />
-    </form>
     
 	<%	
 		//******Phase I:  copy eventCandidates file into eFtemp-date******
@@ -80,10 +76,6 @@
  		       	String line = br.readLine();        		        				 
 				String lastJD = " "; String jd = " ";	
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
-				
-				//testing
-				String myText = request.getParameter("rate_int");
-				out.println("You input: "+myText);				
 				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.5/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
