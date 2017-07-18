@@ -81,7 +81,7 @@
 				String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
         	    TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
 				 
-				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				double rateInterval = 3.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0 
 				//ask user to input rateInterval 
 				//System.out.print("Enter rate interval: ");
@@ -366,9 +366,7 @@
 			
 			NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
 			String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-			result2.append(eventDateTime2);
-			
-			result2.append("*"); result2.append("\t");
+			result2.append(eventDateTime2); result2.append("\t");
 			result2.append(Integer.toString(numEvents));
 			
 			String outline2 = result2.toString();
