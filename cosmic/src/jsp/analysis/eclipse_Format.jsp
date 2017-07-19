@@ -247,7 +247,7 @@
 							}//if	
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
 									rateCount ++;
 								}//if
 							}//else											
@@ -287,7 +287,7 @@
 							}//if
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
 									rateCount ++;
 								}//if
 							}//else
@@ -352,7 +352,7 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					listRate.add(line); listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add("*");
+					listRate.add("*"); listRate.add(line); listRate.add("*"); listRate.add("*"); listRate.add("*"); 
 				}//else
 				
 				line = br.readLine();        		
