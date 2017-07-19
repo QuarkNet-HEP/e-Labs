@@ -76,6 +76,9 @@
  		       	String line = br.readLine();        		        				 
 				String lastJD = " "; String jd = " ";	
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
+				String rateDAQ = "6119";
+				String rate1stCh = "1";
+				String rate2ndCh = "2";				
 				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
@@ -88,6 +91,8 @@
 				int eventNum = 1; 
 				int numHits = 1;
 				int numBlankInt= 0;
+				int rateCount = 0;
+				
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -203,10 +208,12 @@
 						}//if				
 					}//for
 					
-					//Calculate rates
+					//Calculate interval counts 
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents");
+						//heading
+						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); 
+						listRate.add("IntervalEnd"); listRate.add("numEvents"); listRate.add("numEventsDAQ1CH1,2");
 					}//if
 					else if(i > 3){
 						if (jd.equals(lastJD)){			
@@ -218,7 +225,9 @@
 								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime);
 							
-								listRate.add(String.valueOf(numEvents));	
+								listRate.add(String.valueOf(numEvents));	//number of events
+								listRate.add(String.valueOf(rateCount);//number of events that meet criteria
+								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
 								//append numBlankInt number of "0 event" lines
@@ -230,13 +239,17 @@
 									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 									listRate.add(eventDateTime);
 								
-									listRate.add("0");	
+									listRate.add("0");//number of events	
+									listRate.add("0");//number of events that fulfill criteria 
 									endInterval = endInterval + rateInterval;
 								}//for		
-								numEvents = 1;												
+								numEvents = 1; rateCount = 0;																		
 							}//if	
 							else {
 								numEvents++;
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+									rateCount ++;
+								}//if
 							}//else											
 						}//if
 						
@@ -267,12 +280,15 @@
 									
 									endInterval = endInterval + rateInterval;
 								}//for
-								numEvents = 1;
+								numEvents = 1; rateCount = 0;								
 							}//if
 							else {
 								numEvents++;
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+									rateCount ++;
+								}//if
 							}//else
-						}//elseif		 																						
+						}//elseif		
 					}//else if (i>3)
 					
 					//Write to output file and console.
