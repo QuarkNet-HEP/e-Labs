@@ -226,7 +226,7 @@
 								listRate.add(eventDateTime);
 							
 								listRate.add(String.valueOf(numEvents));	//number of events
-								listRate.add(String.valueOf(rateCount);//number of events that meet criteria
+								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -264,6 +264,8 @@
 								listRate.add(eventDateTime);
 								
 								listRate.add(String.valueOf(numEvents));
+								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
+								
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
 								//append numBlankInt number of "0 event" lines
@@ -276,7 +278,8 @@
 									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 									listRate.add(eventDateTime);
 									
-									listRate.add("0");	
+									listRate.add("0"); //number of events	
+									listRate.add("0");//number of events that fulfill criteria 
 									
 									endInterval = endInterval + rateInterval;
 								}//for
