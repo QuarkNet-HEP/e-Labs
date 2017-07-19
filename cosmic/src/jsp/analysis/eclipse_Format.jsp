@@ -249,7 +249,7 @@
 								numEvents++;
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
 									rateCount++;
-									out.println(rateCount);
+									out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
 								}//if
 							}//else											
 						}//if
