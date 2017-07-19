@@ -360,11 +360,12 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=4){
+				for (int j = 0; j < listRate.size()  ; j+=5){
 						result2.append(listRate.get(j)); result2.append("\t"); 
 						result2.append(listRate.get(j+1)); result2.append("\t");
 						result2.append(listRate.get(j+2)); result2.append("\t");		
-						result2.append(listRate.get(j+3)); result2.append("\n");	
+						result2.append(listRate.get(j+3)); result2.append("\t");	
+						result2.append(listRate.get(j+4)); result2.append("\n");
 				}//for	
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
