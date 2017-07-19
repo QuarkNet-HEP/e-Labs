@@ -78,7 +78,7 @@
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
 				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
-				double rateInterval = 1.5/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
+				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				double FracDayToNs = 0.0; 
 				double minFracDay = 0.0;
