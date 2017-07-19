@@ -172,6 +172,7 @@
 					//convert fraction of julian day to ns
 					for (int p=0; p<arrayDJF.length; p++){	
 						if (p%3 == 0){
+							//logic for Julian Day change within a row					
 							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
 								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1-minFracDay);
 							}//if
@@ -214,8 +215,12 @@
 						//heading
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); 
 						listRate.add("IntervalEnd"); listRate.add("numEvents"); listRate.add("numEventsDAQ1CH1,2");
+						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+							rateCount++;
+						}//if		
+						out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
 					}//if
-					else if(i > 3){
+					if(i > 3){
 						if (jd.equals(lastJD)){			
 							if (minFracDay > endInterval){
 								listRate.add(String.valueOf(endInterval)); 
@@ -293,7 +298,7 @@
 								}//if
 							}//else
 						}//elseif		
-					}//else if (i>3)
+					}//if 
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
