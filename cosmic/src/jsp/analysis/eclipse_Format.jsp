@@ -248,7 +248,9 @@
 									listRate.add("0");//number of events that fulfill criteria 
 									endInterval = endInterval + rateInterval;
 								}//for		
-								numEvents = 1; rateCount = 0;																		
+								numEvents = 1; rateCount = 0;
+								out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
+																		
 							}//if	
 							else {
 								numEvents++;
