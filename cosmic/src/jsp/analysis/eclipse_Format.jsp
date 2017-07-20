@@ -95,8 +95,8 @@
 				
 				
          	//loop through each line of input file src2 (eFtemp-date)
-         	//while (line != null){ 
-         	while (i < 10){ 
+         	while (line != null){ 
+         	//while (i < 10){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -297,7 +297,13 @@
 									
 									endInterval = endInterval + rateInterval;
 								}//for
-								numEvents = 1; rateCount = 0;								
+								numEvents = 1; 
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+									rateCount = 1;
+								}//else
+								else {
+									rateCount = 0;
+								}//else								
 							}//if
 							else {
 								numEvents++;
