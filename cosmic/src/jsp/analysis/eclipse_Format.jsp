@@ -94,9 +94,9 @@
 				int rateCount = 0;
 				
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-				System.out.print("Enter your name: ");
+				out.println("Enter your name: ");
 				String name = reader.readLine();
-				System.out.println("Your name is: " + name);
+				out.println("Your name is: " + name);
 
 				/*out.println("Enter time interval: ");	
 				Scanner sc = new Scanner(System.in);
