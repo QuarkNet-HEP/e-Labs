@@ -40,6 +40,7 @@
 	</script>
     
 	<%	
+		Thread.sleep(30000); // sleep 30 seconds
 		//******Phase I:  copy eventCandidates file into eFtemp-date******
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");//sF = source Filename
