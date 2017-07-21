@@ -93,10 +93,15 @@
 				int numBlankInt= 0;
 				int rateCount = 0;
 				
+				out.println("Enter time interval: ");	
+				Scanner sc = new Scanner(in);
+				int inputInt = sc.nextInt();
+				out.println("You entered: "+ inputInt);
 				
+
          	//loop through each line of input file src2 (eFtemp-date)
-         	while (line != null){ 
-         	//while (i < 10){ 
+         	//while (line != null){ 
+         	while (i < 10){ 
 				i++;
 				String[] words = line.split("\\s+");
 				
@@ -174,7 +179,7 @@
 						if (p%3 == 0){
 							//logic for Julian Day change within a row					
 							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
-								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1.0-minFracDay);
+								FracDayToNs = 3600*24*Math.pow(10,9)*(1.0 + Double.parseDouble(arrayDJF[p+2]) - minFracDay);
 							}//if
 							else{
 								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
@@ -217,8 +222,7 @@
 						listRate.add("IntervalEnd"); listRate.add("numEvents"); listRate.add("numEventsDAQ1CH1,2");
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
 							rateCount++;
-						}//if		
-						out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
+						}//if	
 					}//if
 					if(i > 3){
 						if (jd.equals(lastJD)){			
