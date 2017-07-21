@@ -309,7 +309,7 @@
 								}//if
 							}//else
 						}//else if		
-					}//if (1>3)
+					}//if (i>3)
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -390,7 +390,8 @@
 		            NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
         		    String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 				result2.append(eventDateTime2); result2.append("\t");
-				result2.append(numEvents); 
+				result2.append(numEvents); result2.append("\t");
+				result2.append(rateCount);
 				
 				String outline2 = result2.toString();
 				bw.write(outline2);						
