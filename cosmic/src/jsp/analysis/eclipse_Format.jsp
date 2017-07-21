@@ -79,6 +79,8 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
+		String person2 = request.getParameter("person");
+		out.println("person2:  "+person2);
 				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
