@@ -25,6 +25,19 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
+	
+	<p>Click the button to demonstrate the prompt box.</p>
+	<button onclick="myFunction()">Try it</button>
+	<p id="demo"></p>
+	<script>
+	function myFunction() {
+    	var person = prompt("Please enter your name", "Harry Potter");
+    	if (person != null) {
+       	 	document.getElementById("demo").innerHTML =
+        	"Hello " + person + "! How are you today?";
+    	}//if
+	}//myFunction()
+	</script>
     
 	<%	
 		//******Phase I:  copy eventCandidates file into eFtemp-date******
@@ -93,16 +106,15 @@
 				int numBlankInt= 0;
 				int rateCount = 0;
 				
-				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+				/*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				out.println("Enter your name: ");
 				String name = reader.readLine();
-				out.println("Your name is: " + name);
+				out.println("Your name is: " + name);*/
 
 				/*out.println("Enter time interval: ");	
 				Scanner sc = new Scanner(System.in);
 				int inputInt = sc.nextInt();
 				out.println("You entered: "+ inputInt);*/
-				
 
          	//loop through each line of input file src2 (eFtemp-date)
          	//while (line != null){ 
