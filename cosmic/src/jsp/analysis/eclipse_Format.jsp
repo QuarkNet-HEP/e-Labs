@@ -174,11 +174,13 @@
 						if (p%3 == 0){
 							//logic for Julian Day change within a row					
 							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
-								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1-minFracDay);
+								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])+1.0-minFracDay);
 							}//if
 							else{
 								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 							}//else
+							
+							if (i = 
 																
 							if((DAQ1+".1").equals(arrayDJF[p]))
 								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
@@ -321,8 +323,12 @@
 						//partial
 						result.append(partial); result.append("\t"); 
 						//JulianDay
-						if (jdBool){result.append(jd); result.append("\t");}//if
-							else{result.append("Not1JD"); result.append("\t");}//else	
+						if (jdBool){
+							result.append(jd); result.append("\t");
+						}//if
+						else{
+							result.append("Not1JD"); result.append("\t");
+						}//else	
 						//SecSinDayBeg (SSDB)
 						result.append(Double.toString(SecSinDayBeg)); result.append("\t"); 						
 						result.append(eventDateTime); result.append("\t"); 
