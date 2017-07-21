@@ -221,8 +221,62 @@
 						out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
 					}//if
 					if(i > 3){
+						if (minFracDay > endInterval){	
+							if (jd.equals(lastJD)){						
+								listRate.add(String.valueOf(endInterval)); 
+								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+							}//if
+							else if (!jd.equals(lastJD)){
+								listRate.add(String.valueOf(endInterval+1.0));
+								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
+								nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+							}//else if
+								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+								listRate.add(eventDateTime);
+							
+								listRate.add(String.valueOf(numEvents));//number of events
+								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
+								
+								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
+								endInterval = endInterval + rateInterval;
+								//append numBlankInt number of "0 event" lines
+								for (int j = 0; j < numBlankInt; j++){	
+									listRate.add(String.valueOf(endInterval));
+									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
+									
+									if (jd.equals(lastJD)){	
+										nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
+									}//if
+									else if (!jd.equals(lastJD)){
+										nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
+									}//else if
+									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
+									listRate.add(eventDateTime);
+								
+									listRate.add("0");//number of events	
+									listRate.add("0");//number of events that fulfill criteria 
+									
+									endInterval = endInterval + rateInterval;
+								}//for		
+								numEvents = 1; 
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+									rateCount = 1;
+								}//if
+								else {
+									rateCount = 0;
+								}//else											
+							}//if	
+							else {
+								numEvents++;
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
+									rateCount++;
+								}//if
+							}//else									
+					
+						/*					
 						if (jd.equals(lastJD)){			
-							if (minFracDay > endInterval){
+							if (minFracDay > endInterval){							
 								listRate.add(String.valueOf(endInterval)); 
 								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 							
@@ -230,7 +284,7 @@
 								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime);
 							
-								listRate.add(String.valueOf(numEvents));	//number of events
+								listRate.add(String.valueOf(numEvents));//number of events
 								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
@@ -246,23 +300,21 @@
 								
 									listRate.add("0");//number of events	
 									listRate.add("0");//number of events that fulfill criteria 
+									
 									endInterval = endInterval + rateInterval;
 								}//for		
 								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
 									rateCount = 1;
-								}//else
+								}//if
 								else {
 									rateCount = 0;
-								}//else
-								out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
-																		
+								}//else											
 							}//if	
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
 									rateCount++;
-									out.println("i:  "+i);out.println("rateCount:  "+rateCount); out.println("<br>");
 								}//if
 							}//else											
 						}//if
@@ -277,7 +329,7 @@
 								eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 								listRate.add(eventDateTime);
 								
-								listRate.add(String.valueOf(numEvents));
+								listRate.add(String.valueOf(numEvents));//number of events
 								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
 								
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
@@ -287,7 +339,6 @@
 									listRate.add(String.valueOf(endInterval));
 									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
 								
-									//listRate.add("*");
 									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
 									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 									listRate.add(eventDateTime);
@@ -298,21 +349,22 @@
 									endInterval = endInterval + rateInterval;
 								}//for
 								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
 									rateCount = 1;
-								}//else
+								}//if
 								else {
 									rateCount = 0;
 								}//else								
 							}//if
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
 									rateCount++;
 								}//if
 							}//else
-						}//elseif		
-					}//if 
+						}//else if		
+						*/
+					}//if (1>3)
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
