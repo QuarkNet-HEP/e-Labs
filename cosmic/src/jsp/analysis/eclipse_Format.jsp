@@ -93,10 +93,15 @@
 				int numBlankInt= 0;
 				int rateCount = 0;
 				
-				out.println("Enter time interval: ");	
+				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+				System.out.print("Enter your name: ");
+				String name = reader.readLine();
+				System.out.println("Your name is: " + name);
+
+				/*out.println("Enter time interval: ");	
 				Scanner sc = new Scanner(System.in);
 				int inputInt = sc.nextInt();
-				out.println("You entered: "+ inputInt);
+				out.println("You entered: "+ inputInt);*/
 				
 
          	//loop through each line of input file src2 (eFtemp-date)
