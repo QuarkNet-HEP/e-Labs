@@ -94,7 +94,7 @@
 				int rateCount = 0;
 				
 				out.println("Enter time interval: ");	
-				Scanner sc = new Scanner(in);
+				Scanner sc = new Scanner(System.in);
 				int inputInt = sc.nextInt();
 				out.println("You entered: "+ inputInt);
 				
