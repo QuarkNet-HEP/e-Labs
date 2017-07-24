@@ -25,22 +25,9 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
-	
-	<p>Click the button to demonstrate the prompt box.</p>
-	<button onclick="myFunction()">Try it</button>
-	<p id="demo"></p>
-	<script>
-	function myFunction() {
-    	var person = prompt("Please enter your name", "Harry Potter");
-    	if (person != null) {
-       	 	document.getElementById("demo").innerHTML =
-        	"Hello " + person + "! How are you today?";
-    	}//if
-	}//myFunction()
-	</script>
     
 	<%	
-		Thread.sleep(30000); // sleep 30 seconds
+		
 		//******Phase I:  copy eventCandidates file into eFtemp-date******
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");//sF = source Filename
@@ -80,8 +67,6 @@
     	BufferedWriter bw = null;
 		String src2 = dst;				//eFtemp-date is source in this phase
 		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
-		String person2 = request.getParameter("person");
-		out.println("person2:  "+person2);
 				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
