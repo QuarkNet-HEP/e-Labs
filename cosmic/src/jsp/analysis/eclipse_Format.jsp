@@ -424,10 +424,13 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine(); 
+					listRate.add("*");
 					listRate.add(line); 
-					for (int j = 0; j < 11; j++){
+					/*for (int j = 0; j < 11; j++){
 						listRate.add("*"); 
-					}//for
+					}//for*/
+					listRate.add("*"); listRate.add("*");listRate.add("*");listRate.add("*");listRate.add("*");
+					listRate.add("*"); listRate.add("*");listRate.add("*");listRate.add("*");listRate.add("*");					
 				}//else
 				
 				line = br.readLine();        		
@@ -436,9 +439,20 @@
 				//Write second section - there are 12 columns for each row
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=12){
-					for (int k = 0; k < 11; k++){
+					/*for (int k = 0; k < 11; k++){
 						result2.append(listRate.get(j+k)); result2.append("\t"); 
-					}//for
+					}//for*/
+					result2.append(listRate.get(j)); result2.append("\t");
+					result2.append(listRate.get(j+1)); result2.append("\t");
+					result2.append(listRate.get(j+2)); result2.append("\t");
+					result2.append(listRate.get(j+3)); result2.append("\t");
+					result2.append(listRate.get(j+4)); result2.append("\t");
+					result2.append(listRate.get(j+5)); result2.append("\t");
+					result2.append(listRate.get(j+6)); result2.append("\t");
+					result2.append(listRate.get(j+7)); result2.append("\t");
+					result2.append(listRate.get(j+8)); result2.append("\t");
+					result2.append(listRate.get(j+9)); result2.append("\t");
+					result2.append(listRate.get(j+10)); result2.append("\t");
 					result2.append(listRate.get(j+11)); result2.append("\n");
 				}//for	
 				
