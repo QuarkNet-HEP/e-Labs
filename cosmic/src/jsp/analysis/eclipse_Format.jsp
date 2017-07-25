@@ -466,7 +466,7 @@
 				result2.append(numEvents); result2.append("\t");
 				result2.append(rateCount12); result2.append("\t");
 				result2.append(rateCount13); result2.append("\t");
-				result2.append(rateCount13*1.0/rateCount12); result2.append("\t");
+				result2.append(Double.toString(rateCount13*1.0/rateCount12)); result2.append("\t");
 				result2.append(rateCount1234); result2.append("\t");
 				result2.append(rateCount34); result2.append("\t");
 				result2.append(rateCount24); result2.append("\t");
