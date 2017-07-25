@@ -222,12 +222,15 @@
 						//heading
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents"); 
 						listRate.add("#EvD1C12"); listRate.add("#EvD1C13"); listRate.add("Ratio(13/12)");
-						listRate.add("#EvD1C1234"); listRate.add("#EvD1C34"); listRate.add("#EvD1C24"); listRate.add("#EvD1C14"); listRate.add("#EvD1C23");
-						
-						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
-							rateCount++;
-						}//if	
-					}//if
+						listRate.add("#EvD1C1234"); listRate.add("#EvD1C34"); listRate.add("#EvD1C24"); listRate.add("#EvD1C14"); listRate.add("#EvD1C23");					
+						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if	
+						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+						if (!outArray[0].equals("-1") && !outArray[1].equals("-1") !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+						if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+						if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+						if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+						if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if						
+					}//if (i == 3)
 					if(i > 3){
 						if (jd.equals(lastJD)){			
 							if (minFracDay > endInterval){							
@@ -239,7 +242,14 @@
 								listRate.add(eventDateTime);
 							
 								listRate.add(String.valueOf(numEvents));//number of events
-								listRate.add(String.valueOf(rateCount));//number of events that meet criteria
+								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria DAQ1ch1,2
+								listRate.add(String.valueOf(rateCount13));//number of events that meet criteria DAQ1ch1,3
+								listRate.add(String.valueOf(rateCount13*1.0/rateCount12));//ratio (1,3/1,2)
+								listRate.add(String.valueOf(rateCount1234));//number of events that meet criteria DAQ1ch1,2,3,4
+								listRate.add(String.valueOf(rateCount34));//number of events that meet criteria DAQ1ch3,4
+								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1ch2,4
+								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1ch1,4
+								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1ch2,3
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
