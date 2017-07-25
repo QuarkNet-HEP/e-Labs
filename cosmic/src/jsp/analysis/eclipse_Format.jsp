@@ -423,11 +423,11 @@
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
-					bw.write(line);bw.newLine();
+					bw.write(line);bw.newLine(); 
+					listRate.add(line); 
 					for (int j = 0; j < 11; j++){
 						listRate.add("*"); 
 					}//for
-					listRate.add(line); 
 				}//else
 				
 				line = br.readLine();        		
@@ -436,10 +436,10 @@
 				//Write second section - there are 12 columns for each row
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=12){
-					for (int k = 0; k < 12; k++){
+					for (int k = 0; k < 11; k++){
 						result2.append(listRate.get(j+k)); result2.append("\t"); 
 					}//for
-					result2.append("\n");
+					result2.append(listRate.get(j+11)); result2.append("\n");
 				}//for	
 				
 				//the last row
