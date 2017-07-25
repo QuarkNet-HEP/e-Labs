@@ -338,7 +338,7 @@
 									else {rateCount12 = 0;}//else		
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
 									else {rateCount13 = 0;}//else		
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
 									else {rateCount1234 = 0;}//else		
 								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
 									else {rateCount34 = 0;}//else		
