@@ -424,7 +424,10 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					listRate.add("*"); listRate.add(line); listRate.add("*"); listRate.add("*"); listRate.add("*"); 
+					for (int j = 0; j < 11; j++){
+						listRate.add("*"); 
+					}//for
+					listRate.add(line); 
 				}//else
 				
 				line = br.readLine();        		
