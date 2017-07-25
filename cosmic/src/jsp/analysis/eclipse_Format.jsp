@@ -77,9 +77,6 @@
  		       	String line = br.readLine();        		        				 
 				String lastJD = " "; String jd = " ";	
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents
-				String rateDAQ = "6119";
-				String rate1stCh = "1";
-				String rate2ndCh = "2";				
 				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
@@ -92,7 +89,7 @@
 				int eventNum = 1; 
 				int numHits = 1;
 				int numBlankInt= 0;
-				int rateCount = 0;
+				int rateCount12 = 0, rateCount13 = 0, rateCount1234 = 0, rateCount34 = 0, rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				
 				/*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				out.println("Enter your name: ");
@@ -223,8 +220,10 @@
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
 						//heading
-						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); 
-						listRate.add("IntervalEnd"); listRate.add("numEvents"); listRate.add("numEventsDAQ1CH1,2");
+						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd"); listRate.add("numEvents"); 
+						listRate.add("#EvD1C12"); listRate.add("#EvD1C13"); listRate.add("Ratio(13/12)");
+						listRate.add("#EvD1C1234"); listRate.add("#EvD1C34"); listRate.add("#EvD1C24"); listRate.add("#EvD1C14"); listRate.add("#EvD1C23");
+						
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){
 							rateCount++;
 						}//if	
@@ -259,18 +258,31 @@
 									endInterval = endInterval + rateInterval;
 								}//for		
 								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
-									rateCount = 1;
-								}//if
-								else {
-									rateCount = 0;
-								}//else											
+								//DAQ1.ch1 is outArray[0], DAQ1.ch2 is outArray[1], DAQ1.ch3 is outArray[2], DAQ1.ch4 is outArray[3].
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
+									else {rateCount12 = 0;}//else	
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
+									else {rateCount13 = 0;}//else	
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
+									else {rateCount1234 = 0;}//else		
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
+									else {rateCount34 = 0;}//else	
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
+									else {rateCount24 = 0;}//else		
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
+									else {rateCount14 = 0;}//else	
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
+									else {rateCount23 = 0;}//else																					
 							}//if	
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
-									rateCount++;
-								}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
 							}//else											
 						}//if
 						
@@ -304,18 +316,31 @@
 									endInterval = endInterval + rateInterval;
 								}//for
 								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
-									rateCount = 1;
-								}//if
-								else {
-									rateCount = 0;
-								}//else								
+								//DAQ1.ch1 is outArray[0], DAQ1.ch2 is outArray[1], DAQ1.ch3 is outArray[2], DAQ1.ch4 is outArray[3].
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
+									else {rateCount12 = 0;}//else		
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
+									else {rateCount13 = 0;}//else		
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
+									else {rateCount1234 = 0;}//else		
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
+									else {rateCount34 = 0;}//else		
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
+									else {rateCount24 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
+									else {rateCount14 = 0;}//else		
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
+									else {rateCount23 = 0;}//else							
 							}//if
 							else {
 								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){
-									rateCount++;
-								}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
 							}//else
 						}//else if		
 					}//if (i>3)
@@ -388,15 +413,16 @@
 				line = br.readLine();        		
 			}//while
 				
-				//Write second section	
+				//Write second section - there are 12 columns for each row
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=5){
-						result2.append(listRate.get(j)); result2.append("\t"); 
-						result2.append(listRate.get(j+1)); result2.append("\t");
-						result2.append(listRate.get(j+2)); result2.append("\t");		
-						result2.append(listRate.get(j+3)); result2.append("\t");	
-						result2.append(listRate.get(j+4)); result2.append("\n");
+				for (int j = 0; j < listRate.size()  ; j+=12){
+					for (int k = 0; k < 12; k++){
+						result2.append(listRate.get(j+k)); result2.append("\t"); 
+					}//for
+					result2.append("\n");
 				}//for	
+				
+				//the last row
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
 					// get the date and time of the shower in human readable form
@@ -404,8 +430,15 @@
         		    String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 				result2.append(eventDateTime2); result2.append("\t");
 				result2.append(numEvents); result2.append("\t");
-				result2.append(rateCount);
-				
+				result2.append(rateCount12); result2.append("\t");
+				result2.append(rateCount13); result2.append("\t");
+				result2.append(rateCount13*1.0/rateCount12); result2.append("\t");
+				result2.append(rateCount1234); result2.append("\t");
+				result2.append(rateCount34); result2.append("\t");
+				result2.append(rateCount24); result2.append("\t");
+				result2.append(rateCount14); result2.append("\t");
+				result2.append(rateCount23); 
+							
 				String outline2 = result2.toString();
 				bw.write(outline2);						
 				
