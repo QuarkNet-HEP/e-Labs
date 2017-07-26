@@ -435,7 +435,7 @@
 						ratio13_12 = rateCount13*1.0/rateCount12;	
 					}//if
 					else {
-						ratio13_12 = -1.0
+						ratio13_12 = -1.0;
 					}//else
 	           		result2.append(ratio13_12); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				}//for	
@@ -459,7 +459,7 @@
 					ratio13_12 = rateCount13*1.0/rateCount12;	
 				}//if
 				else {
-					ratio13_12 = -1.0
+					ratio13_12 = -1.0;
 				}//else
 				result2.append(ratio13_12);	
 				
