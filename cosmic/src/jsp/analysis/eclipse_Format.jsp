@@ -253,7 +253,7 @@
 									
 									listRate.add("0");//number of events	
 									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 7; k++){ 
+									for (int k = 0; k < 8; k++){ 
 										listRate.add("0");
 									}//for
 									
@@ -319,7 +319,7 @@
 									
 									listRate.add("0");//number of events	
 									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 7; k++){ 
+									for (int k = 0; k < 8; k++){ 
 										listRate.add("0");//number of events	
 									}//for
 									
