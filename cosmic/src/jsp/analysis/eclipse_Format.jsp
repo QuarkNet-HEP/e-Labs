@@ -239,6 +239,13 @@
 								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
 								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
 								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
+								if (rateCount12 != 0) {
+									ratio13_12 = rateCount13*1.0/rateCount12;	
+								}//if
+								else {
+									ratio13_12 = -1.0;
+								}//else
+								listRate.add(String.valueOf(ratio13_12)); 
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -252,10 +259,11 @@
 									listRate.add(eventDateTime);
 									
 									listRate.add("0");//number of events	
-									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 8; k++){ 
+									//if num of events = 0, num of events that fulfill each criteria = 0 
+									for (int k = 0; k < 7; k++){ 
 										listRate.add("0");
 									}//for
+									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
 									
 									endInterval = endInterval + rateInterval;
 								}//for		
@@ -305,6 +313,13 @@
 								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
 								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
 								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
+								if (rateCount12 != 0) {
+									ratio13_12 = rateCount13*1.0/rateCount12;	
+								}//if
+								else {
+									ratio13_12 = -1.0;
+								}//else
+								listRate.add(String.valueOf(ratio13_12)); 
 								
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -319,9 +334,10 @@
 									
 									listRate.add("0");//number of events	
 									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 8; k++){ 
+									for (int k = 0; k < 7; k++){ 
 										listRate.add("0");//number of events	
 									}//for
+									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
 									
 									endInterval = endInterval + rateInterval;
 								}//for
@@ -427,17 +443,11 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=11){
+				for (int j = 0; j < listRate.size()  ; j+=12){
 					for (int k = 0; k < 11; k++){
 						result2.append(listRate.get(j+k)); result2.append("\t");
 	           		}//for	
-	           		if (rateCount12 != 0) {
-						ratio13_12 = rateCount13*1.0/rateCount12;	
-					}//if
-					else {
-						ratio13_12 = -1.0;
-					}//else
-	           		result2.append(ratio13_12); result2.append("\n");//last col of each row is followed by new-line, not tab		
+	           		result2.append(listRate.get(j+11); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				}//for	
 				
 				//last row
@@ -455,12 +465,6 @@
 				result2.append(rateCount24); result2.append("\t");
 				result2.append(rateCount14); result2.append("\t");
 				result2.append(rateCount23); result2.append("\t");
-				if (rateCount12 != 0) {
-					ratio13_12 = rateCount13*1.0/rateCount12;	
-				}//if
-				else {
-					ratio13_12 = -1.0;
-				}//else
 				result2.append(ratio13_12);	
 				
 				String outline2 = result2.toString();
