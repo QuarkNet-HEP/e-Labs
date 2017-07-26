@@ -81,15 +81,12 @@
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
-				double FracDayToNs = 0.0; 
-				double minFracDay = 0.0;
+				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
 				
-				int i = 0;   
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
-				int eventNum = 1; 
-				int numHits = 1;
-				int numBlankInt= 0;
-				int rateCount12 = 0, rateCount13 = 0;
+				int i = 0, eventNum = 1, numHits = 1, numBlankInt= 0; 
+				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
+				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				
 				/*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				out.println("Enter your name: ");
@@ -181,28 +178,28 @@
 						if (p%3 == 0){
 							//logic for Julian Day change within a row					
 							if ((Double.parseDouble(arrayDJF[p+2])-minFracDay) < 0.0){
-								FracDayToNs = 3600*24*Math.pow(10,9)*(1.0 + Double.parseDouble(arrayDJF[p+2]) - minFracDay);
+								fracDayToNs = 3600*24*Math.pow(10,9)*(1.0 + Double.parseDouble(arrayDJF[p+2]) - minFracDay);
 							}//if
 							else{
-								FracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
+								fracDayToNs = 3600*24*Math.pow(10,9)*(Double.parseDouble(arrayDJF[p+2])-minFracDay);
 							}//else
 																
 							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
         					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(FracDayToNs*1000.0)/1000.0);}
+								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
 						}//if	
 					}//for		
 					
@@ -219,11 +216,19 @@
 					//Calculate interval counts 
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						//heading
+						//heading - 11 columns
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
-						listRate.add("numEvents"); listRate.add("#EvntD1CH12"); listRate.add("#EvntD1CH13");
+						listRate.add("numEvents"); listRate.add("#EvntD1CH12"); listRate.add("#EvntD1CH13"); 
+						listRate.add("#EvntD1CH34"); listRate.add("#EvntD1CH1234"); listRate.add("#EvntD1CH24"); 
+						listRate.add("#EvntD1CH14"); listRate.add("#EvntD1CH23"); 
+						
 						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+						if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+						if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+						if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+						if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+						if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if						
 					}//if
 					if(i > 3){
 						if (jd.equals(lastJD)){			
@@ -236,8 +241,13 @@
 								listRate.add(eventDateTime);
 							
 								listRate.add(String.valueOf(numEvents));//number of events
-								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria
-								listRate.add(String.valueOf(rateCount13));
+								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria DAQ1CH12
+								listRate.add(String.valueOf(rateCount13));//number of events that meet criteria DAQ1CH13
+								listRate.add(String.valueOf(rateCount34));//number of events that meet criteria DAQ1CH34
+								listRate.add(String.valueOf(rateCount1234));//number of events that meet criteria DAQ1CH1234
+								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
+								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
+								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -249,10 +259,12 @@
 									nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
 									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 									listRate.add(eventDateTime);
-								
+									
 									listRate.add("0");//number of events	
-									listRate.add("0");//number of events that fulfill criteria DAQ1CH12
-									listRate.add("0");//number of events that fulfill criteria DAQ1CH13
+									//if num of events = 0, num of events that fulfill each criteria = 0
+									for (int k = 0; k < 7; k++){ 
+										listRate.add("0");
+									}//for
 									
 									endInterval = endInterval + rateInterval;
 								}//for		
@@ -260,12 +272,27 @@
 								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
 									else {rateCount12 = 0;}//else		
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
-									else {rateCount13 = 0;}//else												
+									else {rateCount13 = 0;}//else		
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
+									else {rateCount34 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
+									else {rateCount1234 = 0;}//else			
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
+									else {rateCount24 = 0;}//else	
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
+									else {rateCount14 = 0;}//else	
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
+									else {rateCount23 = 0;}//else										
 							}//if	
 							else {
 								numEvents++;
 								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
 							}//else											
 						}//if
 						
@@ -280,8 +307,13 @@
 								listRate.add(eventDateTime);
 								
 								listRate.add(String.valueOf(numEvents));//number of events
-								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria
-								listRate.add(String.valueOf(rateCount13));
+								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria DAQ1CH12
+								listRate.add(String.valueOf(rateCount13));//number of events that meet criteria DAQ1CH13
+								listRate.add(String.valueOf(rateCount34));//number of events that meet criteria DAQ1CH34
+								listRate.add(String.valueOf(rateCount1234));//number of events that meet criteria DAQ1CH1234
+								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
+								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
+								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
 								
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -294,9 +326,11 @@
 									eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 									listRate.add(eventDateTime);
 									
-									listRate.add("0"); //number of events	
-									listRate.add("0");//number of events that fulfill criteria DAQ1CH13
-									listRate.add("0");//number of events that fulfill criteria DAQ1CH12
+									listRate.add("0");//number of events	
+									//if num of events = 0, num of events that fulfill each criteria = 0
+									for (int k = 0; k < 7; k++){ 
+										listRate.add("0");//number of events	
+									}//for
 									
 									endInterval = endInterval + rateInterval;
 								}//for
@@ -304,12 +338,27 @@
 								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
 									else {rateCount12 = 0;}//else		
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
-									else {rateCount13 = 0;}//else								
+									else {rateCount13 = 0;}//else			
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
+									else {rateCount34 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
+									else {rateCount1234 = 0;}//else			
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
+									else {rateCount24 = 0;}//else	
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
+									else {rateCount14 = 0;}//else	
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
+									else {rateCount23 = 0;}//else															
 							}//if
 							else {
 								numEvents++;
 								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
+								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
+								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
+								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
 							}//else
 						}//else if		
 					}//if (i>3)
@@ -376,7 +425,10 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					listRate.add("*"); listRate.add(line);  listRate.add("*"); listRate.add("*"); listRate.add("*"); listRate.add("*"); 
+					listRate.add(line);  
+					for (int k = 0; k < 10; k++){
+						listRate.add("*"); 
+					}//for
 				}//else
 				
 				line = br.readLine();        		
@@ -384,13 +436,11 @@
 				
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=6){
-						result2.append(listRate.get(j)); result2.append("\t"); 
-						result2.append(listRate.get(j+1)); result2.append("\t");
-						result2.append(listRate.get(j+2)); result2.append("\t");		
-						result2.append(listRate.get(j+3)); result2.append("\t");
-						result2.append(listRate.get(j+4)); result2.append("\t");	
-						result2.append(listRate.get(j+5)); result2.append("\n");
+				for (int j = 0; j < listRate.size()  ; j+=11){
+					for (int k = 0; k < 10; k++){
+						result2.append(listRate.get(j+k); result2.append("\t");
+	           		}//for	
+	           		result2.append(listRate.get(j+10)); result2.append("\n");		
 				}//for	
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
@@ -399,8 +449,13 @@
         		    String eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
 				result2.append(eventDateTime2); result2.append("\t");
 				result2.append(numEvents); result2.append("\t");
-				result2.append(rateCount12);result2.append("\t");
-				result2.append(rateCount13);
+				result2.append(rateCount12); result2.append("\t");
+				result2.append(rateCount13); result2.append("\t");
+				result2.append(rateCount34); result2.append("\t");
+				result2.append(rateCount1234); result2.append("\t");
+				result2.append(rateCount24); result2.append("\t");
+				result2.append(rateCount14); result2.append("\t");
+				result2.append(rateCount23); 	
 				
 				String outline2 = result2.toString();
 				bw.write(outline2);						
