@@ -447,7 +447,7 @@
 					for (int k = 0; k < 11; k++){
 						result2.append(listRate.get(j+k)); result2.append("\t");
 	           		}//for	
-	           		result2.append(listRate.get(j+11); result2.append("\n");//last col of each row is followed by new-line, not tab		
+	           		result2.append(listRate.get(j+11)); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				}//for	
 				
 				//last row
