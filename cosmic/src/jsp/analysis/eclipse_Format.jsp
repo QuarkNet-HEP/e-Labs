@@ -251,7 +251,8 @@
 									listRate.add(eventDateTime);
 								
 									listRate.add("0");//number of events	
-									listRate.add("0");//number of events that fulfill criteria 
+									listRate.add("0");//number of events that fulfill criteria DAQ1CH12
+									listRate.add("0");//number of events that fulfill criteria DAQ1CH13
 									
 									endInterval = endInterval + rateInterval;
 								}//for		
@@ -294,7 +295,8 @@
 									listRate.add(eventDateTime);
 									
 									listRate.add("0"); //number of events	
-									listRate.add("0");//number of events that fulfill criteria 
+									listRate.add("0");//number of events that fulfill criteria DAQ1CH13
+									listRate.add("0");//number of events that fulfill criteria DAQ1CH12
 									
 									endInterval = endInterval + rateInterval;
 								}//for
