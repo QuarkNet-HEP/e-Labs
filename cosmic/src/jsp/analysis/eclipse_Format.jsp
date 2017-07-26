@@ -84,20 +84,11 @@
 				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
-				int i = 0, eventNum = 1, numHits = 1, numBlankInt= 0; 
+				int i = 0; //i keeps count of number of times through while loop
+				int eventNum = 1, numHits = 1, numBlankInt= 0; 
 				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
 				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				
-				/*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-				out.println("Enter your name: ");
-				String name = reader.readLine();
-				out.println("Your name is: " + name);*/
-
-				/*out.println("Enter time interval: ");	
-				Scanner sc = new Scanner(System.in);
-				int inputInt = sc.nextInt();
-				out.println("You entered: "+ inputInt);*/
-
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
          	//while (i < 10){ 
@@ -216,11 +207,11 @@
 					//Calculate interval counts 
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						//heading - 11 columns
+						//heading - 12 columns
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
 						listRate.add("numEvents"); listRate.add("#EvntD1CH12"); listRate.add("#EvntD1CH13"); 
 						listRate.add("#EvntD1CH34"); listRate.add("#EvntD1CH1234"); listRate.add("#EvntD1CH24"); 
-						listRate.add("#EvntD1CH14"); listRate.add("#EvntD1CH23"); 
+						listRate.add("#EvntD1CH14"); listRate.add("#EvntD1CH23"); listRate.add("Ratio(13/12)");
 						
 						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
@@ -426,7 +417,7 @@
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
 					listRate.add(line);  
-					for (int k = 0; k < 10; k++){
+					for (int k = 0; k < 11; k++){
 						listRate.add("*"); 
 					}//for
 				}//else
@@ -437,11 +428,19 @@
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=11){
-					for (int k = 0; k < 10; k++){
+					for (int k = 0; k < 11; k++){
 						result2.append(listRate.get(j+k)); result2.append("\t");
 	           		}//for	
-	           		result2.append(listRate.get(j+10)); result2.append("\n");		
+	           		if (rateCount12 != 0) {
+						ratio13_12 = rateCount13*1.0/rateCount12;	
+					}//if
+					else {
+						ratio13_12 = -1.0
+					}//else
+	           		result2.append(ratio13_12); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				}//for	
+				
+				//last row
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
 					// get the date and time of the shower in human readable form
@@ -455,7 +454,14 @@
 				result2.append(rateCount1234); result2.append("\t");
 				result2.append(rateCount24); result2.append("\t");
 				result2.append(rateCount14); result2.append("\t");
-				result2.append(rateCount23); 	
+				result2.append(rateCount23); result2.append("\t");
+				if (rateCount12 != 0) {
+					ratio13_12 = rateCount13*1.0/rateCount12;	
+				}//if
+				else {
+					ratio13_12 = -1.0
+				}//else
+				result2.append(ratio13_12);	
 				
 				String outline2 = result2.toString();
 				bw.write(outline2);						
