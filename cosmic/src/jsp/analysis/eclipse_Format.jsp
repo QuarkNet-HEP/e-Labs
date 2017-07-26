@@ -438,7 +438,7 @@
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=11){
 					for (int k = 0; k < 10; k++){
-						result2.append(listRate.get(j+k); result2.append("\t");
+						result2.append(listRate.get(j+k)); result2.append("\t");
 	           		}//for	
 	           		result2.append(listRate.get(j+10)); result2.append("\n");		
 				}//for	
