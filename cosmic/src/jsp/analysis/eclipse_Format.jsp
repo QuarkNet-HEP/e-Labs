@@ -220,8 +220,8 @@
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
 						//heading
-						listRate.add("EndFracDay"); listRate.add("EndTime(min)"), listRate.add("IntervalEnd");
-						listRate.add("numEvents"); listRate.add("#EvntD1CH12"), listRate.add("#EvntD1CH13");
+						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
+						listRate.add("numEvents"); listRate.add("#EvntD1CH12"); listRate.add("#EvntD1CH13");
 						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
 					}//if
