@@ -99,9 +99,8 @@
 				if(words[0].charAt(0) != '#' && i >= 3){
 					eventNum = Integer.parseInt(words[0]);
 					numHits = Integer.parseInt(words[1]);
-					jd = words[4];
-					String partial = words[5];//minimum fractional day		
-					minFracDay = Double.parseDouble(partial); //assume 5th column of eventCandidates is min					
+					jd = words[4];	
+					minFracDay = Double.parseDouble(words[5]); //assume 6th col of eventCandidates is min frac day			
 					
 					//listDJF will contain a list of all (DAQ.ch, JulianDay, FractionDay) combos in a line for UNIQUE DAQ.ch.
 					List<String> listDJF = new ArrayList<String>();
@@ -155,7 +154,7 @@
 					}			
 					
 					// get the date and time of the event in human readable form
-	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
+	                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
         	        String eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
         	        
 					//output arrays
@@ -209,9 +208,9 @@
 						endInterval = minFracDay + rateInterval;
 						//heading - 12 columns
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
-						listRate.add("numEvents"); listRate.add("#EvntD1CH12"); listRate.add("#EvntD1CH13"); 
-						listRate.add("#EvntD1CH34"); listRate.add("#EvntD1CH1234"); listRate.add("#EvntD1CH24"); 
-						listRate.add("#EvntD1CH14"); listRate.add("#EvntD1CH23"); listRate.add("Ratio(13/12)");
+						listRate.add("numEvents"); listRate.add("D1CH12#Evnt"); listRate.add("D1CH13#Evnt"); 
+						listRate.add("D1CH34#Evnt"); listRate.add("D1CH1234#Evnt"); listRate.add("D1CH24#Evnt"); 
+						listRate.add("D1CH14#Evnt"); listRate.add("D1CH23#Evnt"); listRate.add("Ratio(13/12)");
 						
 						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
@@ -377,8 +376,8 @@
 						//num of hits for each DAQ
 							result.append(Integer.toString(numHits1)); result.append("\t"); 
 							result.append(Integer.toString(numHits2)); result.append("\t"); 
-						//partial
-						result.append(partial); result.append("\t"); 
+						//minFracDay
+						result.append(Double.toString(minFracDay); result.append("\t"); 
 						//JulianDay
 						if (jdBool){
 							result.append(jd); result.append("\t");
@@ -400,7 +399,7 @@
 						if (i == 3){
 							StringBuffer heading = new StringBuffer();
 							heading.append("Evnt"); heading.append("\t"); heading.append("#HitDAQ1"); heading.append("\t");
-							heading.append("#HitDAQ2"); heading.append("\t"); heading.append("Partial"); heading.append("\t"); 
+							heading.append("#HitDAQ2"); heading.append("\t"); heading.append("MinFracDay"); heading.append("\t"); 
 							heading.append("JulDay"); heading.append("\t"); heading.append("SSDB"); heading.append("\t"); 
 							heading.append("eventDateTime"); heading.append("\t");
 							heading.append(DAQ1+".1FracDay"); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
