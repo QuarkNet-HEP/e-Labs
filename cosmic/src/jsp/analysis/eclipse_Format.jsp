@@ -90,7 +90,7 @@
 				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
-				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay), 
+				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
 				String eventDateTime = " ", eventDateTime2 = " ", eventDateTime3 = " ";
 				
