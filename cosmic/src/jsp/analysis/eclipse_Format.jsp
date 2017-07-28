@@ -377,7 +377,7 @@
 							result.append(Integer.toString(numHits1)); result.append("\t"); 
 							result.append(Integer.toString(numHits2)); result.append("\t"); 
 						//minFracDay
-						result.append(Double.toString(minFracDay); result.append("\t"); 
+						result.append(Double.toString(minFracDay)); result.append("\t"); 
 						//JulianDay
 						if (jdBool){
 							result.append(jd); result.append("\t");
