@@ -403,25 +403,25 @@
 						//Write heading after writing 2 lines that begin with '#'.  
 						if (i == 3){
 							StringBuffer heading = new StringBuffer();
-							heading.append("Evnt"); heading.append("\t"); heading.append("#HitDAQ1"); heading.append("\t");
-							heading.append("#HitDAQ2"); heading.append("\t"); heading.append("MinFracDay"); heading.append("\t"); 
+							heading.append("Evnt"); heading.append("\t"); heading.append("NmHitDAQ1"); heading.append("\t");
+							heading.append("NmHitDAQ2"); heading.append("\t"); heading.append("MinFracDay"); heading.append("\t"); 
 							heading.append("JulDay"); heading.append("\t"); heading.append("SSDB"); heading.append("\t"); 
 							heading.append("eventDateTime"); heading.append("\t");
-							heading.append(DAQ1+".1FracDay"); heading.append("\t");heading.append(DAQ1+".1nsAfter1stHit"); heading.append("\t");
-							heading.append(DAQ1+".2FracDay"); heading.append("\t");heading.append(DAQ1+".2nsAfter1stHit"); heading.append("\t");	
-							heading.append(DAQ1+".3FracDay"); heading.append("\t");heading.append(DAQ1+".3nsAfter1stHit"); heading.append("\t");		
-							heading.append(DAQ1+".4FracDay"); heading.append("\t");heading.append(DAQ1+".4nsAfter1stHit"); heading.append("\t");
+							heading.append("FracD"+DAQ1+".1"); heading.append("\t");heading.append("nsAft1stHit"+DAQ1+".1"); heading.append("\t");
+							heading.append("FracD"+DAQ1+".2"); heading.append("\t");heading.append("nsAft1stHit"+DAQ1+".2"); heading.append("\t");	
+							heading.append("FracD"+DAQ1+".3"); heading.append("\t");heading.append("nsAft1stHit"+DAQ1+".3"); heading.append("\t");		
+							heading.append("FracD"+DAQ1+".4"); heading.append("\t");heading.append("nsAft1stHit"+DAQ1+".4"); heading.append("\t");
 							if ( DAQ1.equals(DAQ2) && arrayDAQ.length == 1 ){	
-								heading.append("*.1FracDay"); heading.append("\t");heading.append("*.1nsAfter1stHit"); heading.append("\t");	
-								heading.append("*.2FracDay"); heading.append("\t");heading.append("*.2nsAfter1stHit"); heading.append("\t");
-								heading.append("*.3FracDay"); heading.append("\t");heading.append("*.3nsAfter1stHit"); heading.append("\t");
-								heading.append("*.4FracDay"); heading.append("\t");heading.append("*.4nsAfter1stHit"); heading.append("\t");	
+								heading.append("FracD*.1"); heading.append("\t");heading.append("nsAft1stHit"+"*.1"); heading.append("\t");	
+								heading.append("FracD*.2"); heading.append("\t");heading.append("nsAft1stHit"+"*.2"); heading.append("\t");
+								heading.append("FracD*.3"); heading.append("\t");heading.append("nsAft1stHit"+"*.3"); heading.append("\t");
+								heading.append("FracD*.4"); heading.append("\t");heading.append("nsAft1stHit"+"*.4"); heading.append("\t");	
 							}//
 							else {
-								heading.append(DAQ2+".1FracDay"); heading.append("\t");heading.append(DAQ2+".1nsAfter1stHit"); heading.append("\t");
-								heading.append(DAQ2+".2FracDay"); heading.append("\t");heading.append(DAQ2+".2nsAfter1stHit"); heading.append("\t");		
-								heading.append(DAQ2+".3FracDay"); heading.append("\t");heading.append(DAQ2+".3nsAfter1stHit"); heading.append("\t");		
-								heading.append(DAQ2+".4FracDay"); heading.append("\t");heading.append(DAQ2+".4nsAfter1stHit"); 
+								heading.append("FracD"+DAQ2+".1"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".1"); heading.append("\t");
+								heading.append("FracD"+DAQ2+".2"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".2"); heading.append("\t");		
+								heading.append("FracD"+DAQ2+".3"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".3"); heading.append("\t");		
+								heading.append("FracD"+DAQ2+".4"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".4"); 
 							}//else
 							
 							String outHeading = heading.toString();
