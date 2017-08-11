@@ -93,6 +93,7 @@
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
 				String eventDateTime = " ", eventDateTime2 = " ", eventDateTime3 = " ";
+				Boolean oneDAQMsg = false;//becomes true if we've output to the screen once "Only 1 DAQ was chosen!"
 				
          	//loop through each line of input file src2 (eFtemp-date)
          	while (line != null){ 
@@ -143,8 +144,9 @@
 					//Get set of unique DAQs, convert to array, and sort. DAQ1: smaller DAQ#; DAQ2: bigger DAQ#.
 					Set<String> setDAQ = new HashSet<String>(listDAQ);
 					String[] arrayDAQ = setDAQ.toArray(new String[setDAQ.size()]);
-    				if (arrayDAQ.length < 2) {
+    				if (arrayDAQ.length < 2 && !oneDAQMsg) {
     					out.println("Only 1 DAQ was chosen!");
+    					oneDAQMsg = true;
        				}//if
        				else if (arrayDAQ.length > 2) {
        					out.println("More than 2 DAQs were chosen!");
@@ -180,21 +182,21 @@
 							}//else
 																
 							if((DAQ1+".1").equals(arrayDJF[p]))
-								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[0]=arrayDJF[p+2]; outArrayNs[0]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
   							else if ((DAQ1+".2").equals(arrayDJF[p]))
-  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+  								{outArray[1]=arrayDJF[p+2]; outArrayNs[1]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
         					else if ((DAQ1+".3").equals(arrayDJF[p]))
-        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+        						{outArray[2]=arrayDJF[p+2]; outArrayNs[2]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 							else if ((DAQ1+".4").equals(arrayDJF[p]))
-								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[3]=arrayDJF[p+2]; outArrayNs[3]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 							else if ((DAQ2+".1").equals(arrayDJF[p]))
-								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[4]=arrayDJF[p+2]; outArrayNs[4]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 							else if ((DAQ2+".2").equals(arrayDJF[p]))
-								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[5]=arrayDJF[p+2]; outArrayNs[5]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 							else if ((DAQ2+".3").equals(arrayDJF[p]))
-								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[6]=arrayDJF[p+2]; outArrayNs[6]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 							else if ((DAQ2+".4").equals(arrayDJF[p]))
-								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(fracDayToNs*1000.0)/1000.0);}
+								{outArray[7]=arrayDJF[p+2]; outArrayNs[7]=String.valueOf(Math.round(fracDayToNs*10.0)/10.0);}
 						}//if	
 					}//for		
 					
