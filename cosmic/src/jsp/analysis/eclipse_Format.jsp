@@ -72,7 +72,7 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
-        		bw2 = new BufferedWriter(new FileWriter(dstb));
+        		bw2 = new BufferedWriter(new FileWriter(dst2b));
  		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
  		       	 		       	
  		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
@@ -502,7 +502,7 @@
     			
     			//create dst2bv2 
     			String phrase2 = dst2b;
-                String tokens = phrase.split("/");
+                String[] tokens = phrase2.split("/");
                 String dstbv2 = dstv2;
                 
                 //concatenate last element	                	
