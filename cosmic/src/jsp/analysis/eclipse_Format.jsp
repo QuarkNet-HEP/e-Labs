@@ -503,7 +503,7 @@
     			//create dst2bv2 
     			String phrase2 = dst2b;
                 String[] tokens = phrase2.split("/");
-                String dst2bv2 = dstv2;
+                String dst2bv2 = dst2v2;
                 
                 //concatenate last element	 
                 dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
