@@ -503,11 +503,12 @@
     			//create dst2bv2 
     			String phrase2 = dst2b;
                 String[] tokens = phrase2.split("/");
-                String dstbv2 = dstv2;
+                String dst2bv2 = dstv2;
                 
-                //concatenate last element	                	
+                //concatenate last element	 
+                dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
-    			dst2bv2 = dst2v2 + tokens[tokens.length - 1];		
+    			
     			
     			//add http:// to start
                 dst2v2 = "http://" + request.getServerName() + dst2v2;
