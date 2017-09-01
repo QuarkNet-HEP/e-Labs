@@ -18,7 +18,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 
-
 <html>
 	<head>
 		<title>Creating eclipseFormat . . . </title>
@@ -28,7 +27,7 @@
     
 	<%	
 		
-		//******Phase I:  copy eventCandidates file into eFtemp-date******
+		//******Phase I:  copy eventCandidates file into eventCandidates-date******
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");//sF = source Filename
 		String sD = request.getParameter("srcD");//sD = source Directory
@@ -59,18 +58,21 @@
             }//catch
 		}//if
 
-		//******Phase II:  Read one line at a time from eFtemp; parse, perform calculations, & write to eclipseFormat******
+		//**Phase II:  Read one line at a time from eventCandidates-date; parse, perform calculations, & write to eclipseFormat-date & eclipseRate-date**
 		
 		if (file2.exists()){               
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
     	BufferedWriter bw = null;
-		String src2 = dst;				//eFtemp-date is source in this phase
-		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is destination in this phase
+		BufferedWriter bw2 = null;    	
+		String src2 = dst;				//eventCandidates-date is source in this phase
+		String dst2 = dD+"/"+"eclipseFormat"+"-"+date+".txt";	//eclipseFormat-date is a new destination in this phase
+		String dst2b = dD+"/"+"eclipseRate"+"-"+date+".txt";	//eclipseRate-date is another destination in this phase		 
 				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
+        		bw2 = new BufferedWriter(new FileWriter(dst2b));
  		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
  		       	 		       	
  		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
@@ -95,11 +97,11 @@
 				String eventDateTime = " ", eventDateTime2 = " ", eventDateTime3 = " ";
 				Boolean oneDAQMsg = false;//becomes true if we've output to the screen once "Only 1 DAQ was chosen!"
 				
-         	//loop through each line of input file src2 (eFtemp-date)
+         	//loop through each line of input file src2 (eventCandidates-date)
          	while (line != null){ 
-         	//while (i < 10){ 
 				i++;
-				String[] words = line.split("\\s+");
+				//split String line into array of substrings using all whitespace characters (' ', '\t', '\n', etc.) as delimiters
+				String[] words = line.split("\\s+"); 
 				
 				//1st time through this section of code, i=3 (after 2 lines that begin with '#').
 				if(words[0].charAt(0) != '#' && i >= 3){
@@ -474,11 +476,13 @@
 				result2.append(ratio13_12);	
 				
 				String outline2 = result2.toString();
-				bw.write(outline2);						
+				bw2.write(outline2);						
 				
-				request.setAttribute("dst2", dst2);	
+				//request.setAttribute("dst2", dst2);	
+				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
 	        	bw.close();
+	        	bw2.close();
         		
         	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
@@ -495,9 +499,24 @@
 				for (int q = 0; q<tokensArray2.length-1; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
     			}//for-q	
-    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];	            
+    			
+    			//create dst2bv2 
+    			String phrase2 = dst2b;
+                String[] tokens = phrase2.split("/");
+                String dst2bv2 = dst2v2;
+                
+                //concatenate last element	 
+                dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
+    			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
+    			
+    			
+    			//add http:// to start
                 dst2v2 = "http://" + request.getServerName() + dst2v2;
-				request.setAttribute("dst2v2", dst2v2);							
+                dst2bv2 = "http://" + request.getServerName() + dst2bv2;
+                
+				request.setAttribute("dst2v2", dst2v2);					
+				request.setAttribute("dst2bv2", dst2bv2);	
+				
 				
     		}//try
     		catch(Exception e){
@@ -508,7 +527,8 @@
     		out.println("eventCandidates file did not copy over to plots/ from scratch/!");
     	}//else
 	%>
-			<a href = "${dst2v2}">Download!</a>
+			<a href = "${dst2v2}">Download eclipseFormat!</a>
+			<a href = "${dst2bv2}">Download eclipseRate!</a>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
 	</body>
