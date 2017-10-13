@@ -51,6 +51,11 @@
 						<input type="hidden" name="srcF" value="${file.name}"/>
           					<input type="submit" value="eclipseFormat"/> 
 					</form>
+					<form action="delta-t.jsp" method="GET">
+						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
+ 						<input type="hidden" name="srcF" value="${file.name}"/>
+						<input type="submit" value="delta-t"/>
+					</form>
 				</c:if>
 			</td>
 		</tr>
