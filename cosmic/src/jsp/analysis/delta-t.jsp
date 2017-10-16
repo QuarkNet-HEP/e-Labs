@@ -72,7 +72,7 @@
     		try{
         		br = new BufferedReader(new FileReader(src2));
         		bw = new BufferedWriter(new FileWriter(dst2));
-        		bw2 = new BufferedWriter(new FileWriter(dst2b));
+        		//bw2 = new BufferedWriter(new FileWriter(dst2b));
  		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
  		       	 		       	
  		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
@@ -85,7 +85,7 @@
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
-				double delta_t = 0.0, firstHitDAQ1 = 0.0; firstHitDAQ2 = 0.0;
+				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0;
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				int i = 0; //i keeps count of number of times through while loop
@@ -208,7 +208,7 @@
 					//first guess that outArray[0] is the smallest fractional day for DAQ1
 					firstHitDAQ1 = Double.parseDouble(outArray[0]); 
 					for (int p=0; p<4; p++){
-					    if (!"-1".equals(outArray[p] && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ1){
 					    	firstHitDAQ1 = Double.parseDouble(outArray[p]);
 					    }//if
 					}//for
@@ -216,12 +216,12 @@
 					//first guess that outArray[4] is the smallest fractional day for DAQ2
 					firstHitDAQ2 = Double.parseDouble(outArray[4]); 
 					for (int p=4; p<8; p++){
-					    if (!"-1".equals(outArray[p] && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ1){
 					    	firstHitDAQ2 = Double.parseDouble(outArray[p]);
 					    }//if
 					}//for
 					
-					delta_t = Math.abs(firstHitDAQ1 - firstHitDAQ2)
+					delta_t = Math.abs(firstHitDAQ1 - firstHitDAQ2);
 					       
 					//check if all the Julian Day values are the same for the whole line
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
