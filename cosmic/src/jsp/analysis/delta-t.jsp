@@ -67,7 +67,7 @@
 		BufferedWriter bw2 = null;    	
 		String src2 = dst;				//eventCandidates-date is source in this phase
 		String dst2 = dD+"/"+"delta-t"+"-"+date+".txt";	//eclipseFormat-date is a new destination in this phase
-		String dst2b = dD+"/"+"delta-tRate"+"-"+date+".txt";	//eclipseRate-date is another destination in this phase		 
+		//String dst2b = dD+"/"+"delta-tRate"+"-"+date+".txt";	//eclipseRate-date is another destination in this phase		 
 				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
@@ -77,13 +77,15 @@
  		       	 		       	
  		       	String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
  		       	String line = br.readLine();        		        				 
-				String lastJD = " "; String jd = "1";	
+				//String lastJD = " "; 
+				String jd = "1";	
 				List<String> listRate = new ArrayList<String>(); //endInterval, numEvents	
 				
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
+				double delta_t = 0.0, firstHitDAQ1 = 0.0; firstHitDAQ2 = 0.0;
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				int i = 0; //i keeps count of number of times through while loop
@@ -166,7 +168,7 @@
 						else if (DAQ2.equals(listDAQ.get(j))){numHits2++;}	
 					}			
 					
-					//output arrays
+					//initialize output arrays
 					String [] outArray = new String[8];
 					for (int j=0; j<8; j++){outArray[j] = "-1";}
 					String [] outArrayNs = new String[8];
@@ -202,6 +204,25 @@
 						}//if	
 					}//for		
 					
+					//find smallest fractional day for each DAQ.  
+					//first guess that outArray[0] is the smallest fractional day for DAQ1
+					firstHitDAQ1 = Double.parseDouble(outArray[0]); 
+					for (int p=0; p<4; p++){
+					    if (!"-1".equals(outArray[p] && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    	firstHitDAQ1 = Double.parseDouble(outArray[p]);
+					    }//if
+					}//for
+					
+					//first guess that outArray[4] is the smallest fractional day for DAQ2
+					firstHitDAQ2 = Double.parseDouble(outArray[4]); 
+					for (int p=4; p<8; p++){
+					    if (!"-1".equals(outArray[p] && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    	firstHitDAQ2 = Double.parseDouble(outArray[p]);
+					    }//if
+					}//for
+					
+					delta_t = Math.abs(firstHitDAQ1 - firstHitDAQ2)
+					       
 					//check if all the Julian Day values are the same for the whole line
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
 					for (int j=0; j<arrayDJF.length; j++){						
@@ -213,7 +234,7 @@
 					}//for
 					
 					//Calculate interval counts 
-					if (i == 3){
+					/*if (i == 3){
 						endInterval = minFracDay + rateInterval;
 						//heading - 12 columns
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
@@ -377,6 +398,7 @@
 							}//else
 						}//else if		
 					}//if (i>3)
+					*/
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -401,6 +423,7 @@
 						for (int p = 0; p < outArray.length; p++) {
    							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
 						}//for
+						result.append(Double.toString(delta_t));//new line of code
 						result.append("\n");
 						String outline = result.toString();
 						
@@ -425,7 +448,8 @@
 								heading.append("FracD"+DAQ2+".1"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".1"); heading.append("\t");
 								heading.append("FracD"+DAQ2+".2"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".2"); heading.append("\t");		
 								heading.append("FracD"+DAQ2+".3"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".3"); heading.append("\t");		
-								heading.append("FracD"+DAQ2+".4"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".4"); 
+								heading.append("FracD"+DAQ2+".4"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".4"); heading.append("\t");
+								heading.append("delta-t");
 							}//else
 							
 							String outHeading = heading.toString();
@@ -434,7 +458,7 @@
 						
 				        bw.write(outline); 
 				        //out.println(outline); out.println("<br>"); 
-				        lastJD = jd;
+				        //lastJD = jd;
 						   			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
@@ -450,6 +474,7 @@
 			}//while
 				
 				//Write second section	
+				/*
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < listRate.size()  ; j+=12){
 					for (int k = 0; k < 11; k++){
@@ -483,6 +508,7 @@
 	        	br.close();
 	        	bw.close();
 	        	bw2.close();
+        		*/
         		
         	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
@@ -501,21 +527,23 @@
     			}//for-q	
     			
     			//create dst2bv2 
+    			/*
     			String phrase2 = dst2b;
                 String[] tokens = phrase2.split("/");
                 String dst2bv2 = dst2v2;
+                */
                 
                 //concatenate last element	 
-                dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
+                //dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			
     			
     			//add http:// to start
                 dst2v2 = "http://" + request.getServerName() + dst2v2;
-                dst2bv2 = "http://" + request.getServerName() + dst2bv2;
+                //dst2bv2 = "http://" + request.getServerName() + dst2bv2;
                 
 				request.setAttribute("dst2v2", dst2v2);					
-				request.setAttribute("dst2bv2", dst2bv2);	
+				//request.setAttribute("dst2bv2", dst2bv2);	
 				
 				
     		}//try
@@ -528,7 +556,7 @@
     	}//else
 	%>
 			<a href = "${dst2v2}">Download delta-t!</a>
-			<a href = "${dst2bv2}">Download delta-tRate!</a>
+			<%--<a href = "${dst2bv2}">Download delta-tRate!</a>--%>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
 	</body>
