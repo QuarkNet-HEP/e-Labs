@@ -527,8 +527,8 @@
     		out.println("eventCandidates file did not copy over to plots/ from scratch/!");
     	}//else
 	%>
-			<a href = "${dst2v2}">Download eclipseFormat!</a>
-			<a href = "${dst2bv2}">Download eclipseRate!</a>
+			<a href = "${dst2v2}">Download delta-t!</a>
+			<a href = "${dst2bv2}">Download delta-tRate!</a>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
 	</body>
