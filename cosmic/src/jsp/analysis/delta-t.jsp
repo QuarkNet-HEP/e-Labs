@@ -423,8 +423,11 @@
 						for (int p = 0; p < outArray.length; p++) {
    							result.append( outArray[p] ); result.append("\t"); result.append( outArrayNs[p] ); result.append("\t");
 						}//for
-						result.append(Double.toString(delta_t));//new line of code
-						result.append("\n");
+						
+						result.append(Double.toString(firstHitDAQ1)); result.append("\t");//new line of code
+						result.append(Double.toString(firstHitDAQ2)); result.append("\t");//new line of code
+						result.append(Double.toString(delta_t)); result.append("\n");//new line of code
+						
 						String outline = result.toString();
 						
 						//Write heading after writing 2 lines that begin with '#'.  
@@ -449,6 +452,7 @@
 								heading.append("FracD"+DAQ2+".2"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".2"); heading.append("\t");		
 								heading.append("FracD"+DAQ2+".3"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".3"); heading.append("\t");		
 								heading.append("FracD"+DAQ2+".4"); heading.append("\t");heading.append("nsAft1stHit"+DAQ2+".4"); heading.append("\t");
+								heading.append("firstHitDAQ1"); heading.append("\t"); heading.append("firstHitDAQ2"); heading.append("\t");
 								heading.append("delta-t");
 							}//else
 							
