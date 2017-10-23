@@ -216,7 +216,7 @@
 					//first guess that outArray[4] is the smallest fractional day for DAQ2
 					firstHitDAQ2 = Double.parseDouble(outArray[4]); 
 					for (int p=4; p<8; p++){
-					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ2){
 					    	firstHitDAQ2 = Double.parseDouble(outArray[p]);
 					    }//if
 					}//for
