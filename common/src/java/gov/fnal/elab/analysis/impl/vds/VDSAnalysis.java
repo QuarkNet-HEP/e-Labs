@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/* org/griphyn/vdl/ is in common/lib/gvds-patched.jar.
+	 We don't have any of its source code. */
+/* JG May2017 */
 import org.griphyn.vdl.classes.Declare;
 import org.griphyn.vdl.classes.Definition;
 import org.griphyn.vdl.classes.Derivation;

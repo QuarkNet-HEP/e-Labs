@@ -46,55 +46,55 @@
 		maxLoginsReached = true;
 	}
 	if (!maxLoginsReached) {
-            ElabGroup user = null;
-	    if (username != null && password != null) {
-		username = username.trim();
-		password = password.trim();
-		try {
+			ElabGroup user = null;
+			if (username != null && password != null) {
+					username = username.trim();
+					password = password.trim();
+					try {
 	            user = elab.authenticate(username, password);
-		}
-		catch (AuthenticationException e) {
-		    request.setAttribute("exception", e);
-		    e.printStackTrace();
-		}
+					}
+					catch (AuthenticationException e) {
+							request.setAttribute("exception", e);
+							e.printStackTrace();
+					}
 	    }
 	    if (user != null) {
 	       	//login successful
-		ElabGroup.setUser(session, user);
-		session.setAttribute("user", user);
-		String prevPage = request.getParameter("prevPage");
-		if (username.equals("admin")) {
+					ElabGroup.setUser(session, user);
+					session.setAttribute("user", user);
+					String prevPage = request.getParameter("prevPage");
+					if (username.equals("admin")) {
 	            prevPage = "../admin/index.jsp";
-		}
+					}
 
-		//get these numbers now and save them to the session
-	 	if (elab.getName().equals("cosmic")) {
-        DataCatalogProvider dcp = elab.getDataCatalogProvider();
-        int fileCount = dcp.getUniqueCategoryCount("split");
-				int schoolCount = dcp.getUniqueCategoryCount("school");
-		    int stateCount = dcp.getUniqueCategoryCount("state");		
-		    session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
-		    session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
-		    session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
-		    ElabUserManagementProvider p = elab.getUserManagementProvider();
-		    CosmicElabUserManagementProvider cp = null;
-		    if (p instanceof CosmicElabUserManagementProvider) {
-		      cp = (CosmicElabUserManagementProvider) p;
-		    }
-		    else {
-		      throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
-		        "Either this e-Lab does not use DAQs or it was improperly configured.");
-		    }
-		    Collection allDaqs = cp.getAllDetectorIds();
+					//get these numbers now and save them to the session
+	 				if (elab.getName().equals("cosmic")) {
+							DataCatalogProvider dcp = elab.getDataCatalogProvider();
+							int fileCount = dcp.getUniqueCategoryCount("split");
+							int schoolCount = dcp.getUniqueCategoryCount("school");
+							int stateCount = dcp.getUniqueCategoryCount("state");		
+							session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
+							session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
+							session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
+							ElabUserManagementProvider p = elab.getUserManagementProvider();
+							CosmicElabUserManagementProvider cp = null;
+							if (p instanceof CosmicElabUserManagementProvider) {
+									cp = (CosmicElabUserManagementProvider) p;
+							}
+							else {
+									throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+											"Either this e-Lab does not use DAQs or it was improperly configured.");
+							}
+							Collection allDaqs = cp.getAllDetectorIds();
 	      	    session.setAttribute("allDaqs", allDaqs);
-		}
-
-		String redirect = prevPage;
-		if(prevPage == null) {
-	    	    prevPage = elab.getProperties().getLoggedInHomePage();
-		}
-			
-		// I finally found the solution to the double login problem, and it's this
+					}
+					
+					String redirect = prevPage;
+					if(prevPage == null) {
+	    				prevPage = elab.getProperties().getLoggedInHomePage();
+					}
+					
+					// I finally found the solution to the double login problem, and it's this
 	        // one line.  :)  Please don't remove.
 	        //
 	        // [Mihael] Seems like it depends where this page is included from
@@ -149,8 +149,8 @@
 	        	<%
 	        }
 	        else {
-				response.sendRedirect(prevPage);
-			}
+							response.sendRedirect(prevPage);
+					}
 	
 	        // Forum authentication the quick-N-dirty way.
 	        // To allow a teacher to seamlessly access the forums after
