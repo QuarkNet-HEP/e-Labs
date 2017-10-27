@@ -205,18 +205,18 @@
 					}//for		
 					
 					//find smallest fractional day for each DAQ.  
-					//first guess that outArray[0] is the smallest fractional day for DAQ1
-					firstHitDAQ1 = Double.parseDouble(outArray[0]); 
+					//first guess that minFracDay is the smallest fractional day for DAQ1
+					firstHitDAQ1 = minFracDay; 
 					for (int p=0; p<4; p++){
-					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ1){
+					    if (!outArray[p].equals("-1") && Double.parseDouble(outArray[p])<firstHitDAQ1){
 					    	firstHitDAQ1 = Double.parseDouble(outArray[p]);
 					    }//if
 					}//for
 					
-					//first guess that outArray[4] is the smallest fractional day for DAQ2
-					firstHitDAQ2 = Double.parseDouble(outArray[4]); 
+					//first guess that 1.1 is the smallest fractional day for DAQ2 (just need a number greater than 1)
+					firstHitDAQ2 = 1.1;
 					for (int p=4; p<8; p++){
-					    if (!"-1".equals(outArray[p]) && Double.parseDouble(outArray[p])<firstHitDAQ2){
+					    if (!outArray[p].equals("-1") && Double.parseDouble(outArray[p])<firstHitDAQ2){
 					    	firstHitDAQ2 = Double.parseDouble(outArray[p]);
 					    }//if
 					}//for
