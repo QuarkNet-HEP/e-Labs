@@ -95,7 +95,7 @@
 				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
 				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				int binNum = 1, binCount = 0;
-				List<Int> binNumCount = new ArrayList<Int>();
+				List<Integer> binNumCount = new ArrayList<Integer>();
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
@@ -484,15 +484,15 @@
 			
 			//In this section, create data for histogram.
 			//Convert each element of delta_tList from fractional day to ns		
-			for (i = 0; i < delta_tList.length; i++){
+			for (i = 0; i < delta_tList.size(); i++){
 				delta_tList[i] = 3600*24*Math.pow(10,9)*delta_tList[i];
 			}//for
 			
 			//Sort delta_tList
-			delta_tList.sort();
+			Collections.sort(delta_tList);
 			
 			//Traverse delta_tList to get count in each 100ns bin.  binNum = 1 initially
-			for (int i = 0; i < delta_tList.length; i++){
+			for (int i = 0; i < delta_tList.size(); i++){
 				if (delta_tList[i] < delta_tList[0] + binWidth*binNum){
 					binCount++;
 				}//if
