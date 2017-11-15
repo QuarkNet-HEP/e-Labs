@@ -523,9 +523,9 @@
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < binArray.length  ; j+=3){
 					for (int k = 0; k < 2; k++){
-						result2.append(binArray(j+k)); result2.append("\t");
+						result2.append(binArray[j+k]); result2.append("\t");
 	           			}//for	
-	           		result2.append(binArray(j+2)); result2.append("\n");//last col of each row is followed by new-line, not tab		
+	           		result2.append(binArray[j+2]); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				String outline2 = result2.toString();
 				bw.write(outline2);			
 				}//for	
