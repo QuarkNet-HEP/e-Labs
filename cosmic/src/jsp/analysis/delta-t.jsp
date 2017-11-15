@@ -64,7 +64,7 @@
 		//Code assumes the first 2 lines of input file start with '#'.
 		BufferedReader br = null;
     	BufferedWriter bw = null;
-		BufferedWriter bw2 = null;    	
+		//BufferedWriter bw2 = null;    	
 		String src2 = dst;				//eventCandidates-date is source in this phase
 		String dst2 = dD+"/"+"delta-t"+"-"+date+".txt";	//eclipseFormat-date is a new destination in this phase
 		//String dst2b = dD+"/"+"delta-tRate"+"-"+date+".txt";	//eclipseRate-date is another destination in this phase		 
@@ -85,13 +85,17 @@
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
 				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
-				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0;
+				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0; 			
+				double binWidth = 100.0; //FD => 'Fractional Day', binWidth in ns
+				List<Double> delta_tList = new ArrayList<Double>();
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				int i = 0; //i keeps count of number of times through while loop
 				int eventNum = 1, numHits = 1, numBlankInt= 0; 
 				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
 				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
+				int binNum = 1, binCount = 0;
+				List<Int> binNumCount = new ArrayList<Int>();
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
@@ -222,6 +226,7 @@
 					}//for
 					
 					delta_t = Math.abs(firstHitDAQ1 - firstHitDAQ2);
+					delta_tList.add(delta_t);
 					       
 					//check if all the Julian Day values are the same for the whole line
 					boolean jdBool = true;//assume true all Julian Day values are same for whole line
@@ -468,51 +473,59 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					listRate.add(line);  
+					/*listRate.add(line);  
 					for (int k = 0; k < 11; k++){
 						listRate.add("*"); 
-					}//for
+					}//for*/
 				}//else
 				
 				line = br.readLine();        		
 			}//while
-				
+			
+			//In this section, create data for histogram.
+			//Convert each element of delta_tList from fractional day to ns		
+			for (i = 0; i < delta_tList.length; i++){
+				delta_tList[i] = 3600*24*Math.pow(10,9)*delta_tList[i];
+			}//for
+			
+			//Sort delta_tList
+			delta_tList.sort();
+			
+			//Traverse delta_tList to get count in each 100ns bin.  binNum = 1 initially
+			for (int i = 0; i < delta_tList.length; i++){
+				if (delta_tList[i] < delta_tList[0] + binWidth*binNum){
+					binCount++;
+				}//if
+				else {
+				//store binNum, binMidPt, and binCount in list
+				binNumCount.add(binNum);
+				binMidPt = delta_tList[0] + (binNum-.5)*100;
+				binNumCount.add(binMidPt);
+				binNumCount.add(binCount);
+				//reset binCount and increment binNum
+				binCount = 0;
+				binNum++;
+				}//else
+			}//for
+			
 				//Write second section	
-				/*
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=12){
-					for (int k = 0; k < 11; k++){
-						result2.append(listRate.get(j+k)); result2.append("\t");
-	           		}//for	
-	           		result2.append(listRate.get(j+11)); result2.append("\n");//last col of each row is followed by new-line, not tab		
+				for (int j = 0; j < delta_tList.size()  ; j+=3){
+					for (int k = 0; k < 2; k++){
+						result2.append(delta_tList.get(j+k)); result2.append("\t");
+	           			}//for	
+	           		result2.append(delta_tList.get(j+2)); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				}//for	
 				
-				//last row
-				result2.append(minFracDay); result2.append("\t");
-				result2.append(minFracDay*24.0*60.0); result2.append("\t");
-					// get the date and time of the shower in human readable form
-		            nd3 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay);
-        		    eventDateTime3 = DateFormatUtils.format(nd3, DATEFORMAT, TIMEZONE);
-				result2.append(eventDateTime3); result2.append("\t");
-				result2.append(numEvents); result2.append("\t");
-				result2.append(rateCount12); result2.append("\t");
-				result2.append(rateCount13); result2.append("\t");
-				result2.append(rateCount34); result2.append("\t");
-				result2.append(rateCount1234); result2.append("\t");
-				result2.append(rateCount24); result2.append("\t");
-				result2.append(rateCount14); result2.append("\t");
-				result2.append(rateCount23); result2.append("\t");
-				result2.append(ratio13_12);	
-				
 				String outline2 = result2.toString();
-				bw2.write(outline2);						
+				bw.write(outline2);						
 				
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
 	        	bw.close();
-	        	bw2.close();
-        		*/
+	        	//bw2.close();
+        		
         		
         	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
