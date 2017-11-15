@@ -88,7 +88,7 @@
 				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0; 			
 				double binWidth = 100.0; //FD => 'Fractional Day', binWidth in ns
 				List<Double> delta_tList = new ArrayList<Double>();
-				double binMidPt = 0.0;
+				double binMidPt = 0.0, delta_tNs = 0.0;
 				List<Double> binList = new ArrayList<Double>();
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
@@ -488,7 +488,8 @@
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
 			//Convert each element of delta_tArray from fractional day to ns		
 			for (int i = 0; i < delta_tArray.length; i++){
-				delta_tArray[i] = 3600*24*Math.pow(10,9)*delta_tArray[i];
+				delta_tNs = 3600*24*Math.pow(10,9)*delta_tArray[i];
+				delta_tArray[i] = delta_tNs;
 			}//for
 			
 			//Sort delta_tArray
@@ -501,10 +502,10 @@
 				}//if
 				else {
 				//store binNum, binMidPt, and binCount in list binList
-				binList.add(binNum);
+				binList.add((double)binNum);
 				binMidPt = delta_tArray[0] + (binNum-.5)*100;
 				binList.add(binMidPt);
-				binList.add(binCount);
+				binList.add((double)binCount);
 				//reset binCount and increment binNum
 				binCount = 0;
 				binNum++;
