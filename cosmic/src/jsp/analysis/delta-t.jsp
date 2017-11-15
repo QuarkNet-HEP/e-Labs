@@ -88,14 +88,15 @@
 				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0; 			
 				double binWidth = 100.0; //FD => 'Fractional Day', binWidth in ns
 				List<Double> delta_tList = new ArrayList<Double>();
+				double binMidPt = 0.0;
+				List<Double> binList = new ArrayList<Double>();
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				int i = 0; //i keeps count of number of times through while loop
 				int eventNum = 1, numHits = 1, numBlankInt= 0; 
-				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
-				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
+				//int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
+				//int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
 				int binNum = 1, binCount = 0;
-				List<Integer> binNumCount = new ArrayList<Integer>();
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
@@ -483,42 +484,50 @@
 			}//while
 			
 			//In this section, create data for histogram.
-			//Convert each element of delta_tList from fractional day to ns		
-			for (i = 0; i < delta_tList.size(); i++){
-				delta_tList[i] = 3600*24*Math.pow(10,9)*delta_tList[i];
+			//Convert delta_tList to array delta_tArray
+			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
+			//Convert each element of delta_tArray from fractional day to ns		
+			for (i = 0; i < delta_tArray.length; i++){
+				delta_tArray[i] = 3600*24*Math.pow(10,9)*delta_tArray[i];
 			}//for
 			
-			//Sort delta_tList
-			Collections.sort(delta_tList);
+			//Sort delta_tArray
+			delta_tArray.sort();
 			
-			//Traverse delta_tList to get count in each 100ns bin.  binNum = 1 initially
-			for (int i = 0; i < delta_tList.size(); i++){
-				if (delta_tList[i] < delta_tList[0] + binWidth*binNum){
+			//Traverse delta_tArray to get count in each 100ns bin.  binNum = 1 initially			
+			for (int i = 0; i < delta_tArray.length; i++){
+				if (delta_tArray[i] < delta_tArray[0] + binWidth*binNum){
 					binCount++;
 				}//if
 				else {
-				//store binNum, binMidPt, and binCount in list
-				binNumCount.add(binNum);
-				binMidPt = delta_tList[0] + (binNum-.5)*100;
-				binNumCount.add(binMidPt);
-				binNumCount.add(binCount);
+				//store binNum, binMidPt, and binCount in list binList
+				binList.add(binNum);
+				binMidPt = delta_tArray[0] + (binNum-.5)*100;
+				binList.add(binMidPt);
+				binList.add(binCount);
 				//reset binCount and increment binNum
 				binCount = 0;
 				binNum++;
 				}//else
 			}//for
+			binList.add(binNum);
+			binMidPt = delta_tArray[0] + (binNum-.5)*100;
+			binList.add(binMidPt);
+			binList.add(binCount);	
+		
+			//Convert binList to binArray
+			Double[] binArray = binList.toArray(new Double[binList.size()]);
 			
 				//Write second section	
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < delta_tList.size()  ; j+=3){
+				for (int j = 0; j < binArray.length  ; j+=3){
 					for (int k = 0; k < 2; k++){
-						result2.append(delta_tList.get(j+k)); result2.append("\t");
+						result2.append(binArray(j+k)); result2.append("\t");
 	           			}//for	
-	           		result2.append(delta_tList.get(j+2)); result2.append("\n");//last col of each row is followed by new-line, not tab		
-				}//for	
-				
+	           		result2.append(binArray(j+2)); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				String outline2 = result2.toString();
-				bw.write(outline2);						
+				bw.write(outline2);			
+				}//for	
 				
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
