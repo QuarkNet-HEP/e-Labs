@@ -487,12 +487,12 @@
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
 			//Convert each element of delta_tArray from fractional day to ns		
-			for (i = 0; i < delta_tArray.length; i++){
+			for (int i = 0; i < delta_tArray.length; i++){
 				delta_tArray[i] = 3600*24*Math.pow(10,9)*delta_tArray[i];
 			}//for
 			
 			//Sort delta_tArray
-			delta_tArray.sort();
+			Arrays.sort(delta_tArray);
 			
 			//Traverse delta_tArray to get count in each 100ns bin.  binNum = 1 initially			
 			for (int i = 0; i < delta_tArray.length; i++){
