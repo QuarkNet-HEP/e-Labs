@@ -487,9 +487,9 @@
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
 			//Convert each element of delta_tArray from fractional day to ns		
-			for (int i = 0; i < delta_tArray.length; i++){
-				delta_tNs = 3600*24*Math.pow(10,9)*delta_tArray[i];
-				delta_tArray[i] = delta_tNs;
+			for (int k = 0; k < delta_tArray.length; i++){
+				delta_tNs = 3600*24*Math.pow(10,9)*delta_tArray[k];
+				delta_tArray[k] = delta_tNs;
 			}//for
 			
 			//Sort delta_tArray
@@ -511,10 +511,10 @@
 				binNum++;
 				}//else
 			}//for
-			binList.add(binNum);
+			binList.add((double)binNum);
 			binMidPt = delta_tArray[0] + (binNum-.5)*100;
 			binList.add(binMidPt);
-			binList.add(binCount);	
+			binList.add((double)binCount);	
 		
 			//Convert binList to binArray
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
