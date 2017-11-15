@@ -495,8 +495,8 @@
 			Arrays.sort(delta_tArray);
 			
 			//Traverse delta_tArray to get count in each 100ns bin.  binNum = 1 initially			
-			for (int i = 0; i < delta_tArray.length; i++){
-				if (delta_tArray[i] < delta_tArray[0] + binWidth*binNum){
+			for (int j = 0; j < delta_tArray.length; j++){
+				if (delta_tArray[j] < delta_tArray[0] + binWidth*binNum){
 					binCount++;
 				}//if
 				else {
