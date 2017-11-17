@@ -239,172 +239,6 @@
 						}//if				
 					}//for
 					
-					//Calculate interval counts 
-					/*if (i == 3){
-						endInterval = minFracDay + rateInterval;
-						//heading - 12 columns
-						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
-						listRate.add("numEvents"); listRate.add("D1CH12#Evnt"); listRate.add("D1CH13#Evnt"); 
-						listRate.add("D1CH34#Evnt"); listRate.add("D1CH1234#Evnt"); listRate.add("D1CH24#Evnt"); 
-						listRate.add("D1CH14#Evnt"); listRate.add("D1CH23#Evnt"); listRate.add("Ratio(13/12)");
-						
-						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
-						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
-						if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
-						if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
-						if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
-						if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
-						if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if						
-					}//if
-					if(i > 3){
-						if (jd.equals(lastJD)){			
-							if (minFracDay > endInterval){							
-								listRate.add(String.valueOf(endInterval)); 
-								listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-							
-								nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-								eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime2);
-							
-								listRate.add(String.valueOf(numEvents));//number of events
-								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria DAQ1CH12
-								listRate.add(String.valueOf(rateCount13));//number of events that meet criteria DAQ1CH13
-								listRate.add(String.valueOf(rateCount34));//number of events that meet criteria DAQ1CH34
-								listRate.add(String.valueOf(rateCount1234));//number of events that meet criteria DAQ1CH1234
-								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
-								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
-								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
-								if (rateCount12 != 0) {
-									ratio13_12 = rateCount13*1.0/rateCount12;	
-								}//if
-								else {
-									ratio13_12 = -1.0;
-								}//else
-								listRate.add(String.valueOf(ratio13_12)); 
-								
-								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
-								endInterval = endInterval + rateInterval;
-								//append numBlankInt number of "0 event" lines
-								for (int j = 0; j < numBlankInt; j++){	
-									listRate.add(String.valueOf(endInterval));
-									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-								
-									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval);
-									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime2);
-									
-									listRate.add("0");//number of events	
-									//if num of events = 0, num of events that fulfill each criteria = 0 
-									for (int k = 0; k < 7; k++){ 
-										listRate.add("0");
-									}//for
-									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
-									
-									endInterval = endInterval + rateInterval;
-								}//for		
-								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
-									else {rateCount12 = 0;}//else		
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
-									else {rateCount13 = 0;}//else		
-								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
-									else {rateCount34 = 0;}//else			
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
-									else {rateCount1234 = 0;}//else			
-								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
-									else {rateCount24 = 0;}//else	
-								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
-									else {rateCount14 = 0;}//else	
-								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
-									else {rateCount23 = 0;}//else										
-							}//if	
-							else {
-								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
-								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
-								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
-								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
-								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
-							}//else											
-						}//if
-						
-						else if (!jd.equals(lastJD)){					
-							endInterval = endInterval - 1.0;
-							if (minFracDay > endInterval){
-								listRate.add(String.valueOf(endInterval+1.0));
-								listRate.add(String.valueOf((endInterval+1.0) * 24.0 * 60.0));
-								
-								nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-								eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-								listRate.add(eventDateTime2);
-								
-								listRate.add(String.valueOf(numEvents));//number of events
-								listRate.add(String.valueOf(rateCount12));//number of events that meet criteria DAQ1CH12
-								listRate.add(String.valueOf(rateCount13));//number of events that meet criteria DAQ1CH13
-								listRate.add(String.valueOf(rateCount34));//number of events that meet criteria DAQ1CH34
-								listRate.add(String.valueOf(rateCount1234));//number of events that meet criteria DAQ1CH1234
-								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
-								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
-								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
-								if (rateCount12 != 0) {
-									ratio13_12 = rateCount13*1.0/rateCount12;	
-								}//if
-								else {
-									ratio13_12 = -1.0;
-								}//else
-								listRate.add(String.valueOf(ratio13_12)); 
-								
-								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
-								endInterval = endInterval + rateInterval;
-								//append numBlankInt number of "0 event" lines
-								for (int j = 0; j < numBlankInt; j++){	
-									listRate.add(String.valueOf(endInterval));
-									listRate.add(String.valueOf(endInterval*24.0*60.0)); 
-								
-									nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), endInterval+1.0);
-									eventDateTime2 = DateFormatUtils.format(nd2, DATEFORMAT, TIMEZONE);
-									listRate.add(eventDateTime2);
-									
-									listRate.add("0");//number of events	
-									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 7; k++){ 
-										listRate.add("0");//number of events	
-									}//for
-									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
-									
-									endInterval = endInterval + rateInterval;
-								}//for
-								numEvents = 1; 
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12 = 1;}//if
-									else {rateCount12 = 0;}//else		
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13 = 1;}//if
-									else {rateCount13 = 0;}//else			
-								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34 = 1;}//if
-									else {rateCount34 = 0;}//else			
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234 = 1;}//if
-									else {rateCount1234 = 0;}//else			
-								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24 = 1;}//if
-									else {rateCount24 = 0;}//else	
-								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14 = 1;}//if
-									else {rateCount14 = 0;}//else	
-								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
-									else {rateCount23 = 0;}//else															
-							}//if
-							else {
-								numEvents++;
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
-								if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
-								if (!outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount34++;}//if
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount1234++;}//if
-								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
-								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
-								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
-							}//else
-						}//else if		
-					}//if (i>3)
-					*/
 					
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
@@ -474,15 +308,12 @@
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
-					/*listRate.add(line);  
-					for (int k = 0; k < 11; k++){
-						listRate.add("*"); 
-					}//for*/
 				}//else
 				
 				line = br.readLine();        		
 			}//while
 			
+			/*
 			//In this section, create data for histogram.
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
@@ -515,7 +346,7 @@
 			binMidPt = delta_tArray[0] + (binNum-.5)*100;
 			binList.add(binMidPt);
 			binList.add((double)binCount);	
-		
+		        
 			//Convert binList to binArray
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
 			
@@ -529,7 +360,8 @@
 				String outline2 = result2.toString();
 				bw.write(outline2);			
 				}//for	
-				
+			*/	
+			
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
