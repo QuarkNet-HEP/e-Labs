@@ -311,7 +311,7 @@
 			//In this section, create data for histogram.
 			double binWidth = 100.0, totNumBins = 1; //binWidth in ns
 			List<Double> binList = new ArrayList<Double>();
-			int binNum = 1, binCount = 0,  ind = 0;
+			int binCount = 0,  ind = 0;
 			
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
