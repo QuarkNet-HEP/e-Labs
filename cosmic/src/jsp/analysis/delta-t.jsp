@@ -313,18 +313,18 @@
 				line = br.readLine();        		
 			}//while
 			
-			/*
+			
 			//In this section, create data for histogram.
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
 			//Convert each element of delta_tArray from fractional day to ns		
-			for (int k = 0; k < delta_tArray.length; i++){
+			for (int k = 0; k < delta_tArray.length; k++){
 				delta_tNs = 3600*24*Math.pow(10,9)*delta_tArray[k];
 				delta_tArray[k] = delta_tNs;
 			}//for
 			
 			//Sort delta_tArray
-			Arrays.sort(delta_tArray);
+			Arrays.sort(delta_tArray);			
 			
 			//Traverse delta_tArray to get count in each 100ns bin.  binNum = 1 initially			
 			for (int j = 0; j < delta_tArray.length; j++){
@@ -359,8 +359,7 @@
 	           		result2.append(binArray[j+2]); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				String outline2 = result2.toString();
 				bw.write(outline2);			
-				}//for	
-			*/	
+				}//for		
 			
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
