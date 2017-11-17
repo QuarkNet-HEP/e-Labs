@@ -309,9 +309,9 @@
 			
 			
 			//In this section, create data for histogram.
-			double binWidth = 100.0, totNumBins = 1.0; //binWidth in ns
+			double binWidth = 100.0, totNumBins = 1; //binWidth in ns
 			List<Double> binList = new ArrayList<Double>();
-			int binNum = 1, binCount = 0, totNumBins = 1, ind = 0;
+			int binNum = 1, binCount = 0,  ind = 0;
 			
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
@@ -326,10 +326,10 @@
 			totNumBins = Math.floor((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
-			for (int binNum = 1; 	binNum < totNumBins ; binNum++){		
+			for (int binNum = 1; 	binNum < (int)totNumBins ; binNum++){		
 					while (delta_tArray[ind] < delta_tArray[0]+binWidth*binNum){
 						binCount++;
-						ind++
+						ind++;
 					}
 					binList.add((double)binNum);
 					binList.add((double)binCount);	
@@ -342,8 +342,8 @@
 			
 				//Write second section
 				StringBuffer heading2 = new StringBuffer();	
-				heading2.append("binNum"); heading.append("\t"); 
-				heading2.append("binCount"); heading.append("\n");
+				heading2.append("binNum"); heading2.append("\t"); 
+				heading2.append("binCount"); heading2.append("\n");
 				
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < binArray.length  ; j+=2){
