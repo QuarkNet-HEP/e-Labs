@@ -350,10 +350,10 @@
 				for (int j = 0; j < binArray.length  ; j+=2){
 						result2.append(binArray[j]); result2.append("\t");
 						result2.append(binArray[j+1]); result2.append("\n");
-				}//for	
+				}//for
 				String outline2 = result2.toString();
 				bw.write(outline2);			
-				}//for	
+					
 			
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
