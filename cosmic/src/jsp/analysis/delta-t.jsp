@@ -84,19 +84,13 @@
 				double endInterval = 0.0; //endInterval represents the end of a 10-min period, measured in fractional day after 1st event
 				double rateInterval = 1.0/144.0; // 10 min = 6*10^11 ns = 1.0/144.0
 				//double rateInterval = 1.0/360.0; // 4 min = 1.0/360.0
-				double minFracDay = 0.0, fracDayToNs = 0.0, ratio13_12 = -1.0; 
-				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0; 			
-				double binWidth = 100.0; //FD => 'Fractional Day', binWidth in ns
-				List<Double> delta_tList = new ArrayList<Double>();
-				double binMidPt = 0.0, delta_tNs = 0.0;
-				List<Double> binList = new ArrayList<Double>();
+				double minFracDay = 0.0, fracDayToNs = 0.0; 
+				double delta_t = 0.0, firstHitDAQ1 = 0.0, firstHitDAQ2 = 0.0; 		
+				List<Double> delta_tList = new ArrayList<Double>();	
 				
 				int numEvents = 1;//number of events in a 10-min window; assume there's at least 1 event in first window.
 				int i = 0; //i keeps count of number of times through while loop
 				int eventNum = 1, numHits = 1, numBlankInt= 0; 
-				//int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
-				//int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
-				int binNum = 1, binCount = 0;
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
@@ -315,48 +309,48 @@
 			
 			
 			//In this section, create data for histogram.
+			double binWidth = 100.0, totNumBins = 1.0; //binWidth in ns
+			List<Double> binList = new ArrayList<Double>();
+			int binNum = 1, binCount = 0, totNumBins = 1, ind = 0;
+			
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
 			//Convert each element of delta_tArray from fractional day to ns		
 			for (int k = 0; k < delta_tArray.length; k++){
-				delta_tNs = 3600*24*Math.pow(10,9)*delta_tArray[k];
-				delta_tArray[k] = delta_tNs;
+				delta_tArray[k] = 3600*24*Math.pow(10,9)*delta_tArray[k];
 			}//for
 			
 			//Sort delta_tArray
-			Arrays.sort(delta_tArray);			
+			Arrays.sort(delta_tArray);						
 			
-			//Traverse delta_tArray to get count in each 100ns bin.  binNum = 1 initially			
-			for (int j = 0; j < delta_tArray.length; j++){
-				if (delta_tArray[j] < delta_tArray[0] + binWidth*binNum){
-					binCount++;
-				}//if
-				else {
-				//store binNum, binMidPt, and binCount in list binList
-				binList.add((double)binNum);
-				binMidPt = delta_tArray[0] + (binNum-.5)*100;
-				binList.add(binMidPt);
-				binList.add((double)binCount);
-				//reset binCount and increment binNum
-				binCount = 0;
-				binNum++;
-				}//else
-			}//for
-			binList.add((double)binNum);
-			binMidPt = delta_tArray[0] + (binNum-.5)*100;
-			binList.add(binMidPt);
-			binList.add((double)binCount);	
+			totNumBins = Math.floor((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
+			
+			//Traverse delta_tArray and determine which bin each element belongs to
+			for (int binNum = 1; 	binNum < totNumBins ; binNum++){		
+					while (delta_tArray[ind] < delta_tArray[0]+binWidth*binNum){
+						binCount++;
+						ind++
+					}
+					binList.add((double)binNum);
+					binList.add((double)binCount);	
+					binCount = 0;
+			}	
+			
 		        
 			//Convert binList to binArray
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
 			
-				//Write second section	
+				//Write second section
+				StringBuffer heading2 = new StringBuffer();	
+				heading2.append("binNum"); heading.append("\t"); 
+				heading2.append("binCount"); heading.append("\n");
+				
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < binArray.length  ; j+=3){
-					for (int k = 0; k < 2; k++){
+				for (int j = 0; j < binArray.length  ; j+=2){
+					for (int k = 0; k < 1; k++){
 						result2.append(binArray[j+k]); result2.append("\t");
 	           			}//for	
-	           		result2.append(binArray[j+2]); result2.append("\n");//last col of each row is followed by new-line, not tab		
+	           		result2.append(binArray[j+1]); result2.append("\n");//last col of each row is followed by new-line, not tab		
 				String outline2 = result2.toString();
 				bw.write(outline2);			
 				}//for		
