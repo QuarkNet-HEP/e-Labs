@@ -329,8 +329,8 @@
 			//Traverse delta_tArray and determine which bin each element belongs to
 				int binNum = 1; 	
 				for (int j = 0; j < delta_tArray.length; j++){
-					out.println("delta_tArray[j]: "+ delta_tArray[j]);
-					out.println("delta_tArray[0] + binWidth*binNum: "+ (delta_tArray[0]+binWidth*binNum));
+					//out.println("delta_tArray[j]: "+ delta_tArray[j]);
+					//out.println("delta_tArray[0] + binWidth*binNum: "+ (delta_tArray[0]+binWidth*binNum));
 					if (delta_tArray[j] < delta_tArray[0]+(binWidth*(double)binNum)){
 						binCount++;
 					}//if
@@ -343,7 +343,8 @@
 						binNum++;						
 					}//else
 				}//for
-			
+				out.println("binNum: "+binNum);
+				out.println("binCount: "+binCount); 
 		       
 			//Convert binList to binArray (binNum, binCount)
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
