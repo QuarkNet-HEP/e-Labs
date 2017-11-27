@@ -323,9 +323,9 @@
 			//Sort delta_tArray; 
 			Arrays.sort(delta_tArray);						
 			
-			totNumBins = Math.floor((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
+			totNumBins = Math.ceil((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
 			out.println("totNumBins: "+totNumBins);
-			/*
+			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			for (int binNum = 1; 	binNum < (int)totNumBins ; binNum++){		
 					while (delta_tArray[ind] < delta_tArray[0]+binWidth*binNum){
@@ -334,13 +334,15 @@
 					}
 					binList.add((double)binNum);
 					binList.add((double)binCount);	
+					out.println("binNum: "+binNum);
+					out.println("binCount: "+binCount); 
 					binCount = 0;
 			}	
 			
-		        
-			//Convert binList to binArray
+		       
+			//Convert binList to binArray (binNum, binCount)
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
-		
+	                         /*	
 				//Write second section
 				StringBuffer heading2 = new StringBuffer();	
 				heading2.append("binNum"); heading2.append("\t"); heading2.append("binCount"); heading2.append("\n");
