@@ -340,7 +340,7 @@
 						out.println("binNum: "+binNum);
 						out.println("binCount: "+binCount); 
 					}//else
-				)//for
+				}//for
 			
 		       
 			//Convert binList to binArray (binNum, binCount)
