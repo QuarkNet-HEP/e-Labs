@@ -330,7 +330,7 @@
 				int binNum = 1; 	
 				for (int j = 0; j < delta_tArray.length; j++){
 					out.println("delta_tArray[j]: "+ delta_tArray[j]);
-					out.println("delta_tArray[0] + binWidth*binNum: "+ binWidth*(double)binNum);
+					out.println("delta_tArray[0] + binWidth*binNum: "+ (delta_tArray[0]+binWidth*binNum));
 					if (delta_tArray[j] < delta_tArray[0]+(binWidth*(double)binNum)){
 						binCount++;
 					}//if
