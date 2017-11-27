@@ -311,7 +311,7 @@
 			//In this section, create data for histogram.
 			double binWidth = 100.0, totNumBins = 1; //binWidth in ns
 			List<Double> binList = new ArrayList<Double>();
-			int binCount = 0,  ind = 0;
+			int binCount = 0;
 			
 			//Convert delta_tList to array delta_tArray
 			Double[] delta_tArray = delta_tList.toArray(new Double[delta_tList.size()]);
@@ -327,17 +327,20 @@
 			out.println("totNumBins: "+totNumBins);
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
-			for (int binNum = 1; 	binNum < (int)totNumBins ; binNum++){		
-					while (delta_tArray[ind] < delta_tArray[0]+(binWidth*binNum)){
+				int binNum = 1; 	
+				for (int ind = 0; ind < delta_tArray.length; ind++){
+					if (delta_tArray[ind] < delta_tArray[0]+(binWidth*binNum)){
 						binCount++;
-						ind++;
-					}
-					binList.add((double)binNum);
-					binList.add((double)binCount);	
-					out.println("binNum: "+binNum);
-					out.println("binCount: "+binCount); 
-					binCount = 0;
-			}	
+					}//if
+					else{
+						binList.add((double)binNum);
+						binList.add((double)binCount);	
+						binCount = 0;
+						binNum++;
+						out.println("binNum: "+binNum);
+						out.println("binCount: "+binCount); 
+					}//else
+				)//for
 			
 		       
 			//Convert binList to binArray (binNum, binCount)
