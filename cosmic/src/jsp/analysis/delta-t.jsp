@@ -328,7 +328,7 @@
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			for (int binNum = 1; 	binNum < (int)totNumBins ; binNum++){		
-					while (delta_tArray[ind] < delta_tArray[0]+binWidth*binNum){
+					while (delta_tArray[ind] < delta_tArray[0]+(binWidth*binNum)){
 						binCount++;
 						ind++;
 					}
