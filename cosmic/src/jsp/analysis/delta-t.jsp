@@ -360,20 +360,20 @@
 				String outline2 = result2.toString();
 				bw.write(outline2);			
 					
-				 /*
+				 
 				//Write second section
-				StringBuffer heading2 = new StringBuffer();	
-				heading2.append("Delta_t"); heading2.append("\n"); 
-				String outHeading2 = heading2.toString();
-				bw.write(outHeading2); 	
+				StringBuffer heading3 = new StringBuffer();	
+				heading3.append("Delta_t"); heading3.append("\n"); 
+				String outHeading3 = heading3.toString();
+				bw.write(outHeading3); 	
 				
-				StringBuffer result2 = new StringBuffer();
+				StringBuffer result3 = new StringBuffer();
 				for (int j = 0; j < delta_tArray.length  ; j++){
-						result2.append(delta_tArray[j]);  result2.append("\n");						
+						result3.append(delta_tArray[j]);  result3.append("\n");						
 				}//for
-				String outline2 = result2.toString();
-				bw.write(outline2);			
-				*/
+				String outline3 = result3.toString();
+				bw.write(outline3);			
+				
 				
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
