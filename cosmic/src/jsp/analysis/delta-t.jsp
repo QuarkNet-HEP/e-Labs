@@ -337,7 +337,8 @@
 						binList.add((double)binNum);
 						binList.add((double)binCount);	
 						binCount = 0;
-						binNum++;						
+						binNum++;	
+						j = j-1;					
 					}//else
 				}//for
 				binList.add((double)binNum);
@@ -361,7 +362,7 @@
 				bw.write(outline2);			
 					
 				 
-				//Write second section
+				//Write third section
 				StringBuffer heading3 = new StringBuffer();	
 				heading3.append("Delta_t"); heading3.append("\n"); 
 				String outHeading3 = heading3.toString();
