@@ -330,7 +330,7 @@
 				int binNum = 1; 	
 				for (int j = 0; j < delta_tArray.length; j++){
 					//if (delta_tArray[j] < (floor(delta_tArray[0]*(10^-2))*10^2)+(binWidth*binNum)){
-					if (delta_tArray[j] < 100+(binWidth*binNum)){
+					if (delta_tArray[j] < 100.0+(binWidth*(double)binNum)){
 						binCount++;
 					}//if
 					else{
