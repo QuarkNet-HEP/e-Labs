@@ -320,10 +320,10 @@
 				delta_tArray[k] = 3600*24*Math.pow(10,9)*delta_tArray[k];
 			}//for
 			
-			//Sort delta_tArray
+			//Sort delta_tArray; 
 			Arrays.sort(delta_tArray);						
 			
-			totNumBins = Math.floor((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
+			/*totNumBins = Math.floor((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
 			out.println("totNumBins: "+totNumBins);
 			//Traverse delta_tArray and determine which bin each element belongs to
 			for (int binNum = 1; 	binNum < (int)totNumBins ; binNum++){		
@@ -339,24 +339,35 @@
 		        
 			//Convert binList to binArray
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
-			
+		
 				//Write second section
 				StringBuffer heading2 = new StringBuffer();	
 				heading2.append("binNum"); heading2.append("\t"); heading2.append("binCount"); heading2.append("\n");
 				String outHeading2 = heading2.toString();
-				bw.write(outHeading2); 
+				bw.write(outHeading2); 	
 				
 				StringBuffer result2 = new StringBuffer();
 				for (int j = 0; j < binArray.length  ; j+=2){
-						result2.append(binArray[j]); result2.append("\t");
-						
-						result2.append(binArray[j+1]); result2.append("\n");
-						
+						result2.append(binArray[j]); result2.append("\t");						
+						result2.append(binArray[j+1]); result2.append("\n");						
 				}//for
 				String outline2 = result2.toString();
 				bw.write(outline2);			
-					
+				*/	
 			
+				//Write second section
+				StringBuffer heading2 = new StringBuffer();	
+				heading2.append("Delta_t"); heading2.append("\n"); 
+				String outHeading2 = heading2.toString();
+				bw.write(outHeading2); 	
+				
+				StringBuffer result2 = new StringBuffer();
+				for (int j = 0; j < delta_tArray.length  ; j++){
+						result2.append(delta_tArray[j]);  result2.append("\n");						
+				}//for
+				String outline2 = result2.toString();
+				bw.write(outline2);			
+				
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
