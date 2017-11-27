@@ -335,10 +335,11 @@
 					else{
 						binList.add((double)binNum);
 						binList.add((double)binCount);	
-						binCount = 0;
-						binNum++;
 						out.println("binNum: "+binNum);
 						out.println("binCount: "+binCount); 
+						binCount = 0;
+						binNum++;
+						
 					}//else
 				}//for
 			
