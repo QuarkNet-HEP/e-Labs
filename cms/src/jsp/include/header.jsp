@@ -3,9 +3,6 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 
-<%-- Upgrading jQuery for plotter 28Nov2017 - JG --%>
-<%-- jquery-3.2.1.min.js, jquery-2.2.4.min.js break the menu drop-downs in the header --%>
-<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>--%>
 <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
