@@ -309,7 +309,6 @@
 			
 			
 			//In this section, create data for histogram.
-			double binWidth = 10.0; //totNumBins = 1; binWidth in ns
 			List<Double> binList = new ArrayList<Double>();
 			int binCount = 0;
 			
@@ -323,25 +322,32 @@
 			//Sort delta_tArray; 
 			Arrays.sort(delta_tArray);						
 			
-			//totNumBins = Math.ceil((delta_tArray[delta_tArray.length - 1] - delta_tArray[0])/binWidth);
-			//out.println("totNumBins: "+totNumBins);
-			
 			//Traverse delta_tArray and determine which bin each element belongs to
 				int binNum = 1; 	
+				double binWidth = 10.0, startTime = 100.0; 
+				double binStart = startTime, binEnd = binStart + binWidth, binMid = (binStart+binEnd)/2.0;
 				for (int j = 0; j < delta_tArray.length; j++){
-					//if (delta_tArray[j] < (floor(delta_tArray[0]*(10^-2))*10^2)+(binWidth*binNum)){
-					if (delta_tArray[j] < 100.0+(binWidth*binNum)){
+					if (delta_tArray[j] < startTime + (binWidth*binNum)){
 						binCount++;
 					}//if
 					else{
 						binList.add((double)binNum);
+						binList.add(binStart);
+						binLIst.add(binEnd);
+						binList.add(binMid);
 						binList.add((double)binCount);	
 						binCount = 0;
 						binNum++;	
+						binStart += binWidth;
+						binEnd += binWidth;
+						binMid += (binStart+binEnd)/2.0;
 						j = j-1;					
 					}//else
 				}//for
 				binList.add((double)binNum);
+				binList.add(binStart);
+				binLIst.add(binEnd);
+				binList.add(binMid);
 				binList.add((double)binCount);	
 		       
 			//Convert binList to binArray (binNum, binCount)
@@ -349,14 +355,21 @@
 	                        	
 				//Write second section
 				StringBuffer heading2 = new StringBuffer();	
-				heading2.append("binNum"); heading2.append("\t"); heading2.append("binCount"); heading2.append("\n");
+				heading2.append("binNum"); heading2.append("\t"); 
+				heading2.append("binStart"); heading2.append("\t"); 
+				heading2.append("binEnd"); heading2.append("\t"); 
+				heading2.append("binMid"); heading2.append("\t"); 
+				heading2.append("binCount"); heading2.append("\n");
 				String outHeading2 = heading2.toString();
 				bw.write(outHeading2); 	
 				
 				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < binArray.length  ; j+=2){
-					result2.append(binArray[j]); result2.append("\t");						
-					result2.append(binArray[j+1]); result2.append("\n");						
+				for (int j = 0; j < binArray.length  ; j+=5){
+					result2.append(binArray[j]); result2.append("\t");	
+					result2.append(binArray[j+1]); result2.append("\t");
+					result2.append(binArray[j+2]); result2.append("\t");		
+					result2.append(binArray[j+3]); result2.append("\t");					
+					result2.append(binArray[j+4]); result2.append("\n");						
 				}//for
 				String outline2 = result2.toString();
 				bw.write(outline2);			
