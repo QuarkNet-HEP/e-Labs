@@ -335,8 +335,8 @@
 			<%
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
-			double startTime = request.getParameter("startTimeIn");
-			double binWidth = request.getParameter("binWidthIn");						
+			double startTime = (double)request.getParameter("startTimeIn");
+			double binWidth = (double)request.getParameter("binWidthIn");						
 			double binStart = startTime; 
 			double binEnd = binStart + binWidth; 
 			double binMid = (binStart+binEnd)/2.0;
