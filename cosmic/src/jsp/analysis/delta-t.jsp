@@ -324,19 +324,21 @@
 			out.println("<br>"); 
 			%>
 			
-			//Prompt user for binWidth and startTime
+			<%--Prompt user for binWidth and startTime
 			<form action = "delta-t.jsp" method = "GET">
          			Start Time: <input type = "text" name = "startTimeIn">
          			<br />
          			Bin Width: <input type = "text" name = "binWidthIn" />
          			<input type = "submit" value = "Submit" />
-      			</form>
+      			</form>--%>
       			
 			<%
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
-			double startTime = Double.parseDouble(request.getParameter("startTimeIn"));
-			double binWidth = Double.parseDouble(request.getParameter("binWidthIn"));						
+			//double startTime = Double.parseDouble(request.getParameter("startTimeIn"));
+			//double binWidth = Double.parseDouble(request.getParameter("binWidthIn"));		
+			double startTime = 100.0;
+			double binWidth = 10.0;				
 			double binStart = startTime; 
 			double binEnd = binStart + binWidth; 
 			double binMid = (binStart+binEnd)/2.0;
