@@ -232,8 +232,7 @@
 							}//if
 						}//if				
 					}//for
-					
-					
+										
 					//Write to output file and console.
 						StringBuffer result = new StringBuffer();												
 						//Event number
@@ -321,18 +320,27 @@
 			
 			//Sort delta_tArray; 
 			Arrays.sort(delta_tArray);						
-			
-			//Prompt user for binWidth and startTime
-			Scanner scanner = new Scanner (System.in);
 			out.println("Range of delta-t's:  "+delta_tArray[0]+" - "+delta_tArray[delta_tArray.length-1]);
 			out.println("<br>"); 
-			out.println("Enter start time of first bin: ");
-			double startTime = scanner.nextDouble(); // Get what the user types.			
+			%>
 			
+			//Prompt user for binWidth and startTime
+			<form action = "delta-t.jsp" method = "GET">
+         			Start Time: <input type = "text" name = "startTimeIn">
+         			<br />
+         			Bin Width: <input type = "text" name = "binWidthIn" />
+         			<input type = "submit" value = "Submit" />
+      			</form>
+      			
+			<%
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
-			double binWidth=10.0; 
-			double binStart = startTime, binEnd = binStart + binWidth, binMid = (binStart+binEnd)/2.0;
+			double startTime = request.getParameter("startTimeIn");
+			double binWidth = request.getParameter("binWidthIn");						
+			double binStart = startTime; 
+			double binEnd = binStart + binWidth; 
+			double binMid = (binStart+binEnd)/2.0;
+			
 			for (int j = 0; j < delta_tArray.length; j++){
 				if (delta_tArray[j] < startTime + (binWidth*binNum)){
 					binCount++;
