@@ -333,7 +333,7 @@
 					else{
 						binList.add((double)binNum);
 						binList.add(binStart);
-						binLIst.add(binEnd);
+						binList.add(binEnd);
 						binList.add(binMid);
 						binList.add((double)binCount);	
 						binCount = 0;
@@ -346,7 +346,7 @@
 				}//for
 				binList.add((double)binNum);
 				binList.add(binStart);
-				binLIst.add(binEnd);
+				binList.add(binEnd);
 				binList.add(binMid);
 				binList.add((double)binCount);	
 		       
