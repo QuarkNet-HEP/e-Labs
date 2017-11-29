@@ -340,7 +340,7 @@
 						binNum++;	
 						binStart += binWidth;
 						binEnd += binWidth;
-						binMid += (binStart+binEnd)/2.0;
+						binMid = (binStart+binEnd)/2.0;
 						j = j-1;					
 					}//else
 				}//for
