@@ -322,35 +322,42 @@
 			//Sort delta_tArray; 
 			Arrays.sort(delta_tArray);						
 			
+			//Prompt user for binWidth and startTime
+			Scanner scanner = new Scanner (System.in);
+			out.println("Range of delta-t's:  "+delta_tArray[0]+" - "+delta_tArray[delta_tArray.length-1]);
+			out.println("<br>"); 
+			out.println("Enter start time of first bin: ");
+			double startTime = scanner.nextDouble(); // Get what the user types.			
+			
 			//Traverse delta_tArray and determine which bin each element belongs to
-				int binNum = 1; 	
-				double binWidth = 10.0, startTime = 100.0; 
-				double binStart = startTime, binEnd = binStart + binWidth, binMid = (binStart+binEnd)/2.0;
-				for (int j = 0; j < delta_tArray.length; j++){
-					if (delta_tArray[j] < startTime + (binWidth*binNum)){
-						binCount++;
-					}//if
-					else{
-						binList.add((double)binNum);
-						binList.add(binStart);
-						binList.add(binEnd);
-						binList.add(binMid);
-						binList.add((double)binCount);	
-						binCount = 0;
-						binNum++;	
-						binStart += binWidth;
-						binEnd += binWidth;
-						binMid = (binStart+binEnd)/2.0;
-						j = j-1;					
+			int binNum = 1; 	
+			double binWidth=10.0; 
+			double binStart = startTime, binEnd = binStart + binWidth, binMid = (binStart+binEnd)/2.0;
+			for (int j = 0; j < delta_tArray.length; j++){
+				if (delta_tArray[j] < startTime + (binWidth*binNum)){
+					binCount++;
+				}//if
+				else{
+					binList.add((double)binNum);
+					binList.add(binStart);
+					binList.add(binEnd);
+					binList.add(binMid);
+					binList.add((double)binCount);	
+					binCount = 0;
+					binNum++;	
+					binStart += binWidth;
+					binEnd += binWidth;
+					binMid = (binStart+binEnd)/2.0;
+					j = j-1;					
 					}//else
-				}//for
-				binList.add((double)binNum);
-				binList.add(binStart);
-				binList.add(binEnd);
-				binList.add(binMid);
-				binList.add((double)binCount);	
+			}//for
+			binList.add((double)binNum);
+			binList.add(binStart);
+			binList.add(binEnd);
+			binList.add(binMid);
+			binList.add((double)binCount);	
 		       
-			//Convert binList to binArray (binNum, binCount)
+			//Convert binList to binArray 
 			Double[] binArray = binList.toArray(new Double[binList.size()]);
 	                        	
 				//Write second section
