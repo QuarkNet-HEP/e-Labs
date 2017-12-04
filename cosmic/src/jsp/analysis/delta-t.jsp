@@ -328,7 +328,7 @@
 			Scanner scanner = new Scanner(System.in);
 			out.println("Enter start time: ");
 			double startTime = scanner.nextDouble();			
-			input.nextLine(); // Skip the newline
+			scanner.nextLine(); // Skip the newline
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
