@@ -325,7 +325,7 @@
 			
 			
 			//Prompt user for binWidth and startTime			     			
-			Scanner scanner = new Scanner(System.in);
+			Scanner scanner = new Scanner(in);
 			out.println("Enter start time: ");
 			String startTimeString = scanner.nextLine();	
 			out.println("Your Start Time: "+startTimeString);	
