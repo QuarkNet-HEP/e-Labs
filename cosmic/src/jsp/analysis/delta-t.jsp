@@ -325,13 +325,9 @@
 			
 			
 			//Prompt user for binWidth and startTime	
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter start time: ");
-			String startTimeString = reader.readLine();
-			System.out.print("Start time: " + startTimeString );
-			
-			double startTime;	
-			startTime = Double.parseDouble(startTimeString);    			
+			//out.println("Enter start time: ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));			
+			double startTime = Double.parseDouble(reader.readLine());
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
