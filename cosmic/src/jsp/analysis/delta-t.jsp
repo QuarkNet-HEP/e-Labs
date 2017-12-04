@@ -15,8 +15,7 @@
 <%@ page import="java.nio.file.*" %>
 <%@ page import="java.lang.*" %>
 
-<%@ page import="javax.swing.JOptionPane" %>
-<%@ page import="javax.swing.JFrame" %>
+<%@ page import="javax.swing.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
