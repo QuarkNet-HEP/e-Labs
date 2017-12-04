@@ -327,7 +327,10 @@
 			//Prompt user for binWidth and startTime			     			
 			Scanner scanner = new Scanner(System.in);
 			out.println("Enter start time: ");
-			double startTime = scanner.nextDouble();			
+			String startTimeString = scanner.nextLine();	
+			out.println("Your Start Time: "+startTimeString);	
+			double startTime = Double.parseDouble(startTimeString);
+			//scanner.skip("\n")
 			//scanner.nextLine(); // Skip the newline
 			
 			//Traverse delta_tArray and determine which bin each element belongs to
