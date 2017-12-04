@@ -325,16 +325,18 @@
 			out.println("<br>"); 
 			%>
 			
-			//Prompt user for binWidth and startTime	
+			<%-- Prompt user for binWidth and startTime --%>
 			<script type="text/javascript">
-				window.alert("My name is George. Welcome!")
+				var startTimeString=window.prompt("Enter start time:")
+				window.alert(startTimeString)
 			</script>
 			
 			<%			
+			double startTime = Double.parseDouble(request.getParameter("startTimeString"));
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
 			
-			double startTime = 100.0;
+			//double startTime = 100.0;
 			double binWidth = 10.0;				
 			double binStart = startTime; 
 			double binEnd = binStart + binWidth; 
