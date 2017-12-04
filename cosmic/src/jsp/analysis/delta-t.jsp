@@ -15,7 +15,6 @@
 <%@ page import="java.nio.file.*" %>
 <%@ page import="java.lang.*" %>
 
-<%@ page import="javax.swing.*" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
@@ -324,16 +323,18 @@
 			Arrays.sort(delta_tArray);						
 			out.println("Range of delta-t's:  "+delta_tArray[0]+" - "+delta_tArray[delta_tArray.length-1]);
 			out.println("<br>"); 
-			
+			%>
 			
 			//Prompt user for binWidth and startTime	
-			String startTimeString = JOptionPane.showInputDialog("Enter a start time: ");
-			double startTime = Double.parseDouble(startTimeString);
-						
+			<script type="text/javascript">
+				window.alert("My name is George. Welcome!")
+			</script>
+			
+			<%			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
 			
-			//double startTime = 100.0;
+			double startTime = 100.0;
 			double binWidth = 10.0;				
 			double binStart = startTime; 
 			double binEnd = binStart + binWidth; 
