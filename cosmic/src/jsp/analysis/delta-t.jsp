@@ -322,23 +322,19 @@
 			Arrays.sort(delta_tArray);						
 			out.println("Range of delta-t's:  "+delta_tArray[0]+" - "+delta_tArray[delta_tArray.length-1]);
 			out.println("<br>"); 
-			%>
 			
-			Prompt user for binWidth and startTime
-			<form action = "#" >
-         			Start Time: <input type = "text" name = "startTimeIn" >
-         			<br />
-         			Bin Width: <input type = "text" name = "binWidthIn" >
-         			<input type = "submit" value = "Submit" >
-      			</form>
-      			
-			<%
+			
+			//Prompt user for binWidth and startTime			     			
+			Scanner scanner = new Scanner(System.in);
+			out.println("Enter start time: ");
+			double startTime = scanner.nextDouble();			
+			input.nextLine(); // Skip the newline
+			
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
-			double startTime = Double.parseDouble(request.getParameter("startTimeIn"));
-			double binWidth = Double.parseDouble(request.getParameter("binWidthIn"));		
+			
 			//double startTime = 100.0;
-			//double binWidth = 10.0;				
+			double binWidth = 10.0;				
 			double binStart = startTime; 
 			double binEnd = binStart + binWidth; 
 			double binMid = (binStart+binEnd)/2.0;
