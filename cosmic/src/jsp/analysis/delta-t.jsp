@@ -328,7 +328,7 @@
 			
 			//Prompt user for binWidth and startTime	
 			String startTimeString = JOptionPane.showInputDialog("Enter a start time: ");
-			startTime = Double.parseDouble(startTimeString);
+			double startTime = Double.parseDouble(startTimeString);
 						
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
