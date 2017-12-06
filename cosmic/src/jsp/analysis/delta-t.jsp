@@ -328,7 +328,7 @@
 			int binNum = 1; 	
 			
 			String startTimeString2=request.getParameter("startTimeString");
-			double startTime = Double.parseDouble(starTimeString2);
+			double startTime = Double.parseDouble(startTimeString2);
 			//double startTime = 100.0;
 			double binWidth = 10.0;				
 			double binStart = startTime; 
