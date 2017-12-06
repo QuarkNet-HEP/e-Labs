@@ -326,9 +326,9 @@
 			%>
 			
 			<%-- Prompt user for binWidth and startTime --%>
-			<script type="text/javascript">
-				var startTimeString=window.prompt("Enter start time:")
-				window.alert(startTimeString)
+			<script>
+				var startTimeString=window.prompt("Enter start time:");
+				window.alert(startTimeString);
 			</script>
 			
 			<%			
