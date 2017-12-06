@@ -331,9 +331,10 @@
 				window.alert(startTimeString);
 			</script>
 			
-			<%			
-			String startTimeString2 ="<script>document.writeln(startTimeString)</script>";
-			//String startTimeString2 =request.getParameter("startTimeString");
+			<%		
+			Thread.sleep(10000); // sleep 10 seconds	
+			//String startTimeString2 ="<script>document.writeln(startTimeString)</script>";
+			String startTimeString2 =request.getParameter("startTimeString");
 			out.println(startTimeString2);
 			double startTime = Double.parseDouble(startTimeString2);
 			//Traverse delta_tArray and determine which bin each element belongs to
