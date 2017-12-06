@@ -25,6 +25,10 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
+    <script>
+    	var startTimeString = prompt("Please enter startTime", "100");
+    	window.alert(startTimeString);
+    </script>
     
 	<%	
 		
@@ -323,23 +327,12 @@
 			Arrays.sort(delta_tArray);						
 			out.println("Range of delta-t's:  "+delta_tArray[0]+" - "+delta_tArray[delta_tArray.length-1]);
 			out.println("<br>"); 
-			%>
 			
-			<%-- Prompt user for binWidth and startTime --%>
-			<script>
-				var startTimeString=window.prompt("Enter start time:");
-				window.alert(startTimeString);
-			</script>
-			
-			<%		
-			Thread.sleep(10000); // sleep 10 seconds	
-			//String startTimeString2 ="<script>document.writeln(startTimeString)</script>";
-			String startTimeString2 =request.getParameter("startTimeString");
-			out.println(startTimeString2);
-			double startTime = Double.parseDouble(startTimeString2);
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
 			
+			String startTimeString2=request.getParameter(startTimeString);
+			double startTime = Double.parseDouble(starTimeString2);
 			//double startTime = 100.0;
 			double binWidth = 10.0;				
 			double binStart = startTime; 
@@ -464,7 +457,7 @@
 			<a href = "${dst2v2}">Download delta-t!</a>
 			<%--<a href = "${dst2bv2}">Download delta-tRate!</a>--%>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
-	
+				
 	</body>
 </html>
 
