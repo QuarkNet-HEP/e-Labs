@@ -25,11 +25,7 @@
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
-    <script>
-    	var startTimeString = prompt("Please enter startTime", "100");
-    	window.alert(startTimeString);
-    </script>
-    
+   
 	<%	
 		
 		//******Phase I:  copy eventCandidates file into eventCandidates-date******
@@ -331,7 +327,7 @@
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
 			
-			String startTimeString2=request.getParameter(startTimeString);
+			String startTimeString2=request.getParameter("startTimeString");
 			double startTime = Double.parseDouble(starTimeString2);
 			//double startTime = 100.0;
 			double binWidth = 10.0;				
