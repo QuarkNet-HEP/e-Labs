@@ -333,8 +333,8 @@
 			
 			<%			
 			//String startTimeString2 ="<script>document.writeln(startTimeString)</script>";
-			out.println(startTimeString);
 			String startTimeString2 =request.getParameter("startTimeString");
+			out.println(startTimeString2);
 			double startTime = Double.parseDouble(startTimeString2);
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
