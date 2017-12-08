@@ -327,19 +327,18 @@
 			//Traverse delta_tArray and determine which bin each element belongs to
 			int binNum = 1; 	
 			
-			String startTimeString2=request.getParameter("startTimeString");
-			double startTime = Double.parseDouble(startTimeString2);
-			//double startTime = 100.0;
+			String startHistString2=request.getParameter("startHistString");
+			double startHist = Double.parseDouble(startHistString2);
 			double binWidth = 10.0;		
 			String outline2 = "outline2 initialized";
 			
-			if (startTime < delta_tArray[delta_tArray.length - 1]){		
-				double binStart = startTime; 
+			if (startHist < delta_tArray[delta_tArray.length - 1]){		
+				double binStart = startHist; 
 				double binEnd = binStart + binWidth; 
 				double binMid = (binStart+binEnd)/2.0;
 			
 				for (int j = 0; j < delta_tArray.length; j++){
-					if (delta_tArray[j] < startTime + (binWidth*binNum)){
+					if (delta_tArray[j] < startHist + (binWidth*binNum)){
 						binCount++;
 					}//if
 					else{
@@ -386,7 +385,7 @@
 				outline2 = result2.toString();
 			}//if
 			else {
-				outline2 = "Start time too big!";
+				outline2 = "Start histogram time beyond scope of delta-t's!"+"\n";
 			}//else
 			bw.write(outline2);			
 					

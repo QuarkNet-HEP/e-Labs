@@ -54,7 +54,7 @@
 					<form action="delta-t.jsp" method="GET">
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
  						<input type="hidden" name="srcF" value="${file.name}"/>
- 						<input type="text" name="startTimeString"/>
+ 						<input type="text" name="startHistString"/>
 						<input type="submit" value="delta-t"/>
 					</form>
 				</c:if>
