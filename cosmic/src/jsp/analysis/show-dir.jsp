@@ -54,7 +54,8 @@
 					<form action="delta-t.jsp" method="GET">
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
  						<input type="hidden" name="srcF" value="${file.name}"/>
- 						<input type="text" name="startHistString"/>
+ 						Start Histogram at: <input type="text" name="startHistString"/>
+ 						Histogram bin width: <input type="text" name="binWidthString"/>
 						<input type="submit" value="delta-t"/>
 					</form>
 				</c:if>

@@ -308,7 +308,7 @@
 			}//while
 			
 			
-			//In this section, create data for histogram.
+			//IN THIS SECTION, CREATE DATA FOR HISTOGRAM.
 			List<Double> binList = new ArrayList<Double>();
 			int binCount = 0;
 			
@@ -329,7 +329,9 @@
 			
 			String startHistString2=request.getParameter("startHistString");
 			double startHist = Double.parseDouble(startHistString2);
-			double binWidth = 10.0;		
+			String binWidthString2=request.getParameter("binWidthString");
+			double binWidth = Double.parseDouble(binWidthString2);
+			
 			String outline2 = "outline2 initialized";
 			
 			if (startHist < delta_tArray[delta_tArray.length - 1]){		
@@ -387,12 +389,12 @@
 				outline2 = result2.toString();
 			}//if
 			else {
-				outline2 = "Start histogram time beyond scope of delta-t's!"+"\n";
+				outline2 = "Start histogram time beyond scope of "+ &delta + "t values!" + "\n";
 			}//else
 			bw.write(outline2);			
 					
 				 
-				//Write third section
+				//OUTPUT ALL DELTA-T VALUES IN ORDER
 				StringBuffer heading3 = new StringBuffer();	
 				heading3.append("Delta_t"); heading3.append("\n"); 
 				String outHeading3 = heading3.toString();
