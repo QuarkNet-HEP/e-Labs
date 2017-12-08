@@ -383,10 +383,10 @@
 					result2.append(binArray[j+3]); result2.append("\t");					
 					result2.append(binArray[j+4]); result2.append("\n");						
 				}//for
-				String outline2 = result2.toString();
+				outline2 = result2.toString();
 			}//if
 			else {
-				String outline2 = "Start time too big!";
+				outline2 = "Start time too big!";
 			}//else
 			bw.write(outline2);			
 					
