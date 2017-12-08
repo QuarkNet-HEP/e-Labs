@@ -389,7 +389,7 @@
 				outline2 = result2.toString();
 			}//if
 			else {
-				outline2 = "Start histogram time beyond scope of "+ &delta + "t values!" + "\n";
+				outline2 = "Start histogram time beyond scope of delta-t values!" + "\n";
 			}//else
 			bw.write(outline2);			
 					
