@@ -331,6 +331,7 @@
 			double startTime = Double.parseDouble(startTimeString2);
 			//double startTime = 100.0;
 			double binWidth = 10.0;		
+			String outline2 = "outline2 initialized";
 			
 			if (startTime < delta_tArray[delta_tArray.length - 1]){		
 				double binStart = startTime; 
@@ -382,11 +383,11 @@
 					result2.append(binArray[j+3]); result2.append("\t");					
 					result2.append(binArray[j+4]); result2.append("\n");						
 				}//for
-					String outline2 = result2.toString();
-				}//if
-				else {
-					String outline2 = "Start time too big!";
-				}//else
+				String outline2 = result2.toString();
+			}//if
+			else {
+				String outline2 = "Start time too big!";
+			}//else
 			bw.write(outline2);			
 					
 				 
