@@ -338,22 +338,24 @@
 				double binMid = (binStart+binEnd)/2.0;
 			
 				for (int j = 0; j < delta_tArray.length; j++){
-					if (delta_tArray[j] < startHist + (binWidth*binNum)){
-						binCount++;
+					if (delta_tArray[j] >= startHist){
+						if (delta_tArray[j] < startHist + (binWidth*binNum)){
+							binCount++;
+						}//if
+						else{
+							binList.add((double)binNum);
+							binList.add(binStart);
+							binList.add(binEnd);
+							binList.add(binMid);
+							binList.add((double)binCount);	
+							binCount = 0;
+							binNum++;	
+							binStart += binWidth;
+							binEnd += binWidth;
+							binMid = (binStart+binEnd)/2.0;
+							j = j-1;					
+						}//else
 					}//if
-					else{
-						binList.add((double)binNum);
-						binList.add(binStart);
-						binList.add(binEnd);
-						binList.add(binMid);
-						binList.add((double)binCount);	
-						binCount = 0;
-						binNum++;	
-						binStart += binWidth;
-						binEnd += binWidth;
-						binMid = (binStart+binEnd)/2.0;
-						j = j-1;					
-					}//else
 				}//for
 				binList.add((double)binNum);
 				binList.add(binStart);
@@ -403,13 +405,8 @@
 				String outline3 = result3.toString();
 				bw.write(outline3);			
 				
-				
-				//request.setAttribute("dst2", dst2);	
-				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
 	        	bw.close();
-	        	//bw2.close();
-        		
         		
         	//******Phase III:  Create link to download file eclipseFormat******
 				//parse dst2 to remove /var/lib/tomcat7/webapp/ and create dst2v2
@@ -426,26 +423,15 @@
 				for (int q = 0; q<tokensArray2.length-1; q++){	
     				dst2v2 = dst2v2 + tokensArray2[q] + "/";
     			}//for-q	
-    			
-    			//create dst2bv2 
-    			/*
-    			String phrase2 = dst2b;
-                String[] tokens = phrase2.split("/");
-                String dst2bv2 = dst2v2;
-                */
                 
-                //concatenate last element	 
-                //dst2bv2 = dst2v2 + tokens[tokens.length - 1];//this should happen first		               	
+                //concatenate last element	              	
     			dst2v2 = dst2v2 + tokensArray2[tokensArray2.length-1];
     			
     			
     			//add http:// to start
                 dst2v2 = "http://" + request.getServerName() + dst2v2;
-                //dst2bv2 = "http://" + request.getServerName() + dst2bv2;
                 
 				request.setAttribute("dst2v2", dst2v2);					
-				//request.setAttribute("dst2bv2", dst2bv2);	
-				
 				
     		}//try
     		catch(Exception e){
