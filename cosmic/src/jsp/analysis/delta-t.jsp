@@ -221,7 +221,7 @@
 					    }//if
 					}//for
 					
-					delta_t = Math.abs(firstHitDAQ1 - firstHitDAQ2);
+					delta_t = firstHitDAQ2 - firstHitDAQ1;
 					delta_tList.add(delta_t);
 					       
 					//check if all the Julian Day values are the same for the whole line
@@ -296,7 +296,6 @@
 						
 				        bw.write(outline); 
 				        //out.println(outline); out.println("<br>"); 
-				        //lastJD = jd;
 						   			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
