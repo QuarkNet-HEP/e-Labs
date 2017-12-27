@@ -21,7 +21,7 @@
 
 <html>
 	<head>
-		<title>Creating eclipseFormat . . . </title>
+		<title>Creating delta-t . . . </title>
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
 	<body>
@@ -395,7 +395,7 @@
 				 
 				//OUTPUT ALL DELTA-T VALUES IN ORDER
 				StringBuffer heading3 = new StringBuffer();	
-				heading3.append("Delta_t"); heading3.append("\n"); 
+				heading3.append("Sorted delta_t (ns)"); heading3.append("\n"); 
 				String outHeading3 = heading3.toString();
 				bw.write(outHeading3); 	
 				
