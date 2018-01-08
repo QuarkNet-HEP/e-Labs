@@ -2,19 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
-<%@ page session="false" %>
+<%@ page session="false" %> <%-- PINEBARREN --%>
 
-<%
-	boolean loggedIn = ElabGroup.isUserLoggedIn(session);
-	request.setAttribute("loggedin", loggedIn);
-	if (loggedIn) {
-	    ElabGroup group = ElabGroup.getUser(session);
-	    request.setAttribute("username", group.getName());
-	}
+<%-- PINEBARREN --%>
+<c:if test="${pageContext.request.getSession(false) != null}">
+		<%
+		boolean loggedIn = ElabGroup.isUserLoggedIn(session);
+		request.setAttribute("loggedin", loggedIn);
+		if (loggedIn) {
+				ElabGroup group = ElabGroup.getUser(session);
+				request.setAttribute("username", group.getName());
+		}
 
-	String environment = (String) session.getAttribute("environment");	
-	request.setAttribute("environment", environment);
-%>
+		String environment = (String) session.getAttribute("environment");	
+		request.setAttribute("environment", environment);
+		%>
+</c:if>
+<%-- /PINEBARREN --%>
+
 <div id="header-image">
 	<img src="<%= "/elab/cosmic/graphics/blast.jpg" %>" alt="Cosmic Ray Blast" />
 </div>
