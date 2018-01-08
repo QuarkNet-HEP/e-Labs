@@ -3,7 +3,6 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ page session="false" %>
-<%-- Wheatberry --%>
 
 <%
 	boolean loggedIn = ElabGroup.isUserLoggedIn(session);
