@@ -1,5 +1,6 @@
 <%@ page import="gov.fnal.elab.Elab" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%-- PINEBARREN --%>
 
 <%-- PINEBARREN --%>
 <%-- <%@ include file="../login/session-invalidator.jspf" %> --%>
