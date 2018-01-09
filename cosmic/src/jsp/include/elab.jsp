@@ -11,10 +11,13 @@
 HttpSession ELAB_JSP_SESSION = request.getSession(false);
 if(ELAB_JSP_SESSION != null) {
 		Elab elab = Elab.getElab(pageContext, "cosmic");
-		session.setAttribute("elab", elab);
+		//session.setAttribute("elab", elab);
+		ELAB_JSP_SESSION.setAttribute("elab", elab);
 		request.setAttribute("elab", elab);
-		request.setAttribute("user", ElabGroup.getUser(session));
-		session.setAttribute("environment", (String) elab.getProperty("environment"));
+		//request.setAttribute("user", ElabGroup.getUser(session));
+		request.setAttribute("user", ElabGroup.getUser(ELAB_JSP_SESSION));
+		//session.setAttribute("environment", (String) elab.getProperty("environment"));
+		ELAB_JSP_SESSION.setAttribute("environment", (String) elab.getProperty("environment"));
 }
 %>
 <%-- /PINEBARREN --%>
