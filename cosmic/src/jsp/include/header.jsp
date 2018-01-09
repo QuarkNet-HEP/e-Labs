@@ -5,19 +5,19 @@
 <%@ page session="false" %> <%-- PINEBARREN --%>
 
 <%-- PINEBARREN --%>
-<c:if test="${pageContext.request.getSession(false) != null}">
-		<%
+<%
+if(request.getSession(false) != null) {
 		boolean loggedIn = ElabGroup.isUserLoggedIn(session);
 		request.setAttribute("loggedin", loggedIn);
 		if (loggedIn) {
 				ElabGroup group = ElabGroup.getUser(session);
 				request.setAttribute("username", group.getName());
 		}
-
+		
 		String environment = (String) session.getAttribute("environment");	
 		request.setAttribute("environment", environment);
-		%>
-</c:if>
+}
+%>
 <%-- /PINEBARREN --%>
 
 <div id="header-image">
