@@ -7,7 +7,8 @@
 
 <%-- PINEBARREN --%>
 <%
-if(request.getSession(false) != null) {
+HttpSession session = request.getSession(false);
+if(session != null) {
 		Elab elab = Elab.getElab(pageContext, "cosmic");
 		session.setAttribute("elab", elab);
 		request.setAttribute("elab", elab);

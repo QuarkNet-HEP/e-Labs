@@ -6,7 +6,8 @@
 
 <%-- PINEBARREN --%>
 <%
-if(request.getSession(false) != null) {
+HttpSession session = request.getSession(false);
+if(session != null) {
 		boolean loggedIn = ElabGroup.isUserLoggedIn(session);
 		request.setAttribute("loggedin", loggedIn);
 		if (loggedIn) {

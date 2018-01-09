@@ -5,7 +5,8 @@
 
 <%-- PINEBARREN --%>
 <%
-if(request.getSession(false) != null) {
+HttpSession session = request.getSession(false);
+if(session != null) {
 		if (ElabGroup.isUserLoggedIn(session) && session.getAttribute("elab") != null) {
 				ElabGroup group = ElabGroup.getUser(session);
 				request.setAttribute("username", group.getName());
