@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
-<%@ page session="false" %> <%-- PINEBARREN --%>
+<%@ page session="false" %><%-- PINEBARREN --%>
 
 <%-- PINEBARREN --%>
 <%
