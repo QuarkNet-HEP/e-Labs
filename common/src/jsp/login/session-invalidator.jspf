@@ -4,7 +4,7 @@
         
 	{
 		Cookie cookie = new Cookie("JSESSIONID", session.getId());
-		cookie.setPath("/elab");
+		cookie.setPath("/elab/");
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
 	}
