@@ -370,8 +370,8 @@ public class Elab implements Serializable {
     /**
      * Builds a link that would log in a user as guest based on information from
      * the elab properties. Additionally, the link may contain a redirection
-     * request that takes place after the login if the request containes a
-     * parameter named "prevPage"<br>
+     * request that takes place after the login if the request contains a
+     * parameter named "prevPage".<br>
      * Note: this looks hackish
      */
     public String getGuestLoginLink(HttpServletRequest request) {
@@ -390,6 +390,36 @@ public class Elab implements Serializable {
                 + user + pass + project;
     }
 
+    /**
+     * Builds a link that would log in a user as guest based on information from
+     * the elab properties. Additionally, the link may contain a redirection
+     * request that takes place after the login if the request contains a
+     * parameter named "prevPage".<br>
+     * Modified from getGuestLoginLink(), which returns a String URL relative 
+		 * to the default HTML BASE. This returns an absolute String URL using 
+		 * "elab.secure.url" as BASE, which by intention will use HTTPS on an 
+		 * SSL/TLS-enabled server.<br>
+		 * If you fix getGuestLoginLink() to be less "hackish," fix this one, too.
+		 *  - JG 25Jan2018
+     */		
+    public String getGuestLoginLinkSecure(HttpServletRequest request) {
+        String prevPage = request.getParameter("prevPage");
+        if (prevPage == null) {
+            prevPage = properties.getLoggedInHomePage();
+        }
+
+        prevPage = "?prevPage=" + prevPage;
+				String login = "&login=Login";
+        String user = "&user=" + getProperties().getGuestUserName();
+        String pass = "&pass=" + getProperties().getGuestUserPassword();
+        String project = "&project=" + getName();
+        return   getProperties().getElabSecureUrl() + '/'
+						     + properties.getWebapp() + '/' + getName() + '/'
+								 + properties.getRequired("elab.login.page") + prevPage
+								 + login + user + pass + project;
+    }
+
+		
     /**
      * Return an <code>FAQ</code> instance for this elab
      */
