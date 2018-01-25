@@ -14,7 +14,7 @@
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
 	String guestlogin = elab.getGuestLoginLinkSecure(request);
-  String prevPageUrl = elab.getSecureUrl(request.getParameter("prevPage");
+  String prevPageUrl = elab.getSecureUrl(request.getParameter("prevPage"));
 	request.setAttribute("username", username);
 	request.setAttribute("guestlogin", guestlogin);
 	String userMaxLogins = elab.getProperty("username_maxlogins");
