@@ -413,7 +413,7 @@ public class Elab implements Serializable {
         String user = "&user=" + getProperties().getGuestUserName();
         String pass = "&pass=" + getProperties().getGuestUserPassword();
         String project = "&project=" + getName();
-        return   getProperties().getElabSecureUrl() + '/'
+        return   properties.getRequired("elab.secure.url") + '/'
 						     + properties.getWebapp() + '/' + getName() + '/'
 								 + properties.getRequired("elab.login.page") + prevPage
 								 + login + user + pass + project;
