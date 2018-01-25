@@ -15,7 +15,7 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 		</div>
 		<div id="login-form-text">
 			<p>
-				To explore our website, <br /><a href="<%= elab.getGuestLoginLink(request) %>">log in as guest</a>
+				To explore our website, <br /><a href="<%= elab.getGuestLoginLinkSecure(request) %>">log in as guest</a>
 			</p>
 			
 			<h2>Need a student login?</h2>

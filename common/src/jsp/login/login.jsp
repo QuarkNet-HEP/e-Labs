@@ -13,7 +13,7 @@
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
-	String guestlogin = elab.getGuestLoginLink(request);
+	String guestlogin = elab.getGuestLoginLinkSecure(request);
 	request.setAttribute("username", username);
 	request.setAttribute("guestlogin", guestlogin);
 	String userMaxLogins = elab.getProperty("username_maxlogins");
