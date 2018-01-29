@@ -1,6 +1,26 @@
 /*
  * Created on Mar 4, 2007
  */
+/*
+ * Candidate for an overhaul.  I've added some methods for handling 
+ * SSL-enabled e-Lab URLs such that the method names are becoming somewhat
+ * contorted.  Reorganization would help clarify and eliminate redundant or 
+ * unused methods. Suggestions:
+ *   1) getter methods to pull parameters from elab.properties should have 
+ *      "Property" in the name, be grouped together, and do only that
+ *   2) Clearly delineate tasks in terms of what URL elements they manipulate:
+ *      PROTO://BASE/APPPATH/FILEPATH
+ *      PROTO = (http | https)
+ *      BASE  = www.i2u2.org (:PORT ?)
+ *      APPPATH = /elab/(cosmic|cms|ligo|etc)/
+ *      FILEPATH = every/thing/else.jsp
+ *   3) Clearly delineate when methods accept and return
+ *      I)   Absolute URLs (including protocol)
+ *      II)  URLs relative to the HTTP <BASE>
+ *      III) URLs relative to the APPPATH 
+ * - JG 29Jan2018
+ */
+
 package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
@@ -128,6 +148,9 @@ public class Elab implements Serializable {
         return newELab(context, name, properties, null);
     }
 
+
+		/* I strongly dislike using a single capitalization to distinguish this 
+			 from the above method - JG 29Jan2018 */
     private static Elab newELab(PageContext context, String name,
             String properties, Properties inherited)
             throws ElabInstantiationException {
@@ -176,8 +199,7 @@ public class Elab implements Serializable {
         }
         this.attributes = new HashMap();
     }
-    
-    
+
 
     /**
      * Retrieves the <code>ServletContext</code> in which this
@@ -196,8 +218,8 @@ public class Elab implements Serializable {
     }
 
     /**
-     * Returns an absolute path that represents the given path relative to the
-     * web application.
+     * Given an input filepath relative to the web application directory, 
+		 * returns an absolute *filesystem* path (not URL) for the resource
      */
     public String getAbsolutePath(String webappPath) {
         return context.getRealPath(webappPath);
@@ -345,6 +367,8 @@ public class Elab implements Serializable {
      * Given a path relative to the elab, construct a path that points to the
      * same file but is relative to the page of the current request.
      */
+		/* This appears to be unused in the current codebase.  Is it useful?
+			 - JG 29Jan2018 */
     public String rpage(HttpServletRequest request, String rel) {
         String reqpath = request.getServletPath();
         int reqdepth = charCount(reqpath, '/');
@@ -499,7 +523,21 @@ public class Elab implements Serializable {
 				}
 				return properties.getRequired("elab.secure.url") + page;
 		}
-		
+
+
+    /**
+     * Returns the <code>elab.url</code> parameter of 
+		 * <code>elab.properties</code>; if that value is void, returns the 
+		 * expected value of based on the <code>elab.host</code> parameter.
+		 * 
+		 * Propose renaming this getUrlProperty() or getUrlBase() to distinguish 
+		 * it from similar methods that construct complete URLs.  Also, we don't
+		 * care about specifying ports as much as when this was written, so 
+		 * consider deleting port code for good - JG 29Jan2018
+		 *
+     * @return An absolute URL representing the HTML BASE element of all 
+		 * e-Lab URLs.
+     */
     private String getURL() {
     	String url = properties.getProperty("elab.url");
     	if (url == null || url.equals("")) {
