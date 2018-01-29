@@ -150,7 +150,9 @@ if (!maxLoginsReached) {
 	        	<%
 						}
 						else {
-								response.sendRedirect(prevPage);
+								//response.sendRedirect(prevPage);
+								// For https:
+								response.sendRedirect(prevPageUrl);
 						}
 						
 						// Forum authentication the quick-N-dirty way.
@@ -160,7 +162,7 @@ if (!maxLoginsReached) {
 						//  2. From teacher table get "authenticator"
 						//  3. Set cookie named "auth" with value of the authenticator
 						//     with path "/" and expiration timestamp for end of session
-	
+						
 						String authenticator = "-bogus-";
 						if (user.isTeacher()) {
 								String x = user.getAuthenticator();
