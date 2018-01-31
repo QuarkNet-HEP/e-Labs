@@ -200,9 +200,50 @@ if (!maxLoginsReached) {
 		</head>
 		
 		<body id="login">
-
-
-
+				<!-- entire page container -->
+				<div id="container">
+						<div id="top">
+								<div id="header">
+										<%@ include file="../include/header.jsp" %>
+										<div id="nav">
+												<!-- no nav here -->
+										</div>
+								</div>
+						</div>
+						
+						<div id="content">
+								<h1><%= message %></h1>
+								<table border="0" id="main">
+										<tr>
+												<td>
+														<div id="left"></div>
+												</td>
+												<td>
+														<div id="center">
+																<c:if test="${exception != null}">
+																		<span class="warning">${exception.message}</span>
+																</c:if>
+																<div id="login-form-contents">
+																		<%@ include file="login-form.jsp" %>
+																</div>
+																<div id="login-form-text">
+																		<p>
+																				<a href="${fn:escapeXml(guestlogin)}">Login as guest</a>
+																		</p>
+																</div>
+														</div>
+												</td>
+												<td>
+														<div id="right"></div>
+												</td>
+										</tr>
+								</table>
+						</div>
+						<!-- end content -->	
+						
+						<div id="footer"></div>
+				</div>
+				<!-- end container -->
 		</body>
 	</html>
 	
@@ -222,52 +263,6 @@ if (!maxLoginsReached) {
 		</head>
 		
 		<body id="login">
-			<!-- entire page container -->
-			<div id="container">
-				<div id="top">
-					<div id="header">
-						<%@ include file="../include/header.jsp" %>
-						<div id="nav">
-							<!-- no nav here -->
-						</div>
-					</div>
-				</div>
-				
-				<div id="content">
-					
-	<h1><%= message %></h1>	
-			<h2>Need a student login?</h2>
-			<p>Ask your teacher.</p>
-			<h2>If you are a student and forgot your username/password:</h2>
-			<p>Ask your teacher.</p>
-			
-			<%
-								String subject = URLEncoder.encode(elab.getName() + " elab account request");
-								String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
-									+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
-									+ "day.\n\n"
-									+ "First Name:\n\n"
-									+ "Last Name:\n\n"
-									+ "City:\n\n"
-									+ "State:\n\n"
-									+ "School:\n");
-								String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
-						%>
-			<h2>Need a teacher login?</h2>
-			<p>Contact 
-			<a href="<%= mailURL %>">e-labs@fnal.gov</a>.
-			</p>
-			<h2>If you are a teacher and forgot your username/password:</h2>
-			<p>
-				<td colspan="2"><a href="../login/retrieve-username-password.jsp">Forgot username/password?</a></div>
-			</p>	
-				</div>
-				<!-- end content -->	
-			
-				<div id="footer">
-				</div>
-			</div>
-			<!-- end container -->
 		</body>
 	</html>
 
