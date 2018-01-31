@@ -135,22 +135,22 @@ if (!maxLoginsReached) {
 	  <head>
 	      <title>Log-in redirect page</title>
 	  </head>
-	  <!-- <body>
-				 <form name="redirect" method="post" action="${page.prevPageUrl}">
-	       <c:forEach var="e" items="${pmap}">
-	       <c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
-	       <c:forEach var="v" items="${e.value}">
-	       <input type="hidden" name="${e.key}" value="${v}" />
-	       </c:forEach>
-	       </c:if>
-	       </c:forEach>
-	       If you are not redirected automatically, please click the following button:
-	       <input type="submit" name="loginredirsubmit" value="Redirect" />
-	       </form>
-	       <script language="JavaScript">
+	  <body>
+				<form name="redirect" method="post" action="${page.prevPageUrl}">
+						<c:forEach var="e" items="${pmap}">
+								<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
+										<c:forEach var="v" items="${e.value}">
+												<input type="hidden" name="${e.key}" value="${v}" />
+										</c:forEach>
+								</c:if>
+						</c:forEach>
+						If you are not redirected automatically, please click the following button:
+						<input type="submit" name="loginredirsubmit" value="Redirect" />
+	      </form>
+	      <script language="JavaScript">
 	       document.redirect.submit();
-	       </script>
-				 </body> -->
+	      </script>
+		</body>
 </html>
 	        	<%
 				}
@@ -200,50 +200,9 @@ if (!maxLoginsReached) {
 		</head>
 		
 		<body id="login">
-			<!-- entire page container -->
-			<div id="container">
-				<div id="top">
-					<div id="header">
-						<%@ include file="../include/header.jsp" %>
-						<div id="nav">
-							<!-- no nav here -->
-						</div>
-					</div>
-				</div>
-				
-				<div id="content">
-					<h1><%= message %></h1>
-					<table border="0" id="main">
-						<tr>
-							<td>
-								<div id="left"></div>
-							</td>
-							<td>
-								<div id="center">
-									<c:if test="${exception != null}">
-										<span class="warning">${exception.message}</span>
-									</c:if>
-									<div id="login-form-contents">
-										<%@ include file="login-form.jsp" %>
-									</div>
-									<div id="login-form-text">
-										<p>
-											<a href="${fn:escapeXml(guestlogin)}">Login as guest</a>
-										</p>
-									</div>
-								</div>
-							</td>
-							<td>
-								<div id="right"></div>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<!-- end content -->	
-			
-				<div id="footer"></div>
-			</div>
-			<!-- end container -->
+
+
+
 		</body>
 	</html>
 	
