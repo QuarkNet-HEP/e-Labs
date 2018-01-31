@@ -10,6 +10,7 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
+  // Set page-scoped variables and request Attributes from the request parameters
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
@@ -21,9 +22,9 @@
 	if (userMaxLogins == null || userMaxLogins.equals("")) {
 		userMaxLogins = "5";
 	}
-	String guessMaxLogins = elab.getProperty("guest_maxlogins");
-	if (guessMaxLogins == null || guessMaxLogins.equals("")) {
-		guessMaxLogins = "10";
+	String guestMaxLogins = elab.getProperty("guest_maxlogins");
+	if (guestMaxLogins == null || guestMaxLogins.equals("")) {
+		guestMaxLogins = "10";
 	}
 
 	if (message == null) {
@@ -33,6 +34,7 @@
 	AuthenticationException exception = null;
 	boolean success = false;
 
+  // user login count logic
 	int loginCountPerUser = SessionListener.getUserLoginsCount(username);
 	request.setAttribute("loginCountPerUser", loginCountPerUser);
 	boolean maxLoginsReached = false;
@@ -41,11 +43,13 @@
 		message = "Username "+username+" is logged for a maximum of "+userMaxLogins+" times.";
 		maxLoginsReached = true;
 	}
-if (loginCountPerUser > Integer.parseInt(guessMaxLogins) && username.equals("guest")) {
-		message = "Username "+username+" is logged in "+guessMaxLogins+" times.<br />" +
+if (loginCountPerUser > Integer.parseInt(guestMaxLogins) && username.equals("guest")) {
+		message = "Username "+username+" is logged in "+guestMaxLogins+" times.<br />" +
 		"If you have an e-Lab account please use it. If you do not, please request one.";
 		maxLoginsReached = true;
 }
+
+// authentication and login logic
 if (!maxLoginsReached) {
     ElabGroup user = null;
 	  if (username != null && password != null) {
@@ -148,44 +152,45 @@ if (!maxLoginsReached) {
 	  </body>
 </html>
 	        	<%
+				}
+				else {
+						//response.sendRedirect(prevPage);
+						// For https:
+						//response.sendRedirect(prevPageUrl);
+						response.sendRedirect("https://www.fnal.gov");
+				}
+						
+				// Forum authentication the quick-N-dirty way.
+				// To allow a teacher to seamlessly access the forums after
+				// login do the following:
+				//  1. verify it's a teacher login, and get teacher ID #
+				//  2. From teacher table get "authenticator"
+				//  3. Set cookie named "auth" with value of the authenticator
+				//     with path "/" and expiration timestamp for end of session
+						
+				String authenticator = "-bogus-";
+				if (user.isTeacher()) {
+						String x = user.getAuthenticator();
+						if( x != null ) authenticator = x;
+							
+						if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
+	         		  // only teachers have access to the password change page
+	         			redirect = "small-password.jsp?prevPage=" + prevPage;
 						}
-						else {
-								//response.sendRedirect(prevPage);
-								// For https:
-								response.sendRedirect(prevPageUrl);
-						}
+				}  
+
+				Cookie authenticationCookie = new Cookie("auth",  authenticator);
+				authenticationCookie.setPath("/");
+				response.addCookie(authenticationCookie);
 						
-						// Forum authentication the quick-N-dirty way.
-						// To allow a teacher to seamlessly access the forums after
-						// login do the following:
-						//  1. verify it's a teacher login, and get teacher ID #
-						//  2. From teacher table get "authenticator"
-						//  3. Set cookie named "auth" with value of the authenticator
-						//     with path "/" and expiration timestamp for end of session
-						
-						String authenticator = "-bogus-";
-						if (user.isTeacher()) {
-								String x = user.getAuthenticator();
-								if( x != null ) authenticator = x;
-								
-								if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
-	            		  // only teachers have access to the password change page
-	            			redirect = "small-password.jsp?prevPage=" + prevPage;
-								}
-						}  
-						Cookie authenticationCookie = new Cookie("auth",  authenticator);
-						authenticationCookie.setPath("/");
-						response.addCookie(authenticationCookie);
-						
-	       		response.sendRedirect(redirect);
-						}
-						else {
-						%>
-						
-						
+	      response.sendRedirect(redirect);
+		} // end if(user != null)
+		else { // if (user == null)
+%>		
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-	
-	<%@page import="java.net.URLEncoder"%><html xmlns="http://www.w3.org/1999/xhtml">
+
+	<%@page import="java.net.URLEncoder"%>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<title>Login to ${elab.properties.formalName}</title>
@@ -206,52 +211,44 @@ if (!maxLoginsReached) {
 				</div>
 				
 				<div id="content">
-					
-	<h1><%= message %></h1>
-	
-	<table border="0" id="main">
-		<tr>
-			<td>
-				<div id="left">
-				</div>
-			</td>
-			<td>
-				<div id="center">
-					<c:if test="${exception != null}">
-						<span class="warning">${exception.message}</span>
-					</c:if>
-					<div id="login-form-contents">
-						<%@ include file="login-form.jsp" %>
-					</div>
-	
-					<div id="login-form-text">
-						<p>
-							<a href="${fn:escapeXml(guestlogin)}">Login as guest</a>
-						</p>
-					</div>
-				</div>
-			</td>
-			<td>
-				<div id="right">
-				</div>
-			</td>
-		</tr>
-	</table>
-	
-	
+					<h1><%= message %></h1>
+					<table border="0" id="main">
+						<tr>
+							<td>
+								<div id="left"></div>
+							</td>
+							<td>
+								<div id="center">
+									<c:if test="${exception != null}">
+										<span class="warning">${exception.message}</span>
+									</c:if>
+									<div id="login-form-contents">
+										<%@ include file="login-form.jsp" %>
+									</div>
+									<div id="login-form-text">
+										<p>
+											<a href="${fn:escapeXml(guestlogin)}">Login as guest</a>
+										</p>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div id="right"></div>
+							</td>
+						</tr>
+					</table>
 				</div>
 				<!-- end content -->	
 			
-				<div id="footer">
-				</div>
+				<div id="footer"></div>
 			</div>
 			<!-- end container -->
 		</body>
 	</html>
 	
 	<%
-		}
-	} else {
+		} // end else(user == null)
+	} else { // if(maxLoginsReached)
 %>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
