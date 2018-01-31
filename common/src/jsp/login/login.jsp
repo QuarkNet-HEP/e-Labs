@@ -95,7 +95,8 @@ if (!maxLoginsReached) {
 	      	  session.setAttribute("allDaqs", allDaqs);
 				}
 				
-				String redirect = prevPage;
+				//String redirect = prevPage;
+				String redirect = "https://www.fnal.gov";
 				if(prevPage == null) {
 	    			prevPage = elab.getProperties().getLoggedInHomePage();
 				}
