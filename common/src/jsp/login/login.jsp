@@ -158,7 +158,6 @@ if (!maxLoginsReached) {
 						//response.sendRedirect(prevPage);
 						// For https:
 						response.sendRedirect(prevPageUrl);
-						//response.sendRedirect("https://www.fnal.gov");
 				}
 
 				// Forum authentication the quick-N-dirty way.
@@ -184,7 +183,7 @@ if (!maxLoginsReached) {
 				authenticationCookie.setPath("/");
 				response.addCookie(authenticationCookie);
 				
-				//response.sendRedirect(redirect);
+				response.sendRedirect(redirect);
 		} // end if(user != null)
 		else { // if (user == null)
 						%>		
