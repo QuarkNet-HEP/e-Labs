@@ -10,39 +10,40 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
-  // Set page-scoped variables and request Attributes from the request parameters
-	String username = request.getParameter("user");
-	String password = request.getParameter("pass");
-	String message  = request.getParameter("message");
-	String guestlogin = elab.getGuestLoginLinkSecure(request);
-  String prevPageUrl = elab.getSecureUrl(request.getParameter("prevPage"));
-	request.setAttribute("username", username);
-	request.setAttribute("guestlogin", guestlogin);
-	String userMaxLogins = elab.getProperty("username_maxlogins");
-	if (userMaxLogins == null || userMaxLogins.equals("")) {
+// Set page-scoped variables and request Attributes from the request parameters
+String username = request.getParameter("user");
+String password = request.getParameter("pass");
+String message  = request.getParameter("message");
+String guestlogin = elab.getGuestLoginLinkSecure(request);
+String prevPageUrl = elab.getSecureUrl(request.getParameter("prevPage"));
+//String prevPageUrl = "https://www.fnal.gov";
+request.setAttribute("username", username);
+request.setAttribute("guestlogin", guestlogin);
+String userMaxLogins = elab.getProperty("username_maxlogins");
+if (userMaxLogins == null || userMaxLogins.equals("")) {
 		userMaxLogins = "5";
-	}
-	String guestMaxLogins = elab.getProperty("guest_maxlogins");
-	if (guestMaxLogins == null || guestMaxLogins.equals("")) {
+}
+String guestMaxLogins = elab.getProperty("guest_maxlogins");
+if (guestMaxLogins == null || guestMaxLogins.equals("")) {
 		guestMaxLogins = "10";
-	}
+}
 
-	if (message == null) {
+if (message == null) {
 		message = "Please log in to proceed";
-	}
-	
-	AuthenticationException exception = null;
-	boolean success = false;
+}
 
-  // user login count logic
-	int loginCountPerUser = SessionListener.getUserLoginsCount(username);
-	request.setAttribute("loginCountPerUser", loginCountPerUser);
-	boolean maxLoginsReached = false;
-	
-	if (loginCountPerUser > Integer.parseInt(userMaxLogins) && !username.equals("guest")) {
+AuthenticationException exception = null;
+boolean success = false;
+
+// user login count logic
+int loginCountPerUser = SessionListener.getUserLoginsCount(username);
+request.setAttribute("loginCountPerUser", loginCountPerUser);
+boolean maxLoginsReached = false;
+
+if (loginCountPerUser > Integer.parseInt(userMaxLogins) && !username.equals("guest")) {
 		message = "Username "+username+" is logged for a maximum of "+userMaxLogins+" times.";
 		maxLoginsReached = true;
-	}
+}
 if (loginCountPerUser > Integer.parseInt(guestMaxLogins) && username.equals("guest")) {
 		message = "Username "+username+" is logged in "+guestMaxLogins+" times.<br />" +
 		"If you have an e-Lab account please use it. If you do not, please request one.";
@@ -134,27 +135,26 @@ if (!maxLoginsReached) {
 	  <head>
 	      <title>Log-in redirect page</title>
 	  </head>
-	  <body>
-				<%-- <form name="redirect" method="post" action="${page.prevPageUrl}"> --%>
-	      <form name="redirect" method="post" action="https://www.fnal.gov">
-						<c:forEach var="e" items="${pmap}">
-	        			<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
-	        					<c:forEach var="v" items="${e.value}">
-	        							<input type="hidden" name="${e.key}" value="${v}" />
-	        					</c:forEach>
-	        			</c:if>
-	        	</c:forEach>
-	        	If you are not redirected automatically, please click the following button:
-	        	<input type="submit" name="loginredirsubmit" value="Redirect" />
-	      </form>
-	      <script language="JavaScript">
+	  <!-- <body>
+				 <form name="redirect" method="post" action="${page.prevPageUrl}">
+	       <c:forEach var="e" items="${pmap}">
+	       <c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
+	       <c:forEach var="v" items="${e.value}">
+	       <input type="hidden" name="${e.key}" value="${v}" />
+	       </c:forEach>
+	       </c:if>
+	       </c:forEach>
+	       If you are not redirected automatically, please click the following button:
+	       <input type="submit" name="loginredirsubmit" value="Redirect" />
+	       </form>
+	       <script language="JavaScript">
 	       document.redirect.submit();
-	      </script>
-	  </body>
+	       </script>
+				 </body> -->
 </html>
 	        	<%
 				}
-				else {
+				else { // if (request.getParameterMap().isEmpty)
 						//response.sendRedirect(prevPage);
 						// For https:
 						response.sendRedirect(prevPageUrl);
