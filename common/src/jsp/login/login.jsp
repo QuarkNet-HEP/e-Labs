@@ -135,8 +135,9 @@ if (!maxLoginsReached) {
 	      <title>Log-in redirect page</title>
 	  </head>
 	  <body>
-	      <form name="redirect" method="post" action="${page.prevPageUrl}">
-	        	<c:forEach var="e" items="${pmap}">
+				<%-- <form name="redirect" method="post" action="${page.prevPageUrl}"> --%>
+	      <form name="redirect" method="post" action="https://www.fnal.gov">
+						<c:forEach var="e" items="${pmap}">
 	        			<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
 	        					<c:forEach var="v" items="${e.value}">
 	        							<input type="hidden" name="${e.key}" value="${v}" />
@@ -156,10 +157,10 @@ if (!maxLoginsReached) {
 				else {
 						//response.sendRedirect(prevPage);
 						// For https:
-						//response.sendRedirect(prevPageUrl);
-						response.sendRedirect("https://www.fnal.gov");
+						response.sendRedirect(prevPageUrl);
+						//response.sendRedirect("https://www.fnal.gov");
 				}
-						
+
 				// Forum authentication the quick-N-dirty way.
 				// To allow a teacher to seamlessly access the forums after
 				// login do the following:
