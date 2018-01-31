@@ -153,40 +153,40 @@ if (!maxLoginsReached) {
 		</body>
 </html>
 	        	<%
-						}
-						else { // if (request.getParameterMap().isEmpty)
-								//response.sendRedirect(prevPage);
-								// For https:
-								//response.sendRedirect(prevPageUrl);
-								//response.sendRedirect("https://www.fnal.gov");
-						}
+				}
+				else { // if (request.getParameterMap().isEmpty)
+						//response.sendRedirect(prevPage);
+						// For https:
+						response.sendRedirect(prevPageUrl);
+						//response.sendRedirect("https://www.fnal.gov");
+				}
 
-						// Forum authentication the quick-N-dirty way.
-						// To allow a teacher to seamlessly access the forums after
-						// login do the following:
-						//  1. verify it's a teacher login, and get teacher ID #
-						//  2. From teacher table get "authenticator"
-						//  3. Set cookie named "auth" with value of the authenticator
-						//     with path "/" and expiration timestamp for end of session
+				// Forum authentication the quick-N-dirty way.
+				// To allow a teacher to seamlessly access the forums after
+				// login do the following:
+				//  1. verify it's a teacher login, and get teacher ID #
+				//  2. From teacher table get "authenticator"
+				//  3. Set cookie named "auth" with value of the authenticator
+				//     with path "/" and expiration timestamp for end of session
+					
+				String authenticator = "-bogus-";
+				if (user.isTeacher()) {
+						String x = user.getAuthenticator();
+						if( x != null ) authenticator = x;
 						
-						String authenticator = "-bogus-";
-						if (user.isTeacher()) {
-								String x = user.getAuthenticator();
-								if( x != null ) authenticator = x;
-								
-								if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
-	         					// only teachers have access to the password change page
-	         					redirect = "small-password.jsp?prevPage=" + prevPage;
-								}
-						}  
+						if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
+	       					// only teachers have access to the password change page
+	       					redirect = "small-password.jsp?prevPage=" + prevPage;
+						}
+				}  
 
-						Cookie authenticationCookie = new Cookie("auth",  authenticator);
-						authenticationCookie.setPath("/");
-						response.addCookie(authenticationCookie);
-						
-						response.sendRedirect(redirect);
-						} // end if(user != null)
-						else { // if (user == null)
+				Cookie authenticationCookie = new Cookie("auth",  authenticator);
+				authenticationCookie.setPath("/");
+				response.addCookie(authenticationCookie);
+				
+				//response.sendRedirect(redirect);
+		} // end if(user != null)
+		else { // if (user == null)
 						%>		
 						<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
