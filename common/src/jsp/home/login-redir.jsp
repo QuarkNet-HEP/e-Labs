@@ -1,9 +1,10 @@
+<%-- common-login-redir --%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
 <%	// Why not go secure if it's available?
 //String ptr = response.encodeRedirectURL(elab.nonSecure("home/index.jsp?justLoggedIn=yes")); 
-  String ptr = response.encodeRedirectURL(elab.secure("home/index.jsp?justLoggedIn=yes"));
+String ptr = response.encodeRedirectURL(elab.secure("home/index.jsp?justLoggedIn=yes"));
 
 if (user.isTeacher() || user.isAdmin()) {
 		ptr = response.encodeRedirectURL("../teacher");

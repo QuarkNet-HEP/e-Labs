@@ -1,3 +1,4 @@
+<%-- cms-login-redir --%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
