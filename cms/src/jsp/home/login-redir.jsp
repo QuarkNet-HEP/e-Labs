@@ -4,11 +4,8 @@
 <%@ include file="../login/login-required.jsp" %>
 
 <%
-
 if (user.isGuest()) {
-		// Use secure if it's available
-		//response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp")));
-		response.sendRedirect(response.encodeRedirectURL(elab.secure("home/index.jsp")));
+		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp")));
 		return; 
 }
 else if (user.isTeacher() || user.isAdmin()) {
