@@ -1,8 +1,9 @@
 <%-- common-login-redir --%>
+<%-- This gets deployed to embedded/, not to any of the e-Labs --%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<%	// Why not go secure if it's available?
+<%	// Go secure if it's available
 //String ptr = response.encodeRedirectURL(elab.nonSecure("home/index.jsp?justLoggedIn=yes")); 
 String ptr = response.encodeRedirectURL(elab.secure("home/index.jsp?justLoggedIn=yes"));
 
