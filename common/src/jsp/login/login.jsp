@@ -97,7 +97,7 @@ if (!maxLoginsReached) {
 				
 				//String redirect = prevPage;
 				//String redirect = "https://www.fnal.gov";
-				String redirect = "https://i2u2-dev.crc.nd.edu/elab/cms/home/logged-in-home.jsp";
+				String redirect = "https://i2u2-dev.crc.nd.edu/elab/cms/home/login-redir.jsp";
 				if(prevPage == null) {
 	    			prevPage = elab.getProperties().getLoggedInHomePage();
 				}
