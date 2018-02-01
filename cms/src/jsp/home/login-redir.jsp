@@ -1,5 +1,3 @@
-<%-- cms-login-redir --%>
-<%-- This one gets deployed to cms/, not the common/ file of the same name --%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
