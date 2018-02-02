@@ -4,7 +4,7 @@
 <%
 	
 	if (user.isGuest()) {
-		response.sendRedirect(response.encodeRedirectURL(elab.secure("home/index.jsp")));
+		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/index.jsp")));
 		return; 
 	}
 	else if (user.isTeacher() || user.isAdmin()) {
