@@ -40,4 +40,3 @@ response.sendRedirect(ptr);
 
 
 %>
-    
