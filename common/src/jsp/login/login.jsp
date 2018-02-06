@@ -15,8 +15,7 @@ String username = request.getParameter("user");
 String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
-String prevPageUrl = elab.getSecureUrl(request.getParameter("prevPage"));
-//String prevPageUrl = "https://www.fnal.gov";
+String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 String userMaxLogins = elab.getProperty("username_maxlogins");
@@ -96,29 +95,21 @@ if (!maxLoginsReached) {
 				}
 				
 				//String redirect = prevPage;
-				String redirect = prevPageUrl;
-				//String redirect = "https://www.fnal.gov";
-				//String redirect = "https://i2u2-dev.crc.nd.edu/elab/cms/home/index.jsp";
+				String redirect = prevPageSecure;
 				if(prevPage == null) {
 	    			prevPage = elab.getProperties().getLoggedInHomePage();
 				}
 				
-				// I finally found the solution to the double login problem, and it's this
-	      // one line.  :)  Please don't remove.
-	      //
-	      // [Mihael] Seems like it depends where this page is included from
-	      // The servlet API docs state: "The cookie is visible to all the pages 
-	      // in the directory you specify [figured by Tomcat based on the page setting
-	      // the cookie. N.M.], and all the pages in that directory's subdirectories."
-	      //
-	      // Consequently the path could be "/elab", which would make the session
-	      // (and the login) persistent across elabs, or "/elab/"+elab.getName()
-	      // which would restrict it to the current elab
-	      //
-	      // At this point the user object contains information initialized from
-	      // the elab, so in order for certain things to work properly (user directories)
-	      // that object needs to be re-created for each elab.
-	      
+				// By default, Tomcat sets a JSESSIONID cookie with the path of
+				// the webapp, which for the e-Labs is "/elab/".
+				// We want separate sessions for each e-Lab, though, which
+				// means separate JSESSIONIDs and separate cookies with
+				// path="/elab/{e-Lab name}/".
+				//
+				// session-invalidator.jspf, included here via elab.jsp,
+				// deletes the path="/elab/" cookie. To replace it, we
+				// now set a path="/elab/"+elab.getName() cookie, plus others.
+				//  - JG 6Feb2018
 	      Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
 	      elabSessionCookie.setPath("/elab/" + elab.getName());
 	      response.addCookie(elabSessionCookie);
@@ -139,7 +130,7 @@ if (!maxLoginsReached) {
 	      <title>Log-in redirect page</title>
 	  </head>
 	  <body>
-				<form name="redirect" method="post" action="${page.prevPageUrl}">
+				<form name="redirect" method="post" action="${page.prevPageSecure}">
 						<c:forEach var="e" items="${pmap}">
 								<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
 										<c:forEach var="v" items="${e.value}">
@@ -160,7 +151,7 @@ if (!maxLoginsReached) {
 				else { // if (request.getParameterMap().isEmpty)
 						//response.sendRedirect(prevPage);
 						// For https:
-						response.sendRedirect(prevPageUrl);
+						response.sendRedirect(prevPageSecure);
 				}
 
 				// Forum authentication the quick-N-dirty way.
