@@ -46,15 +46,13 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 </c:choose>
 <%-- Check if the login exceeds maxLogins --%>
 <c:choose>
+		<c:set var="maxLoginsReached" value="false" />
+		<c:set var="message" value="" />
 		<c:when test="${request.getAttribute('loginCountPerUser') > maxLogins}" >
 				<c:set var="maxLoginsReached" value="true" />
 				<c:set var="message"
 							 value="This user has reached the maximum number of allowed simultaneous logins.<br /> $${extraMessage}" />
 		</c:when>
-		<c:otherwise> <%-- when loginCountPerUser < maxLogins --%>
-				<c:set var="message" value="" />
-				<c:set var="maxLoginsReached" value="false" />
-		</c:otherwise>
 </c:choose>
 <%-- Set the message for the error page (below) to the Request scope --%>
 <c:set var="message" value="${message}" scope="request" />
