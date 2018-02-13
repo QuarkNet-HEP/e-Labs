@@ -19,16 +19,17 @@ String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 %>
-
-<c:choose>
-		<c:when test="${param.user=='guest'}">
-				<c:set var="maxLogins"
-							 value="#{elab.getProperty('guest_maxlogins')}" />
-				<c:if test="${maxLogins==null} || ${maxLogins==''}">
-						<c:set var="maxLogins" value="${10}" />
-				</c:if>
-				<c:set var="extraMessage"
-							 value="${fn:escapeXml('To request an e-Lab account, contact us at <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>.  If you already have an e-Lab account, please use it.')}" />
+<c:set var="accountEmail"
+			 value="${fn:escapeXml(<a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>)}" />
+		<c:choose>
+				<c:when test="${param.user=='guest'}">
+						<c:set var="maxLogins"
+									 value="#{elab.getProperty('guest_maxlogins')}" />
+						<c:if test="${maxLogins==null} || ${maxLogins==''}">
+								<c:set var="maxLogins" value="${10}" />
+						</c:if>
+						<c:set var="extraMessage"
+									 value="To request an e-Lab account, contact us at ${accountEmail}. If you already have an e-Lab account, please use it." />
 		</c:when>
 		<c:otherwise> <%-- when ${param.user != 'guest'} --%>
 				<c:set var="maxLogins"
@@ -37,7 +38,7 @@ request.setAttribute("guestlogin", guestlogin);
 						<c:set var="maxLogins" value="${5}" />
 				</c:if>
 				<c:set var="extraMessage"
-							 value="${fn:escapeXml('If you think this message is in error, please contact us at <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a> with your name and the username of the account you're attempting to log into.')}" />
+							 value="If you think this message is in error, please contact us at ${accountEmail} with your name and the username of the account you're attempting to log into." />
 		</c:otherwise>
 </c:choose>
 
