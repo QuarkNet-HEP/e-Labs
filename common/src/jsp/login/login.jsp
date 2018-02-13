@@ -28,7 +28,7 @@ request.setAttribute("guestlogin", guestlogin);
 						<c:set var="maxLogins" value="${10}" />
 				</c:if>
 				<c:set var="extraMessage"
-							 value="To request an e-Lab account, contact us at <a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>.  If you already have an e-Lab account, please use it." />
+							 value="${fn:escapeXml('To request an e-Lab account, contact us at <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>.  If you already have an e-Lab account, please use it.')}" />
 		</c:when>
 		<c:otherwise> <%-- when ${param.user != 'guest'} --%>
 				<c:set var="maxLogins"
@@ -37,7 +37,7 @@ request.setAttribute("guestlogin", guestlogin);
 						<c:set var="maxLogins" value="${5}" />
 				</c:if>
 				<c:set var="extraMessage"
-							 value="If you think this message is in error, please contact us at &lt;a href="mailto:e-labs@fnal.gov"&rt;e-labs@fnal.gov&lt;/a&rt; with your name and the username of the account you're attempting to log into." />
+							 value="${fn:escapeXml('If you think this message is in error, please contact us at <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a> with your name and the username of the account you're attempting to log into.')}" />
 		</c:otherwise>
 </c:choose>
 
