@@ -19,8 +19,7 @@ String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 %>
-<c:set var="accountEmail"
-			 value="${fn:escapeXml("<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>")}" />
+<c:set var="accountEmail" value="${fn:escapeXml("<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>")}" />
 		<c:choose>
 				<c:when test="${param.user=='guest'}">
 						<c:set var="maxLogins" value="#{elab.getProperty('guest_maxlogins')}" />
