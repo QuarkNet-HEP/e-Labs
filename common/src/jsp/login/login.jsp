@@ -23,8 +23,7 @@ request.setAttribute("guestlogin", guestlogin);
 			 value="${fn:escapeXml("<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>")}" />
 		<c:choose>
 				<c:when test="${param.user=='guest'}">
-						<c:set var="maxLogins"
-									 value="#{elab.getProperty('guest_maxlogins')}" />
+						<c:set var="maxLogins" value="#{elab.getProperty('guest_maxlogins')}" />
 						<c:if test="${maxLogins==null} || ${maxLogins==''}">
 								<c:set var="maxLogins" value="${10}" />
 						</c:if>
