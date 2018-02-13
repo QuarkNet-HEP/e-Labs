@@ -20,14 +20,14 @@ request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 %>
 <c:set var="accountEmail" value="email" />
-		<c:choose>
-				<c:when test="${param.user=='guest'}">
-						<c:set var="maxLogins" value="#{elab.getProperty('guest_maxlogins')}" />
-						<c:if test="${maxLogins==null} || ${maxLogins==''}">
-								<c:set var="maxLogins" value="${10}" />
-						</c:if>
-						<c:set var="extraMessage"
-									 value="To request an e-Lab account, contact us at ${accountEmail}. If you already have an e-Lab account, please use it." />
+<c:choose>
+		<c:when test="${param.user=='guest'}">
+				<c:set var="maxLogins" value="#{elab.getProperty('guest_maxlogins')}" />
+				<c:if test="${maxLogins==null} || ${maxLogins==''}">
+						<c:set var="maxLogins" value="${10}" />
+				</c:if>
+				<c:set var="extraMessage"
+							 value="To request an e-Lab account, contact us at ${accountEmail}. If you already have an e-Lab account, please use it." />
 		</c:when>
 		<c:otherwise> <%-- when ${param.user != 'guest'} --%>
 				<c:set var="maxLogins"
@@ -51,7 +51,7 @@ request.setAttribute("guestlogin", guestlogin);
 				<c:set var="maxLoginsReached" value="false" />
 		</c:otherwise>
 </c:choose>
-<c: set var="message" value="${message}" scope="request" />
+<c:set var="message" value="${message}" scope="request" />
 
 <%
 /*
