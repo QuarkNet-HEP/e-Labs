@@ -16,10 +16,15 @@ String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
 String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
+int loginCountPerUser = SessionListener.getUserLoginsCount(username);
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
+request.setAttribute("loginCountPerUser", loginCountPerUser);
 %>
+<%-- Set the email contact to be shown on the error page --%>
 <c:set var="accountEmail" value="<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>" />
+<%-- Determine maxLogins and extraMessage based on whether login is "guest" or other user --%> 
+<%-- These can be specified in elab.properties, but we provide defaults here if they aren't --%>
 <c:choose>
 		<c:when test="${param.user=='guest'}">
 				<c:set var="maxLogins" value="#{elab.getProperty('guest_maxlogins')}" />
@@ -39,55 +44,24 @@ request.setAttribute("guestlogin", guestlogin);
 							 value="If you think this message is in error, please contact us at ${accountEmail} with your name and the username of the account you're attempting to log into." />
 		</c:otherwise>
 </c:choose>
-
+<%-- Check if the login exceeds maxLogins --%>
 <c:choose>
-		<c:when test="${request.getAttribute('loginCount') > maxLogins}" >
+		<c:when test="${request.getAttribute('loginCountPerUser') > maxLogins}" >
 				<c:set var="maxLoginsReached" value="true" />
 				<c:set var="message"
 							 value="This user has reached the maximum number of allowed simultaneous logins.<br /> $${extraMessage}" />
 		</c:when>
-		<c:otherwise> <%-- when loginCount < maxLogins --%>
+		<c:otherwise> <%-- when loginCountPerUser < maxLogins --%>
 				<c:set var="message" value="" />
 				<c:set var="maxLoginsReached" value="false" />
 		</c:otherwise>
 </c:choose>
+<%-- Set the message for the error page (below) to the Request scope --%>
 <c:set var="message" value="${message}" scope="request" />
 
 <%
-/*
-String userMaxLogins = elab.getProperty("username_maxlogins");
-if (userMaxLogins == null || userMaxLogins.equals("")) {
-		userMaxLogins = "5";
-}
-String guestMaxLogins = elab.getProperty("guest_maxlogins");
-if (guestMaxLogins == null || guestMaxLogins.equals("")) {
-		guestMaxLogins = "10";
-}
-
-if (message == null) {
-		message = "Please log in to proceed";
-}
-*/
-
 AuthenticationException exception = null;
 boolean success = false;
-
-// user login count logic
-int loginCountPerUser = SessionListener.getUserLoginsCount(username);
-request.setAttribute("loginCountPerUser", loginCountPerUser);
-boolean maxLoginsReached = false;
-
-/*
-if (loginCountPerUser > Integer.parseInt(userMaxLogins) && !username.equals("guest")) {
-		message = "Username "+username+" is logged for a maximum of "+userMaxLogins+" times.";
-		maxLoginsReached = true;
-}
-if (loginCountPerUser > Integer.parseInt(guestMaxLogins) && username.equals("guest")) {
-		message = "Username "+username+" is logged in "+guestMaxLogins+" times.<br />" +
-		"If you have an e-Lab account please use it. If you do not, please request one.";
-		maxLoginsReached = true;
-}
-*/
 
 // authentication and login logic
 if (!maxLoginsReached) {
