@@ -17,6 +17,7 @@ String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
 String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
+boolean maxLoginsReached;
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 request.setAttribute("loginCountPerUser", loginCountPerUser);
