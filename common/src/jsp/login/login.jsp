@@ -58,7 +58,7 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <%
 AuthenticationException exception = null;
 boolean success = false;
-boolean maxLoginsReached = pageContext.getAttribute("maxLoginsReached");
+boolean maxLoginsReached = (boolean) pageContext.getAttribute("maxLoginsReached");
 
 // authentication and login logic
 if (!maxLoginsReached) {
