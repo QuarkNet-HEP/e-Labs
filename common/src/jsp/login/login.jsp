@@ -58,10 +58,11 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <%
 AuthenticationException exception = null;
 boolean success = false;
-Boolean maxLoginsReached = (Boolean) pageContext.getAttribute("maxLoginsReached");
+//Boolean maxLoginsReached = (Boolean) pageContext.getAttribute("maxLoginsReached");
 
 // authentication and login logic
-if (!maxLoginsReached) {
+//if (!maxLoginsReached) {
+if (!((Boolean)pageContext.getAttribute("maxLoginsReached"))) {
     ElabGroup user = null;
 	  if (username != null && password != null) {
 				username = username.trim();
