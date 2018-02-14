@@ -62,8 +62,8 @@ boolean success = false;
 
 // authentication and login logic
 //if (!maxLoginsReached) {
-if (!((Boolean)pageContext.getAttribute("maxLoginsReached"))) {
-    ElabGroup user = null;
+if(!(Boolean.parseBoolean(pageContext.getAttribute("maxLoginsReached")))) {
+ElabGroup user = null;
 	  if (username != null && password != null) {
 				username = username.trim();
 				password = password.trim();
