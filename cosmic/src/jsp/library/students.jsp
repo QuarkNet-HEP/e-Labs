@@ -69,7 +69,14 @@
 								<td>
 										<c:forEach items="${teacher.groups}" var="group">
 												<c:if test="${group.active}">
-														${group.name}<br/>
+														<c:choose>
+																<c:when test="${group.role=='teacher'}">
+																		<strong>${group.name}</strong><br/>
+																</c:when>
+																<c:otherwise>
+																		${group.name}<br/>
+																</c:otherwise>
+														</c:choose>
 												</c:if>
 										</c:forEach>
 								</td>
