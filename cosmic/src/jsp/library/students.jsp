@@ -44,13 +44,13 @@
 				</tr>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 					<%
-						ElabGroup teacher = (ElabGroup) pageContext.getAttribute("teacher");
-						String email = teacher.getEmail();
+						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
+						String email = groupTeacher.getEmail();
 						if (email != null) {
 							email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
 						pageContext.setAttribute("email", email);
-						if (teacher.getActive()) {
+						if (groupTeacher.getActive()) {
 					%>
 					<tr>
 						<td>
