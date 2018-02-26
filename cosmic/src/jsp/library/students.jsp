@@ -43,36 +43,43 @@
 					<td align="center"><font size="-1"><b><u>Groups</u></b></font></td>
 				</tr>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
-					<%
+						<%
 						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = groupTeacher.getEmail();
 						if (email != null) {
-							email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
+								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
 						pageContext.setAttribute("email", email);
 						if (groupTeacher.getActive()) {
-					%>
-					<tr>
-						<td>
-							<c:choose>
-								<c:when test="${email != null}">
-									<a href="mailto:${email}">${teacher.name}</a>
-								</c:when>
-								<c:otherwise>
-									${teacher.name}
-								</c:otherwise>
-							</c:choose>
-						</td>
-						<td>${teacher.group.school}</td>
-						<td>${teacher.group.city}</td>
-						<td>${teacher.group.state}</td>
-						<td>
-							<c:forEach items="${teacher.groups}" var="group">
-								<c:if test="${group.active}">
-									${group.name}<br/>
-								</c:if>
-							</c:forEach>
-						</td>
+						%>
+						<tr>
+								<td>
+										<c:choose>
+												<c:when test="${email != null}">
+														<a href="mailto:${email}">${teacher.name}</a>
+												</c:when>
+												<c:otherwise>
+														${teacher.name}
+												</c:otherwise>
+										</c:choose>
+								</td>
+								<td>${teacher.group.school}</td>
+								<td>${teacher.group.city}</td>
+								<td>${teacher.group.state}</td>
+								<td>
+										<c:forEach items="${teacher.groups}" var="group">
+												<c:if test="${group.active}">
+														<c:choose>
+																<c:when test="${group.userRole=='teacher'}">
+																		<strong>${group.name}</strong><br/>
+																</c:when>
+																<c:otherwise>
+																		${group.name}<br/>
+																</c:otherwise>
+														</c:choose>
+												</c:if>
+										</c:forEach>
+								</td>
 					</tr>
 					<% } %>
 				</c:forEach>
