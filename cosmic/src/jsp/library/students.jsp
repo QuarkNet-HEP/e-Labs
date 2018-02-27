@@ -43,6 +43,12 @@
 					<td align="center"><font size="-1"><b><u>Groups</u></b></font></td>
 				</tr>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
+						<%-- Updating to bold the names of teacher groups.
+						${group.role} does not seem to be accessible, despite
+						ElabGroup.getRole() being defined.  If a way is found to make
+						it accessible, then `groupRole` can be eliminated from the
+						following scriptlet - JG 27Feb2018
+						--%>
 						<%
 						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = groupTeacher.getEmail();
@@ -51,6 +57,7 @@
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
 						pageContext.setAttribute("email", email);
+						pageContext.setAttribute("groupRole", groupRole);
 						if (groupTeacher.getActive()) {
 						%>
 						<tr>
@@ -71,7 +78,8 @@
 										<c:forEach items="${teacher.groups}" var="group">
 												<c:if test="${group.active}">
 														<c:choose>
-																<c:when test="${group.role=='teacher'}">
+																<%-- Because ${group.role} doesn't work --%>
+																<c:when test="${groupRole=='teacher'}">
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
