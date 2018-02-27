@@ -52,7 +52,8 @@
 						<%
 						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = groupTeacher.getEmail();
-						String groupRole = groupTeacher.getRole();
+						//String groupRole = groupTeacher.getRole();
+						String groupRole = "GroupGroupGroup";
 						if (email != null) {
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
