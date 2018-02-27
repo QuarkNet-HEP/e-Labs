@@ -83,7 +83,7 @@
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
-																		${group.name}<br/>
+																		${groupRole}<br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>
