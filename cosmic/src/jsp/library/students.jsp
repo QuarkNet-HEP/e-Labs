@@ -72,6 +72,8 @@
 														<c:choose>
 																<c:when test="${group.role=='teacher'}">
 																		<strong>${group.name}</strong><br/>
+																		<em>${group.name}</em><br/>
+																		<b>${group.name}</b><br/>
 																</c:when>
 																<c:otherwise>
 																		${group.name}<br/>
