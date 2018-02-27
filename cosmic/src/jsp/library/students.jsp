@@ -46,6 +46,7 @@
 						<%
 						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = groupTeacher.getEmail();
+						String groupRole = groupTeacher.getRole();
 						if (email != null) {
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
@@ -74,7 +75,7 @@
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
-																		${group.role}<br/>
+																		${group.name}<br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>
