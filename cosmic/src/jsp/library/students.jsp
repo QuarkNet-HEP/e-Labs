@@ -50,10 +50,10 @@
 						following scriptlet - JG 27Feb2018
 						--%>
 						<%
-						ElabGroup groupTeacher = (ElabGroup) pageContext.getAttribute("teacher");
-						String email = groupTeacher.getEmail();
-						//String groupRole = groupTeacher.getRole();
-						String groupRole = "GroupGroupGroup";
+						ElabGroup teacherGroup = (ElabGroup) pageContext.getAttribute("teacher");
+						String email = teacherGroup.getEmail();
+						//String groupRole = teacherGroup.getRole();
+						String groupRole = teacherGroup.getUserDir();
 						if (email != null) {
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
