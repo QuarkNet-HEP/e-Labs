@@ -77,6 +77,9 @@
 																</c:when>
 																<c:otherwise>
 																		${group.name}<br/>
+																		<strong>${group.name}</strong><br/>
+																		<em>${group.name}</em><br/>
+																		<b>${group.name}</b><br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>
