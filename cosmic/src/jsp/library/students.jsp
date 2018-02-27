@@ -59,7 +59,7 @@
 						}
 						pageContext.setAttribute("email", email);
 						pageContext.setAttribute("groupRole", groupRole);
-						if (groupTeacher.getActive()) {
+						if (teacherGroup.getActive()) {
 						%>
 						<tr>
 								<td>
