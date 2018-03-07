@@ -42,18 +42,21 @@
 					<td align="center"><font size="-1"><b><u>State</u></b></font></td>
 					<td align="center"><font size="-1"><b><u>Groups</u></b></font></td>
 				</tr>
+				<%-- As far as I can tell, Elab.getUserManagementProvider()
+				returns a DatabaseUserManagementProvider object here.
+				"items" then evaluates to a List<ElabGroup>, with the "teacher"
+				loop variable being an ElabGroup object - JG 7Mar2018 --%>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<%-- Updating to bold the names of teacher groups.
 						${group.role} does not seem to be accessible, despite
 						ElabGroup.getRole() being defined.  If a way is found to make
 						it accessible, then `groupRole` can be eliminated from the
-						following scriptlet - JG 27Feb2018
-						--%>
+						following scriptlet - JG 27Feb2018 --%>
 						<%
 						ElabGroup teacherGroup = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = teacherGroup.getEmail();
 						//String groupRole = teacherGroup.getRole();
-						String groupRole = teacherGroup.getName();
+						String groupRole = teacherGroup.getSurvey();
 						if (email != null) {
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
@@ -80,7 +83,8 @@
 												<c:if test="${group.active}">
 														<c:choose>
 																<%-- Because ${group.role} doesn't work --%>
-																<c:when test="${groupRole=='teacher'}">
+																<%-- <c:when test="${groupRole=='teacher'}"> --%>
+																<c:when test="${teacher.isTeacher()}">
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
