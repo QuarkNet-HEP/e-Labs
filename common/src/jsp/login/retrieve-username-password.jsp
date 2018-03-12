@@ -82,6 +82,7 @@ String footerMessage = "<br />Questions? Please contact <a href=\'mailto:e-labs@
 	 }
 	 }*/
 //end of checking reCaptcha.
+continueRequest = true;
 
 // 1) PASSWORD RESET
 // "Reset Password" is one of the two values available to the submit button
