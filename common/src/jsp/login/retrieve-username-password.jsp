@@ -5,18 +5,25 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="java.net.URLEncoder"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaImpl" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaResponse" %>
 
 <%
-// This page has two main functions
+// This page has two functions:
 // 1) Allow teachers to reset their passwords after providing their username
 // 2) Allow teachers to find out their username by providing their email address
-// In either case, a CAPTCHA is required.
+
 //EPeronja-577:Allow teachers to reset their passwords and/or retrieve usernames by providing an e-mail address.
-//elabs@i2u2.org -> e-labs@fnal.gov 23Feb2016 JG (3 instances)
+
+/*  Edited 12Mar2018 to remove CAPTCHA.
+ *    v1 of the reCAPTCHA API, which I believe we used, is being retired 
+ *    this month.  v2 is JavaScript-based, which I prefer to avoid, and I can't
+ *    find a good replacement.  Besides, I've never been convinced it's necessary.
+ *
+ *    If I'm wrong and we end up wanting to restore CAPTCHA, SVN rev 9955 is 
+ *    the last version of this file to include a CAPTCHA; it can be used
+ *    as a reference.  The net.tanesha.recaptcha classes were stored in 
+ *    common/lib/recaptcha4j-0.0.7.jar; note that there's a 0.0.8 version of this.
+ *     - JG 12Mar2018
+ */
 String userid = request.getParameter("userid");
 String email = request.getParameter("email");
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
@@ -24,12 +31,9 @@ String emailBody = "";
 String submit = request.getParameter("submitButton");
 String pageMessage = "";
 boolean sendEmail = false;
-boolean continueRequest = false;
-String recaptcha_public_key = elab.getProperty("recaptcha_public_key");
-String recaptcha_private_key = elab.getProperty("recaptcha_private_key");
-//predefine some messages
-String reCaptchaError = "The reCaptcha you entered is not right. Please try again.<br />";
-//password reset request (teacher)
+
+// Predefine some message Strings:
+// password reset request (teacher)
 String rptSubject = "Your password has been reset";
 String rptBodyBegin = "Someone used the webform at "+
 "\'https://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
@@ -38,7 +42,8 @@ String rptBodyBegin = "Someone used the webform at "+
 String rptUIMsg = "We have sent a temporary password to the e-mail associated with this account.<br />Please check that account for a message from e-labs-NOREPLY@nd.edu";
 String rptInstructions = "You must login in and create a new password using the following steps:\n"+
 "1. Login\n"; 
-//password reset request (not a teacher)
+
+// password reset request (not a teacher)
 String rpoSubject = "Reset password attempt";
 String rpoBodyBegin = "One of your e-Lab groups: replaceGroup sent a request to reset their password." +
 " Only the teacher that created the account can do that. Here\'s how:\n\n";
@@ -52,7 +57,8 @@ String instructions =   "2. Go to the registration page\n"+
 String instructionsEnd = "\nPlease send any questions to e-labs@fnal.gov.";
 String rpoError = "There is no e-mail associated with the username you entered.<br /> "+
 "We cannot reset the password at the moment.<br />";
-//retrieve username request
+
+// retrieve username request
 String runSubject = "Your username";
 String runBodyBegin = "We have found the following username(s) associated with the e-mail address: replaceEmail\n\n";
 String runUIMsg = "We have sent a list of e-Lab logins associated with the e-mail address you provided."+
@@ -61,32 +67,9 @@ String runError = "There are no usernames associated with the e-mail address: ";
 String footerMessage = "<br />Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
 "<a href=\'../teacher/index.jsp\'>Log in</a>";		
 
-//if this is a submit we want to check the reCaptcha
-/*if (submit != null && !submit.equals("")) {
-	 String remoteAddr = request.getRemoteAddr();
-	 ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-	 reCaptcha.setPrivateKey(recaptcha_private_key);
-	 String challenge = request.getParameter("recaptcha_challenge_field");
-	 String uresponse = request.getParameter("recaptcha_response_field");
-	 try {
-	 ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
-	 if (reCaptchaResponse.isValid()) {
-	 continueRequest = true;
-	 } else {
-	 continueRequest = false;
-	 message = reCaptchaError;
-	 }
-	 } catch (Exception ex) {
-	 continueRequest = false;
-	 message = ex.toString() + "<br />";
-	 }
-	 }*/
-//end of checking reCaptcha.
-continueRequest = true;
-
 // 1) PASSWORD RESET
 // "Reset Password" is one of the two values available to the submit button
-if ("Reset Password".equals(submit) && continueRequest) {
+if ("Reset Password".equals(submit)) {
 		if (userid != null && !userid.equals("")) {
 				//test if the username entered is a teacher...
 				String userRole = elab.getUserManagementProvider().getUserRole(userid);
@@ -126,11 +109,11 @@ if ("Reset Password".equals(submit) && continueRequest) {
 						message = "Username is blank.<br />";
 				}
 		}
-}//end of checking password reset
+} // end of checking password reset
 
 // 2) RETRIEVE USERNAME
 // "Retrieve Username" is one of the two values available to the submit button
-if ("Retrieve Username".equals(submit) && continueRequest) {
+if ("Retrieve Username".equals(submit)) {
    	if (email != null && !email.equals("")) {
    			String[] user = elab.getUserManagementProvider().getUsernameFromEmail(email);
 				if (user != null) {
@@ -155,7 +138,7 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 						message = "Email address is blank.<br />";
 				}
 		}
-}//end of checking retrieve username
+} // end of checking retrieve username
 
 // Either of the above functions may set sendEmail=true.  If so, we send the email:
 if (sendEmail) {
@@ -170,8 +153,6 @@ if (!message.equals("")) {
 		message = message + footerMessage;	
 }
 request.setAttribute("message", message);
-request.setAttribute("recaptcha_public_key", recaptcha_public_key);
-request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -184,10 +165,7 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
     <script>
  		 window.onload = function() {
 				 $("retrieve-username-password-form").Show();
-		 }
- 		 var RecaptchaOptions = {
- 		     theme : 'blackglass'
- 		 };
+		 };
     </script>
   </head>
 
@@ -211,14 +189,6 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
             <li>To change or reset the passwords associated with student research groups, log in and go to the Registration page.</li>
           </ul>
           <table border="0" id="main">
-							<%-- <tr><td>Prove you are not a robot first: </td></tr>
-							<tr><td><div id="recaptcha" align="center">
-              <%
-              ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
-              ((ReCaptchaImpl) c).setRecaptchaServer("https://www.google.com/recaptcha/api");
-              out.println(c.createRecaptchaHtml(null, null));			
-							%>
-							</div></td></tr> --%>
             <tr>
 							<td><br />Username: <input type="text" name="userid" id="userid"></input>
 									<input type="submit" name="submitButton" value="Reset Password" /></td>
