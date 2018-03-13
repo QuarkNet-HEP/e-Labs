@@ -42,10 +42,8 @@
 					<td align="center"><font size="-1"><b><u>State</u></b></font></td>
 					<td align="center"><font size="-1"><b><u>Groups</u></b></font></td>
 				</tr>
-				<%-- As far as I can tell, Elab.getUserManagementProvider()
-				returns a DatabaseUserManagementProvider object here.
-				"items" then evaluates to a List<ElabGroup>, with the "teacher"
-				loop variable being an ElabGroup object - JG 7Mar2018 --%>
+				<%-- "items" evaluates to the List<ElabGroup> of teacher logins returned
+				by DatabaseUserManagementProvider.getTeachers() - JG 7Mar2018 --%>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<%-- Updating to bold the names of teacher groups.
 						${teacherGroup.role} does not seem to be accessible, despite
@@ -55,8 +53,8 @@
 						<%
 						ElabGroup teacherGroup = (ElabGroup) pageContext.getAttribute("teacher");
 						String email = teacherGroup.getEmail();
-						//String groupRole = teacherGroup.getRole();
-						String groupRole = teacherGroup.getUserArea();
+						String groupRole = teacherGroup.getRole();
+						//String groupRole = teacherGroup.getUserArea();
 						if (email != null) {
 								email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
@@ -85,11 +83,11 @@
 																<%-- Because ${teacherGroup.role} doesn't work --%>
 																<%-- <c:when test="${groupRole=='teacher'}"> --%>
 																<%-- <c:when test="${teacher.isTeacher()}">  --%>
-																<c:when test="${teacherGroup.role=='teacher'}">
+																<c:when test="${teacher.role=='teacher'}">
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
-																		${teacherGroup.role}<br/>
+																		${teacher.role}<br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>

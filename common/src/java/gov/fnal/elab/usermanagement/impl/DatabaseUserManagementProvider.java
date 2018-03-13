@@ -491,9 +491,9 @@ public class DatabaseUserManagementProvider implements
 										 * Reset `g` and set its City, School, and State to 
 										 *   be equal to those previously set in `t` */
                     g = new ElabGroup(elab, this);
-                    //g.setCity(t.getCity());
-                    g.setCity(t.getRole());
+                    //g.setCity(t.getRole());
                     //g.setCity(rs.getString("rgrole"));
+                    g.setCity(t.getCity());
                     g.setSchool(t.getSchool());
                     g.setState(t.getState());
                 } // end of "repeat teacher" block
