@@ -89,7 +89,7 @@
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
-																		${group.name}<br/>
+																		${teacherGroup.role}<br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>
