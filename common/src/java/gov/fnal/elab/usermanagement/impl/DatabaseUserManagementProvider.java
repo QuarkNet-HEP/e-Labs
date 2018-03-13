@@ -491,7 +491,8 @@ public class DatabaseUserManagementProvider implements
 										 * Reset `g` and set its City, School, and State to 
 										 *   be equal to those previously set in `t` */
                     g = new ElabGroup(elab, this);
-                    g.setCity(t.getCity());
+                    //g.setCity(t.getCity());
+                    g.setCity("FunkyTown");
                     g.setSchool(t.getSchool());
                     g.setState(t.getState());
                 } // end of "repeat teacher" block
@@ -518,7 +519,8 @@ public class DatabaseUserManagementProvider implements
                                 .split("/");
                         if (brokenSchema != null) {
                             t.setSchool(brokenSchema[3].replaceAll("_", " "));
-                            t.setCity(brokenSchema[2].replaceAll("_", " "));
+                            //t.setCity(brokenSchema[2].replaceAll("_", " "));
+                            t.setCity("FunkyTown");
                             t.setState(brokenSchema[1].replaceAll("_", " "));
                         }
                     }
