@@ -440,38 +440,79 @@ public class DatabaseUserManagementProvider implements
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
+						// Updated to include rg.role - JG 13Mar2018
             ps = conn.prepareStatement(
             		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, " +
             				"research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, " +
-            				" research_group.active AS rgactive, teacher.cosmic_all_data_access as cosmic_all_data_access " +
-            		"FROM research_group_project " + 
-            		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
-            		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
+            				"research_group.active AS rgactive, teacher.cosmic_all_data_access AS cosmic_all_data_access, " +
+								    "research_group.role AS rgrole " +
+            		"FROM research_group_project " +
+            		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " +
+            		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +
             		"WHERE research_group_project.project_id = ? ORDER BY tname ASC;");
             ps.setInt(1, projectId);
             rs = ps.executeQuery();
             List<ElabGroup> teachers = new ArrayList<ElabGroup>();
             // the first one is a dummy, but it makes the code below less
             // cluttered
-            ElabGroup t = new ElabGroup(elab, this);
+						/* I could use more explanation on the above statement and the 
+						 *   code below
+						 * I've added my own notes - JG 8Mar2018
+						 * Each line of the DB query's ResultSet corresponds to 
+						 *   an e-Lab login - specifically, to a unique research group name/ID 
+						 *   that can be represented as an ElabGroup object.
+						 * We differentiate between a *teacher* login and a *group* login 
+						 * (i.e., a student login)
+						 * 1) Teacher logins have research_group.role='teacher' in the database.
+						 *    Group logins have research_group.role='user' or 'upload'
+						 * 2) Teacher ElabGroups can "own" student ElabGroups; we represent 
+						 *    this by listing student ElabGroups in the teacher ElabGroup's 
+						 *    `groups` variable (a SortedMap).
+						 *
+						 * We want to define these ElabGroup objects, add them to the `teachers` List,
+						 *   and return the List.
+						 */
+						ElabGroup t = new ElabGroup(elab, this);
             ElabGroup g = null;
             while (rs.next()) {
-                String name = rs.getString("tname");
-                if (name.equals(t.getName())) {
+								/* Is it a good idea to key everything by teacher.name?
+								 * Many teachers have multiple accounts (different teacher.id) 
+								 * under the same name, and many have multiple accounts under 
+								 * different names (Bill vs. William, for example).
+								 * This will affect the sorting.
+								 * Also, we seriously need to clean the DB - JG 13Mar2018
+								 */
+                String teacherName = rs.getString("tname");
+								/* We check to see if the teacherName from the current line of the 
+								 *   ResultSet is the same as it was the last time `t` was populated
+								 *   (which would have been in a previous iteration of this loop). */
+                if (teacherName.equals(t.getName())) {
+										/* If it is, this is a *new* group belonging to the same teacher.
+										 * Reset `g` and set its City, School, and State to 
+										 *   be equal to those previously set in `t` */
                     g = new ElabGroup(elab, this);
                     g.setCity(t.getCity());
                     g.setSchool(t.getSchool());
                     g.setState(t.getState());
-                }
-                else {
+                } // end of "repeat teacher" block
+                else { // if(teacher.name != t.getName())
+										/* If it isn't, this must be a new teacher.
+										 * We reset `t` to be a fresh ElabGroup */
                     t = new ElabGroup(elab, this);
-                    t.setName(name);
+										/* and then set everything except "group user area" and 
+										 *   "group name" from the ResultSet */
+										t.setName(teacherName);
                     t.setEmail(rs.getString("temail"));
-                    t.setId(rs.getInt("id"));
+                    t.setId(rs.getInt("id")); // group ID
                     t.setTeacherId(rs.getInt("teacherid"));
                     t.setActive(rs.getBoolean("rgactive"));
                     t.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
+										t.setRole(rs.getString("rgrole"));
+										/* Now we refresh `g` (though we won't populate it until after
+										 *   the current block) */
                     g = new ElabGroup(elab, this);
+										/* and set the School, City, and State of `t` 
+										 *   based on parsing the userarea */
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
                                 .split("/");
@@ -481,15 +522,26 @@ public class DatabaseUserManagementProvider implements
                             t.setState(brokenSchema[1].replaceAll("_", " "));
                         }
                     }
-                    teachers.add(t);
-                }
+										/* Note that we *never* explicitly set t's group name `rgname`.
+										 * We did, however, set t's group ID, which is just as good */
+										/* Now we add the populated ElabGroup `t` to the `teachers` List: */
+										teachers.add(t);
+                } // end of "new teacher" block
+								/* In either of the above conditions, `g` has been assigned an ElabGroup value.
+								 *   For "repeat teacher", it will have City, School, and State defined.
+								 *   For "new teacher", it will have nothing defined
+								 * Now, we add the Research Group Name, group activity, and 
+								 *   teacher cosmic data access: */
                 g.setName(rs.getString("rgname"));
                 g.setActive(rs.getBoolean("rgactive"));
-                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));                
+                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
+								g.setRole(rs.getString("rgrole"));
+								/* Every ElabGroup object owns a SortedMap<String, ElabGroup> called `groups`
+								 * We add the ElabGroup `g` to the SortedMap `t.groups` as <"research_group.name", g> */
                 t.addGroup(g);
-            }
+            } // End of loop over the ResultSet
             return teachers;
-        }
+        } // End of try
         catch (Exception e) {
             throw new ElabException(e);
         }
@@ -1033,9 +1085,8 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps);
         }
     }
-    
-    
-    
+
+
     public String resetPassword(String groupname)
             throws ElabException {
         Connection conn = null;
@@ -1076,6 +1127,8 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps, ps2);
         }
     }
+
+
     //EPeronja: get email address
     public String getEmail(String groupname) throws ElabException {
     	String email = "";
@@ -1105,7 +1158,8 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps);
         }
     }//end of getEmail (from groupname)
-    
+
+
     //EPeronja: get user role
     public String getUserRole(String groupname) throws ElabException {
     	String role = "";

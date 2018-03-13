@@ -48,7 +48,7 @@
 				loop variable being an ElabGroup object - JG 7Mar2018 --%>
 				<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<%-- Updating to bold the names of teacher groups.
-						${group.role} does not seem to be accessible, despite
+						${teacherGroup.role} does not seem to be accessible, despite
 						ElabGroup.getRole() being defined.  If a way is found to make
 						it accessible, then `groupRole` can be eliminated from the
 						following scriptlet - JG 27Feb2018 --%>
@@ -82,13 +82,14 @@
 										<c:forEach items="${teacher.groups}" var="group">
 												<c:if test="${group.active}">
 														<c:choose>
-																<%-- Because ${group.role} doesn't work --%>
+																<%-- Because ${teacherGroup.role} doesn't work --%>
 																<%-- <c:when test="${groupRole=='teacher'}"> --%>
-																<c:when test="${teacher.isTeacher()}">
+																<%-- <c:when test="${teacher.isTeacher()}">  --%>
+																<c:when test="${teacherGroup.role=='teacher'}">
 																		<strong>${group.name}</strong><br/>
 																</c:when>
 																<c:otherwise>
-																		${groupRole}<br/>
+																		${group.name}<br/>
 																</c:otherwise>
 														</c:choose>
 												</c:if>
