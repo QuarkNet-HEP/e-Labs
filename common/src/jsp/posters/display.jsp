@@ -12,20 +12,22 @@
 <%@ page import="org.apache.commons.codec.net.URLCodec" %>
 
 <%
-	String dfile = request.getParameter("name");
-	if (dfile == null || dfile.equals("")) {
-	    throw new ElabJspException("Missing poster name.");
-	}
-	And q = new And();
-	q.add(new Equals("name", dfile));
-	q.add(new Equals("type", "poster"));
-	q.add(new Equals("project", elab.getName()));
-	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
-	if (rs.isEmpty()) {
-	    throw new ElabJspException("The poster (" + dfile + ") was not found in the database.");
-	}
-	CatalogEntry entry = (CatalogEntry) rs.iterator().next();
-	request.setAttribute("title", entry.getTupleValue("title"));
+String dfile = request.getParameter("name");
+if (dfile == null || dfile.equals("")) {
+	  throw new ElabJspException("Missing poster name.");
+}
+And q = new And();
+q.add(new Equals("name", dfile));
+q.add(new Equals("type", "poster"));
+q.add(new Equals("project", elab.getName()));
+ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
+if (rs.isEmpty()) {
+		// This is an XSS vulnerability
+	  //throw new ElabJspException("The poster (" + dfile + ") was not found in the database.");
+		throw new ElabJspException("The requested poster was not found in the database.");
+}
+CatalogEntry entry = (CatalogEntry) rs.iterator().next();
+request.setAttribute("title", entry.getTupleValue("title"));
 %>
 
 
