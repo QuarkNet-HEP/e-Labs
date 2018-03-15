@@ -35,7 +35,8 @@ request.setAttribute("file", file);
 
 <html> 
 		<head>
-				<title>${fn:escapeXml(title)}</title>
+				<!-- Tracking changes -->
+				<title><c:out value="${title}"/></title>
 		<script language="javascript">
 			function getRefToDivMod(divID, oDoc) {
 	        	if (!oDoc) {
