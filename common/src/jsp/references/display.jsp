@@ -1,3 +1,5 @@
+<%-- Edited 15Mar2018 to fix yet more XSS vulnerabilities --%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
@@ -33,7 +35,7 @@ request.setAttribute("file", file);
 
 <html> 
 		<head>
-				<title>${title}</title>
+				<title>${fn:escapeXml(title)}</title>
 				<script language="javascript">
 				 function getRefToDivMod(divID, oDoc) {
 	        	 if (!oDoc) {
@@ -98,7 +100,7 @@ request.setAttribute("file", file);
 								<table align="center" width="340">
 										<tr>
 												<td>
-														<jsp:include page="${file}"/>
+														<jsp:include page="${fn:escapeXml(file)}"/>
 												</td>
 										</tr>
 										<tr>
