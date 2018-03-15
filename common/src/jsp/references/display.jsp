@@ -35,7 +35,7 @@
     
 <html> 
 	<head>
-		<title><c:out value="${title}"></title>
+		<title><c:out value="${title}"/></title>
 		<script language="javascript">
 			function getRefToDivMod(divID, oDoc) {
 	        	if (!oDoc) {
