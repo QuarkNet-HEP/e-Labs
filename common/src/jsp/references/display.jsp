@@ -1,5 +1,5 @@
 <%-- Edited 15Mar2018 to fix yet more XSS vulnerabilities --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
@@ -11,31 +11,31 @@
 
 
 <%
-  String title;
-  String name = request.getParameter("name");  //label you want to show
-  String type = request.getParameter("type");  //label you want to show
-  String file;
+String title;
+String name = request.getParameter("name");  //label you want to show
+String type = request.getParameter("type");  //label you want to show
+String file;
 
-  if ("glossary".equals(type)) {
+if ("glossary".equals(type)) {
     file = "Glossary_" + name;
-  }
-  else if ("reference".equals(type)) {
+}
+else if ("reference".equals(type)) {
     file = "Reference_" + name;
-  }
-  else {
+}
+else {
     // XSS vulnerability
     //throw new ElabJspException("Invalid reference type: " + type);
     throw new ElabJspException("Invalid reference type");
-  }
-	title = name.replaceAll("_"," ");
-	file = file.replaceAll(" ", "_") + ".html";
-	request.setAttribute("title", title);
-	request.setAttribute("file", file);
+}
+title = name.replaceAll("_"," ");
+file = file.replaceAll(" ", "_") + ".html";
+request.setAttribute("title", title);
+request.setAttribute("file", file);
 %>
-    
+
 <html> 
-	<head>
-		<title><c:out value="${title}"/></title>
+		<head>
+				<title>${fn:escapeXml(title)}</title>
 		<script language="javascript">
 			function getRefToDivMod(divID, oDoc) {
 	        	if (!oDoc) {
