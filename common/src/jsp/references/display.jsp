@@ -1,5 +1,4 @@
 <%-- Edited 15Mar2018 to fix yet more XSS vulnerabilities --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
