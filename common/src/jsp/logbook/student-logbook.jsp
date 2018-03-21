@@ -334,7 +334,7 @@
 											</td>
 										</tr>
 
-										${linksToEach}
+										${fn:escapeXml(linksToEach)}
 									</table>
 									</div>
 								</td>
