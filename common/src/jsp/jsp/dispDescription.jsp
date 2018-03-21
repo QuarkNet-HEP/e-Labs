@@ -5,13 +5,13 @@
 <%@ page import="org.griphyn.vdl.directive.*" %>
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
-     <% String label = request.getParameter("label");  //label you want to show
-      %>
-     
-<head><title><%=label%></title>
-<%@ include file="include/javascript.jsp" %>
-<script language='javascript'>
-function getRefToDivMod( divID, oDoc ) {
+<% String label = request.getParameter("label");  //label you want to show
+%>
+
+<head><title><c:out value="${param.label}" /></title>
+		<%@ include file="include/javascript.jsp" %>
+		<script language='javascript'>
+		 function getRefToDivMod( divID, oDoc ) {
         if( !oDoc ) { oDoc = document; }
         if( document.layers ) {
             if( oDoc.layers[divID] ) { return oDoc.layers[divID]; } else {
@@ -48,7 +48,7 @@ function resizeWinTo(oW, idOfDiv ) {
       String ret = "";
 
 
-      if ( (primary!=null)&& !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
+      if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
 
          // Connect the database.
          String schemaName = ChimeraProperties.instance().getVDCSchemaName();
@@ -90,8 +90,8 @@ function resizeWinTo(oW, idOfDiv ) {
                ((DatabaseSchema)annotation).close();
      %>
 <body onLoad="resizeWinTo(300,'txt');" background="graphics/Quadrille.gif">
-<font face="ariel">
-    <%=ret%>
+		<font face="ariel">
+				<c:out value="${ret}" />
    <tr><td align="right"><HR><A HREF="javascript:window.close();"><FONT SIZE=-1>Close Window</FONT></A></td></tr></table><br>&nbsp;</div></FONT>
 
     <%
