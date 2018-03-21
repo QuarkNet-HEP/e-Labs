@@ -50,8 +50,8 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <%-- Check if the login exceeds maxLogins --%>
 <c:set var="maxLoginsReached" value="false" />
 <c:set var="message" value="" />
-<%-- <c:if test="${request.getAttribute('loginCountPerUser') > maxLogins}" > --%>
-<c:if test="${1 > 2}" >
+<%-- <c:if test="${1 > 2}" > --%>
+<c:if test="${request.getAttribute('loginCountPerUser') > ${maxLogins}}" >
 		<c:set var="maxLoginsReached" value="true" />
 		<c:set var="message"
 					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> ${extraMessage}" />
