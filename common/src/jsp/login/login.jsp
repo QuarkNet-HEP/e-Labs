@@ -21,6 +21,7 @@ int loginCountPerUser = 1;
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 request.setAttribute("loginCountPerUser", loginCountPerUser);
+//request.setAttribute("loginCountPerUser", 1);
 %>
 <%-- Set the email contact to be shown on the error page --%>
 <c:set var="accountEmail"
@@ -49,7 +50,8 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <%-- Check if the login exceeds maxLogins --%>
 <c:set var="maxLoginsReached" value="false" />
 <c:set var="message" value="" />
-<c:if test="${request.getAttribute('loginCountPerUser') > maxLogins}" >
+<%-- <c:if test="${request.getAttribute('loginCountPerUser') > maxLogins}" > --%>
+<c:if test="${1 > 2}" >
 		<c:set var="maxLoginsReached" value="true" />
 		<c:set var="message"
 					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> ${extraMessage}" />
