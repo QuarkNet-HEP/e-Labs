@@ -22,7 +22,8 @@ request.setAttribute("guestlogin", guestlogin);
 request.setAttribute("loginCountPerUser", loginCountPerUser);
 %>
 <%-- Set the email contact to be shown on the error page --%>
-<c:set var="accountEmail" value="<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>" />
+<c:set var="accountEmail"
+			 value="<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>" />
 <%-- Determine maxLogins and extraMessage based on whether login is "guest" or other user --%> 
 <%-- These can be specified in elab.properties, but we provide defaults here if they aren't --%>
 <c:choose>
@@ -50,7 +51,7 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <c:if test="${request.getAttribute('loginCountPerUser') > maxLogins}" >
 		<c:set var="maxLoginsReached" value="true" />
 		<c:set var="message"
-					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> $${extraMessage}" />
+					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> ${extraMessage}" />
 </c:if>
 <%-- Set the message for the error page (below) to the Request scope --%>
 <c:set var="message" value="${message}" scope="request" />
@@ -62,6 +63,7 @@ boolean success = false;
 
 // authentication and login logic
 //if (!maxLoginsReached) {
+// This is literally what you have to do to pass a boolean from JSTL > scriptlet
 if(!(Boolean.parseBoolean((String)pageContext.getAttribute("maxLoginsReached")))) {
 ElabGroup user = null;
 	  if (username != null && password != null) {
