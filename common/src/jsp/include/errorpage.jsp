@@ -57,7 +57,7 @@
 	<table border="0" id="error-page-table" width="790px">
 		<tr>		
 			<% if (exception instanceof ElabJspException) { %>
-				<span class="error">${exception.message}</span>
+				<span class="error"><c:out value="${exception.message}" /></span>
 			<% } else { %>
 				<td id="error-page-details" width="790px" style="text-align: left;">
 					<h2>Request URL:</h2>
