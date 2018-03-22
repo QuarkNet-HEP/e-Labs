@@ -43,8 +43,10 @@
 		AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id);
 		
 		if (run == null) {
-			%> 
-				The specified analysis ID (<%= id %>) is invalid. Please re-run the experiment.
+			%>
+				<%-- XSS fix. Added spaces so tags don't mess with comments - JG 21Mar2018 --%>	
+				<%-- The specified analysis ID ( < % = i d % > ) is invalid. Please re-run the experiment. --%>
+				The specified analysis ID is invalid. Please re-run the experiment.	
 			<%
 		}
 		else {
