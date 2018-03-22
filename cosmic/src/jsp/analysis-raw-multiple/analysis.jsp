@@ -14,62 +14,62 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>	
 <%
-	String[] lfn = request.getParameterValues("f");
-	if (lfn == null) {
-	   	throw new ElabJspException("No files specified");
-	}
-	List files = new ArrayList();
-	List outfiles = new ArrayList();
-	List gatewidths = new ArrayList();
-	
-	for (int i = 0; i < lfn.length; i++) {
-	    String did = AnalysisParameterTools.getDetectorId(lfn[i]);
+String[] lfn = request.getParameterValues("f");
+if (lfn == null) {
+	  throw new ElabJspException("No files specified");
+}
+List files = new ArrayList();
+List outfiles = new ArrayList();
+List gatewidths = new ArrayList();
+
+for (int i = 0; i < lfn.length; i++) {
+	  String did = AnalysisParameterTools.getDetectorId(lfn[i]);
 		File analyze = new File(new File(elab.getProperties().getDataDir(), did), lfn[i] + ".analyze");
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(analyze.getName());
-	    if (!analyze.exists()) {
-			files.add(lfn[i]);
-			outfiles.add(analyze.getAbsolutePath());
-			//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
-			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(lfn[i]);
-			String gatewidth = "100";
-			if (e != null) {
-				//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
-				//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
-				//the absolute value by 10 to come up with the nanoseconds.
-				String ConReg3 = (String) e.getTupleValue("ConReg3");
-				String ConReg2 = (String) e.getTupleValue("ConReg2");
-				if ( ConReg3 != null && ConReg2 != null && !ConReg3.equals("") && !ConReg2.equals("")) {
-					int reg3 = Integer.parseInt(ConReg3, 16);
-					int reg2 = Integer.parseInt(ConReg2, 16);
-					int diff = reg3 - reg2;
-					int absDiff = (diff < 0) ? -diff : diff;
-					gatewidth = String.valueOf(absDiff * 10);
+	  if (!analyze.exists()) {
+				files.add(lfn[i]);
+				outfiles.add(analyze.getAbsolutePath());
+				//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(lfn[i]);
+				String gatewidth = "100";
+				if (e != null) {
+						//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
+						//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
+						//the absolute value by 10 to come up with the nanoseconds.
+						String ConReg3 = (String) e.getTupleValue("ConReg3");
+						String ConReg2 = (String) e.getTupleValue("ConReg2");
+						if ( ConReg3 != null && ConReg2 != null && !ConReg3.equals("") && !ConReg2.equals("")) {
+								int reg3 = Integer.parseInt(ConReg3, 16);
+								int reg2 = Integer.parseInt(ConReg2, 16);
+								int diff = reg3 - reg2;
+								int absDiff = (diff < 0) ? -diff : diff;
+								gatewidth = String.valueOf(absDiff * 10);
+						}
 				}
-			}
-			gatewidths.add(gatewidth);
-	    }
-	}
-		
-	if (files.isEmpty()) {
-	    request.setAttribute("done", Boolean.TRUE);
-	}
-	else {
-	    request.setAttribute("done", Boolean.FALSE);
-	}
-	request.setAttribute("files", files);
-	request.setAttribute("outFiles", outfiles);
-	request.setAttribute("gatewidth", gatewidths);
+				gatewidths.add(gatewidth);
+	  }
+}
+
+if (files.isEmpty()) {
+	  request.setAttribute("done", Boolean.TRUE);
+}
+else {
+	  request.setAttribute("done", Boolean.FALSE);
+}
+request.setAttribute("files", files);
+request.setAttribute("outFiles", outfiles);
+request.setAttribute("gatewidth", gatewidths);
 %>
 
 <c:choose>
-	<c:when test="${done}">
-		<jsp:include page="output.jsp"/>
-	</c:when>
-	<c:otherwise>
-		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
-			<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
-			<e:trinput type="hidden" name="gatewidth" value="${gatewidth}" />
-			<e:trdefault name="inFile" value="${files}"/>
+		<c:when test="${done}">
+				<jsp:include page="output.jsp"/>
+		</c:when>
+		<c:otherwise>
+				<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
+						<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
+						<e:trinput type="hidden" name="gatewidth" value="${gatewidth}" />
+						<e:trdefault name="inFile" value="${fn:escapeXml(files)}"/>
 			<e:trdefault name="outFile" value="${outFiles}"/>
 			<e:ifAnalysisIsOk>
 				<jsp:include page="../analysis/start.jsp?continuation=../analysis-raw-multiple/output.jsp&onError=../analysis-raw-multiple/analysis.jsp"/>
