@@ -170,6 +170,7 @@ function grab_input($name){
     if( isset($_POST[$name]) ){
         global $$name;
         $$name = trim($_POST[$name]);
+				$$name = htmlspecialchars($name, ENT_QUOTES, "utf-8");
         //TODO: any further cleansing?
     }
 }
@@ -372,6 +373,7 @@ function time_button($label,$days_past=0){
 function setup_referer_button(){
     global $referer, $my_url;
     if( empty($referer) ) return;
+		$referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
 
     //TODO: fix this to strip out any _GET parameters
     if( $referer == $my_url ) return;
@@ -379,7 +381,7 @@ function setup_referer_button(){
 
     echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
-       document.bugrpt.url.value=\"$referer\";
+       document.bugrpt.url.value=\"$referer_escaped\";
     };\n</script>\n\n";
 }
 
@@ -579,7 +581,8 @@ function send_report_via_email($thread_id=0){
 
     $to_address = $Email_List;
 
-    $self = $_SERVER['PHP_SELF'];
+    //$self = $_SERVER['PHP_SELF'];
+		$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
 
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
