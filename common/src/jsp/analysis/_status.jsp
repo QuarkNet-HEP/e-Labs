@@ -36,7 +36,7 @@
 	    if (run == null) {
 			System.err.println("Invalid analysis id " + id);
 			%> 
-				The specified analysis ID (<%= id %>) is invalid. Please re-run the experiment.
+				The specified analysis ID (<c:out value="${id}" />) is invalid. Please re-run the experiment.
 			<%
 		}
 		else {
