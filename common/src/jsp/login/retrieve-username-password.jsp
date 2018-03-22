@@ -169,7 +169,7 @@ request.setAttribute("message", message);
 		</div>
 		
 		<div id="content">
-	<p>${message}</p>
+	<p><c:out value="${message}" /></p>
 	
 	<form id="retrieve-username-password-form" method="post">	
 	<h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
