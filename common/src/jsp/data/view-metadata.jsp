@@ -80,29 +80,29 @@
 													request.setAttribute("name", objectName);
 													
 													%>
-			
-			<c:if test="${e.tupleMap.type == 'plot'}">
-				<a href="../plots/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Plot</a>
-			</c:if>
-			<c:if test="${e.tupleMap.type == 'split'}">
-				| <a href="../data/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Data</a>
-			</c:if>
-			<c:if test="${e.tupleMap.detectorid != null && e.tupleMap.julianstartdate != null}">
-				| <a href="../geometry/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Geometry</a>
-			</c:if>
-			<c:if test="${e.tupleMap.type == 'split'}">
-				| <a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
-			</c:if>
-			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${name}</h2>
-			<table border="0">
-				<c:forEach items="${e.tupleIterator}" var="tuple">
-					<tr>
-						<c:if test="${!fn:startsWith(tuple.key, '_') and !fn:startsWith(tuple.key, 'FIG')}">
-							<td align="right">${tuple.key}:&nbsp;</td>
-							<td align="left">
-								<c:choose>
-									<c:when test="${tuple.key == 'provenance'}">
-										<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
+													
+													<c:if test="${e.tupleMap.type == 'plot'}">
+															<a href="../plots/view.jsp?filename=${fn:escapeXml(param.filename)}&menu=${fn:escapeXml(param.menu)}">Show Plot</a>
+													</c:if>
+													<c:if test="${e.tupleMap.type == 'split'}">
+															| <a href="../data/view.jsp?filename=${fn:escapeXml(param.filename)}&menu=${fn:escapeXml(param.menu)}">Show Data</a>
+													</c:if>
+													<c:if test="${e.tupleMap.detectorid != null && e.tupleMap.julianstartdate != null}">
+															| <a href="../geometry/view.jsp?filename=${fn:escapeXml(param.filename)}&menu=${fn:escapeXml(param.menu)}">Show Geometry</a>
+													</c:if>
+													<c:if test="${e.tupleMap.type == 'split'}">
+															| <a href="../data/download?filename=${fn:escapeXml(param.filename)}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
+													</c:if>
+													<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${name}</h2>
+													<table border="0">
+															<c:forEach items="${e.tupleIterator}" var="tuple">
+																	<tr>
+																			<c:if test="${!fn:startsWith(tuple.key, '_') and !fn:startsWith(tuple.key, 'FIG')}">
+																					<td align="right">${tuple.key}:&nbsp;</td>
+																					<td align="left">
+																							<c:choose>
+																									<c:when test="${tuple.key == 'provenance'}">
+																											<e:popup href="../plots/view-provenance.jsp?filename=${fn:escapeXml(param.filename)}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
 									</c:when>
 									<c:when test="${tuple.key == 'detectorid' && e.tupleMap.julianstartdate != null}">
 										<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
