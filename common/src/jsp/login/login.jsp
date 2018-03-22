@@ -17,11 +17,8 @@ String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
 String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
-//int loginCountPerUser = 1;
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
-//request.setAttribute("loginCountPerUser", loginCountPerUser);
-//request.setAttribute("loginCountPerUser", 1);
 %>
 <%-- Set the email contact to be shown on the error page --%>
 <c:set var="accountEmail"
@@ -51,8 +48,7 @@ request.setAttribute("guestlogin", guestlogin);
 <%-- Check if the login exceeds maxLogins --%>
 <c:set var="maxLoginsReached" value="false" />
 <c:set var="message" value="" />
-<%-- <c:if test="${1 > 2}" > --%>
-<c:if test="${requestScope.loginCountPerUser > maxLogins}" >
+<c:if test="${loginCountPerUser > maxLogins}" >
 		<c:set var="maxLoginsReached" value="true" />
 		<c:set var="message"
 					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> ${extraMessage}" />
