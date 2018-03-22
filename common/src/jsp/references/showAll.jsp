@@ -19,9 +19,8 @@ else if ("glossary".equals(type)) {
 		h1Text= "Glossary: Look up unfamiliar words.";
 }
 else {
-		// XSS fix - JG 21Mar2018
-		//throw new ElabJspException("Unknown reference type: " + type);
-		throw new ElabJspException("Unknown reference type provided.");
+		throw new ElabJspException("Unknown reference type: " + type);
+		//throw new ElabJspException("Unknown reference type provided.");
 }
 
 String path = "/" + elab.getName() + "/references/";
