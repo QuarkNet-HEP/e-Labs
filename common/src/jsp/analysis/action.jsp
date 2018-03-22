@@ -46,7 +46,7 @@
 			%>
 				<%-- XSS fix. Added spaces so tags don't mess with comments - JG 21Mar2018 --%>	
 				<%-- The specified analysis ID ( < % = i d % > ) is invalid. Please re-run the experiment. --%>
-				The specified analysis ID is invalid. Please re-run the experiment.	
+				The specified analysis ID (<c:out value="${id}" />) is invalid. Please re-run the experiment.	
 			<%
 		}
 		else {
