@@ -16,8 +16,8 @@ String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
 String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
-//int loginCountPerUser = SessionListener.getUserLoginsCount(username);
-int loginCountPerUser = 1;
+int loginCountPerUser = SessionListener.getUserLoginsCount(username);
+//int loginCountPerUser = 1;
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 request.setAttribute("loginCountPerUser", loginCountPerUser);
@@ -52,7 +52,7 @@ request.setAttribute("loginCountPerUser", loginCountPerUser);
 <c:set var="maxLoginsReached" value="false" />
 <c:set var="message" value="" />
 <%-- <c:if test="${1 > 2}" > --%>
-<c:if test="${request.getAttribute('loginCountPerUser') > maxLogins}" >
+<c:if test="${requestScope.loginCountPerUser > maxLogins}" >
 		<c:set var="maxLoginsReached" value="true" />
 		<c:set var="message"
 					 value="This user has reached the maximum number of allowed simultaneous logins.<br /> ${extraMessage}" />
