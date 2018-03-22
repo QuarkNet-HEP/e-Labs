@@ -16,10 +16,14 @@
 	String id = request.getParameter("detectorID");
 	String jd = request.getParameter("jd");
 	String action = request.getParameter("action");
+	// In practice, filename will be of the form 6148.2018.0101.0 - JG 22Mar2018
 	String filename = request.getParameter("filename");
 	GeoEntryBean geoEntry = null;
 	
 	if (filename != null) {
+		/* I assume this gets data about the input file from the database.  Tracking
+		 *   it down terminates at org.griphyn.vdl.dbschema.Annotation, which
+		 *	 we don't have source code for - JG 22Mar2018 */
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
 		if (entry == null) {
 	    	//throw new ElabJspException("No metadata about " + filename + " found.");
@@ -27,7 +31,10 @@
 		}
 		request.setAttribute("e", entry);
 		//[m] grr 
-	 	
+		/* Based on the above comment, I guess Mihael didn't like setting the data as
+		 *   a request Attribute?  It does seem like there should be a more
+		 *   appropriate way - JG 22Mar2018 */
+
 		if (entry.getTupleValue("julianstartdate") == null) {
 			//throw new ElabJspException(filename + " is missing the Julian start date");
 			throw new ElabJspException("File is missing the Julian start date");
@@ -48,7 +55,7 @@
 		if (g == null) {
 			//throw new ElabJspException("No geometry information found for detector " + id + " on date " + jd);
 			throw new ElabJspException("No geometry information found for the requested detector on the given date.");
-			}
+		}
 		if (filename == null) {
 			geoEntry = g.getGeoEntry(jd);
 		}

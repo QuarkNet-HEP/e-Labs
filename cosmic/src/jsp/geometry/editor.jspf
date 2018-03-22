@@ -42,8 +42,8 @@
                     <th>Active<br />Channels:</th>
                     <c:forEach var="i" items="1,2,3,4">
                     	<td class="channel-id">${i}
-                    	<e:trinput type="checkbox" name="chan${i}IsActive" disabled="${ro}"  
-                        	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>                    	
+                    			<e:trinput type="checkbox" name="chan${i}IsActive"
+																		 disabled="${ro}" 	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>
                     	</td>
                     </c:forEach>
                 </tr>
@@ -69,13 +69,13 @@
 	                </tr>
 	        		<tr id="ch${i}-h" style="${geoEntry[isChannelActive] ? h : v}">
 	                    <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
-	                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 	                </tr>
 				</c:forEach>
 			</table>
 		</div>
 		
- 		<div id="orientation"> 
+ 		<div id="orientation">
             <table border="0">
                 <tr>
                     <td>
@@ -95,8 +95,8 @@
         
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
 	
-		<div class="subtitle">	
-			<table border="0">	
+		<div class="subtitle">
+			<table border="0">
 				<tr>
 					<td  valign="middle">
 						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank"><img src="../graphics/glasses_gray.jpg" ></a>
@@ -106,7 +106,7 @@
 					</td>
 				</tr>
 			</table>
-		</div>   
+		</div>
 		
 <%-- end visualization code --%>		
 
