@@ -20,7 +20,7 @@ String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 int loginCountPerUser = 1;
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
-request.setAttribute("loginCountPerUser", loginCountPerUser);
+//request.setAttribute("loginCountPerUser", loginCountPerUser);
 //request.setAttribute("loginCountPerUser", 1);
 %>
 <%-- Set the email contact to be shown on the error page --%>
