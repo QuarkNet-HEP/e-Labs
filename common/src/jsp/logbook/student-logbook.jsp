@@ -346,7 +346,7 @@ request.setAttribute("references", references);
 																		<td valign="top" width="300">
 																				<div class="references">									
 																						<c:catch var="e">
-																								<c:import url="${references}" />
+																								<c:import url="${fn:escapeXml(references)}" />
 																						</c:catch>
 																						<c:if test="${!empty e}">
 																								Error: ${e.message}
