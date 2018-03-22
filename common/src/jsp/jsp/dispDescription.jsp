@@ -1,4 +1,4 @@
-<%@ page import="java.io.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.griphyn.vdl.util.*" %>
 <%@ page import="org.griphyn.vdl.dbschema.*" %>
