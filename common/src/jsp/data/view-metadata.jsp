@@ -14,7 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Details (Metadata) for ${param.filename}</title>
+		<title>Details (Metadata) for ${fn:escapeXml(param.filename)}</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -22,62 +22,64 @@
 	</head>
 	
 	<body id="view-metadata" class="data">
-		<!-- entire page container -->
-		<div id="container">
-			<c:if test="${param.menu != 'no'}">
-				<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
-				</div>
-			</div>
-			</c:if>
-			
-			<div id="content">
+			<!-- entire page container -->
+			<div id="container">
+					<c:if test="${param.menu != 'no'}">
+							<div id="top">
+									<div id="header">
+											<%@ include file="../include/header.jsp" %>
+											<%@ include file="../include/nav-rollover.jspf" %>
+									</div>
+							</div>
+					</c:if>
+					
+					<div id="content">
 
-<table border="0" id="main">
-	<tr>
-		<td id="center">
-			<% 
-				String filename = request.getParameter("filename");
-				if (filename == null) {
-				    throw new ElabJspException("Missing file name.");
-				}
-				VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-				entry.sort(); 
-				if (entry == null) {
-				    throw new ElabJspException("No metadata about " + filename + " found.");
-				}
-	            String project = (String) entry.getTupleValue("project");
-	            //EPeronja-06/18/2013: Bug 481: hide the whole path to the source
-	            String source = (String) entry.getTupleValue("source");
-	            if (source != null) {
-		            if (project.equals("cosmic")) {
-		            	int lastSlashPos = source.lastIndexOf("/");
-		            	if (lastSlashPos != -1) {
-			            	source = source.substring(lastSlashPos + 1, source.length());
-		            	}
-		            }
-	            }
-	            //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
-	            String objectName = filename;
-	            if (entry != null) {
-	            	objectName = (String) entry.getTupleValue("name");
-	            	if (project.equals("ligo")) {
-	            		if (objectName == null || objectName.equals("")) {
-		            		objectName = (String) entry.getTupleValue("title");
-	            		}
-	            	}
-	            	if (objectName == null || objectName.equals("")) {
-	            		objectName = filename;
-	            	}
-	            }
-				request.setAttribute("e", entry);
-				request.setAttribute("project", project);
-				request.setAttribute("source", source);
-				request.setAttribute("name", objectName);
-				
-			%>
+							<table border="0" id="main">
+									<tr>
+											<td id="center">
+													<% 
+													String filename = request.getParameter("filename");
+													if (filename == null) {
+															throw new ElabJspException("Missing file name.");
+													}
+													VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+													entry.sort(); 
+													if (entry == null) {
+															// XSS fix - JG 21Mar2018
+															//throw new ElabJspException("No metadata about " + filename + " found.");
+															throw new ElabJspException("No metadata found for that file.");
+													}
+													String project = (String) entry.getTupleValue("project");
+													//EPeronja-06/18/2013: Bug 481: hide the whole path to the source
+													String source = (String) entry.getTupleValue("source");
+													if (source != null) {
+															if (project.equals("cosmic")) {
+		            									int lastSlashPos = source.lastIndexOf("/");
+		            									if (lastSlashPos != -1) {
+			            										source = source.substring(lastSlashPos + 1, source.length());
+		            									}
+															}
+													}
+													//EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
+													String objectName = filename;
+													if (entry != null) {
+	            								objectName = (String) entry.getTupleValue("name");
+	            								if (project.equals("ligo")) {
+	            										if (objectName == null || objectName.equals("")) {
+		            											objectName = (String) entry.getTupleValue("title");
+	            										}
+	            								}
+	            								if (objectName == null || objectName.equals("")) {
+	            										objectName = filename;
+	            								}
+													}
+													request.setAttribute("e", entry);
+													request.setAttribute("project", project);
+													request.setAttribute("source", source);
+													request.setAttribute("name", objectName);
+													
+													%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
 				<a href="../plots/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Plot</a>
