@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
@@ -9,60 +10,60 @@
 <%@ page import="java.text.*" %>
 
 <%
-	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS);
-	Collection f = analysis.getParameterValues("rawData");
-    //EPeronja-06/05/2013: Bug 316-Removing datafiles from analyses reset the bin width to the default
-    //                     Not anymore.
-    Collection bin_width = Collections.EMPTY_SET;
-    if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
+ElabAnalysis analysis = (ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS);
+Collection f = analysis.getParameterValues("rawData");
+//EPeronja-06/05/2013: Bug 316-Removing datafiles from analyses reset the bin width to the default
+//                     Not anymore.
+Collection bin_width = Collections.EMPTY_SET;
+if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
 		bin_width = analysis.getParameterValues("flux_binWidth");
-    }
-	String chanRequire = "";
-	String chanVeto = "";
-    if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+}
+String chanRequire = "";
+String chanVeto = "";
+if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
 		chanRequire = (String) analysis.getParameter("singleChannel_require");
 		chanVeto = (String) analysis.getParameter("singleChannel_veto");
-	}
-    if (request.getParameter("remove") != null) {
+}
+if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
 		request.setAttribute("remfiles", r);
 		Set s = new HashSet();
 		for (int i = 0; i < r.length; i++) {
-			s.add(r[i]);
+				s.add(r[i]);
 		}
 		Iterator j = f.iterator();
 		while (j.hasNext()) {
-			String rf = (String) j.next();
-			if (s.contains(rf)) {
-				j.remove();
-			}
+				String rf = (String) j.next();
+				if (s.contains(rf)) {
+						j.remove();
+				}
 		}
 		ElabAnalysis newAnalysis = ElabFactory.newElabAnalysis(elab, null, null);
 		newAnalysis.setType(analysis.getType());
 		newAnalysis.setParameter("rawData", f);
 		//EPeronja-06/05/2013: Bug 316-Keeping the bin width from the study
 		if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
-			newAnalysis.setParameter("flux_binWidth", bin_width);
+				newAnalysis.setParameter("flux_binWidth", bin_width);
 		}
-	    if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
-			newAnalysis.setParameter("singleChannel_require", chanRequire);
-			newAnalysis.setParameter("singleChannel_veto", chanVeto);
+	  if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+				newAnalysis.setParameter("singleChannel_require", chanRequire);
+				newAnalysis.setParameter("singleChannel_veto", chanVeto);
 		}
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
-	}
-	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
-	request.setAttribute("count", new Integer(f.size()));
+}
+ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
+request.setAttribute("count", new Integer(f.size()));
 %>
 <div id="analyzing-ist">
-<form method="post" id="remove-form">
-<c:forEach items="${remfiles}" var="r">
-	<input type="hidden" name="remfile" value="${r}" />
-</c:forEach>
-<table colspace="4" border="0" width="100%">
+		<form method="post" id="remove-form">
+				<c:forEach items="${remfiles}" var="r">
+						<input type="hidden" name="remfile" value="${fn:escapeXml(r)}" />
+				</c:forEach>
+				<table colspace="4" border="0" width="100%">
 	<tbody>
 		<tr>
-		    <td align="center">DAQ#</td>
+		  <td align="center">DAQ#</td>
 			<td align="center">You're analyzing...</td>
 			<td align="center">Chan1 events</td>
 			<td align="center">Chan2 events</td>
@@ -195,7 +196,7 @@
 			    	chanTotal[j] += chan[j];
 			    	allChanTotal += chan[j];
 			    }
-			
+
 			    //set variables from metadata
 			    String city = (String) e.getTupleValue("city");
 			    String school = (String) e.getTupleValue("school");
@@ -203,11 +204,11 @@
 			    String group = (String) e.getTupleValue("group");
 			    String detector = (String) e.getTupleValue("detectorid");
 			    String title = city + ", " + group + ", Detector: " + detector;
-			
+
 			    if (num_files == 10) {
 			        out.println("</tbody><tbody id=\"tog2\" style=\"display:none\">");
 			    }
-			
+
 			    //row classes
 			    String r_class = "";
 			    if (num_files%2 == 0) {
