@@ -46,9 +46,8 @@
 													VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
 													entry.sort(); 
 													if (entry == null) {
-															// XSS fix - JG 21Mar2018
-															//throw new ElabJspException("No metadata about " + filename + " found.");
-															throw new ElabJspException("No metadata found for that file.");
+															throw new ElabJspException("No metadata about " + filename + " found.");
+															//throw new ElabJspException("No metadata found for that file.");
 													}
 													String project = (String) entry.getTupleValue("project");
 													//EPeronja-06/18/2013: Bug 481: hide the whole path to the source
