@@ -5,11 +5,12 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.*" %>
 <%@ page import="java.util.*" %>
 
-<%-- Edited to remove XSS flaws - JG 20Mar2018 --%>
-<%-- To repeat user-input variables like "filename", "id", and "jd"
-		 to the screen in error messages, we'd need to implement checks
-		 to make sure "filename" (for example) is a valid filename, and
-		 not JavaScript. Until then, I've just changed the error messages. --%>
+<%-- Edited to address XSS flaws - JG 22Mar2018 --%>
+<%-- Reflecting user-input variables like "filename", "id", and "jd"
+		 to the screen in error messages can be an XSS vulnerability.
+		 For ElabJspException errors, though, I fixed
+		 common/src/jsp/include/errorpage.jsp to sanitize them. If that
+		 fails, I've left cleaned versions of the messages as comments. --%>
 <%
 	Geometries geometries = null;
 	request.setAttribute("geometries", geometries);
@@ -26,8 +27,8 @@
 		 *	 we don't have source code for - JG 22Mar2018 */
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
 		if (entry == null) {
-	    	//throw new ElabJspException("No metadata about " + filename + " found.");
-				throw new ElabJspException("No metadata found for that filename.");
+	    	throw new ElabJspException("No metadata about " + filename + " found.");
+				//throw new ElabJspException("No metadata found for that filename.");
 		}
 		request.setAttribute("e", entry);
 		//[m] grr 
@@ -36,13 +37,13 @@
 		 *   appropriate way - JG 22Mar2018 */
 
 		if (entry.getTupleValue("julianstartdate") == null) {
-			//throw new ElabJspException(filename + " is missing the Julian start date");
-			throw new ElabJspException("File is missing the Julian start date");
+			throw new ElabJspException(filename + " is missing the Julian start date");
+			//throw new ElabJspException("File is missing the Julian start date");
 		}
 		id = (String) entry.getTupleValue("detectorid");
 		if (id == null) {
-			//throw new ElabJspException("No detector associated with " + filename);
-			throw new ElabJspException("No detector associated with that file.");
+			throw new ElabJspException("No detector associated with " + filename);
+			//throw new ElabJspException("No detector associated with that file.");
 		}
 		jd = entry.getTupleValue("julianstartdate").toString();
 		geometries = new Geometries(elab, Integer.parseInt(id));
@@ -53,8 +54,8 @@
 	if (id != null && jd != null) {
 		Geometry g = geometries.getGeometry(Integer.parseInt(id));
 		if (g == null) {
-			//throw new ElabJspException("No geometry information found for detector " + id + " on date " + jd);
-			throw new ElabJspException("No geometry information found for the requested detector on the given date.");
+			throw new ElabJspException("No geometry information found for detector " + id + " on date " + jd);
+			//throw new ElabJspException("No geometry information found for the requested detector on the given date.");
 		}
 		if (filename == null) {
 			geoEntry = g.getGeoEntry(jd);
@@ -66,8 +67,8 @@
 			//It certainly seems like Geometry.java thinks that way
 			SortedMap geos = g.getGeoEntriesBefore(jd);
 			if (geos.isEmpty()) {
-				//throw new ElabJspException("Error: no geometry information for detector " + id + " for when this data was taken.");
-				throw new ElabJspException("Error: no geometry information exists for the requsted detector for when this data was taken.");
+				throw new ElabJspException("Error: no geometry information for detector " + id + " for when this data was taken.");
+				//throw new ElabJspException("Error: no geometry information exists for the requsted detector for when this data was taken.");
 				}
 			geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
 		}
