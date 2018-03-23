@@ -5,7 +5,9 @@
 
 String elab = request.getParameter("elab");
 if (elab == null || elab.indexOf('/') >= 0) {
-    throw new RuntimeException("Invalid elab: " + elab);
+	 	// XSS vulnerability if unsanitized - JG 23Mar2018
+    //throw new RuntimeException("Invalid elab: " + elab);
+    throw new RuntimeException("Invalid elab parameter");
 }
 BufferedImage buffer = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
 Graphics g = buffer.createGraphics();
