@@ -6,6 +6,7 @@ package gov.fnal.elab;
 import gov.fnal.elab.util.URLEncoder;
 
 import java.util.Arrays;
+import java.util.List;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,8 +36,9 @@ public class Downloader extends HttpServlet {
 						/* Typically, elab.jsp will set an Elab object as a Request Attribute "elab" */
 						// If the request includes an Elab:
 						if (req.getAttribute("elab") != null) {
-								String elabName = req.getAttribute("elab").getName();
-								String nameList = req.getAttribute("elab").getProperty("elab.namelist");
+								Elab realElab = req.getAttribute("elab");
+								String elabName = realElab.getName();
+								String nameList = realElab.getProperty("elab.namelist");
 								List<String> allowedNames = Arrays.asList(nameList.split(","));
 						}
 						// If the request does not include an Elab:
