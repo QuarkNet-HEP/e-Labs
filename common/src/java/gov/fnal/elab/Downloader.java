@@ -24,35 +24,33 @@ public class Downloader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-						/* The original code got elabName via GET parameter "elab".
+						/* The original code got elabName via GET parameter "elab", which allowed
+						 * a directory traversal attack.
 						 * A better method is to use the request's Elab object, if available.
 						 * Keeping the original for backup/legacy, but it would be ideal if 
 						 * passing by GET could be avoided entirely.
 						 * This is also when and why I added "elab.namelist" to elab.properties
 						 *   - JG 23Mar2018
 						 */
-						// if the request includes an Elab, which is typically set by elab.jsp
+						/* Typically, elab.jsp will set an Elab object as a Request Attribute "elab" */
+						// If the request includes an Elab:
 						if (req.getAttribute("elab") != null) {
 								String elabName = req.getAttribute("elab").getName();
-								if (elabName == null) {
-										throw new ElabJspException("Elab exists but is missing name");
-								}
-						} else {
-								// if the request does not include an Elab
-								String elabName = req.getParameter("elab");
-								if (elabName == null) {
-										throw new ElabJspException("Elab name not provided");
-								}
-								
-								/* GET parameters are dangerous.
-								 * Here, "elab" -> elabName allows directory traversal attack.
-								 * To fix, compare it to allowed e-Lab names from
-								 * elab.properties and only allow matches - JG 23Mar2018 */
 								String nameList = req.getAttribute("elab").getProperty("elab.namelist");
-								List<String> elabNames = Arrays.asList(nameList.split(","));
-								if ( !(elabNames.contains(elabName)) ) {
-										throw new ElabJspException("Missing Elab and elab name. Options are" + nameList);
-								}
+								List<String> allowedNames = Arrays.asList(nameList.split(","));
+						}
+						// If the request does not include an Elab:
+						else {
+								// legacy/backup code
+								String elabName = req.getParameter("elab");
+								List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
+						}
+						if (elabName == null) {
+								throw new ElabJspException("No valid e-Lab name provided");
+						}
+						/* Check to make sure "elab" is one of the allowed e-Labs. */
+						if ( !(allowedNames.contains(elabName)) ) {
+								throw new ElabJspException("Invalid e-Lab name provided");
 						}
 						
             ElabGroup user = ElabGroup.getUser(req.getSession());
