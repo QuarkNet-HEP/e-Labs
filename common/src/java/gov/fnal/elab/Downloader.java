@@ -22,10 +22,30 @@ public class Downloader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            String elabName = req.getParameter("elab");
-            if (elabName == null) {
-                throw new ElabJspException("Missing elab name");
-            }
+						/* Updated to prevent directory traversal attack by 
+						 *   verifying GET parameter "elab"/elabName - JG 23March2018 */
+						/* Typically, elab.jsp will set an Elab object as a Request
+						 *   Attribute "elab" */
+						String elabName;
+						List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
+						// If the request includes an Elab:
+						if (req.getAttribute("elab") != null) {
+								Elab e = (Elab)req.getAttribute("elab");
+								elabName = e.getName();
+								String nameList = e.getProperty("elab.namelist");
+								allowedNames = Arrays.asList(nameList.split(","));
+						}
+						// If the request does not include an Elab:
+						else { // legacy/backup code
+								elabName = req.getParameter("elab");
+						}
+						if (elabName == null) {
+								throw new ElabJspException("No valid e-Lab name provided");
+						}
+						/* Check to make sure "elab" is one of the allowed e-Labs. */
+						if ( !(allowedNames.contains(elabName)) ) {
+								throw new ElabJspException("Invalid e-Lab name provided");
+						}
 
             ElabGroup user = ElabGroup.getUser(req.getSession());
 
