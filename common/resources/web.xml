@@ -30,7 +30,7 @@
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
     
-	<servlet>
+		<servlet>
         <servlet-name>downloader</servlet-name>
         <servlet-class>gov.fnal.elab.Downloader</servlet-class>
     </servlet>
