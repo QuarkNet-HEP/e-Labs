@@ -33,10 +33,11 @@ public class Downloader extends HttpServlet {
 						 * This is also when and why I added "elab.namelist" to elab.properties
 						 *   - JG 23Mar2018
 						 */
-						/* Typically, elab.jsp will set an Elab object as a Request Attribute "elab" */
-						// If the request includes an Elab:
+						/* Typically, elab.jsp will set an Elab object as a Request 
+						 *   Attribute "elab" */
 						String elabName;
 						List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
+						// If the request includes an Elab:
 						if (req.getAttribute("elab") != null) {
 								Elab e = (Elab)req.getAttribute("elab");
 								elabName = e.getName();
