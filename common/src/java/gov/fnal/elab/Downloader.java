@@ -5,6 +5,8 @@ package gov.fnal.elab;
 
 import gov.fnal.elab.util.URLEncoder;
 
+import java.util.Arrays;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,11 +24,37 @@ public class Downloader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            String elabName = req.getParameter("elab");
-            if (elabName == null) {
-                throw new ElabJspException("Missing elab name");
-            }
-
+						/* The original code got elabName via GET parameter "elab".
+						 * A better method is to use the request's Elab object, if available.
+						 * Keeping the original for backup/legacy, but it would be ideal if 
+						 * passing by GET could be avoided entirely.
+						 * This is also when and why I added "elab.namelist" to elab.properties
+						 *   - JG 23Mar2018
+						 */
+						// if the request includes an Elab, which is typically set by elab.jsp
+						if (req.getAttribute("elab") != null) {
+								String elabName = req.getAttribute("elab").getName();
+								if (elabName == null) {
+										throw new ElabJspException("Elab exists but is missing name");
+								}
+						} else {
+								// if the request does not include an Elab
+								String elabName = req.getParameter("elab");
+								if (elabName == null) {
+										throw new ElabJspException("Elab name not provided");
+								}
+								
+								/* GET parameters are dangerous.
+								 * Here, "elab" -> elabName allows directory traversal attack.
+								 * To fix, compare it to allowed e-Lab names from
+								 * elab.properties and only allow matches - JG 23Mar2018 */
+								String nameList = req.getAttribute("elab").getProperty("elab.namelist");
+								List<String> elabNames = Arrays.asList(nameList.split(","));
+								if ( !(elabNames.contains(elabName)) ) {
+										throw new ElabJspException("Missing Elab and elab name. Options are" + nameList);
+								}
+						}
+						
             ElabGroup user = ElabGroup.getUser(req.getSession());
 
             if (user == null) {
@@ -44,6 +72,8 @@ public class Downloader extends HttpServlet {
                 }
             }
 
+						/* More GET parameters, but these don't allow for directory
+						 *   traversal attacks the way "elab" did - JG 2018 */ 
             String filename = req.getParameter("filename");
             if (filename == null) {
                 throw new ElabJspException("Missing file name");
