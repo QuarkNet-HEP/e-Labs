@@ -36,17 +36,16 @@ public class Downloader extends HttpServlet {
 						/* Typically, elab.jsp will set an Elab object as a Request Attribute "elab" */
 						// If the request includes an Elab:
 						String elabName;
+						List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
 						if (req.getAttribute("elab") != null) {
 								Elab e = (Elab)req.getAttribute("elab");
-								String elabName = e.getName();
+								elabName = e.getName();
 								String nameList = e.getProperty("elab.namelist");
-								List<String> allowedNames = Arrays.asList(nameList.split(","));
+								allowedNames = Arrays.asList(nameList.split(","));
 						}
 						// If the request does not include an Elab:
-						else {
-								// legacy/backup code
-								String elabName = req.getParameter("elab");
-								List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
+						else { // legacy/backup code
+								elabName = req.getParameter("elab");
 						}
 						if (elabName == null) {
 								throw new ElabJspException("No valid e-Lab name provided");
