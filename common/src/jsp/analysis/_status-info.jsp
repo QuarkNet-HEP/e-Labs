@@ -189,7 +189,10 @@
 															st.nextToken();
 													}
 													while(st.hasMoreTokens()) {
-															out.print(st.nextToken());
+															String nxt = st.nextToken();
+											%>
+											<c:out value="${nxt}" />
+<%
 															out.println("<br />");
 													}
 											}
