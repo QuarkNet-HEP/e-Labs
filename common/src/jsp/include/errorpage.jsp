@@ -27,6 +27,7 @@
 				<div id="content">
 </c:if>
 
+<%-- Print to the console, which redirects to catalina.out: --%>
 <%
 	System.out.println("\n(----------------------------------------\n");
 	System.out.println("Exception caught while rendering page: ");
@@ -51,9 +52,16 @@
 	}
 	request.setAttribute("exception", exception);
 %>
+
+<%-- Edited to remove stuff users don't really need to know - JG 23Mar2018 --%>
 <div id="error-page-body" style="width: 790px; text-align: left;">
 	<h1>An error has occurred during your request</h1>
-	
+	<p>
+		If you've encountered a bug or need assistance, please submit a
+		<a href="../teacher/forum/HelpDeskRequest.php">Help Desk Request</a>.
+		The following information is provided to help you	and the e-Labs
+		administrators identify the problem:
+	</p>
 	<table border="0" id="error-page-table" width="790px">
 		<tr>		
 			<% if (exception instanceof ElabJspException) { %>
@@ -64,24 +72,19 @@
 					<pre>${request.requestURL}</pre>
 					<h2>Query String:</h2>
 					<pre>${request.queryString}</pre>
-					<h2>User:</h2>
-					<% ElabGroup user = ElabGroup.getUser(session); %>
-					<pre><%= user %></pre>
 					<% if (exception != null) { %>
 						<h2>Exception</h2>
 						<pre><%= ElabUtil.stripHTML(exception.toString()) %></pre>
-						<h2>Stack trace:</h2>
-						<pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
 						<% 
-							if(exception instanceof JspException) {
-							    root = ((JspException) exception).getRootCause();
-							    if (root != null) {
-								    %> <h2>Root cause:</h2>
-								       <pre> <%
-									root.printStackTrace(new java.io.PrintWriter(out));
-								    %> </pre> <%
-							    }
-							}
+						if(exception instanceof JspException) {
+								String rootCause = ((JspException) exception).getRootCauseMessage();
+							  if (rootCause != null) {
+						%>
+									<h2>Root cause:</h2>
+									<pre><c:out value="${rootCause}" /></pre>
+						<%
+							 }
+						}
 					} %>
 				</td>
 			<% } %>
