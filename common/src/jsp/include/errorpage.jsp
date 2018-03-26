@@ -78,9 +78,9 @@
 							    root = ((JspException) exception).getRootCause();
 							    if (root != null) {
 								    %> <h2>Root cause:</h2>
-								       <pre> <%
-									root.printStackTrace(new java.io.PrintWriter(out));
-								    %> </pre> <%
+								       <pre> 
+											 ${rootMsg}
+								    </pre> <%
 							    }
 							}
 					} %>
