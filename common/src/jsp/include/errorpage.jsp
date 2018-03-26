@@ -74,13 +74,12 @@
 						<pre><%= ElabUtil.stripHTML(exception.toString()) %></pre>
 						<% 
 							if(exception instanceof JspException) {
-									String rootMsg = ((JspException) exception).getMessage();
 							    root = ((JspException) exception).getRootCause();
 							    if (root != null) {
-								    %> <h2>Root cause:</h2>
-								       <pre> 
-											 ${rootMsg}
-								    </pre> <%
+									String rootMsg = ((JspException) exception).getMessage();
+								  %> <h2>Root cause:</h2>
+								     <pre>${rootMsg}</pre>
+									<%
 							    }
 							}
 					} %>
