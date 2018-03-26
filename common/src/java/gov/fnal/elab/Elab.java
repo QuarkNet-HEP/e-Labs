@@ -508,16 +508,28 @@ public class Elab implements Serializable {
     }
 		
     /**
-     * Returns a URL for the given page relative to an HTML BASE determined 
-		 * by the value of "elab.secure.url" in <code>elab.properties</code>.
-		 * This value is expected to implement the HTTPS protocol for SSL-enabled
-		 * servers - JG 25Jan2018
+     * Returns an absolute, secure URL for a given input relative URL 
+		 * "page".  The HTML BASE is determined by the value of 
+		 * "elab.secure.url" in <code>elab.properties</code>.
+		 * This value is expected to implement the HTTPS protocol for 
+		 * SSL-enabled servers - JG 25Jan2018
      * 
      * @param page
      *            The page to provide a secure URL for
      * @return A secure URL to access the specified page
      */
     public String getSecureUrl(String page) {
+				// Updates for absolute URL input - JG 26Mar2018
+				// In case an absolute, secure URL is passed in:
+				if (page.toLowerCase().startsWith("https://")) {
+						return page;
+				} else if (page.toLowerCase().startsWith("http://")) {
+						page = page.replace("http://", "https://");
+						return page;
+				}
+
+				// Otherwise, assume a relative URL and make sure it has
+				// the leading slash
 				if (page.charAt(0) != '/') {
 						page = '/' + page;
 				}
