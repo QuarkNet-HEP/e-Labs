@@ -69,9 +69,6 @@
 					<pre>${request.requestURL}</pre>
 					<h2>Query String:</h2>
 					<pre>${request.queryString}</pre>
-					<h2>User:</h2>
-					<% ElabGroup user = ElabGroup.getUser(session); %>
-					<pre><%= user %></pre>
 					<% if (exception != null) { %>
 						<h2>Exception</h2>
 						<pre><%= ElabUtil.stripHTML(exception.toString()) %></pre>
