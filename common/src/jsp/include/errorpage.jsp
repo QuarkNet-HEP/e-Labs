@@ -72,8 +72,6 @@
 					<% if (exception != null) { %>
 						<h2>Exception</h2>
 						<pre><%= ElabUtil.stripHTML(exception.toString()) %></pre>
-						<h2>Stack trace:</h2>
-						<pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
 						<% 
 							if(exception instanceof JspException) {
 							    root = ((JspException) exception).getRootCause();
