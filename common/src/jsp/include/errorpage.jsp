@@ -76,10 +76,10 @@
 							if(exception instanceof JspException) {
 							    root = ((JspException) exception).getRootCause();
 							    if (root != null) {
-									String rootMsg = ((JspException) exception).getMessage();
-								  %> <h2>Root cause:</h2>
-								     <pre>${rootMsg}</pre>
-									<%
+										 String rootMsg = ((JspException) exception).getMessage();
+								  	 %> <h2>Root cause:</h2>
+								     		<pre>${rootMsg}</pre>
+										 <%
 							    }
 							}
 					} %>
