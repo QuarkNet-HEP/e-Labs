@@ -370,7 +370,7 @@ public class Elab implements Serializable {
     /**
      * Builds a link that would log in a user as guest based on information from
      * the elab properties. Additionally, the link may contain a redirection
-     * request that takes place after the login if the request containes a
+     * request that takes place after the login if the request contains a
      * parameter named "prevPage"<br>
      * Note: this looks hackish
      */
@@ -390,6 +390,25 @@ public class Elab implements Serializable {
                 + user + pass + project;
     }
 
+
+    /**
+     * Builds an absolute, HTTPS-enabled guest login link. Similar to 
+		 * getGuestLoginLink(), except that method returns a relative link to 
+		 * complement the default HTML BASE, which does not generally implement
+		 * the HTTPS protocol.<br>
+		 * The returned link depends on the value of "elab.secure.url" given in 
+		 * <code>elab.properties</code>, which is expected to use HTTPS on an 
+		 * SSL-enabled server - JG 26Mar2018
+		 *
+     * @param request
+     *            The request for which a secure guest login link is desired
+     * @return A secure URL to access the specified page
+     */
+    public String getGuestLoginLinkSecure(HttpServletRequest request) {
+				return getSecureUrl(getGuestLoginLink(request));
+    }
+
+		
     /**
      * Return an <code>FAQ</code> instance for this elab
      */
@@ -464,7 +483,37 @@ public class Elab implements Serializable {
     public String nonSecure(String page) {
     	return getURL() + '/' + properties.getWebapp() + '/' + getName() + '/' + page;
     }
-    
+
+		
+    /**
+     * Returns an absolute, secure URL for a given input relative URL 
+		 * "page".  The HTML BASE is determined by the value of 
+		 * "elab.secure.url" in <code>elab.properties</code>.
+		 * This value is expected to implement the HTTPS protocol for 
+		 * SSL-enabled servers - JG 26Mar2018
+     * 
+     * @param page
+     *            The page to provide a secure URL for
+     * @return A secure URL to access the specified page
+     */
+    public String getSecureUrl(String page) {
+				// In case an absolute, secure URL is passed in:
+				if (page.toLowerCase().startsWith("https://")) {
+						return page;
+				} else if (page.toLowerCase().startsWith("http://")) {
+						page = page.replace("http://", "https://");
+						return page;
+				}
+
+				// Otherwise, assume a relative URL and make sure it has
+				// the leading slash
+				if (page.charAt(0) != '/') {
+						page = '/' + page;
+				}
+				return properties.getRequired("elab.secure.url") + page;
+		}
+
+		
     private String getURL() {
     	String url = properties.getProperty("elab.url");
     	if (url == null || url.equals("")) {
