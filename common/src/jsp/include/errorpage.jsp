@@ -53,7 +53,12 @@
 %>
 <div id="error-page-body" style="width: 790px; text-align: left;">
 	<h1>An error has occurred during your request</h1>
-	
+	<p>
+		If you've encountered a bug or need assistance, please submit a
+		<a href="../teacher/forum/HelpDeskRequest.php">Help Desk Request</a>.
+		The following information is provided to help you	and the e-Labs
+		administrators identify the problem:
+	</p>	
 	<table border="0" id="error-page-table" width="790px">
 		<tr>		
 			<% if (exception instanceof ElabJspException) { %>
