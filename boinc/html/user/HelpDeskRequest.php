@@ -100,9 +100,9 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
   $Email_List = "myers@spy-hill.net";
   $Email_From = "i2u2@spy-hill.net";
 }
-if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) ){
+if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) !== false ){
   $Email_List = "jgriffi8@nd.edu";
-  $Email_From = "jgriffi8@nd.edu";
+  $Email_From = "birdperson@nd.edu";
 }
 
 /* End of configuration.
