@@ -46,3 +46,9 @@
 #expandHeading a {
 	text-decoration: none;
 	}
+
+.serial-num {
+  display:none;
+	width: 2px;
+	height: 2px;
+}

@@ -482,6 +482,7 @@ function fill_in_report($body=''){
     global $platform_os, $browser, $os_version, $browser_version;
     global $user_name, $user_id, $user_role, $role_list, $return_address;
     global $school, $location, $date_time;
+		global $serial;
 
     $body .= "Summary: $subject\n\n";
 
@@ -931,6 +932,7 @@ grab_input('school');
 grab_input('location');
 grab_input('date_time');
 
+grab_input('serial');
 
 /*******************************
  * If 'Submit' and no errors then submit the report
@@ -971,8 +973,12 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
             flush();
         }
 
-	//DEBUG- TURN OFF EMAIL//
-        if( $mailed = send_report_via_email($thread_id) ){
+				//DEBUG- TURN OFF EMAIL//
+				// If honeypot field is tripped, email only the admin
+				if( !empty($serial) ) {
+						$to_address = "jgriffi8@nd.edu";
+				}
+				if( $mailed = send_report_via_email($thread_id) ){
             echo str_pad("<P>* Report submitted via e-mail.", 4096);
             flush();
         }
@@ -1010,7 +1016,7 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
         page_tail();
         exit;
     }
- }
+}
 
 
 //
@@ -1255,7 +1261,7 @@ if( !$logged_in_user ) {
 
 		form_item("QuarkNet S/N:",
 					"<span>(Optional)<br> For staff use only. </span>",
-					"<input type='text' name='password' class='pw_field' />");
+					"<input type='text' name='serial' class='serial-num' />");
  }
 
 form_item("Send the report:", "",
