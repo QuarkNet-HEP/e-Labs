@@ -179,10 +179,24 @@ function grab_input($name){
     if( isset($_POST[$name]) ){
         global $$name;
         $$name = trim($_POST[$name]);
-				$$name = htmlspecialchars($name, ENT_QUOTES, "utf-8");
+				$$name = htmlspecialchars($$name, ENT_QUOTES, "utf-8");
         //TODO: any further cleansing?
     }
 }
+
+// Need a special grabber for email addresses, since
+// htmlspecialchars() messes with "@"
+//
+function grab_email($name){
+    if( isset($_POST[$name]) ){
+        global $$name;
+        $$name = trim($_POST[$name]);
+				$$name = filter_var($name
+        //TODO: any further cleansing?
+    }
+}
+
+
 
 
 // Display a checkbox item with given internal $name,
