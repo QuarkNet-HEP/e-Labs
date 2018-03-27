@@ -41,12 +41,11 @@ set_debug_level(0);
 // List of addresses to send to (comma separated):
 //
 $Email_List = "e-labs@fnal.gov";
-//$Email_List = "jgriffi8@nd.edu";
+
 
 // Return address for e-mail sent from this form:
 //
 $Email_From = "e-labs@fnal.gov";
-//$Email_From = "jgriffi8@nd.edu";
 
 // BCC the following people
 //
@@ -100,12 +99,6 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
   $Email_List = "myers@spy-hill.net";
   $Email_From = "i2u2@spy-hill.net";
  }
-
-if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) ){
-  $Email_List = "jgriffi8@nd.edu";
-  $Email_From = "jgriffi8@nd.edu";
- }
-
 
 /* End of configuration.
 \***********************************************************************/
@@ -170,8 +163,6 @@ if( empty($public_key) || empty($private_key) ){
 
 // Used by the reCAPTCHA PHP API to enforce secure requests
 $use_ssl = true;
-
-
 /*******************************
  * Local functions:
  *   (some of these will move to ../include/util.php when finished)
@@ -183,8 +174,7 @@ function grab_input($name){
     if( isset($_POST[$name]) ){
         global $$name;
         $$name = trim($_POST[$name]);
-				$$name = htmlspecialchars($name, ENT_QUOTES, "utf-8");
-				//TODO: any further cleansing?
+        //TODO: any further cleansing?
     }
 }
 
@@ -349,7 +339,7 @@ if( !function_exists('selector_from_array') ) {// in case another
         $out.= "\n</select>\n";
         return $out;
     }
-}
+ }
 
 
 // Time buttons:  insert a time automatically into the date/time field
@@ -387,7 +377,6 @@ function time_button($label,$days_past=0){
 function setup_referer_button(){
     global $referer, $my_url;
     if( empty($referer) ) return;
-		$referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
 
     //TODO: fix this to strip out any _GET parameters
     if( $referer == $my_url ) return;
@@ -395,7 +384,7 @@ function setup_referer_button(){
 
     echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
-       document.bugrpt.url.value=\"$referer_escaped\";
+       document.bugrpt.url.value=\"$referer\";
     };\n</script>\n\n";
 }
 
@@ -568,7 +557,7 @@ function fill_in_report($body=''){
 
 function form_item($title, $description, $content, $class=''){
     if (empty($title)) $title="&nbsp;";
-    if (empty($description)) $description="&nbsp;";
+    if (empty($description)) $descriptoin="&nbsp;";
     if (empty($content)) $content="&nbsp;";
     if($class) echo "<tr class='$class'>";
     else echo "<tr>";
@@ -595,8 +584,7 @@ function send_report_via_email($thread_id=0){
 
     $to_address = $Email_List;
 
-    //$self = $_SERVER['PHP_SELF'];
-		$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
+    $self = $_SERVER['PHP_SELF'];
 
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
@@ -670,7 +658,8 @@ function do_post($url, $data)
  * Return value is the $thread_id of the posting, which can be used
  * to build a URL, or 0 on failure.
  */
-function post_report_to_helpdesk(){
+
+  function post_report_to_helpdesk(){
     global $logged_in_user;
     global $subject, $problem, $error_msg;
     global $elab, $elab_list, $elab_forum_id, $forum_id;
@@ -787,7 +776,6 @@ function post_report_to_helpdesk(){
 
     return 0;
 }
-// end post_report_to_helpdesk()
 
 
 //
@@ -914,7 +902,7 @@ grab_input('user_role');
 if( isset($_COOKIE['pirates_auth']) ){
     array_unshift($role_list,"Pirates@Home Volunteer Tester");
     $Email_List = "myers@spy-hill.net";
-}
+ }
 
 
 grab_input('return_address');
@@ -1228,7 +1216,7 @@ if( !$logged_in_user ) {
                   you in the event we need further information."
               .error_text('return_address')
               .error_text('invalid_addr'),
-              "<input name='return_address' value='$return_address'
+              "<input name='return_address' value='$return_address',
                         size='30' maxlength='72' class='required'>");
 
     form_item("Your Role:",
@@ -1252,11 +1240,7 @@ if( !$logged_in_user ) {
               .error_text('noverify')
               .error_text('recaptcha'),
               recaptcha_get_html($public_key, NULL, $use_ssl));
-
-		form_item("QuarkNet S/N:",
-					"<span>(Optional)<br> For staff use only. </span>",
-					"<input type='text' name='password' class='pw_field' />");
-} // End form items for non-logged-in users
+ }
 
 form_item("Send the report:", "",
      "<input name='submit_report' type='SUBMIT' value='Submit'>");
