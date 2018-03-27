@@ -40,12 +40,13 @@ set_debug_level(0);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "e-labs@fnal.gov";
-
+//$Email_List = "e-labs@fnal.gov";
+$Email_List = "jgriffi8@nd.edu";
 
 // Return address for e-mail sent from this form:
 //
-$Email_From = "e-labs@fnal.gov";
+//$Email_From = "e-labs@fnal.gov";
+$Email_From = "jgriffi8@nd.edu";
 
 // BCC the following people
 //
