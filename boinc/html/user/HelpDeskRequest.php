@@ -184,20 +184,6 @@ function grab_input($name){
     }
 }
 
-// Need a special grabber for email addresses, since
-// htmlspecialchars() messes with "@"
-//
-function grab_email($name){
-    if( isset($_POST[$name]) ){
-        global $$name;
-        $$name = trim($_POST[$name]);
-				$$name = filter_var($name
-        //TODO: any further cleansing?
-    }
-}
-
-
-
 
 // Display a checkbox item with given internal $name,
 // labeled by $text.  Optional $desc is for mouseover or
@@ -948,19 +934,19 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
 
     // If the person is not logged in then we need to check the CAPTCHA
     //
-    if( !$logged_in_user ){
-        if( empty($_POST["recaptcha_response_field"]) ){
-            $input_error['noverify']++;
-        }
-        else {
-            $resp = recaptcha_check_answer ($private_key,
-                                            $_SERVER["REMOTE_ADDR"],
-                                            $_POST["recaptcha_challenge_field"],
-                                            $_POST["recaptcha_response_field"]);
-
-            if( !$resp->is_valid ) $input_error['recaptcha']++;
-        }
-    }
+///    if( !$logged_in_user ){
+///        if( empty($_POST["recaptcha_response_field"]) ){
+///            $input_error['noverify']++;
+///        }
+///        else {
+///            $resp = recaptcha_check_answer ($private_key,
+///                                            $_SERVER["REMOTE_ADDR"],
+///                                            $_POST["recaptcha_challenge_field"],
+///                                            $_POST["recaptcha_response_field"]);
+///
+///            if( !$resp->is_valid ) $input_error['recaptcha']++;
+///        }
+///    }
 
 
     // Sumbit via e-mail and forum post
