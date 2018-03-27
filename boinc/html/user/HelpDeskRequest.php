@@ -102,7 +102,7 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
 }
 if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) !== false ){
   $Email_List = "jgriffi8@nd.edu";
-  $Email_From = "birdperson@nd.edu";
+  $Email_From = "jgriffi8@nd.edu";
 }
 
 /* End of configuration.
