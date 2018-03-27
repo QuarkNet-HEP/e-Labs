@@ -98,7 +98,11 @@ $elab_forum_id= array('any' => 52,
 if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
   $Email_List = "myers@spy-hill.net";
   $Email_From = "i2u2@spy-hill.net";
- }
+}
+if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) ){
+  $Email_List = "jgriffi8@nd.edu";
+  $Email_From = "jgriffi8@nd.edu";
+}
 
 /* End of configuration.
 \***********************************************************************/
