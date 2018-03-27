@@ -25,13 +25,13 @@ public class Downloader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-						/* The original code got elabName via GET parameter "elab", which allowed
-						 * a directory traversal attack.
+						/* The original code got elabName via GET parameter "elab", 
+						 * which allowed a directory traversal attack.
 						 * A better method is to use the request's Elab object, if available.
 						 * Keeping the original for backup/legacy, but it would be ideal if 
 						 * passing by GET could be avoided entirely.
-						 * This is also when and why I added "elab.namelist" to elab.properties
-						 *   - JG 23Mar2018
+						 * This is also when and why I added "elab.namelist" to 
+						 * elab.properties - JG 23Mar2018
 						 */
 						/* Typically, elab.jsp will set an Elab object as a Request 
 						 *   Attribute "elab" */
