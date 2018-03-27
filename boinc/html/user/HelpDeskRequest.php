@@ -1042,6 +1042,8 @@ setup_visibility();
 
 echo " <form name='bugrpt' method='POST' action='$self'> \n";
 
+echo $_SERVER['SERVER_NAME']
+
 echo "Use this form to submit a request to the Help Desk, either
         to report a problem (such as a software bug), or to
         ask a question or to make a request.
