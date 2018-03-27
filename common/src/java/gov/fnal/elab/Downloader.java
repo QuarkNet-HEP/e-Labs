@@ -5,6 +5,9 @@ package gov.fnal.elab;
 
 import gov.fnal.elab.util.URLEncoder;
 
+import java.util.Arrays;
+import java.util.List;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
