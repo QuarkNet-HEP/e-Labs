@@ -41,12 +41,10 @@ set_debug_level(0);
 // List of addresses to send to (comma separated):
 //
 $Email_List = "e-labs@fnal.gov";
-//$Email_List = "jgriffi8@nd.edu";
 
 // Return address for e-mail sent from this form:
 //
 $Email_From = "e-labs@fnal.gov";
-//$Email_From = "jgriffi8@nd.edu";
 
 // BCC the following people
 //
@@ -63,7 +61,7 @@ $elab_list=array('any' => 'Any/All',
 		 'adler' => 'Adler iLab');
 
 // TODO: This will become a list of checkboxes, possibly each with
-// it's own class, to allow us to control visibility.
+// its own class, to allow us to control visibility.
 
 $part_list = array('Unknown',   // remove this one?  add "all/several"?
                    'DAQ Hardware', 'Data Upload',   // mainly Cosmics
@@ -138,38 +136,38 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
  * We only present a reCAPTCHA for users who are not already logged in.
  */
 
-require_once("../include/recaptchalib.php");
+///require_once("../include/recaptchalib.php");
 
 // The keys are kept in these separate files instead of
 // in the source code because the source code may be publicly
 // available via SVN or CVS.  Please keep it that way!
 // These are (for now) the Spy Hill keys.
 //
-$pub_key_file = "../../keys/reCAPTCHA_public_key";
-$priv_key_file = "../../keys/reCAPTCHA_private_key";
-$mailhide_pub_key_file  = "../../keys/reCAPTCHA_public_key";
-$mailhide_priv_key_file = "../../keys/reCAPTCHA_private_key";
+///$pub_key_file = "../../keys/reCAPTCHA_public_key";
+///$priv_key_file = "../../keys/reCAPTCHA_private_key";
+///$mailhide_pub_key_file  = "../../keys/reCAPTCHA_public_key";
+///$mailhide_priv_key_file = "../../keys/reCAPTCHA_private_key";
 
 // Verify the keys exist and are usable
 //
-if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
-    !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
-    error_page("Server configuration error. Cannot access keys.
-        Please report this to the project administrators.");
-}
+///if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
+///    !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
+///    error_page("Server configuration error. Cannot access keys.
+///        Please report this to the project administrators.");
+///}
 
-$public_key = file_get_contents($pub_key_file);
-$private_key = file_get_contents($priv_key_file);
-$mailhide_public_key = trim(file_get_contents($mailhide_pub_key_file));
-$mailhide_private_key = trim(file_get_contents($mailhide_priv_key_file));
+///$public_key = file_get_contents($pub_key_file);
+///$private_key = file_get_contents($priv_key_file);
+///$mailhide_public_key = trim(file_get_contents($mailhide_pub_key_file));
+///$mailhide_private_key = trim(file_get_contents($mailhide_priv_key_file));
 
-if( empty($public_key) || empty($private_key) ){
-    error_page("Server configuration error. Empty key.
-        Please report this to the project administrators.");
-}
+///if( empty($public_key) || empty($private_key) ){
+///    error_page("Server configuration error. Empty key.
+///        Please report this to the project administrators.");
+///}
 
 // Used by the reCAPTCHA PHP API to enforce secure requests
-$use_ssl = true;
+///$use_ssl = true;
 
 
 /*******************************
@@ -296,12 +294,13 @@ function error_text($name){
         $text="Please supply a VALID e-mail address.";
         break;
 
-    case 'recaptcha':
-        $text="Incorrect answer.<br/>Please try again.";
-        break;
-    case 'noverify':
-        $text="Please enter an answer. ";
-        break;
+///    case 'recaptcha':
+///        $text="Incorrect answer.<br/>Please try again.";
+///        break;
+
+///		case 'noverify':
+///        $text="Please enter an answer. ";
+///        break;
     }
 
     // It's not an error if it wasn't found above
@@ -676,7 +675,7 @@ function post_report_to_helpdesk(){
     global $subject, $problem, $error_msg;
     global $elab, $elab_list, $elab_forum_id, $forum_id;
     global $user_name, $user_role, $role_list, $return_address;
-    global $mailhide_public_key, $mailhide_private_key;
+///    global $mailhide_public_key, $mailhide_private_key;
 
     if( !array_key_exists($elab,$elab_forum_id) ) {
       debug_msg(1,"Cannot find forum_id for e-Lab $elab");
@@ -942,19 +941,19 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
 
     // If the person is not logged in then we need to check the CAPTCHA
     //
-    if( !$logged_in_user ){
-        if( empty($_POST["recaptcha_response_field"]) ){
-            $input_error['noverify']++;
-        }
-        else {
-            $resp = recaptcha_check_answer ($private_key,
-                                            $_SERVER["REMOTE_ADDR"],
-                                            $_POST["recaptcha_challenge_field"],
-                                            $_POST["recaptcha_response_field"]);
+    ///if( !$logged_in_user ){
+    ///    if( empty($_POST["recaptcha_response_field"]) ){
+    ///        $input_error['noverify']++;
+    ///    }
+    ///    else {
+    ///        $resp = recaptcha_check_answer ($private_key,
+    ///                                        $_SERVER["REMOTE_ADDR"],
+    ///                                        $_POST["recaptcha_challenge_field"],
+    ///                                        $_POST["recaptcha_response_field"]);
 
-            if( !$resp->is_valid ) $input_error['recaptcha']++;
-        }
-    }
+    ///        if( !$resp->is_valid ) $input_error['recaptcha']++;
+    ///    }
+    ///}
 
 
     // Sumbit via e-mail and forum post
@@ -1041,10 +1040,6 @@ setup_referer_button();
 setup_visibility();
 
 echo " <form name='bugrpt' method='POST' action='$self'> \n";
-
-echo "<p> Server Name:";
-echo $_SERVER['SERVER_NAME'];
-echo "</p> \n";
 
 echo "Use this form to submit a request to the Help Desk, either
         to report a problem (such as a software bug), or to
@@ -1256,16 +1251,17 @@ if( !$logged_in_user ) {
               "<input name='location' value='$location'
                         size='60' maxlength='255'>");
 
-    form_item("Verification:",
-              "Please enter the two words shown in the box, to prove
-                that you are a human, not an automated web-bot."
-              .error_text('noverify')
-              .error_text('recaptcha'),
-              recaptcha_get_html($public_key, NULL, $use_ssl));
+///    form_item("Verification:",
+///              "Please enter the two words shown in the box, to prove
+///                that you are a human, not an automated web-bot."
+///              .error_text('noverify')
+///              .error_text('recaptcha'),
+///              recaptcha_get_html($public_key, NULL, $use_ssl));
 
 		form_item("QuarkNet S/N:",
 					"<span>(Optional)<br> For staff use only. </span>",
-					"<input type='text' name='serial' class='serial-num' />");
+					"<input type='text' name='serial' class='serial-num' />",
+					'serial-num');
  }
 
 form_item("Send the report:", "",
