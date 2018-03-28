@@ -332,7 +332,7 @@ if( !function_exists('selector_from_array') ) {// in case another
     function selector_from_array($name, $array, $selection, $onChange='') {
         $out = "\n<select name=\"$name\" ";
         if(!empty($onChange)) {
-	  $out .= " onChange=\"$onChange\" ";
+	  				$out .= " onChange=\"$onChange\" ";
         }
         $out .= ">";
 
@@ -346,7 +346,7 @@ if( !function_exists('selector_from_array') ) {// in case another
         $out.= "\n</select>\n";
         return $out;
     }
- }
+}
 
 
 // Time buttons:  insert a time automatically into the date/time field
@@ -384,14 +384,15 @@ function time_button($label,$days_past=0){
 function setup_referer_button(){
     global $referer, $my_url;
     if( empty($referer) ) return;
-
+		$referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
+		
     //TODO: fix this to strip out any _GET parameters
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
     echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
-       document.bugrpt.url.value=\"$referer\";
+       document.bugrpt.url.value=\"$referer_escaped\";
     };\n</script>\n\n";
 }
 
