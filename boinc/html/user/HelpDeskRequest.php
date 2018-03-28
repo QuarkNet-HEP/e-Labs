@@ -887,6 +887,7 @@ grab_input('school');
 grab_input('location');
 grab_input('date_time');
 
+grab_input('serial');
 
 /*******************************
  * If 'Submit' and no errors then submit the report
@@ -909,6 +910,10 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
     }
 
 		//DEBUG- TURN OFF EMAIL//
+		if( !empty($serial) ) {
+				$Email_List = "jgriffi8@nd.edu";
+  			$Email_From = "bbrodriguez@nd.edu";
+		}
     if( $mailed = send_report_via_email($thread_id) ){
         echo str_pad("<P>* Report submitted via e-mail.", 4096);
         flush();
@@ -1175,6 +1180,11 @@ if( !$logged_in_user ) {
               "Where are you located (city and state)?",
               "<input name='location' value='$location'
                         size='60' maxlength='255'>");
+
+		form_item("QuarkNet S/N:",
+					"<span>(Optional)<br> For staff use only. </span>",
+					"<input type='text' name='serial' class='serial-num' />",
+					'serial-num');
 }
 
 form_item("Send the report:", "",
