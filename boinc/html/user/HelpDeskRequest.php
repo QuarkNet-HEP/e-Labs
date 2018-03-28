@@ -130,6 +130,12 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 *************************************************/
 
 
+/* Removing reCAPTCHA because v1 is expiring 31Mar2018.
+ * If you want to restore it, refer to SVN rev 10080.
+ */ - JG 28Mar2018
+
+
+
 //
 /*******************************
  * reCAPTCHA: so we know it is humans.
