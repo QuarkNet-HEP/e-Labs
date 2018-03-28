@@ -170,7 +170,7 @@ function grab_input($name){
     if( isset($_POST[$name]) ){
         global $$name;
         $$name = trim($_POST[$name]);
-				$$name = htmlspecialchars($name, ENT_QUOTES, "utf-8");
+				$$name = htmlspecialchars($$name, ENT_QUOTES, "utf-8");
         //TODO: any further cleansing?
     }
 }
