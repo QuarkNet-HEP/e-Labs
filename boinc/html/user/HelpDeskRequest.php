@@ -553,8 +553,9 @@ function send_report_via_email($thread_id=0){
 
     $to_address = $Email_List;
 
-    $self = $_SERVER['PHP_SELF'];
-
+    //$self = $_SERVER['PHP_SELF'];
+		$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
+		
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
 		$headers .= "BCC: " .$Email_BCC."\n";
