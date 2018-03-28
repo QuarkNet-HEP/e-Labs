@@ -325,7 +325,7 @@ function setup_time_button(){
 }
 
 
-// Use time_button() to create a button with lable $label
+// Use time_button() to create a button with label $label
 // to insert time now()-$dt into the form field.
 //
 function time_button($label,$days_past=0){
