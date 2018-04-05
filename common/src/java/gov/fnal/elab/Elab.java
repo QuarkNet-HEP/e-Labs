@@ -536,9 +536,9 @@ public class Elab implements Serializable {
 						
 						// Explode by slashes to look for a domain
 						List<String> pageSegments = page.split("/");
-						if (pageSegments(0).contains(".")) {
+						if (pageSegments.get(0).contains(".")) {
 								// It's a domain name; drop it
-								page = page.replace(pageSegments(0),"");
+								page = page.replace(pageSegments.get(0),"");
 						}
 						if (page.charAt(0) != '/') {
 								page = '/' + page;
