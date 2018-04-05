@@ -508,31 +508,45 @@ public class Elab implements Serializable {
     }
 		
     /**
-     * Returns an absolute, secure URL for a given input relative URL 
-		 * "page".  The HTML BASE is determined by the value of 
-		 * "elab.secure.url" in <code>elab.properties</code>.
-		 * This value is expected to implement the HTTPS protocol for 
-		 * SSL-enabled servers - JG 25Jan2018
-     * 
+     * Returns an absolute, secure URL for a given input URL 'page'.  
+		 * 'page' can be either absolute or relative, but protocol and 
+		 * hostname will be stripped and replaced if it is absolute.
+		 * The HTML BASE is determined by the value of "elab.secure.url" 
+		 * in <code>elab.properties</code>. This value is expected to 
+		 * implement the HTTPS protocol for SSL-enabled servers. 
+		 *                                               - JG 25Jan2018
      * @param page
      *            The page to provide a secure URL for
-     * @return A secure URL to access the specified page
+     * @return An absolute URL to access the specified page
      */
     public String getSecureUrl(String page) {
 				// Updates for absolute URL input - JG 26Mar2018
-				// In case an absolute, secure URL is passed in:
-				if (page.toLowerCase().startsWith("https://")) {
-						return page;
-				} else if (page.toLowerCase().startsWith("http://")) {
-						page = page.replace("http://", "https://");
-						return page;
+				// Updates to patch redirect vulnerability - JG 5Apr2018
+				page = page.toLowerCase();
+
+				// A relative URL may or may not begin with a '/'
+				// An absolute URL never will
+				if (page.charAt(0) != '/') { // Potential absolute URL
+						// Strip protocol, if given
+						if ( page.startsWith("https://") ) {
+								page = page.replace("https://","");
+						} else if ( page.startsWith("http://") ) {
+								page = page.replace("http://","");
+						}
+						
+						// Explode by slashes to look for a domain
+						List<String> pageSegments = page.split("/");
+						if (pageSegments(0).contains(".")) {
+								// It's a domain name; drop it
+								page = page.replace(pageSegments(0),"");
+						}
+						if (page.charAt(0) != '/') {
+								page = '/' + page;
+						}
+						// `page` should now be stripped of protocol and domain
+						// and begin with a '/'
 				}
 
-				// Otherwise, assume a relative URL and make sure it has
-				// the leading slash
-				if (page.charAt(0) != '/') {
-						page = '/' + page;
-				}
 				return properties.getRequired("elab.secure.url") + page;
 		}
 
