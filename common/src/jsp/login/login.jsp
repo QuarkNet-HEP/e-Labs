@@ -15,7 +15,11 @@ String username = request.getParameter("user");
 String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
-String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
+String prevPage = request.getParameter("prevPage");
+String prevPageSecure;
+if (prevPage != null) {
+		prevPageSecure = elab.getSecureUrl(prevPage);
+}
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
@@ -124,7 +128,8 @@ ElabGroup user = null;
 				// deletes the path="/elab/" cookie. To replace it, we
 				// now set a path="/elab/"+elab.getName() cookie, plus others.
 				//  - JG 6Feb2018
-	      Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
+				//
+				Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
 	      elabSessionCookie.setPath("/elab/" + elab.getName());
 	      response.addCookie(elabSessionCookie);
 	      
