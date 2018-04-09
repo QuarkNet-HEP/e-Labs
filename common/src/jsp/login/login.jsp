@@ -15,10 +15,16 @@ String username = request.getParameter("user");
 String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
-String prevPage = request.getParameter("prevPage");
+/* TODO: Sort out prevPage stuff.  I would have used `prevPage` instead of
+ * `prevPageParam` here, but `prevPage` is defined later in this file as
+ * well as in other included files in the "if" blocks, making it a mess overall.
+ * Also, finish moving the scriptlet either into JSTL or into an MVC arrangement
+ *  - JG 9Apr2018
+ */
+String prevPageParam = request.getParameter("prevPage");
 String prevPageSecure;
-if (prevPage != null) {
-		prevPageSecure = elab.getSecureUrl(prevPage);
+if (prevPageParam != null) {
+		prevPageSecure = elab.getSecureUrl(prevPageParam);
 }
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
 request.setAttribute("username", username);
@@ -85,7 +91,7 @@ ElabGroup user = null;
 	      //login successful
 				ElabGroup.setUser(session, user);
 				session.setAttribute("user", user);
-				//String prevPage = request.getParameter("prevPage");
+				String prevPage = request.getParameter("prevPage");
 				if (username.equals("admin")) {
 	          prevPage = "../admin/index.jsp";
 				}
