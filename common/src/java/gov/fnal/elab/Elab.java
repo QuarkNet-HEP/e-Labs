@@ -538,8 +538,10 @@ public class Elab implements Serializable {
 								// It's a domain name; drop it
 								page = page.replace(pageSegments.get(0),"");
 						}
-						if (page.charAt(0) != '/') {
-								page = '/' + page;
+						if (page != null && page != "") {
+								if (page.charAt(0) != '/') {
+										page = '/' + page;
+								}
 						}
 						// `page` should now be stripped of protocol and domain
 						// and begin with a '/'
