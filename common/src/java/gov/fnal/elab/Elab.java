@@ -538,7 +538,7 @@ public class Elab implements Serializable {
 								// It's a domain name; drop it
 								page = page.replace(pageSegments.get(0),"");
 						}
-						if (page != null && page != "") {
+						if (page != null && page.length() > 0) {
 								if (page.charAt(0) != '/') {
 										page = '/' + page;
 								}
