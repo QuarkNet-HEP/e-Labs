@@ -22,7 +22,7 @@ String guestlogin = elab.getGuestLoginLinkSecure(request);
  *  - JG 9Apr2018
  */
 String prevPageParam = request.getParameter("prevPage");
-String prevPageSecure;
+String prevPageSecure = prevPageParam;
 if (prevPageParam != null) {
 		prevPageSecure = elab.getSecureUrl(prevPageParam);
 }
