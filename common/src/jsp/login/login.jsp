@@ -85,7 +85,7 @@ ElabGroup user = null;
 	      //login successful
 				ElabGroup.setUser(session, user);
 				session.setAttribute("user", user);
-				String prevPage = request.getParameter("prevPage");
+				//String prevPage = request.getParameter("prevPage");
 				if (username.equals("admin")) {
 	          prevPage = "../admin/index.jsp";
 				}
