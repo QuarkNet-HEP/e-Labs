@@ -103,7 +103,7 @@
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "get-data.jsp?file=${file}&benchmark=<%=benchmark %>",
+						url: "get-data.jsp?file=${fn:escapeXml(file)}&benchmark=<%=benchmark %>",
 						processData: false,
 						dataType: "json",
 						type: "GET",
