@@ -25,7 +25,8 @@
 	
 	VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
 	if (entry == null) {
-	    throw new ElabJspException("No information about " + file + " found.");
+	    // errorpage.jsp sanitizes this for XSS
+			throw new ElabJspException("No information about " + file + " found.");
 	}
 	String blessfilecomment = (String) entry.getTupleValue("blessfilecomment");
 	if (blessfilecomment != null && !blessfilecomment.startsWith("blessfile NOT REPLACED")) {
