@@ -116,7 +116,7 @@
 				}
 				</script>
 				<h1>Data Blessing: Want to use this data?  Look at these charts to determine data quality.</h1>
-				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${param.file} -
+				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${fn:escapeXml(param.file)} -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %>, <%= entry.getTupleValue("state") %> -
 				<fmt:formatDate value="${e.tupleMap.startdate}" pattern="dd MMM yyyy"/>				
 				<c:if test="${not empty e.tupleMap.benchmarkreference }">
@@ -133,12 +133,12 @@
 				</strong></div>
 				<div style="text-align: center;font-size: small;"><i>${blessfilecomment}</i></font></div><br />
 				<div style="text-align: center;">
-					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
-					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
+					<a href="../data/view.jsp?filename=${fn:escapeXml(param.file)}">Show Data</a> |
+					<a href="../data/view-metadata.jsp?filename=${fn:escapeXml(param.file)}">Show metadata</a> |
 					<c:if test="${e.tupleMap.detectorid != null}">
-						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
+						<a href="../geometry/view.jsp?filename=${fn:escapeXml(param.file)}">Show Geometry</a> |
 					</c:if>
-					<a href="../data/download?filename=${param.file}.bless&elab=${elab.name}&type=split">Download Bless File</a> |
+					<a href="../data/download?filename=${fn:escapeXml(param.file)}.bless&elab=${elab.name}&type=split">Download Bless File</a> |
 					<e:popup href="../references/Reference_bless_data.html" target="DataBlessing" width="900" height="800">Interpreting the blessing plots</e:popup>
 				</div>
 				<h2>Control Register</h2>
