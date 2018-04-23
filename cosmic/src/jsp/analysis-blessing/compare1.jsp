@@ -66,6 +66,10 @@
 	//EPeronja-09/24/2015: populated saved plots dropdowns
 	ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
 	request.setAttribute("plotNames",plotNames); 
+
+	// Prepare get-data.jsp URL string in advance, because it doesn't work when
+	//   you include an XSS escape function in situ - JG 23Apr2018
+	String getDataUrl = "get-data.jsp?file=" + file + "&benchmark=" + benchmark;
 %>
    
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -99,10 +103,11 @@
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
 				<script type="text/javascript" src="blessing.js"></script>
+				<c:set var="getDataUrl" scope="request" value="${fn:escapeXml(getDataUrl)}" />
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "get-data.jsp?file=" + <c:out value="${file}"/> + "&benchmark=<%=benchmark %>",
+						url: "<%=getDataUrl %>",
 						processData: false,
 						dataType: "json",
 						type: "GET",
