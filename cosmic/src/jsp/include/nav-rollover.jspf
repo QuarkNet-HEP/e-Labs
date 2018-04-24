@@ -14,31 +14,31 @@
 				speed: 10,
 				delay: 100
 		};
-			
-		$("#nav-home").bind("mouseenter", hoverAttributes, function(){ // Home
+
+		$("#nav-home").on("mouseover", hoverAttributes, function(){ // Home
 			$("#subnav").children().hide();
 			$("#sub-home").show();
 		});
-		$("#nav-library").bind("mouseenter", hoverAttributes, function(){ // Library
+		$("#nav-library").on("mouseover", hoverAttributes, function(){ // Library
 			$("#subnav").children().hide();
 			$("#sub-library").show();
 		});
-		$("#nav-data").bind("mouseenter", hoverAttributes, function(){ // Data
+		$("#nav-data").on("mouseover", hoverAttributes, function(){ // Data
 			$("#subnav").children().hide();
 			$("#sub-data").show();
 		});
-		$("#nav-posters").bind("mouseenter", hoverAttributes, function(){ // Posters
+		$("#nav-posters").on("mouseover", hoverAttributes, function(){ // Posters
 			$("#subnav").children().hide();
 			$("#sub-posters").show();
 		});
-		$("#nav-siteindex").bind("mouseenter", hoverAttributes, function(){ // Site Index
+		$("#nav-siteindex").on("mouseover", hoverAttributes, function(){ // Site Index
 			$("#subnav").children().hide();
 			$("#sub-siteindex").show();
 		});
-		$("#nav-assessment").bind("mouseenter", hoverAttributes, function(){ // Assessment
+		$("#nav-assessment").on("mouseover", hoverAttributes, function(){ // Assessment
 			$("#subnav").children().hide();
 		});
-		$("#nav-upload").bind("mouseenter", hoverAttributes, function(){ // Upload
+		$("#nav-upload").on("mouseover", hoverAttributes, function(){ // Upload
 			$("#subnav").children().hide();
 			$("#sub-upload").show();
 		});
