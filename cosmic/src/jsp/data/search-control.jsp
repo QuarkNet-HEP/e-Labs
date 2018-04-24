@@ -37,19 +37,19 @@ request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
-			showOn: 'button', 
+			showOn: 'button',
 			buttonImage: '../graphics/calendar-blue.png',
-			buttonImageOnly: true, 
+			buttonImageOnly: true,
 			changeMonth: true,
-			changeYear: true, 
+			changeYear: true,
 			showButtonPanel: true,
-			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find. 
+			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find.
 			maxDate: new Date() // Should not look later than today
 	};
 	$('.datepicker').datepicker(calendarParam);
 	$("#data1").datepicker('option', 'buttonText', 'Choose start date.');
 	$("#data2").datepicker('option', 'buttonText', 'Choose start date.');
-	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
+	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom');
 });
 $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
