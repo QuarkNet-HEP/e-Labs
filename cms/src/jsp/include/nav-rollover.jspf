@@ -9,28 +9,28 @@
 				speed: 10,
 				delay: 100
 		};
-		
-		$("#nav-home").bind("hover", hoverAttributes, function(){ // Home
+
+		$("#nav-home").on("mouseover", hoverAttributes, function(){ // Home
 			$("#subnav").children().hide();
 			$("#sub-home").show();
 		});
-		$("#nav-library").bind("hover", hoverAttributes, function(){ // Library
+		$("#nav-library").on("mouseover", hoverAttributes, function(){ // Library
 			$("#subnav").children().hide();
 			$("#sub-library").show();
 		});
-		$("#nav-data").bind("hover", hoverAttributes, function(){ // Data
+		$("#nav-data").on("mouseover", hoverAttributes, function(){ // Data
 			$("#subnav").children().hide();
 			$("#sub-data").show();
 		});
-		$("#nav-posters").bind("hover", hoverAttributes, function(){ // Posters
+		$("#nav-posters").on("mouseover", hoverAttributes, function(){ // Posters
 			$("#subnav").children().hide();
 			$("#sub-posters").show();
 		});
-		$("#nav-siteindex").bind("hover", hoverAttributes, function(){ // Site Index
+		$("#nav-siteindex").on("mouseover", hoverAttributes, function(){ // Site Index
 			$("#subnav").children().hide();
 			$("#sub-siteindex").show();
 		});
-		$("#nav-assessment").bind("hover", hoverAttributes, function(){ // Assessment
+		$("#nav-assessment").on("mouseover", hoverAttributes, function(){ // Assessment
 			$("#subnav").children().hide();
 		});
 	});
