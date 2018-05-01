@@ -585,29 +585,29 @@ $(document).ready(function() {
 	displayFilename(0);
 	initBinding();
 
-	$(".logCheckbox").bind('click', function() {
+	$(".logCheckbox").on('click', function() {
 		logCheckboxCB();
 		replot();
 	});
 
-	$("#savePlotToDisk").bind('click', function() {
+	$("#savePlotToDisk").on('click', function() {
 		openSaveDialog();
 	});
 
-	$("#savePlotToDiskCancel").bind('click', function() {
+	$("#savePlotToDiskCancel").on('click', function() {
 		closeSaveDialog();
 	});
 
-	$("#exportData").bind("click", function() {
+	$("#exportData").on("click", function() {
 		exportData();
 	});
 
 	//EPeronja-04/01/2013: Ligo request: to export all data rather than the plotted data
-	$("#exportAllData").bind("click", function() {
+	$("#exportAllData").on("click", function() {
 		exportAllData();
 	});
 
-	$("#savePlotToDiskCommit").bind('click', function() {
+	$("#savePlotToDiskCommit").on('click', function() {
 		// need start, end, channels, title
 		var title = $("#userPlotTitle").val();
 		var existingNames = document.getElementById("existingPlotNames");
@@ -671,7 +671,7 @@ $(document).ready(function() {
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 	});
 
-	$(".plotButton").bind('click', function() {
+	$(".plotButton").on('click', function() {
 		getDataAndPlotCB();
 	});
 	
@@ -681,7 +681,7 @@ $(document).ready(function() {
 		addNewRow(rows);
 	});
 
-	$("#yAutoRangeCheckbox").bind("click", yAutoRangeCheckboxCB);
+	$("#yAutoRangeCheckbox").on("click", yAutoRangeCheckboxCB);
 
 	$("#yRangeMin").keyup(yRangeChangedCB);
 	$("#yRangeMax").keyup(yRangeChangedCB);
