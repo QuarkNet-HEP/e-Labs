@@ -411,7 +411,7 @@ function addNewRow(index) {
 	var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 	var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 
-	$
+	
 	$("#channelTable tr").last().before(
 		$("<tr></tr>").attr("id", "row_" + index).append(
 			$("<td></td>").append(deleteButton)).append(
