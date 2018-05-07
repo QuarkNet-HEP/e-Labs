@@ -109,7 +109,8 @@ echo <<<END
 			</div>
 			<link type="text/css" href="/elab/ligo/css/header.css" rel="Stylesheet" />
 			<link type="text/css" href="/elab/ligo/css/nav-rollover.css" rel="Stylesheet" />
-			<link type="text/css" href="/elab/ligo/include/jquery/css/default/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+//			<link type="text/css" href="/elab/ligo/include/jquery/css/default/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
+			<link type="text/css" href="/elab/ligo/include/jquery/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
 			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-1.12.4.min.js"></script>
 			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
 		
