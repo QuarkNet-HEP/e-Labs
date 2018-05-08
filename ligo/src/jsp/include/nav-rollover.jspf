@@ -4,8 +4,8 @@
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 	<%--<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>--%>
 	<script	
-				src="https://code.jquery.com/jquery-1.7.min.js"
-			  integrity="sha256-/05Jde9AMAT4/o5ZAI23rUf1SxDYTHLrkOco0eyRV84="
+  			src="https://code.jquery.com/jquery-1.8.0.min.js"
+			  integrity="sha256-jFdOCgY5bfpwZLi0YODkqNXQdIxKpm6y5O/fy0baSzE="
 			  crossorigin="anonymous"></script>
 	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.12.1.custom.css" rel="Stylesheet" />	
 	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
