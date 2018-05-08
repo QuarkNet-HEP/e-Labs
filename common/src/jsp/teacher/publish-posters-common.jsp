@@ -45,7 +45,7 @@
 	
 	request.setAttribute("posters", posters);
 %>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
 		<script type="text/javascript">

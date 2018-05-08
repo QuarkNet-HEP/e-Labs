@@ -15,17 +15,7 @@ String username = request.getParameter("user");
 String password = request.getParameter("pass");
 String message  = request.getParameter("message");
 String guestlogin = elab.getGuestLoginLinkSecure(request);
-/* TODO: Sort out prevPage stuff.  I would have used `prevPage` instead of
- * `prevPageParam` here, but `prevPage` is defined later in this file as
- * well as in other included files in the "if" blocks, making it a mess overall.
- * Also, finish moving the scriptlet either into JSTL or into an MVC arrangement
- *  - JG 9Apr2018
- */
-String prevPageParam = request.getParameter("prevPage");
-String prevPageSecure = prevPageParam;
-if (prevPageParam != null) {
-		prevPageSecure = elab.getSecureUrl(prevPageParam);
-}
+String prevPageSecure = elab.getSecureUrl(request.getParameter("prevPage"));
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
@@ -134,8 +124,7 @@ ElabGroup user = null;
 				// deletes the path="/elab/" cookie. To replace it, we
 				// now set a path="/elab/"+elab.getName() cookie, plus others.
 				//  - JG 6Feb2018
-				//
-				Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
+	      Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
 	      elabSessionCookie.setPath("/elab/" + elab.getName());
 	      response.addCookie(elabSessionCookie);
 	      

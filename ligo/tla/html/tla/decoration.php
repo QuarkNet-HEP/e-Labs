@@ -109,11 +109,9 @@ echo <<<END
 			</div>
 			<link type="text/css" href="/elab/ligo/css/header.css" rel="Stylesheet" />
 			<link type="text/css" href="/elab/ligo/css/nav-rollover.css" rel="Stylesheet" />
-			// /elab/ligo/include/jquery/css/default/ doesn't seem to exist - JG 1May2018
-			// <link type="text/css" href="/elab/ligo/include/jquery/css/default/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
-			<link type="text/css" href="/elab/ligo/include/jquery/css/ui-lightness/jquery-ui-1.12.1.custom.css" rel="Stylesheet" />
-			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-1.12.4.min.js"></script>
-			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
+			<link type="text/css" href="/elab/ligo/include/jquery/css/default/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-1.4.3.min.js"></script>
+			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 		
 			<script type="text/javascript">
 			$(document).ready(function() {
