@@ -2,39 +2,39 @@
 
 <c:if test="${user != null}">
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
-	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
 	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
 	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 
 	<script type="text/javascript">
 	$(document).ready(function() {
-		var hoverAttributes = {
-				speed: 10,
-				delay: 100
-		};
-
-		$("#nav-home").on("mouseover", hoverAttributes, function(){ // Home
-			$("#subnav").children().hide();
+		var hoverAttributes = { 
+				speed: 10, 
+				delay: 100 
+		}; 
+			
+		$("#nav-home").bind("hover", hoverAttributes, function(){  // Home
+			$("#subnav").children().hide(); 
 			$("#sub-home").show();
 		});
-		$("#nav-library").on("mouseover", hoverAttributes, function(){ // Library
+		$("#nav-library").bind("hover", hoverAttributes, function(){  // Library
 			$("#subnav").children().hide();
-			$("#sub-library").show();
+			$("#sub-library").show(); 
 		});
-		$("#nav-data").on("mouseover", hoverAttributes, function(){ // Data
+		$("#nav-data").bind("hover", hoverAttributes, function(){ // Data
 			$("#subnav").children().hide();
-			$("#sub-data").show();
+			$("#sub-data").show(); 
 		});
-		$("#nav-posters").on("mouseover", hoverAttributes, function(){ // Posters
+		$("#nav-posters").bind("hover", hoverAttributes, function(){  // Posters
 			$("#subnav").children().hide();
 			$("#sub-posters").show();
 		});
-		$("#nav-siteindex").on("mouseover", hoverAttributes, function(){ // Site Index
+		$("#nav-siteindex").bind("hover", hoverAttributes, function(){  // Site Index
 			$("#subnav").children().hide();
 			$("#sub-siteindex").show();
 		});
-		$("#nav-assessment").on("mouseover", hoverAttributes, function(){ // Assessment
+		$("#nav-assessment").bind("hover", hoverAttributes, function(){  // Assessment
 			$("#subnav").children().hide();
 		});
 	});
@@ -65,7 +65,7 @@
 						<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
 						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
-					    <li><a href="../library/FAQ.jsp">FAQs</a></li>
+					    <li><a href="../library/FAQ.jsp">FAQs</a></li>				    					
 						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
 					</ul>
 					<ul id="sub-data">
@@ -78,7 +78,7 @@
 						<li><a href="../plots/">Plots</a></li>
 						<li><a href="../info/related-data.jsp">Related Data</a></li>
 					</ul>
-					<ul id="sub-posters">
+					<ul id="sub-posters"> 
 						<li><a href="../posters/new.jsp">New Poster</a></li>
 						<li><a href="../posters/edit.jsp">Edit Posters</a></li>
 						<li><a href="../posters/view.jsp">View Posters</a></li>
@@ -94,7 +94,7 @@
 						<li><a href="../jsp/uploadImage.jsp">Upload Image</a></li>
 					</ul>
 					<ul id="sub-siteindex">
-						<li><a href="../site-index/">Site Index</a></li>
+						<li><a href="../site-index/">Site Index</a></li>	
 						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 					</ul>
 				</td>
