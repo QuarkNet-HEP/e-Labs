@@ -519,41 +519,20 @@ public class Elab implements Serializable {
      * @return A secure URL to access the specified page
      */
     public String getSecureUrl(String page) {
-				// Rewrite to patch redirect vulnerability - JG 5Apr2018
-				page = page.toLowerCase();
-
-				// In case 'page' is a filesystem-relative URL beginning with "../"
-				// I don't have time right now to design a way to construct an
-				// absolute URL using elab.getName()
-				// For now, pass it back as a relative URL and fix later
-				if (page.length() > 0 && page.startsWith("..") ) {
+				// Updates for absolute URL input - JG 26Mar2018
+				// In case an absolute, secure URL is passed in:
+				if (page.toLowerCase().startsWith("https://")) {
+						return page;
+				} else if (page.toLowerCase().startsWith("http://")) {
+						page = page.replace("http://", "https://");
 						return page;
 				}
-				
-				// A relative URL may or may not begin with a '/'
-				// An absolute URL never will
-				if (page.length() > 0 && page.charAt(0) != '/') { // Potential absolute URL
-						// Strip protocol, if given
-						if ( page.startsWith("https://") ) {
-								page = page.replace("https://","");
-						} else if ( page.startsWith("http://") ) {
-								page = page.replace("http://","");
-						}
-						
-						// Explode by slashes to look for a domain
-						List<String> pageSegments = Arrays.asList(page.split("/"));
-						if (pageSegments.get(0).contains(".")) {
-								// It's a domain name or directory shortcut; drop it
-								page = page.replace(pageSegments.get(0),"");
-						}
 
-						if (page.length() > 0 && page.charAt(0) != '/') {
-								page = '/' + page;
-						}
-						// `page` should now be stripped of protocol and domain
-						// and begin with a '/'
+				// Otherwise, assume a relative URL and make sure it has
+				// the leading slash
+				if (page.charAt(0) != '/') {
+						page = '/' + page;
 				}
-
 				return properties.getRequired("elab.secure.url") + page;
 		}
 

@@ -3,7 +3,10 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 
-<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+<%-- Upgrading jQuery for plotter 8Dec2017 - JG --%>
+<%-- jquery-3.2.1.min.js, jquery-2.2.4.min.js, jquery-1.12.4.min.js break the menu drop-downs in the header --%>
+<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script> --%>
+<script type="text/javascript" src="../include/jquery/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>

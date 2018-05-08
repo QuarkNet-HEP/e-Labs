@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- common/resources/web.xml -->
 
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -56,9 +55,5 @@
     	<listener-class>
         	gov.fnal.elab.SessionListener
     	</listener-class>
-		</listener>
-
-		<error-page> 
-			<location>/embedded/errordefault.jsp</location> 
-		</error-page>
+	</listener>
 </web-app>
