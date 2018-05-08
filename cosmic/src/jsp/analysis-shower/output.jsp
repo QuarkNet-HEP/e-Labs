@@ -130,7 +130,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>			
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
 		<script>
 		$(document).ready(function(){
 			$("#viewAdvanced").bind("change", function() {

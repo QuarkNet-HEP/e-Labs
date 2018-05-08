@@ -130,44 +130,13 @@ if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
 *************************************************/
 
 
-//
-/*******************************
- * reCAPTCHA: so we know it is humans.
- * We only present a reCAPTCHA for users who are not already logged in.
+/*********************************************
+ * Removed reCAPTCHA because v1 is expiring 31Mar2018.
+ * If you want to restore it, refer to SVN rev 10080.
+ *  - JG 28Mar2018
  */
 
-require_once("../include/recaptchalib.php");
 
-// The keys are kept in these separate files instead of
-// in the source code because the source code may be publicly
-// available via SVN or CVS.  Please keep it that way!
-// These are (for now) the Spy Hill keys.
-//
-$pub_key_file = "../../keys/reCAPTCHA_public_key";
-$priv_key_file = "../../keys/reCAPTCHA_private_key";
-$mailhide_pub_key_file  = "../../keys/reCAPTCHA_public_key";
-$mailhide_priv_key_file = "../../keys/reCAPTCHA_private_key";
-
-// Verify the keys exist and are usable
-//
-if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
-    !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
-    error_page("Server configuration error. Cannot access keys.
-        Please report this to the project administrators.");
-}
-
-$public_key = file_get_contents($pub_key_file);
-$private_key = file_get_contents($priv_key_file);
-$mailhide_public_key = trim(file_get_contents($mailhide_pub_key_file));
-$mailhide_private_key = trim(file_get_contents($mailhide_priv_key_file));
-
-if( empty($public_key) || empty($private_key) ){
-    error_page("Server configuration error. Empty key.
-        Please report this to the project administrators.");
-}
-
-// Used by the reCAPTCHA PHP API to enforce secure requests
-$use_ssl = true;
 /*******************************
  * Local functions:
  *   (some of these will move to ../include/util.php when finished)
@@ -183,20 +152,6 @@ function grab_input($name){
         //TODO: any further cleansing?
     }
 }
-
-// Need a special grabber for email addresses, since
-// htmlspecialchars() messes with "@"
-//
-function grab_email($name){
-    if( isset($_POST[$name]) ){
-        global $$name;
-        $$name = trim($_POST[$name]);
-				$$name = filter_var($name
-        //TODO: any further cleansing?
-    }
-}
-
-
 
 
 // Display a checkbox item with given internal $name,
@@ -305,13 +260,6 @@ function error_text($name){
     case 'invalid_addr':
         $text="Please supply a VALID e-mail address.";
         break;
-
-    case 'recaptcha':
-        $text="Incorrect answer.<br/>Please try again.";
-        break;
-    case 'noverify':
-        $text="Please enter an answer. ";
-        break;
     }
 
     // It's not an error if it wasn't found above
@@ -345,7 +293,7 @@ if( !function_exists('selector_from_array') ) {// in case another
     function selector_from_array($name, $array, $selection, $onChange='') {
         $out = "\n<select name=\"$name\" ";
         if(!empty($onChange)) {
-	  $out .= " onChange=\"$onChange\" ";
+	  				$out .= " onChange=\"$onChange\" ";
         }
         $out .= ">";
 
@@ -359,7 +307,7 @@ if( !function_exists('selector_from_array') ) {// in case another
         $out.= "\n</select>\n";
         return $out;
     }
- }
+}
 
 
 // Time buttons:  insert a time automatically into the date/time field
@@ -377,7 +325,7 @@ function setup_time_button(){
 }
 
 
-// Use time_button() to create a button with lable $label
+// Use time_button() to create a button with label $label
 // to insert time now()-$dt into the form field.
 //
 function time_button($label,$days_past=0){
@@ -397,14 +345,15 @@ function time_button($label,$days_past=0){
 function setup_referer_button(){
     global $referer, $my_url;
     if( empty($referer) ) return;
-
+		$referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
+		
     //TODO: fix this to strip out any _GET parameters
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
     echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
-       document.bugrpt.url.value=\"$referer\";
+       document.bugrpt.url.value=\"$referer_escaped\";
     };\n</script>\n\n";
 }
 
@@ -582,7 +531,7 @@ function form_item($title, $description, $content, $class=''){
     if($class) echo "<tr class='$class'>";
     else echo "<tr>";
     echo "<td width='25%' class='fieldname'><b>$title</b><br/>
-                <span class='description'>$description</span></td>
+              <span class='description'>$description</span></td>
               <td class='fieldvalue'>$content</td></tr>\n";
     //
     //TODO: save it all up and return a value
@@ -604,8 +553,9 @@ function send_report_via_email($thread_id=0){
 
     $to_address = $Email_List;
 
-    $self = $_SERVER['PHP_SELF'];
-
+    //$self = $_SERVER['PHP_SELF'];
+		$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
+		
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
 		$headers .= "BCC: " .$Email_BCC."\n";
@@ -684,7 +634,6 @@ function do_post($url, $data)
     global $subject, $problem, $error_msg;
     global $elab, $elab_list, $elab_forum_id, $forum_id;
     global $user_name, $user_role, $role_list, $return_address;
-    global $mailhide_public_key, $mailhide_private_key;
 
     if( !array_key_exists($elab,$elab_forum_id) ) {
       debug_msg(1,"Cannot find forum_id for e-Lab $elab");
@@ -939,6 +888,7 @@ grab_input('school');
 grab_input('location');
 grab_input('date_time');
 
+grab_input('serial');
 
 /*******************************
  * If 'Submit' and no errors then submit the report
@@ -946,79 +896,62 @@ grab_input('date_time');
 
 if( isset($_POST['submit_report']) && empty($input_error) ){
 
-    // If the person is not logged in then we need to check the CAPTCHA
-    //
-    if( !$logged_in_user ){
-        if( empty($_POST["recaptcha_response_field"]) ){
-            $input_error['noverify']++;
-        }
-        else {
-            $resp = recaptcha_check_answer ($private_key,
-                                            $_SERVER["REMOTE_ADDR"],
-                                            $_POST["recaptcha_challenge_field"],
-                                            $_POST["recaptcha_response_field"]);
-
-            if( !$resp->is_valid ) $input_error['recaptcha']++;
-        }
-    }
-
-
     // Sumbit via e-mail and forum post
     //
-    if( empty($input_error) ){
+    page_head("Problem report submission");
 
-        page_head("Problem report submission");
+    echo str_pad("<P>Processing...</P> \n", 4096);
+    flush();
 
-        echo str_pad("<P>Processing...</P> \n", 4096);
+    $text = "";
+
+    if( ($thread_id = post_report_to_helpdesk()) > 0 ){
+        echo str_pad("<P>* Report posted to Help Desk forum.",4096);
         flush();
-
-        $text = "";
-
-        if( ($thread_id = post_report_to_helpdesk()) > 0 ){
-            echo str_pad("<P>* Report posted to Help Desk forum.",4096);
-            flush();
-        }
-
-	//DEBUG- TURN OFF EMAIL//
-        if( $mailed = send_report_via_email($thread_id) ){
-            echo str_pad("<P>* Report submitted via e-mail.", 4096);
-            flush();
-        }
-
-        // Output status
-
-        //if( !$mailed || $thread_id<1 ) {
-        //    echo "<P>There was a problem submitting the report:";
-        //    if( !$mailed ) echo "<br> * The report could not be mailed.";
-        //    if( $thread_id<1 ) echo "<br> * The report could not be posted.";
-        //}
-
-        if( !$mailed) {
-        	echo "<P>There was a problem submitting the report:";
-        	if( !$mailed ) echo "<br> * The report could not be mailed.";
-        }
-        
-        
-        if($mailed || $thread_id){
-            echo "<p>The following report was submitted:
-                        <hr><blockquote><pre>\n";
-            echo htmlspecialchars(fill_in_report());
-            echo "</pre></blockquote><hr>\n\n";
-        }
-
-        if( $thread_id > 0 ) {// if posted, link to it
-            echo "<blockquote>* <a href='forum_thread.php?id=$thread_id'>
-                Responses will be found in the ". $elab_list[$elab].
-                " Help Desk forum...</a></blockquote>\n";
-        }
-
-        echo "<blockquote>* <a href='".URL_BASE."'>Go to the ".PROJECT
-            ." main page...</a></blockquote>\n";
-
-        page_tail();
-        exit;
     }
- }
+
+		//DEBUG- TURN OFF EMAIL//
+		if( !empty($serial) ) {
+				$Email_List = "jgriffi8@nd.edu";
+  			$Email_From = "bbrodriguez@nd.edu";
+		}
+    if( $mailed = send_report_via_email($thread_id) ){
+        echo str_pad("<P>* Report submitted via e-mail.", 4096);
+        flush();
+    }
+
+    // Output status
+
+    //if( !$mailed || $thread_id<1 ) {
+    //    echo "<P>There was a problem submitting the report:";
+    //    if( !$mailed ) echo "<br> * The report could not be mailed.";
+    //    if( $thread_id<1 ) echo "<br> * The report could not be posted.";
+    //}
+
+    if( !$mailed) {
+    		echo "<P>There was a problem submitting the report:";
+       	if( !$mailed ) echo "<br> * The report could not be mailed.";
+    }
+        
+    if($mailed || $thread_id){
+        echo "<p>The following report was submitted:
+                <hr><blockquote><pre>\n";
+        echo htmlspecialchars(fill_in_report());
+        echo "</pre></blockquote><hr>\n\n";
+    }
+
+    if( $thread_id > 0 ) {// if posted, link to it
+        echo "<blockquote>* <a href='forum_thread.php?id=$thread_id'>
+            Responses will be found in the ". $elab_list[$elab].
+            " Help Desk forum...</a></blockquote>\n";
+    }
+
+    echo "<blockquote>* <a href='".URL_BASE."'>Go to the ".PROJECT
+        ." main page...</a></blockquote>\n";
+
+    page_tail();
+    exit;
+}
 
 
 //
@@ -1064,11 +997,9 @@ if( isset($_POST['submit_report']) && !empty($input_error) ){
         }
     }
     echo "</font>\n";
- }
-
+}
 
 start_table();
-
 
 row1("Please describe the problem:");
 
@@ -1206,9 +1137,6 @@ form_item("Network Component:",
          </span>",
         'networking_part');
 
-
-//
-
 form_item("Error Output:",
           "Please cut-and-paste relevant error messages
                 which demonstrate the problem. ",
@@ -1254,13 +1182,11 @@ if( !$logged_in_user ) {
               "<input name='location' value='$location'
                         size='60' maxlength='255'>");
 
-    form_item("Verification:",
-              "Please enter the two words shown in the box, to prove
-                that you are a human, not an automated web-bot."
-              .error_text('noverify')
-              .error_text('recaptcha'),
-              recaptcha_get_html($public_key, NULL, $use_ssl));
- }
+		form_item("QuarkNet S/N:",
+					"<span>(Optional)<br> For staff use only. </span>",
+					"<input type='text' name='serial' class='serial-num' />",
+					'serial-num');
+}
 
 form_item("Send the report:", "",
      "<input name='submit_report' type='SUBMIT' value='Submit'>");

@@ -100,7 +100,7 @@
 			return checked;
 		}
 	</script>
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>		
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
 	<script>
 		$(document).ready(function() {
 			addTag("newTags", "text", "", "", "div");
