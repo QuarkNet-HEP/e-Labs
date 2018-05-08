@@ -257,7 +257,7 @@
   <script type="text/javascript">
   $(function() {
 
-    $('.tablinks').bind('click', function() {
+    $('.tablinks').on('click', function() {
       $('.tablinks').removeClass('active');
       $(this).addClass('active');
 
@@ -518,7 +518,7 @@
       xmin = plot.getAxes().xaxis.min;
       xmax = plot.getAxes().xaxis.max;
 
-      $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
+      $('#'+parId+' .placeholder').on('plotselected', function(event, ranges) {
         //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
         //console.log(data[0].data.length);
         $('.reset-selection').removeAttr('disabled');
@@ -527,12 +527,12 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .reset-selection').bind('click', function() {
+      $('#'+parId+' .reset-selection').on('click', function() {
          $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
          $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .logx').bind('change', function(){
+      $('#'+parId+' .logx').on('change', function(){
         if ( $(this).is(':checked') ) {
            $.extend(true, options, {xaxis:{transform:log10, inverseTransform:pow10}});
         } else {
@@ -541,7 +541,7 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .logy').bind('change', function(){
+      $('#'+parId+' .logy').on('change', function(){
         if ( $(this).is(':checked') ) {
            $.extend(true, options, {yaxis:{transform:log10, inverseTransform:pow10}});
         } else {
@@ -550,7 +550,7 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .apply-binwidth').bind('click', function() {
+      $('#'+parId+' .apply-binwidth').on('click', function() {
         var value = $('#'+parId+' input.binwidth').val();
         //console.log(parId + ' ' + value);
 
@@ -563,14 +563,14 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .save').bind('click', function() {
+      $('#'+parId+' .save').on('click', function() {
         html2canvas($('#'+parId)).then(function(canvas) {
           image = canvas.toDataURL("image/png");
           window.open(image, "toDataURL() image", "width=800, height=400");
         });
       });
 
-      $('#'+parId+'-chart .save').bind('click', function() {
+      $('#'+parId+'-chart .save').on('click', function() {
 
         var svg = document.querySelector('#'+parId+'-chart > svg');
         var serializer = new XMLSerializer();
@@ -592,7 +592,7 @@
         };
       });
       
-      $('#'+parId+' input.selector').bind('change', function() {
+      $('#'+parId+' input.selector').on('change', function() {
         var bw = $('input.binwidth').val();
         var hist;
 
@@ -624,7 +624,7 @@
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' .placeholder').bind('plothover', function(event, pos, item) {
+      $('#'+parId+' .placeholder').on('plothover', function(event, pos, item) {
         // Hmm, I need to fix the cursor value when logx.
         // For now, disable cursor when logx is checked
         if ( $('#'+parId+' .logx').is(':checked') ) {
@@ -638,7 +638,7 @@
         $('#'+parId+' .cursorValue').html('[x:'+pos.x.toFixed(2) +', y:'+pos.y.toFixed(2)+']');
       });
 
-      $('#'+parId+' .placeholder').bind('mouseout', function() {
+      $('#'+parId+' .placeholder').on('mouseout', function() {
         $('#'+parId+' .cursor').css("display", "none");
       });
     }
