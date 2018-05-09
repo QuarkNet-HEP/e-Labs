@@ -2,11 +2,11 @@
 
 <c:if test="${user != null}">
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
-	<%--<script	
-  			src="https://code.jquery.com/jquery-1.12.4.min.js"
-			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-			  crossorigin="anonymous"></script>--%>
+	<%--<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>--%>
+	<script	
+  			src="https://code.jquery.com/jquery-1.4.3.min.js"
+			  integrity="sha256-+ACzmeXHpSVPxmu0BxF/44294FKHgOaMn3yH0pn4SGo="
+			  crossorigin="anonymous"></script>
 	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.12.1.custom.css" rel="Stylesheet" />	
 	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
