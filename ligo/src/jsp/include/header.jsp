@@ -6,7 +6,8 @@
 <%--  --%>
 <%-- Remote load just doesn't work for some reason: --%>
 <%-- <script	src="https://code.jquery.com/jquery-1.4.3.min.js" integrity="sha256-+ACzmeXHpSVPxmu0BxF/44294FKHgOaMn3yH0pn4SGo=" crossorigin="anonymous"></script> --%>
-<script type="text/javascript" src="../include/jquery/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.4.1.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
