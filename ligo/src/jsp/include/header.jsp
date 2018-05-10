@@ -8,7 +8,7 @@
 <%-- <script	src="https://code.jquery.com/jquery-1.4.3.min.js" integrity="sha256-+ACzmeXHpSVPxmu0BxF/44294FKHgOaMn3yH0pn4SGo=" crossorigin="anonymous"></script> --%>
 <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-migrate-1.4.1.js"></script>
-<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 <script type="text/javascript" src="../include/jquery/js/css-gradients-via-canvas.js"></script>
