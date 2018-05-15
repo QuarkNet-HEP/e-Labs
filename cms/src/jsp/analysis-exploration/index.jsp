@@ -425,7 +425,7 @@
   pow10 = function(v) { return Math.pow(v,10); }
 
   // need to update jquery!
-  $('#parameter-table .parameter').live('click', function() {
+  $('#parameter-table .parameter').on('click', function() {
     var parameter = $(this).html();
     var title = $(this).attr('title');
 
