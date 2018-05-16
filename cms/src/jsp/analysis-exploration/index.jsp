@@ -123,9 +123,9 @@
     </div>
   </div>
   <script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
-  <script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
-  <script language="javascript" type="text/javascript" src="../include/jquery.flot.selection.js"></script>
-  <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.selection.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.crosshair.js"></script>
   <div id="content">
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
