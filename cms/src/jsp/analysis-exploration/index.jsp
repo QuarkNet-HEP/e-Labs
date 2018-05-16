@@ -58,7 +58,7 @@
     left: 0px;
     top: 200px;
     writing-mode: tb-rl;
-    filter: flipV flipH;
+    filter: flipV() flipH();
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
   }
