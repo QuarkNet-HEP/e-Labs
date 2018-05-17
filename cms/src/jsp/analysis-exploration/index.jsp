@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../css/dc.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
-  <script type="text/javascript" src="../include/d3.min.js"></script>
+  <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script>
   <script type="text/javascript" src="../include/crossfilter-1.4.6.min.js"></script>
   <script type="text/javascript" src="../include/dc.min.js"></script>
   <script type="text/javascript" src="../include/html2canvas.js"></script>
