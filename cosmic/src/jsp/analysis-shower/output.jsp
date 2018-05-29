@@ -202,7 +202,7 @@
 					</th>
 				</tr>
 				<tr>
-					<td colspan="2"></td>
+					<td colspan="3"></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
