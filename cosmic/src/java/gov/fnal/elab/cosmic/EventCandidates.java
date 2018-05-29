@@ -271,7 +271,7 @@ public class EventCandidates {
     	EventCandidates ec = null;
     	try {
 	        ec = new EventCandidates(new EventsComparator(csc, dir));
-	        ec.read(in, out, eventStart, eventNum);
+	        ec.read(in, out, outDelta, eventStart, eventNum);
     	} catch (Exception e) {
     		System.out.println("Error in EventCandidates: "+e.getMessage());
     	}
