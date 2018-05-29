@@ -58,7 +58,8 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
+	File deltaT = new File(outputDir + "deltaT");		
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum);
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
@@ -190,11 +191,14 @@
 					<th width="10%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
 					</th>
-					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
+					<th width="10%">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >&#916;T</a>			
+					</th>
+					<th width="30%">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
 					</th>
 					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '4' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
 					</th>
 				</tr>
 				<tr>
@@ -264,6 +268,7 @@
 						<td>
 							${row.eventCoincidence}
 						</td>
+						<td><fmt:formatNumber pattern="#####0.0" value="${row.deltaTValue}" /></td>
 						<td>
 							${row.numDetectors}
 								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
