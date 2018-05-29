@@ -22,7 +22,7 @@ import java.util.*;
 
 public class EventCandidates {
     public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount" };
+            "eventCoincidence", "numDetectors", "multiplicityCount", "deltaT"};
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
@@ -31,6 +31,8 @@ public class EventCandidates {
     private Set allIds;
     private String eventNum;
     private String userFeedback;
+    private String deltaTFirstId;
+    private Boolean deltaTFirstIdAdded;
     private ArrayList<Integer> multiplicityFilter = new ArrayList<Integer>(); 
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
@@ -46,7 +48,7 @@ public class EventCandidates {
 
     private static final String[] STRING_ARRAY = new String[0];
 
-    public void read(File in, File out, int eventStart, String en)
+    public void read(File in, File out, File outDelta, int eventStart, String en)
             throws Exception {
     	Elab elab = Elab.getElab(null, "cosmic");
     	String et = elab.getProperty("event.threshold");
@@ -57,10 +59,14 @@ public class EventCandidates {
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+        BufferedWriter bwDelta = new BufferedWriter(new FileWriter(outDelta));
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiplicities = new HashSet();
+        Set deltaTDetector = new HashSet();
+        List deltaT = new ArrayList();
         ElabMemory em = new ElabMemory();
+        deltaTFirstIdAdded = false;
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
@@ -91,10 +97,21 @@ public class EventCandidates {
                     }
                     ids.clear();
                     multiplicities.clear();
+                    deltaT.clear();
+                    deltaTDetector.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
                         idchan[0] = idchan[0].intern();
                         ids.add(idchan[0]);
+                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
+                        	deltaTDetector.add(idchan[0]);
+                        	deltaT.add(idchan[0]);
+                        	deltaT.add(arr[i+2]);
+                        }
+                        if (deltaTDetector.size() > 0 && !deltaTFirstIdAdded) {
+                        	deltaTFirstId = idchan[0];
+                        	deltaTFirstIdAdded = true;
+                        }
                         //if (!ids.contains(idchan[0])) {
                         //	ids.add(idchan[0]);
                         //}
@@ -109,6 +126,16 @@ public class EventCandidates {
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
+                    row.setDeltaTFirstId(deltaTFirstId);
+                    if (deltaT.size() > 0) {
+                    	row.setDeltaT((String[]) deltaT.toArray(STRING_ARRAY));
+                    } else {
+                    	deltaT.add("None");
+                    	deltaT.add("0");
+                    	deltaT.add("None");
+                    	deltaT.add("0");
+                    	row.setDeltaT((String[]) deltaT.toArray(STRING_ARRAY));
+                    }
                     setMultiplicityFilter(multiplicities.size());
                     
                     String jd = arr[4];
@@ -135,14 +162,23 @@ public class EventCandidates {
     			break;
     		}
     	}
-        //write multiplicity summary
+    	//write Delta T
+		try {
+			saveDeltaT(bwDelta);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+
+    	//write multiplicity summary
         try {
         	saveMultiplicitySummary(bw);
         } catch (Exception e) {
         	throw new Exception(e.getMessage());
         }
+
         bw.close();
         br.close();
+        bwDelta.close();
     }
     
     public Collection getRows() {
@@ -205,13 +241,26 @@ public class EventCandidates {
         	bw.write(String.valueOf(multiplicityFilter.get(x))+","+String.valueOf(count)+"\n");
         }
     }//end of saveMultiplicitySummary
+
+    public void saveDeltaT(BufferedWriter bwDelta) throws Exception {
+    	bwDelta.write("Delta T between the first two detectors found:\n");
+    	bwDelta.write("First Detector, Time, Second Detector, Time, Delta T\n");
+    	Object[] allR = rows.toArray();
+    	for (int i = 0; i < allR.length; i++) {
+    		Row r = (Row) allR[i];
+    		String[] temp = r.getDeltaT();
+    		//($REtime-$startTime)*1e9*86400
+    		double deltaT = (Double.parseDouble(temp[1]) - Double.parseDouble(temp[3]))*1e9*86400;
+        	bwDelta.write(temp[0] + "," +temp[1]+","+temp[2]+","+temp[3]+","+String.valueOf(deltaT)+"\n");
+    	}    	
+    }//end of saveDeltaT
     
-    public static EventCandidates read(File in, File out, int csc, int dir,
+    public static EventCandidates read(File in, File out, File outDelta, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidates ec = null;
     	try {
 	        ec = new EventCandidates(new EventsComparator(csc, dir));
-	        ec.read(in, out, eventStart, eventNum);
+	        ec.read(in, out, outDelta, eventStart, eventNum);
     	} catch (Exception e) {
     		System.out.println("Error in EventCandidates: "+e.getMessage());
     	}
@@ -226,7 +275,10 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
+        private double deltaT;
+        private String[] deltaTComponents;
         private int multiplicityCount;
+        private String deltaTFirstId;
 
         public int getEventCoincidence() {
             return eventCoincidence;
@@ -280,6 +332,29 @@ public class EventCandidates {
             this.ids = ids;
         }
 
+        public void setDeltaTFirstId(String deltaTFirstId) {
+        	this.deltaTFirstId = deltaTFirstId;
+        }
+        
+        public String[] getDeltaT() {
+        	return deltaTComponents;
+        }
+
+        public double getDeltaTValue() {
+        	return deltaT;
+        }
+      
+        public void setDeltaT(String[] deltaT) {
+        	this.deltaTComponents = deltaT;
+        	if (deltaT.length == 4) {
+	        	if (deltaT[0] == deltaTFirstId) {
+	        		this.deltaT = (Double.parseDouble(deltaTComponents[3]) - Double.parseDouble(deltaTComponents[1]))*1e9*86400;
+	        	} else {
+	        		this.deltaT = (Double.parseDouble(deltaTComponents[1]) - Double.parseDouble(deltaTComponents[3]))*1e9*86400;        		
+	        	}
+        	}
+        }
+        
         public String[] getMultiplicity() {
             return multiplicity;
         }
@@ -331,9 +406,13 @@ public class EventCandidates {
                 c = m1.getEventCoincidence() - m2.getEventCoincidence();
             }
             else if (csc == 2) {
-                c = m1.getNumDetectors() - m2.getNumDetectors();
+            	double diff = m1.getDeltaTValue() - m2.getDeltaTValue();
+                c = (int) diff;
             }
             else if (csc == 3) {
+                c = m1.getNumDetectors() - m2.getNumDetectors();
+            }
+            else if (csc == 4) {
                 c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
             }
             if (c == 0) {

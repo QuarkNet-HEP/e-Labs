@@ -190,8 +190,8 @@
   			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
 	 		  <input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
 	 		</div>
-			<input type="radio" name="outputType" value="output.jsp">Current<br />
-			<input type="radio" name="outputType" value="output-light.jsp" checked="true">Light<br />
+			<input type="radio" name="outputType" value="output.jsp" checked="true">Current<br />
+			<input type="radio" name="outputType" value="output-light.jsp">Light<br />
 			
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>

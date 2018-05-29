@@ -19,20 +19,20 @@ localhost 	paste 		/bin/paste	INSTALLED	INTEL32::LINUX	null
 
 # Cosmic
 
-localhost	ThresholdTimes	/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl					INSTALLED       INTEL32::LINUX null
-localhost	WireDelay		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/WireDelay.pl						INSTALLED       INTEL32::LINUX null
-localhost	Combine			/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Combine.pl						INSTALLED       INTEL32::LINUX null
-localhost	SingleChannel	/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/SingleChannel.pl					INSTALLED       INTEL32::LINUX null
-localhost	Sort			/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Sort.pl							INSTALLED       INTEL32::LINUX null
-localhost	Flux			/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Flux.pl							INSTALLED       INTEL32::LINUX null
-localhost	Plot			/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Plot.pl							INSTALLED       INTEL32::LINUX null
-localhost	Lifetime		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Lifetime.pl						INSTALLED       INTEL32::LINUX null
-localhost	Frequency		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/Frequency.pl						INSTALLED       INTEL32::LINUX null
-localhost	ExtraFunctions	/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
-localhost	EventSearch		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/EventSearch.pl					INSTALLED       INTEL32::LINUX null
-localhost	EventChoice		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/EventChoice.pl					INSTALLED       INTEL32::LINUX null
-localhost	RawAnalyze		/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/RawAnalyze.pl						INSTALLED       INTEL32::LINUX null
-localhost	SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
+localhost	ThresholdTimes	/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl					INSTALLED       INTEL32::LINUX null
+localhost	WireDelay		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/WireDelay.pl						INSTALLED       INTEL32::LINUX null
+localhost	Combine			/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Combine.pl						INSTALLED       INTEL32::LINUX null
+localhost	SingleChannel	/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/SingleChannel.pl					INSTALLED       INTEL32::LINUX null
+localhost	Sort			/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Sort.pl							INSTALLED       INTEL32::LINUX null
+localhost	Flux			/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Flux.pl							INSTALLED       INTEL32::LINUX null
+localhost	Plot			/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Plot.pl							INSTALLED       INTEL32::LINUX null
+localhost	Lifetime		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Lifetime.pl						INSTALLED       INTEL32::LINUX null
+localhost	Frequency		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/Frequency.pl						INSTALLED       INTEL32::LINUX null
+localhost	ExtraFunctions	/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
+localhost	EventSearch		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/EventSearch.pl					INSTALLED       INTEL32::LINUX null
+localhost	EventChoice		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/EventChoice.pl					INSTALLED       INTEL32::LINUX null
+localhost	RawAnalyze		/Users/eperonja/quarkcat/sw/i2u2svn/cosmic/src/perl/RawAnalyze.pl						INSTALLED       INTEL32::LINUX null
+localhost	SVG2PNG			/usr/local/bin/rsvg												INSTALLED       INTEL32::LINUX null
 
 aux			SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
 
