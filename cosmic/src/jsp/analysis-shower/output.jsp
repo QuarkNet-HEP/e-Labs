@@ -58,8 +58,11 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	File deltaT = new File(outputDir + "deltaT");		
-	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum);
+	//Edit Peronja: May 29, 2018:
+	//	Added delta T code
+	File deltaT = new File(outputDir + "deltaT");	
+	String[] deltaTIDs = (String[]) showerResults.getAttribute("deltaTIDs");
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum, deltaTIDs);
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
@@ -120,7 +123,7 @@
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
-
+	request.setAttribute("deltaTIDs", deltaTIDs);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="https://www.w3.org/1999/xhtml">
@@ -202,7 +205,8 @@
 					</th>
 				</tr>
 				<tr>
-					<td colspan="3"></td>
+					<td colspan="2"></td>
+					<td><strong>${deltaTIDs[0]}<br />${deltaTIDs[1]}</strong></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>

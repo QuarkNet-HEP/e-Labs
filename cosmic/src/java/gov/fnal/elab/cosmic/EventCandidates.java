@@ -36,7 +36,6 @@ public class EventCandidates {
     private Set allIds;
     private String eventNum;
     private String userFeedback;
-    private String deltaTFirstId;
     private Boolean deltaTFirstIdAdded;
     private ArrayList<Integer> multiplicityFilter = new ArrayList<Integer>(); 
     
@@ -56,7 +55,7 @@ public class EventCandidates {
 		// Dummy variables used to cast using Set/List.toArray()
     private static final String[] STRING_ARRAY = new String[0];
 		
-    public void read(File in, File out, File outDelta, int eventStart, String en)
+    public void read(File in, File out, File outDelta, int eventStart, String en, String[] deltaTIDs)
 				throws Exception {
 		Elab elab = Elab.getElab(null, "cosmic");
 		String et = elab.getProperty("event.threshold");
@@ -119,14 +118,14 @@ public class EventCandidates {
 							String[] idchan = arr[i].split("\\.");
 							ids.add(idchan[0]);
 	                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
-	                        	deltaTDetector.add(idchan[0]);
-	                        	deltaT.add(idchan[0]);
-	                        	deltaT.add(arr[i+2]);
-	                        }
-	                        if (deltaTDetector.size() > 0 && !deltaTFirstIdAdded) {
-	                        	deltaTFirstId = idchan[0];
-	                        	deltaTFirstIdAdded = true;
-	                        }
+	                            for (int ndx = 0; ndx < deltaTIDs.length; ndx++) {
+	                                if (idchan[0].equals(deltaTIDs[ndx])) {
+	                                    deltaTDetector.add(idchan[0]);
+	                                    deltaT.add(idchan[0]);
+	                                    deltaT.add(arr[i+2]);                                    
+	                                }
+	                            }
+                            }
 							String mult = arr[i].intern();
 							multiplicities.add(mult);
 							allIds.add(idchan[0]);
@@ -136,7 +135,11 @@ public class EventCandidates {
                     row.setMultiplicityCount();
                     setMultiplicityFilter(multiplicities.size());
 
-                    row.setDeltaTFirstId(deltaTFirstId);
+                    if (deltaTIDs != null) {
+                        row.setDeltaTFirstId(deltaTIDs[0]);
+                    } else {
+                        row.setDeltaTFirstId("None");
+                    }                    
                     if (deltaT.size() > 0) {
                     	row.setDeltaT((String[]) deltaT.toArray(STRING_ARRAY));
                     } else {
@@ -232,9 +235,7 @@ public class EventCandidates {
     	for (int i = 0; i < allR.length; i++) {
     		Row r = (Row) allR[i];
     		String[] temp = r.getDeltaT();
-    		//($REtime-$startTime)*1e9*86400
-    		double deltaT = (Double.parseDouble(temp[1]) - Double.parseDouble(temp[3]))*1e9*86400;
-        	bwDelta.write(temp[0] + "," +temp[1]+","+temp[2]+","+temp[3]+","+String.valueOf(deltaT)+"\n");
+        	bwDelta.write(temp[0] + "," +temp[1]+","+temp[2]+","+temp[3]+","+String.valueOf(r.getDeltaTValue())+"\n");
     	}    	
     }//end of saveDeltaT
     
@@ -267,11 +268,11 @@ public class EventCandidates {
 
 		// read() method overload
     public static EventCandidates read(File in, File out, File outDelta, int csc, int dir,
-            int eventStart, String eventNum) throws Exception {
+            int eventStart, String eventNum, String[] deltaTIDs) throws Exception {
     	EventCandidates ec = null;
     	try {
 	        ec = new EventCandidates(new EventsComparator(csc, dir));
-	        ec.read(in, out, outDelta, eventStart, eventNum);
+	        ec.read(in, out, outDelta, eventStart, eventNum, deltaTIDs);
     	} catch (Exception e) {
     		System.out.println("Error in EventCandidates: "+e.getMessage());
     	}
@@ -356,6 +357,7 @@ public class EventCandidates {
         }
       
         public void setDeltaT(String[] deltaT) {
+    		//($REtime-$startTime)*1e9*86400
         	this.deltaTComponents = deltaT;
         	if (deltaT.length == 4) {
 	        	if (deltaT[0] == deltaTFirstId) {

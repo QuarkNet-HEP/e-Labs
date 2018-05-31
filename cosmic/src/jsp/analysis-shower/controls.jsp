@@ -3,7 +3,19 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
-
+<script>
+$(document).ready(function () {
+       $("input[name='deltaTIDs']").change(function () {
+            var checkboxes = document.getElementsByName("deltaTIDs");
+            var rightCount = 2;
+            var cnt = $("input[name='deltaTIDs']:checked").length;
+              if (cnt > rightCount) {
+                  $(this).prop("checked", "");
+                  alert("Please unselect a DAQ. Total selected should be 2.")
+            }
+      });
+    });
+</script>
 <%
 	//build set of detector id locations
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(analysis.getParameterValues("rawData"));
@@ -15,6 +27,9 @@
 	    detectors.put(did, e.getTupleValue("school") + ", " + e.getTupleValue("city") + ", " 
 	            + e.getTupleValue("state") + " (" + did + ")");
 	}
+	//Edit Peronja: May 31, 2018:
+	//	Added delta T code
+	request.setAttribute("detectors", detectors);
 %>
 
 <div id="analysis-controls">
@@ -78,6 +93,25 @@
 										onError="Must be an integer"/>
 								</td>
 							</tr>
+                            <tr>
+                                 <td class="form-label">
+                                    <label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
+                                 </td>
+                                 <td>
+                                     <div id="deltaTdiv" style="text-align: left;">
+                                         <c:forEach items="${detectors }" var="deltaTID" varStatus="count">
+                                             <c:choose>
+                                                 <c:when test="${count.index < 2}">
+                                                   ${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>                                            
+                                                 </c:when>
+                                                 <c:otherwise>
+                                                   ${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">                                            
+                                                 </c:otherwise>
+                                             </c:choose>                                                    
+                                         </c:forEach>
+                                     </div>
+                                </td>
+                             </tr>
 						</table>
 					</e:hidden>
 				</e:vswitch>

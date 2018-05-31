@@ -64,9 +64,12 @@
         	File ecFile = new File(ecFullPath);
         	String ecPath = ecFile.getAbsolutePath();
         	String outputDir = ecPath.replaceAll("eventCandidates", "");
-        	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
+        	File multiplicitySummary = new File(outputDir + "multiplicitySummary");	
+        	//Edit Peronja: May 29, 2018:
+        	//	Added delta T code
         	File deltaT = new File(outputDir + "deltaT");		
-        	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, 1, -1, eventStart, eventNum);
+            String[] deltaTIDs = (String[]) request.getParameterValues("deltaTIDs");
+            EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, 1, -1, eventStart, eventNum, deltaTIDs);
        		rows = ec.getRows();
         	request.setAttribute("rows", rows);
         	request.setAttribute("ecUrl", ecUrl);

@@ -87,7 +87,13 @@
 			detectorid = "";
 	    }
     	run.setAttribute("detectorid", detectorid);
-    	analysis.setAttribute("detectorid", detectorid);
+    	//Edit Peronja: May 31, 2018:
+    	//	Added delta T code    	
+    	String[] deltaTIDs = request.getParameterValues("deltaTIDs");
+    	if (deltaTIDs != null) {
+            run.setAttribute("deltaTIDs", deltaTIDs);
+        }
+      	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
     	analysis.setAttribute("mFilter", mFilter);
 
