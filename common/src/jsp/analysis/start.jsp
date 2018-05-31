@@ -69,6 +69,7 @@
 	    if (mFilter == null) {
 	    	mFilter = "0";
 	    }
+	    
  	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
 	    run.setAttribute("type", analysis.getName());
@@ -87,6 +88,11 @@
 			detectorid = "";
 	    }
     	run.setAttribute("detectorid", detectorid);
+		String[] deltaTIDs = request.getParameterValues("deltaTIDs");
+		if (deltaTIDs != null) {
+			run.setAttribute("deltaTIDs", deltaTIDs);
+		}
+
     	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
     	analysis.setAttribute("mFilter", mFilter);

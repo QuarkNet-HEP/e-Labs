@@ -59,8 +59,10 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	File deltaT = new File(outputDir + "deltaT");		
-	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum);
+	File deltaT = new File(outputDir + "deltaT");
+	String[] deltaTIDs = (String[]) showerResults.getAttribute("deltaTIDs");
+
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum, deltaTIDs);
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
@@ -134,6 +136,7 @@
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
 	request.setAttribute("totalTime", totalTime);
+	request.setAttribute("deltaTIDs", deltaTIDs);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -216,7 +219,8 @@
 					</th>
 				</tr>
 				<tr>
-					<td colspan="3"></td>
+					<td colspan="2"></td>
+					<td><strong>${deltaTIDs[0]}<br />${deltaTIDs[1]}</strong></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
