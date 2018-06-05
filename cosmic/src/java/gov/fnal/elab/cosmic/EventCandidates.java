@@ -112,18 +112,8 @@ public class EventCandidates {
                         		}
                         	}
                         }
-                        //if (deltaTDetector.size() > 0 && !deltaTFirstIdAdded) {
-                        //	deltaTFirstId = idchan[0];
-                        //	deltaTFirstIdAdded = true;
-                        //}
-                        //if (!ids.contains(idchan[0])) {
-                        //	ids.add(idchan[0]);
-                        //}
                         String mult = arr[i].intern();
                         multiplicities.add(mult);
-                        //if (!multiplicities.contains(arr[i])) {
-                        //	multiplicities.add(arr[i]);
-                        //}
                         allIds.add(idchan[0]);
                     }
                     
@@ -251,15 +241,14 @@ public class EventCandidates {
     }//end of saveMultiplicitySummary
 
     public void saveDeltaT(BufferedWriter bwDelta) throws Exception {
-    	bwDelta.write("Delta T between the first two detectors found:\n");
-    	bwDelta.write("First Detector, Time, Second Detector, Time, Delta T\n");
+    	bwDelta.write("#Delta T between the first two detectors found:\n");
+    	bwDelta.write("#First Detector, Time, Second Detector, Time, Delta T\n");
     	Object[] allR = rows.toArray();
     	for (int i = 0; i < allR.length; i++) {
     		Row r = (Row) allR[i];
     		String[] temp = r.getDeltaT();
     		//($REtime-$startTime)*1e9*86400
-    		//double deltaT = (Double.parseDouble(temp[1]) - Double.parseDouble(temp[3]))*1e9*86400;
-        	bwDelta.write(temp[0] + "," +temp[1]+","+temp[2]+","+temp[3]+","+String.valueOf(r.getDeltaTValue())+"\n");
+         	bwDelta.write(temp[0] + "," +temp[1]+","+temp[2]+","+temp[3]+","+String.valueOf(r.getDeltaTValue())+"\n");
     	}    	
     }//end of saveDeltaT
     
@@ -356,9 +345,9 @@ public class EventCandidates {
         	this.deltaTComponents = deltaT;
         	if (deltaT.length == 4) {
 	        	if (deltaT[0].equals(deltaTFirstId)) {
-	        		this.deltaT = (Double.parseDouble(deltaTComponents[3]) - Double.parseDouble(deltaTComponents[1]))*1e9*86400;
+	        		this.deltaT = (Double.parseDouble(deltaTComponents[1]) - Double.parseDouble(deltaTComponents[3]))*1e9*86400;
 	        	} else {
-	        		this.deltaT = (Double.parseDouble(deltaTComponents[1]) - Double.parseDouble(deltaTComponents[3]))*1e9*86400;        		
+	        		this.deltaT = (Double.parseDouble(deltaTComponents[3]) - Double.parseDouble(deltaTComponents[1]))*1e9*86400;        		
 	        	}
         	}
         }
@@ -414,7 +403,7 @@ public class EventCandidates {
                 c = m1.getEventCoincidence() - m2.getEventCoincidence();
             }
             else if (csc == 2) {
-            	double diff = m1.getDeltaTValue() - m2.getDeltaTValue();
+            	double diff = (m1.getDeltaTValue()*10000) - (m2.getDeltaTValue()*10000) ;
                 c = (int) diff;
             }
             else if (csc == 3) {
