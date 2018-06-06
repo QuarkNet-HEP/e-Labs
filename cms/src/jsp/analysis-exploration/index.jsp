@@ -18,8 +18,10 @@
 
   <script type="text/javascript" src="../include/elab.js"></script>
 
+	<%-- <script type="text/javascript" src="../include/d3-3.5.5.min.js"></script> --%>
+	<script type="text/javascript" src="../include/d3-3.5.11.min.js"></script>
 	<%-- <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script> --%>
-	<script type="text/javascript" src="../include/d3-3.5.5.min.js"></script>
+
 
 	<%-- <script type="text/javascript" src="../include/crossfilter.min.js"></script> --%>
   <script type="text/javascript" src="../include/crossfilter-1.4.6.min.js"></script>
