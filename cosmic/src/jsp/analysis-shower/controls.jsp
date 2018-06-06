@@ -5,16 +5,16 @@
 <%@ page import="java.util.*" %>
 <script>
 $(document).ready(function () {
-       $("input[name='deltaTIDs']").change(function () {
-            var checkboxes = document.getElementsByName("deltaTIDs");
-            var rightCount = 2;
-            var cnt = $("input[name='deltaTIDs']:checked").length;
-              if (cnt > rightCount) {
-                  $(this).prop("checked", "");
-                  alert("Please unselect a DAQ. Total selected should be 2.")
-            }
-      });
-    });
+	   $("input[name='deltaTIDs']").change(function () {
+			var checkboxes = document.getElementsByName("deltaTIDs");
+			var rightCount = 2;
+			var cnt = $("input[name='deltaTIDs']:checked").length;
+	      	if (cnt > rightCount) {
+	      		$(this).prop("checked", "");
+	      		alert("Please unselect a DAQ. Total selected should be 2.")
+		    }
+	  });
+	});
 </script>
 <%
 	//build set of detector id locations
@@ -23,7 +23,6 @@ $(document).ready(function () {
 	Map<String,String> deltaTIDs = new TreeMap<String,String>();
 	Iterator i = rs.iterator();
     int ndx = 0;
-
 	while (i.hasNext()) {
 	    CatalogEntry e = (CatalogEntry) i.next();
 	    String did = (String) e.getTupleValue("detectorid");
@@ -34,10 +33,8 @@ $(document).ready(function () {
 		} else {
 			deltaTIDs.put(did, "");			
 		}
-		ndx++;	    
+		ndx++;
 	}
-	//Edit Peronja: May 31, 2018:
-	//	Added delta T code
 	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
    	if ( analysisDT != null) {
    		analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
@@ -49,7 +46,6 @@ $(document).ready(function () {
    	    		  }
    	    	}
    	}
-	
 	request.setAttribute("deltaTIDs", deltaTIDs);
 	request.setAttribute("detectors", detectors);
 %>
@@ -115,25 +111,26 @@ $(document).ready(function () {
 										onError="Must be an integer"/>
 								</td>
 							</tr>
-							<tr>
-								<td class="form-label">
-									<label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
-								</td>
-								<td>
-									<div id="deltaTdiv" style="text-align: left;">
-										<c:forEach items="${deltaTIDs }" var="deltaTID">
-											<c:choose>
-												<c:when test='${deltaTID.value == "checked" }'>
-													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
-												</c:when>
-												<c:otherwise>
-													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
-												</c:otherwise>		
-											</c:choose>									
-										</c:forEach>
-									</div>
-								</td>
-							</tr>
+								<tr>
+									<td class="form-label">
+										<label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
+									</td>
+									<td>
+										<div id="deltaTdiv" style="text-align: left;">
+											<c:forEach items="${deltaTIDs }" var="deltaTID">
+												<c:choose>
+													<c:when test='${deltaTID.value == "checked" }'>
+														${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
+													</c:when>
+													<c:otherwise>
+														${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
+													</c:otherwise>		
+												</c:choose>									
+											</c:forEach>
+										</div>
+									</td>
+								</tr>
+							
 						</table>
 					</e:hidden>
 				</e:vswitch>
@@ -239,6 +236,15 @@ $(document).ready(function () {
 					</e:hidden>
 				</e:vswitch>
 			</e:tr>
+		</p>
+		<p>
+      <!-- EPeronja-10/17/2013: THRESHOLD TEST only in this branch!!! for test purposes-->
+      <div style="display:none;">
+  			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
+	 		  <input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
+	 		</div>
+			<input type="radio" name="outputType" value="output.jsp" checked="true">Current<br />
+			<input type="radio" name="outputType" value="output-light.jsp">Light<br />
 			
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>

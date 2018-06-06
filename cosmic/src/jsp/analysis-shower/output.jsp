@@ -12,6 +12,7 @@
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>
 <%
+	long startTime = System.currentTimeMillis();
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
 	
@@ -59,10 +60,9 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	//Edit Peronja: May 29, 2018:
-	//	Added delta T code
-	File deltaT = new File(outputDir + "deltaT");	
+	File deltaT = new File(outputDir + "deltaT");
 	String[] deltaTIDs = (String[]) showerResults.getAttribute("deltaTIDs");
+
 	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum, deltaTIDs);
 	
 	Collection rows = ec.getRows();
@@ -143,6 +143,18 @@
 	}
 	int	pageStart = (eventNdx / pageLength) * pageLength;
 	int totalPages = rows.size() / 30;
+	long endTime = System.currentTimeMillis();
+	long totalTime = endTime - startTime;
+
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
+	request.setAttribute("memory", memory);
+
+	
 	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("totalPages", totalPages);	
 	request.setAttribute("message", message);
@@ -154,10 +166,12 @@
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
+	request.setAttribute("totalTime", totalTime);
 	request.setAttribute("deltaTIDs", deltaTIDs);
+
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="https://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Shower Study Analysis Results</title>
@@ -165,7 +179,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>			
 		<script>
 		$(document).ready(function(){
 			$("#viewAdvanced").bind("change", function() {
@@ -237,7 +251,7 @@
 				</tr>
 				<tr>
 					<td colspan="2"></td>
-					<td><strong>t${deltaTIDs[0]}<br />-t${deltaTIDs[1]}</strong></td>
+					<td><strong>&nbsp;t${deltaTIDs[0]}<br />-t${deltaTIDs[1]}</strong></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
@@ -339,7 +353,7 @@
 						Click to view Delta T histogram
 					</e:popup>				
 				</td></tr>
-				<tr><td>			
+				<tr><td align="center" valign="top">
 					<p>
 						Click on image for a larger view
 					</p>
@@ -353,13 +367,15 @@
 						</c:forEach>
 					</p>
 					<%@ include file="events-table.jspf" %>
-				</td></tr>
-			</table>	
+					</td></tr>
+			</table>
 		</td>
 	</tr>
 </table>
 <p>
-	Analysis run time: ${showerResults.formattedRunTime}<%--; estimated: ${showerResults.formattedEstimatedRunTime}--%>
+	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
+	EventCandidates Time: ${totalTime }<br />
+	${memory }
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 

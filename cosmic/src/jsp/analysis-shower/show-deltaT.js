@@ -169,6 +169,8 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var histogram = d3.layout.histogram();
 		histogram.bins(bins);
 		var data = histogram(rawData);
+		//minx = Math.min.apply(Math,rawData);
+		//maxx = Math.max.apply(Math,rawData);
 		mean = d3.mean(rawData);
 		deviation = d3.deviation(rawData);
 		numberOfEntries = rawData.length;
