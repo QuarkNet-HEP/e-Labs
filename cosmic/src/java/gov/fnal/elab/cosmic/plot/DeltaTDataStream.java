@@ -81,7 +81,7 @@ public class DeltaTDataStream {
 					continue;
 				}
 				split = line.split(","); 
-				if (!split[4].equals("0,0")) {
+				if (!split[4].equals("0.0")) {
 					deltaTvalue.add(split[4]);
 					double newminx = Double.parseDouble(split[4]) * 1.0;
 					if (minX == 0.0) {
