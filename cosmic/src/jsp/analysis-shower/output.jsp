@@ -375,7 +375,6 @@
 <p>
 	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
 	EventCandidates Time: ${totalTime }<br />
-	${memory }
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
