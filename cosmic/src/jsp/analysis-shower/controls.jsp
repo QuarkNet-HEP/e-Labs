@@ -20,15 +20,37 @@ $(document).ready(function () {
 	//build set of detector id locations
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(analysis.getParameterValues("rawData"));
 	Map detectors = new TreeMap();
+	Map<String,String> deltaTIDs = new TreeMap<String,String>();
 	Iterator i = rs.iterator();
+    int ndx = 0;
+
 	while (i.hasNext()) {
 	    CatalogEntry e = (CatalogEntry) i.next();
 	    String did = (String) e.getTupleValue("detectorid");
 	    detectors.put(did, e.getTupleValue("school") + ", " + e.getTupleValue("city") + ", " 
 	            + e.getTupleValue("state") + " (" + did + ")");
+		if (ndx < 2) {
+			deltaTIDs.put(did, "checked");
+		} else {
+			deltaTIDs.put(did, "");			
+		}
+		ndx++;	    
 	}
 	//Edit Peronja: May 31, 2018:
 	//	Added delta T code
+	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+   	if ( analysisDT != null) {
+   		analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+   	    	for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
+   	    		  if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
+   	    			  entry.setValue("checked");
+   	    		  } else {
+   	    			  entry.setValue("");
+   	    		  }
+   	    	}
+   	}
+	
+	request.setAttribute("deltaTIDs", deltaTIDs);
 	request.setAttribute("detectors", detectors);
 %>
 
@@ -93,25 +115,25 @@ $(document).ready(function () {
 										onError="Must be an integer"/>
 								</td>
 							</tr>
-                            <tr>
-                                 <td class="form-label">
-                                    <label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
-                                 </td>
-                                 <td>
-                                     <div id="deltaTdiv" style="text-align: left;">
-                                         <c:forEach items="${detectors }" var="deltaTID" varStatus="count">
-                                             <c:choose>
-                                                 <c:when test="${count.index < 2}">
-                                                   ${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>                                            
-                                                 </c:when>
-                                                 <c:otherwise>
-                                                   ${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">                                            
-                                                 </c:otherwise>
-                                             </c:choose>                                                    
-                                         </c:forEach>
-                                     </div>
-                                </td>
-                             </tr>
+							<tr>
+								<td class="form-label">
+									<label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
+								</td>
+								<td>
+									<div id="deltaTdiv" style="text-align: left;">
+										<c:forEach items="${deltaTIDs }" var="deltaTID">
+											<c:choose>
+												<c:when test='${deltaTID.value == "checked" }'>
+													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
+												</c:when>
+												<c:otherwise>
+													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
+												</c:otherwise>		
+											</c:choose>									
+										</c:forEach>
+									</div>
+								</td>
+							</tr>
 						</table>
 					</e:hidden>
 				</e:vswitch>

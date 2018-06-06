@@ -92,6 +92,7 @@
     	String[] deltaTIDs = request.getParameterValues("deltaTIDs");
     	if (deltaTIDs != null) {
             run.setAttribute("deltaTIDs", deltaTIDs);
+	    	analysis.setAttribute("deltaTIDs", deltaTIDs);
         }
       	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
