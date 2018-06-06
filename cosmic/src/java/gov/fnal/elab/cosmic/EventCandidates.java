@@ -133,7 +133,7 @@ public class EventCandidates {
                     } else {
                     	row.setDeltaTFirstId("None");
                     }
-                    if (deltaT.size() > 0) {
+                    if (deltaT.size() > 2) {
                     	row.setDeltaT((String[]) deltaT.toArray(STRING_ARRAY));
                     } else {
                     	deltaT.add("None");
