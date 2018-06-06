@@ -24,12 +24,12 @@
 	<%-- <script type="text/javascript" src="../include/crossfilter.min.js"></script> --%>
   <script type="text/javascript" src="../include/crossfilter-1.4.6.min.js"></script>
 
-	<%-- <script type="text/javascript" src="../include/dc-3.0.3.min.js"></script> --%>
-	<script type="text/javascript" src="../include/dc-2.0.2.min.js"></script>				 	
+	<%-- <script type="text/javascript" src="../include/dc-2.0.2.min.js"></script> --%>
+	<script type="text/javascript" src="../include/dc-3.0.3.min.js"></script>
 
-<script type="text/javascript" src="../include/html2canvas-1.0.0-alpha.12.js"></script>
+	<script type="text/javascript" src="../include/html2canvas-1.0.0-alpha.12.js"></script>
 
-   <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
+  <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 
   <style>
   .parameter.active {
