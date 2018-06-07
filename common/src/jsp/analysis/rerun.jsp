@@ -23,6 +23,11 @@
 	 if (study == null) {
 	   	throw new ElabJspException("Missing study");
 	 }
+	 //Edit Peronja: 6 June 2018
+	 //			To be able to rerun the shower from the saved Delta T plot
+	 if (study.equals("shower-DeltaT")) {
+		 study = "shower";
+	 }
 	 request.setAttribute("study", study);
 	 ElabAnalysis analysis;
 	 String dvName = request.getParameter("dvName");
