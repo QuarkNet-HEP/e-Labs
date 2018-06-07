@@ -99,7 +99,7 @@ public class DeltaTDataStream {
 				//bw.write(line+"\n");
     			//bwraw.write("\n");
 			}//end of while	
-			binValue = (maxX - minX) * 0.05;
+			binValue = (maxX - minX) * 0.03;
 			nBins = (maxX - minX) / binValue;
 			maxBins = maxX - minX;			
 		} catch (Exception e) {

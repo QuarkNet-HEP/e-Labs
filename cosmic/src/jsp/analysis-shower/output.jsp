@@ -168,6 +168,7 @@
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
 	request.setAttribute("totalTime", totalTime);
 	request.setAttribute("deltaTIDs", deltaTIDs);
+	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -251,7 +252,11 @@
 				</tr>
 				<tr>
 					<td colspan="2"></td>
-					<td><strong>&nbsp;t${deltaTIDs[0]}<br />-t${deltaTIDs[1]}</strong></td>
+					<td><strong>&nbsp;t${deltaTIDs[0]}<br />
+						<c:if test="${deltaTIDsSize == 2}">
+							-t${deltaTIDs[1]}
+						</c:if>
+					</strong></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
@@ -348,11 +353,13 @@
 		</td>
 		<td align="center" valign="top">
 			<table>
-				<tr><td align="center" valign="top">
-					<e:popup href="../analysis-shower/show-deltaT.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}&outputDir=${showerResults.outputDir}" target="showerDeltaTPopup" width="800" height="800">
-						Click to view Delta T histogram
-					</e:popup>				
-				</td></tr>
+				<c:if test="${deltaTIDsSize == 2}">
+					<tr><td align="center" valign="top">
+						<e:popup href="../analysis-shower/show-deltaT.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}&outputDir=${showerResults.outputDir}" target="showerDeltaTPopup" width="800" height="800">
+							Click to view Delta T histogram
+						</e:popup>				
+					</td></tr>
+				</c:if>
 				<tr><td align="center" valign="top">
 					<p>
 						Click on image for a larger view

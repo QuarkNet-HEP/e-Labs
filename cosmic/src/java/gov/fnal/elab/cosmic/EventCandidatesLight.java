@@ -22,7 +22,7 @@ import java.util.*;
 
 public class EventCandidatesLight {
     public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount" };
+            "eventCoincidence", "numDetectors", "multiplicityCount", "deltaT" };
     public static final int[] defDir = new int[] { 1, -1, -1, -1 };
 
     //private Collection rows;
@@ -55,8 +55,8 @@ public class EventCandidatesLight {
 
     private static final String[] STRING_ARRAY = new String[0];
 
-    public void read(File in, File out, int eventStart, String en)
-            throws Exception {
+    public void read(File in, File out, File outDelta, int eventStart, String en)
+                throws Exception {
     	Elab elab = Elab.getElab(null, "cosmic");
     	String et = elab.getProperty("event.threshold");
     	if (et != null && !et.equals("")) {
@@ -217,12 +217,12 @@ public class EventCandidatesLight {
         }
     }//end of saveMultiplicitySummary
     
-    public static EventCandidatesLight read(File in, File out, int csc, int dir,
+    public static EventCandidatesLight read(File in, File out, File outDelta, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidatesLight ec = null;
     	try {
 	        ec = new EventCandidatesLight();
-    		ec.read(in, out, eventStart, eventNum);
+    		ec.read(in, out, outDelta, eventStart, eventNum);
     	} catch (Exception e) {
     		System.out.println("Error in EventCandidates: "+e.getMessage());
     	}
