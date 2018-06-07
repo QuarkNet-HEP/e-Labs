@@ -35,20 +35,30 @@ $(document).ready(function () {
 		}
 		ndx++;
 	}
-	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
-   	if ( analysisDT != null) {
-   		analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
-   	    	for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
-   	    		  if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
-   	    			  entry.setValue("checked");
-   	    		  } else {
-   	    			  entry.setValue("");
-   	    		  }
-   	    	}
-   	}
-	request.setAttribute("deltaTIDs", deltaTIDs);
-	request.setAttribute("detectors", detectors);
-%>
+    String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+    if ( analysisDT != null) {
+        analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+        for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
+               if (analysisDT.length == 2) {
+                   if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
+                      entry.setValue("checked");
+                 } else {
+                    entry.setValue("");
+                }                        
+               } else if (analysisDT.length == 1) {
+                     if (entry.getKey().equals(analysisDT[0])) {
+                       entry.setValue("checked");
+                 } else {
+                    entry.setValue("");
+                }                        
+             } else {
+                entry.setValue("");
+            }                        
+        }
+    }
+ request.setAttribute("deltaTIDs", deltaTIDs);
+ request.setAttribute("deltaTIDsSize", deltaTIDs.size());
+ request.setAttribute("detectors", detectors);%>
 
 <div id="analysis-controls">
 	<form method="post" action="../analysis-shower/analysis.jsp">

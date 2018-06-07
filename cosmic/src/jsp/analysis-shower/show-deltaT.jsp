@@ -173,8 +173,8 @@
 			<input type="hidden" name="outputDir" id="outputDir" value="${showerResults.outputDirURL}"/>
 			<e:commonMetadataToSave rawData="${showerResults.analysis.parameters['rawData']}"/>
 			<e:creationDateMetadata/>
-			<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::TimeOfFlight"/>
-			<input type="hidden" name="metadata" value="study string timeofflight"/>
+			<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::ShowerStudy"/>
+			<input type="hidden" name="metadata" value="study string shower"/>
 			<input type="hidden" name="metadata" value="type string plot"/>
 			<input type="hidden" name="metadata" value="detectorcoincidence int ${showerResults.analysis.parameters['detectorCoincidence']}"/>
 			<input type="hidden" name="metadata" value="eventcoincidence int ${showerResults.analysis.parameters['eventCoincidence']}"/>
