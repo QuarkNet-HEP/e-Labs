@@ -58,11 +58,9 @@ $(window).scroll(function(){
 </script>
 
 <div class="search-quick-links">Quick Searches (last 3 months):
-<!-- SB, 9/28/16
   <a href="?submit=true&key=group&value=${user.name}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.name}</a>,
   <a href="?submit=true&key=teacher&value=<%= user.getTeacher() %>&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>"><%= user.getTeacher() %></a>,
   <a href="?submit=true&key=school&value=${user.group.school}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.school}</a>,
--->
   <a href="?submit=true&key=city&value=${user.group.city}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.city}</a>,
   <a href="?submit=true&key=state&value=${user.group.state}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.state}</a>
 </div>
