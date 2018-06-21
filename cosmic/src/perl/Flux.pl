@@ -141,7 +141,9 @@ sub freq_analyze {
         #setup the bins array
         @bins = ();
         for(my $i=$range[0]+$binwidth; $i<$range[1]+$binwidth; $i+=$binwidth){
-            push @bins, $i;
+	        if (scalar(@bins) <= $numbins) {
+	            push @bins, $i;
+	        }
         }
         $freq = Statistics::Descriptive::Full->new();
         #$freq->presorted(1);	#doesn't seem to make a difference in performance
