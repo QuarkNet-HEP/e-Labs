@@ -72,22 +72,22 @@
 			
 			<div id="content">
 				<script type="text/javascript" src="../include/elab.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.errorbars.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.symbol.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.selection.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.navigate.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.crosshair.min.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.stack.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.time.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.text.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/jquery.flot.canvas.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.selection.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.navigate.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.crosshair.min.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.stack.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.text.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.canvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/excanvas.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/excanvas.min.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/excanvas.compiled.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083083/d3.v3.min.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/excanvas.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/excanvas.min.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/d3.v3.min.js"></script>
 				<script type="text/javascript" src="../include/json/json.worker.js"></script>
 				<script type="text/javascript" src="../include/json/json.async.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>

@@ -45,7 +45,7 @@
 	request.setAttribute("validChannelsVeto", channelsVetoInfo);
 	
 %>
-<script type="text/javascript" src="../include/jquery/flot083083/jquery.js"></script>		
+<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
 <script type="text/javascript" src="../analysis-timeofflight/controls.js"></script>		
 <script type="text/javascript" src="../include/elab.js"></script>	
 
