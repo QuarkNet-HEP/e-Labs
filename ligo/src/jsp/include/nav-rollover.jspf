@@ -7,7 +7,9 @@
 			 jquery-{X}.min.js
 			 jquery-ui-{Y}.custom.min.js
 			 jquery.event.hover-{Z}.js --%>
-	<%-- As of May 2018, no file includes this file, nav-rollover.jspf, that doesn't also include header.jsp.  The following are kept as reference --%>
+	<%-- As of June 2018, no file includes this file (nav-rollover.jspf) that doesn't also include header.jsp.
+  		 We will use the JavaScript imports from header.jsp, keeping the following comments as a reference
+			 for what this file requires - JG 22June2018 --%>
 	<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script> --%>
 	<%-- <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script> --%>
 	<%-- <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script> --%>
