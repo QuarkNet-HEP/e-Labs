@@ -58,7 +58,7 @@
     left: 0px;
     top: 200px;
     writing-mode: tb-rl;
-    filter: flipV flipH;
+    filter: flipV() flipH();
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
   }
@@ -425,7 +425,7 @@
   pow10 = function(v) { return Math.pow(v,10); }
 
   // need to update jquery!
-  $('#parameter-table .parameter').live('click', function() {
+	$('#parameter-table').on('click', '.parameter', function() {
     var parameter = $(this).html();
     var title = $(this).attr('title');
 
