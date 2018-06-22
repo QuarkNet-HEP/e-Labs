@@ -52,9 +52,10 @@
 				<noscript><b>This page requires Javascript</b><br /><br /></noscript>
 				<%-- Scripts need to be loaded after nav-rollover since that is where the js pages live --%>
 				<script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.min.js"></script>
-			    <script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.selection.min.js"></script>
-			    <script src="general-current.js" type="text/javascript"></script> <%-- General common stuff --%>
-			    <script src="advanced-current.js" type="text/javascript"></script> <%-- Advanced Mode --%>
+			  <script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.selection.min.js"></script>
+			  <script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
+			  <script src="general-current.js" type="text/javascript"></script> <%-- General common stuff --%>
+			  <script src="advanced-current.js" type="text/javascript"></script> <%-- Advanced Mode --%>
 				
 				<div style="text-align:right">Need help? Try the <e:popup href="../library/ref-analysis.jsp" target="help" width="450" height="600" toolbar="true">Practice Plots</e:popup> or watch a <e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Video</e:popup>.</div>
 				<br />
