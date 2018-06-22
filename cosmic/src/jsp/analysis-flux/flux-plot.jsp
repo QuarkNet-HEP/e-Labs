@@ -120,7 +120,7 @@
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.stack.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.text.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.canvas.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/d3.v3.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.min.js"></script>

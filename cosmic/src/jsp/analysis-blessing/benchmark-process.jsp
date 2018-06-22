@@ -144,10 +144,10 @@
 				</div>
 				<div id="content">
 			<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>		
-			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
+			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
+			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
+			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
+			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
 			<script type="text/javascript" src="../include/excanvas.min.js"></script>
 			<script type="text/javascript" src="../include/elab.js"></script>      
 			<script type="text/javascript" src="blessing.js"></script>	
