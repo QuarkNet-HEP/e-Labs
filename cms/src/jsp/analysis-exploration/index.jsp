@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="../css/data.css"/>
   <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
   <link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
-  <link rel="stylesheet" type="text/css" href="../css/dc-3.0.3.min.js"/>
+  <link rel="stylesheet" type="text/css" href="../css/dc.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/d3-3.5.17.min.js"></script>
