@@ -135,11 +135,11 @@
 							success: onDataLoad1
 						});
 				 });
-				</script>	
+				</script>
 <h1>View blessing plots by date range.</h1>
 <div style="text-align: center;">
 	<a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a> <br><br>
-	Dates on the x-axis are converted from ms after midnight UTC.  
+	Dates on the x-axis are converted from ms after midnight UTC.
 </div>
 	<c:choose>
 		<c:when test="${empty message }">
@@ -147,7 +147,7 @@
 			<!-- control added to change axes values -->
 			<jsp:include page="chartcontrols-range.jsp">
 				<jsp:param name="chartName" value="channel" />
-			</jsp:include>				
+			</jsp:include>
 			<div id="channels" style="background-color:#FFFFFF";">
 				<div id="channelChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div id="channelChartLegend" style="width: 750px;"></div>
@@ -161,16 +161,16 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />          				
-				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesChannel","channelChartName", onOffPlot, "channelMsg");' value="Save Channel Chart"></input>     
-				<div id="channelMsg"></div>   
+          (View your saved plot names)<br />
+				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesChannel","channelChartName", onOffPlot, "channelMsg");' value="Save Channel Chart"></input>
+				<div id="channelMsg"></div>
 			</div>
-								
+
 			<h2>Trigger Rate</h2>
 			<!-- control added to change axes values -->
 			<jsp:include page="chartcontrols-range.jsp">
 				<jsp:param name="chartName" value="trigger" />
-			</jsp:include>					
+			</jsp:include>
 			<div id ="triggerChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 			<div style="text-align:center; width: 100%;">
 				Filename <input type="text" name="triggerChartName" id="triggerChartName" value="">
@@ -180,16 +180,16 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />          
-				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTrigger","triggerChartName", trigPlot, "triggerMsg");' value="Save Trigger Chart"></input>     
-				<div id="triggerMsg"></div>   
+          (View your saved plot names)<br />
+				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTrigger","triggerChartName", trigPlot, "triggerMsg");' value="Save Trigger Chart"></input>
+				<div id="triggerMsg"></div>
 			</div>
 
 				<h2>Visible GPS Satellites</h2>
 				<!-- control added to change axes values -->
 				<jsp:include page="chartcontrols-range.jsp">
 					<jsp:param name="chartName" value="satellite" />
-				</jsp:include>				
+				</jsp:include>
 				<div id="satChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
 					Filename <input type="text" name="satChartName" id="satChartName" value="">
@@ -199,15 +199,15 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />                    
-					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesSatellite","satChartName", satPlot, "satMsg");' value="Save Satellite Chart"></input>     
-					<div id="satMsg"></div>   
+          (View your saved plot names)<br />
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesSatellite","satChartName", satPlot, "satMsg");' value="Save Satellite Chart"></input>
+					<div id="satMsg"></div>
 				</div>
 
 				<h2>Voltage</h2>
 				<jsp:include page="chartcontrols-range.jsp">
 					<jsp:param name="chartName" value="voltage" />
-				</jsp:include>			
+				</jsp:include>
 				<div id="voltChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
 					Filename <input type="text" name="voltChartName" id="voltChartName" value="">
@@ -217,16 +217,16 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />                    
- 					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesVoltage","voltChartName", voltPlot, "voltMsg");' value="Save Voltage Chart"></input>     
-					<div id="voltMsg"></div>   
+          (View your saved plot names)<br />    
+ 					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesVoltage","voltChartName", voltPlot, "voltMsg");' value="Save Voltage Chart"></input>
+					<div id="voltMsg"></div>
 				</div>
 
 				<h2>Temperature</h2>
 				<!-- control added to change axes values -->
 				<jsp:include page="chartcontrols-range.jsp">
 					<jsp:param name="chartName" value="temperature" />
-				</jsp:include>					
+				</jsp:include>
 				<div id="tempChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
 					Filename <input type="text" name="tempChartName" id="tempChartName" value="">
@@ -236,16 +236,16 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />                    
-					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTemperature","tempChartName", tempPlot, "tempMsg");' value="Save Temperature Chart"></input>     
-					<div id="tempMsg"></div>   
+          (View your saved plot names)<br />
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTemperature","tempChartName", tempPlot, "tempMsg");' value="Save Temperature Chart"></input>
+					<div id="tempMsg"></div>
 				</div>
 				
 				<h2>Barometric Pressure</h2>
 				<!-- control added to change axes values -->
 				<jsp:include page="chartcontrols-range.jsp">
 					<jsp:param name="chartName" value="pressure" />
-				</jsp:include>				
+				</jsp:include>
 				<div id="pressureChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
 					Filename <input type="text" name="pressChartName" id="pressChartName" value="">
@@ -255,10 +255,10 @@
               <option>${plotName }</option>
             </c:forEach>
           </select>
-          (View your saved plot names)<br />                              
-					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesPressure","pressChartName", pressPlot, "pressMg");' value="Save Pressure Chart"></input>     
-					<div id="pressMsg"></div>   
-				</div>				
+          (View your saved plot names)<br />              
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesPressure","pressChartName", pressPlot, "pressMg");' value="Save Pressure Chart"></input>
+					<div id="pressMsg"></div>
+				</div>
 
 		</c:when>
 		<c:otherwise>
@@ -273,9 +273,9 @@
 		</c:forEach>
 		</table>
 	</c:if>
-		<input type="hidden" name="outputDir" id="outputDir" value="${outputDir}"/>	
+		<input type="hidden" name="outputDir" id="outputDir" value="${outputDir}"/>
 			</div>
-			<!-- end content -->	
+			<!-- end content -->
 		
 			<div id="footer">
 			</div>
