@@ -107,6 +107,7 @@
 		<%-- This page needs jQuery, but it's included through nav-rollover.jspf  --%>
 		<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script> --%>
 		<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script> --%>
+		<script type="text/javascript" src="../include/jquery/js/jquery-migrate-1.4.1.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
