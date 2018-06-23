@@ -20,7 +20,8 @@
 
 	<%-- Ideally we'd like to upgrade d3.js to its latest, but versions above v3.5.17
 			 break when used with dc.js v3.0.3: --%>
-	<script type="text/javascript" src="../include/d3-3.5.17.min.js"></script>
+	<script type="text/javascript" src="../include/d3-3.5.5.min.js"></script>
+	<%-- <script type="text/javascript" src="../include/d3-3.5.17.min.js"></script> --%>
 	<%-- <script type="text/javascript" src="../include/d3-4.0.0.min.js"></script> --%>
 	<%-- <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script> --%>
 
