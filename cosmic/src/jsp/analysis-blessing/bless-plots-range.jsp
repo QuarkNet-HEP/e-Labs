@@ -124,6 +124,7 @@
 		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
+		<script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
 		<script type="text/javascript" src="../include/excanvas.min.js"></script>
 		<script type="text/javascript" src="../include/json/json.worker.js"></script>
 		<script type="text/javascript" src="../include/json/json.async.js"></script>
