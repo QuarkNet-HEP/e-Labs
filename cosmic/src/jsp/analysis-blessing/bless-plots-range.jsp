@@ -119,23 +119,23 @@
 			</div>
 			
 			<div id="content">
-		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
-		<script type="text/javascript" src="../include/excanvas.min.js"></script>
-		<script type="text/javascript" src="../include/json/json.worker.js"></script>
-		<script type="text/javascript" src="../include/json/json.async.js"></script>
-		<script type="text/javascript" src="blessing.js"></script>
-		<script type="text/javascript" src="blessing-range.js"></script>
-		<script>
-			$(document).ready(function() {
-				$.ajax({
-					type: "GET",
-					success: onDataLoad1
-				});
-			});
-		</script>	
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
+				<script type="text/javascript" src="../include/excanvas.min.js"></script>
+				<script type="text/javascript" src="../include/json/json.worker.js"></script>
+				<script type="text/javascript" src="../include/json/json.async.js"></script>
+				<script type="text/javascript" src="blessing.js"></script>
+				<script type="text/javascript" src="blessing-range.js"></script>
+				<script>
+				 $(document).ready(function() {
+						$.ajax({
+							type: "GET",
+							success: onDataLoad1
+						});
+				 });
+				</script>	
 <h1>View blessing plots by date range.</h1>
 <div style="text-align: center;">
 	<a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a> <br><br>
