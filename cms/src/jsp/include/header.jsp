@@ -3,8 +3,8 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 
-<%-- Upgraded jQuery 1.4.3.min > 1.7.2.min 15Dec2017 - JG --%>
 <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-migrate-1.4.1.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.12.1.custom.min.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
