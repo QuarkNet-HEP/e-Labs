@@ -14,22 +14,23 @@
   <link rel="stylesheet" type="text/css" href="../css/data.css"/>
   <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
   <link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
-  <link rel="stylesheet" type="text/css" href="../css/dc-3.0.3.min.css"/>
+  <link rel="stylesheet" type="text/css" href="../css/dc-2.0.2.min.css"/>
+  <%-- <link rel="stylesheet" type="text/css" href="../css/dc-3.0.3.min.css"/> --%>
 
   <script type="text/javascript" src="../include/elab.js"></script>
 
 	<%-- Ideally we'd like to upgrade d3.js to its latest, but versions above v3.5.17
 			 break when used with dc.js v3.0.3: --%>
-	<script type="text/javascript" src="../include/d3-3.5.5.min.js"></script>
-	<%-- <script type="text/javascript" src="../include/d3-3.5.17.min.js"></script> --%>
+	<%-- <script type="text/javascript" src="../include/d3-3.5.5.min.js"></script> --%>
+	<script type="text/javascript" src="../include/d3-3.5.17.min.js"></script>
 	<%-- <script type="text/javascript" src="../include/d3-4.0.0.min.js"></script> --%>
 	<%-- <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script> --%>
 
 	<%-- <script type="text/javascript" src="../include/crossfilter.min.js"></script> --%>
   <script type="text/javascript" src="../include/crossfilter-1.4.6.min.js"></script>
 
-	<%-- <script type="text/javascript" src="../include/dc-2.0.2.min.js"></script> --%>
-	<script type="text/javascript" src="../include/dc-3.0.3.min.js"></script>
+	<script type="text/javascript" src="../include/dc-2.0.2.min.js"></script>
+	<%-- <script type="text/javascript" src="../include/dc-3.0.3.min.js"></script> --%>
 
 	<script type="text/javascript" src="../include/html2canvas-1.0.0-alpha.12.js"></script>
 
@@ -137,7 +138,7 @@
   <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.js"></script>
   <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.selection.js"></script>
   <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.crosshair.js"></script>
-  <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.time.min.js"></script>
+  <%-- <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.time.min.js"></script> --%>
   <div id="content">
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
