@@ -432,10 +432,10 @@
     	return output;
   	}
 
-  	ln = function(v) { return v > 0 ? Math.log(v) : 0; }
-  	exp = function(v) { return Math.exp(v); }
-  	log10 = function(v) { return v > 0 ? Math.log(v)/Math.log(10): 0; }
-  	pow10 = function(v) { return Math.pow(v,10); }
+  	let ln = function(v) { return v > 0 ? Math.log(v) : 0; }
+  	let exp = function(v) { return Math.exp(v); }
+  	let log10 = function(v) { return v > 0 ? Math.log(v)/Math.log(10): 0; }
+  	let pow10 = function(v) { return Math.pow(v,10); }
 
   	// need to update jquery!
   	$('#parameter-table').on('click', '.parameter', function() {
