@@ -389,70 +389,70 @@
         ]
     };
 
-  for ( let i = 0; i < csv_files.length; i++ ) {
-    let id = csv_files[i].id;
-    let name = csv_files[i].name;
-    let descr = csv_files[i].descr;
-    $('#dataset').append('<option value="'+id+'">'+descr+'</option>');
-  }
+  	for ( let i = 0; i < csv_files.length; i++ ) {
+    	let id = csv_files[i].id;
+    	let name = csv_files[i].name;
+    	let descr = csv_files[i].descr;
+    	$('#dataset').append('<option value="'+id+'">'+descr+'</option>');
+  	}
 
-  var original_data;
-  var current_data;
-  var dataset_name;
-  var dataset_id;
-  var dataset_type;
-  var dataset_descr;
-  var cfdata, all;
+  	var original_data;
+  	var current_data;
+  	var dataset_name;
+  	var dataset_id;
+  	var dataset_type;
+  	var dataset_descr;
+  	var cfdata, all;
 
-  function getDataset(id) {
-    for ( var i = 0; i < csv_files.length; i++ ) {
-      if ( csv_files[i].id === id ) {
-        return csv_files[i];
-      }
-    }
-    return null;
-  }
+  	function getDataset(id) {
+    	for ( var i = 0; i < csv_files.length; i++ ) {
+      	if ( csv_files[i].id === id ) {
+        	return csv_files[i];
+      	}
+    	}
+    	return null;
+  	}
 
-  function buildHistogram(data, bw) {
-    var minx = Math.floor(d3.min(data)),
-    maxx = Math.ceil(d3.max(data)),
-    nbins = Math.floor((maxx-minx) / bw);
+  	function buildHistogram(data, bw) {
+    	var minx = Math.floor(d3.min(data)),
+    			maxx = Math.ceil(d3.max(data)),
+    			nbins = Math.floor((maxx-minx) / bw);
 
-    //console.log('minx, maxx', minx, maxx);
+    	//console.log('minx, maxx', minx, maxx);
 
-    var histogram = d3.layout.histogram();
-    histogram.bins(nbins);
-    data = histogram(data);
+    	var histogram = d3.layout.histogram();
+    	histogram.bins(nbins);
+    	data = histogram(data);
 
-    var output = [];
-    for ( var i = 0; i < data.length; i++ ) {
-      output.push([data[i].x, data[i].y]);
-      output.push([data[i].x + data[i].dx, data[i].y]);
-    }
-    return output;
-  }
+    	var output = [];
+    	for ( var i = 0; i < data.length; i++ ) {
+      	output.push([data[i].x, data[i].y]);
+      	output.push([data[i].x + data[i].dx, data[i].y]);
+    	}
+    	return output;
+  	}
 
-  ln = function(v) { return v > 0 ? Math.log(v) : 0; }
-  exp = function(v) { return Math.exp(v); }
-  log10 = function(v) { return v > 0 ? Math.log(v)/Math.log(10): 0; }
-  pow10 = function(v) { return Math.pow(v,10); }
+  	ln = function(v) { return v > 0 ? Math.log(v) : 0; }
+  	exp = function(v) { return Math.exp(v); }
+  	log10 = function(v) { return v > 0 ? Math.log(v)/Math.log(10): 0; }
+  	pow10 = function(v) { return Math.pow(v,10); }
 
-  // need to update jquery!
-  $('#parameter-table').on('click', '.parameter', function() {
-    var parameter = $(this).html();
-    var title = $(this).attr('title');
+  	// need to update jquery!
+  	$('#parameter-table').on('click', '.parameter', function() {
+    	var parameter = $(this).html();
+    	var title = $(this).attr('title');
 
-    var active = $(this).hasClass('active');
-    var parId = 'plot'+parameter;
+    	var active = $(this).hasClass('active');
+    	var parId = 'plot'+parameter;
 
-    if ( active ) {
-      $(this).removeClass('active');
-      $('#'+parId).remove();
-      $('#'+parId+'-chart').remove();
-    } else {
-      $(this).addClass('active');
+    	if ( active ) {
+      	$(this).removeClass('active');
+      	$('#'+parId).remove();
+      	$('#'+parId+'-chart').remove();
+    	} else {
+      	$(this).addClass('active');
 
-      var options = {
+      	var options = {
           lines: { show: true, fill: false, lineWidth: 1.2 },
           grid: { hoverable: true, autoHighlight: false },
           points: { show: false },
@@ -461,246 +461,244 @@
           yaxis: { autoscaleMargin: 0.1 },
           crosshair: { mode: "xy" },
           selection: { mode: "x", color: "yellow" }
-      };
+      	};
 
-      var dimension = cfdata.dimension(function(d) {return +d[parameter];});
+      	var dimension = cfdata.dimension(function(d) {return +d[parameter];});
 
-      var xmin = dimension.bottom(1)[0][parameter];
-      var xmax = dimension.top(1)[0][parameter];
+      	var xmin = dimension.bottom(1)[0][parameter];
+      	var xmax = dimension.top(1)[0][parameter];
 
-      xmin = Math.floor(xmin);
-      xmax = Math.ceil(xmax);
+      	xmin = Math.floor(xmin);
+      	xmax = Math.ceil(xmax);
 
-      var binw = (xmax - xmin) / 100;
-      if ( binw > 1.0 ) {
-        binw = Math.floor(binw);
-      } else {
-        binw = 1.0;
-      }
+      	var binw = (xmax - xmin) / 100;
+      	if ( binw > 1.0 ) {
+        	binw = Math.floor(binw);
+      	} else {
+        	binw = 1.0;
+      	}
 
-      var group = dimension.group(function(d) {return Math.floor(d/binw)*binw;});
+      	var group = dimension.group(function(d) {return Math.floor(d/binw)*binw;});
 
-      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), binw);
-      var nevents = original_data.length;
+      	var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), binw);
+      	var nevents = original_data.length;
 
-      $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
-      $('#'+parId).append($('#plot-template').html());
-      $('#'+parId+' input.binwidth').attr('value', binw);
+      	$('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
+      	$('#'+parId).append($('#plot-template').html());
+      	$('#'+parId+' input.binwidth').attr('value', binw);
 
-      $('#chart-container').append("<div class=\"chart\" id=\"" + parId+"-chart" + "\"></div>");
+      	$('#chart-container').append("<div class=\"chart\" id=\"" + parId+"-chart" + "\"></div>");
 
-      $('#'+parId+' .selector').hide();
-      var dataset = getDataset(dataset_id);
-      var selector;
+      	$('#'+parId+' .selector').hide();
+      	var dataset = getDataset(dataset_id);
+      	var selector;
 
-      if ( dataset !== null && 'selector' in dataset ) {
-        //console.log(dataset.selector);
-        selector = dataset.selector;
-        $('#'+parId+' .selector-type').show();
-        $('span.selector-type').html(selector.descr);
-      }
+      	if ( dataset !== null && 'selector' in dataset ) {
+        	//console.log(dataset.selector);
+        	selector = dataset.selector;
+        	$('#'+parId+' .selector-type').show();
+        	$('span.selector-type').html(selector.descr);
+      	}
 
-      if ( dataset_type === 'two_lepton' ) {
-        $('#'+parId+' .selector-charge').show();
-      }
+      	if ( dataset_type === 'two_lepton' ) {
+        	$('#'+parId+' .selector-charge').show();
+      	}
 
-      var data = [{data:histogram, label:parameter}];
-      var plot = $.plot($('#'+parId+ ' .placeholder'), data, options);
+      	var data = [{data:histogram, label:parameter}];
+      	var plot = $.plot($('#'+parId+ ' .placeholder'), data, options);
 
-      $('#'+parId+ ' .xlabel').html(title);
-      //$('#'+parId+ ' .ylabel').html('Number of events');
-      $('#'+parId+ ' .plottitle').html(dataset_descr+': '+parameter+' : '+nevents+' entries');
+      	$('#'+parId+ ' .xlabel').html(title);
+      	//$('#'+parId+ ' .ylabel').html('Number of events');
+      	$('#'+parId+ ' .plottitle').html(dataset_descr+': '+parameter+' : '+nevents+' entries');
 
-      plot.draw();
+      	plot.draw();
 
-      $('#'+parId+'-chart').append('<input type="button" class="save" value="Print plot"/>');
+      	$('#'+parId+'-chart').append('<input type="button" class="save" value="Print plot"/>');
 
-      var chart = dc.barChart('#'+parId+'-chart')
-        .width(768)
-        .height(480)
-        .x(d3.scale.linear().domain([xmin,xmax]))
-        .brushOn(true)
-        .centerBar(false)
-        .xAxisLabel(title)
-        .yAxisLabel('Number of events')
-        .dimension(dimension)
-        .group(group);
+      	var chart = dc.barChart('#'+parId+'-chart')
+        	.width(768)
+        	.height(480)
+        	.x(d3.scale.linear().domain([xmin,xmax]))
+        	.brushOn(true)
+        	.centerBar(false)
+        	.xAxisLabel(title)
+        	.yAxisLabel('Number of events')
+        	.dimension(dimension)
+        	.group(group);
 
-      chart.render();
+      	chart.render();
 
-      xmin = plot.getAxes().xaxis.min;
-      xmax = plot.getAxes().xaxis.max;
+      	xmin = plot.getAxes().xaxis.min;
+      	xmax = plot.getAxes().xaxis.max;
 
-      $('#'+parId+' .placeholder').on('plotselected', function(event, ranges) {
-        //console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
-        //console.log(data[0].data.length);
-        $('.reset-selection').removeAttr('disabled');
-        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
-        //$.extend(true, options, {xaxis:{min: xmin, max: xmax}});
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+      	$('#'+parId+' .placeholder').on('plotselected', function(event, ranges) {
+        	//console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
+        	//console.log(data[0].data.length);
+        	$('.reset-selection').removeAttr('disabled');
+        	$.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        	//$.extend(true, options, {xaxis:{min: xmin, max: xmax}});
+        	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .reset-selection').on('click', function() {
-         $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
-         $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+      	$('#'+parId+' .reset-selection').on('click', function() {
+         	$.extend(true, options, {xaxis:{min: xmin, max: xmax}});
+         	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .logx').on('change', function(){
-        if ( $(this).is(':checked') ) {
-           $.extend(true, options, {xaxis:{transform:log10, inverseTransform:pow10}});
-        } else {
-           $.extend(true, options, {xaxis:{transform:null,inverseTransform:null}});
-        }
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+      	$('#'+parId+' .logx').on('change', function(){
+        	if ( $(this).is(':checked') ) {
+           	$.extend(true, options, {xaxis:{transform:log10, inverseTransform:pow10}});
+        	} else {
+           	$.extend(true, options, {xaxis:{transform:null,inverseTransform:null}});
+        	}
+        	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .logy').on('change', function(){
-        if ( $(this).is(':checked') ) {
-           $.extend(true, options, {yaxis:{transform:log10, inverseTransform:pow10}});
-        } else {
-           $.extend(true, options, {yaxis:{transform:null,inverseTransform:null}});
-        }
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+      	$('#'+parId+' .logy').on('change', function(){
+        	if ( $(this).is(':checked') ) {
+           	$.extend(true, options, {yaxis:{transform:log10, inverseTransform:pow10}});
+        	} else {
+           	$.extend(true, options, {yaxis:{transform:null,inverseTransform:null}});
+        	}
+        	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .apply-binwidth').on('click', function() {
-        var value = $('#'+parId+' input.binwidth').val();
-        //console.log(parId + ' ' + value);
+      	$('#'+parId+' .apply-binwidth').on('click', function() {
+        	var value = $('#'+parId+' input.binwidth').val();
+        	//console.log(parId + ' ' + value);
 
-        if ( value === '' ) {
-          return;
-        }
+        	if ( value === '' ) {
+          	return;
+        	}
 
-        histogram = buildHistogram(current_data.map(function(d) {return +d[parameter];}), value);
-        data = [{data:histogram, label:parameter}];
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+        	histogram = buildHistogram(current_data.map(function(d) {return +d[parameter];}), value);
+        	data = [{data:histogram, label:parameter}];
+        	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .save').on('click', function() {
-        html2canvas($('#'+parId)).then(function(canvas) {
-          image = canvas.toDataURL("image/png");
-          window.open(image, "toDataURL() image", "width=800, height=400");
-        });
-      });
+      	$('#'+parId+' .save').on('click', function() {
+        	html2canvas($('#'+parId)).then(function(canvas) {
+          	image = canvas.toDataURL("image/png");
+          	window.open(image, "toDataURL() image", "width=800, height=400");
+        	});
+				});
 
-      $('#'+parId+'-chart .save').on('click', function() {
+     		$('#'+parId+'-chart .save').on('click', function() {
 
-        var svg = document.querySelector('#'+parId+'-chart > svg');
-        var serializer = new XMLSerializer();
-        var source = serializer.serializeToString(svg);
-        var imgsrc = 'data:image/svg+xml;base64,'+ btoa(source);
+        	var svg = document.querySelector('#'+parId+'-chart > svg');
+        	var serializer = new XMLSerializer();
+        	var source = serializer.serializeToString(svg);
+        	var imgsrc = 'data:image/svg+xml;base64,'+ btoa(source);
 
-        var img = '<img src="'+imgsrc+'">';
-        var image = new Image;
-        image.src = imgsrc;
+        	var img = '<img src="'+imgsrc+'">';
+        	var image = new Image;
+        	image.src = imgsrc;
 
-        image.onload = function() {
-          var canvas = document.createElement('canvas');
-          canvas.width = image.width;
-          canvas.height = image.height;
-          var context = canvas.getContext('2d');
-          context.drawImage(image, 0, 0);
-          var canvasdata = canvas.toDataURL("image/png");
-          window.open(canvasdata, "toDataURL() image", "width=800, height=400");
-        };
-      });
+        	image.onload = function() {
+          	var canvas = document.createElement('canvas');
+          	canvas.width = image.width;
+          	canvas.height = image.height;
+          	var context = canvas.getContext('2d');
+          	context.drawImage(image, 0, 0);
+          	var canvasdata = canvas.toDataURL("image/png");
+          	window.open(canvasdata, "toDataURL() image", "width=800, height=400");
+        	};
+      	});
 
-      $('#'+parId+' input.selector').on('change', function() {
-        var bw = $('input.binwidth').val();
-        var hist;
+      	$('#'+parId+' input.selector').on('change', function() {
+        	var bw = $('input.binwidth').val();
+        	var hist;
 
-        // This only assumes that we have the two selectors for charge and type.
-        // Kludgy, but good enough for now.
+        	// This only assumes that we have the two selectors for charge and type.
+        	// Kludgy, but good enough for now.
 
-        if ( ! $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
-          //console.log('original');
-          current_data = original_data;
-        }
+        	if ( ! $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
+          	//console.log('original');
+          	current_data = original_data;
+        	}
 
-        if ( ! $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
-          //console.log('type');
-          current_data = original_data.filter(function(d) {return d[selector.name] === selector.value;});
-        }
+        	if ( ! $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
+          	//console.log('type');
+          	current_data = original_data.filter(function(d) {return d[selector.name] === selector.value;});
+        	}
 
-        if ( $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
-          //console.log('charge');
-          current_data = original_data.filter(function(d) {return +d['Q1'] !== +d['Q2'];});
-        }
+        	if ( $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
+          	//console.log('charge');
+          	current_data = original_data.filter(function(d) {return +d['Q1'] !== +d['Q2'];});
+        	}
 
-        if( $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
-          //console.log('both');
-          current_data = original_data.filter(function(d) {return (+d['Q1'] !== +d['Q2'] && d[selector.name] === selector.value);});
-        }
+        	if( $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
+          	//console.log('both');
+          	current_data = original_data.filter(function(d) {return (+d['Q1'] !== +d['Q2'] && d[selector.name] === selector.value);});
+        	}
 
-        hist = buildHistogram(current_data.map(function(d) {return +d[parameter];}), bw);
-        data = [{data:hist, label:parameter}];
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
+        	hist = buildHistogram(current_data.map(function(d) {return +d[parameter];}), bw);
+        	data = [{data:hist, label:parameter}];
+        	$.plot($('#'+parId+ ' .placeholder'), data, options);
+      	});
 
-      $('#'+parId+' .placeholder').on('plothover', function(event, pos, item) {
-        // Hmm, I need to fix the cursor value when logx.
-        // For now, disable cursor when logx is checked
-        if ( $('#'+parId+' .logx').is(':checked') ) {
-          $('#'+parId+' .cursor').css("display", "none");
-          return;
-        }
+      	$('#'+parId+' .placeholder').on('plothover', function(event, pos, item) {
+        	// Hmm, I need to fix the cursor value when logx.
+        	// For now, disable cursor when logx is checked
+        	if ( $('#'+parId+' .logx').is(':checked') ) {
+          	$('#'+parId+' .cursor').css("display", "none");
+          	return;
+        	}
 
-        $('#'+parId+' .cursor').css("display", "block");
-        $('#'+parId+' .cursor').css("left", (pos.pageX + 6) + "px");
-        $('#'+parId+' .cursor').css("top", (pos.pageY - 20) + "px");
-        $('#'+parId+' .cursorValue').html('[x:'+pos.x.toFixed(2) +', y:'+pos.y.toFixed(2)+']');
-      });
+        	$('#'+parId+' .cursor').css("display", "block");
+        	$('#'+parId+' .cursor').css("left", (pos.pageX + 6) + "px");
+        	$('#'+parId+' .cursor').css("top", (pos.pageY - 20) + "px");
+        	$('#'+parId+' .cursorValue').html('[x:'+pos.x.toFixed(2) +', y:'+pos.y.toFixed(2)+']');
+      	});
 
-      $('#'+parId+' .placeholder').on('mouseout', function() {
-        $('#'+parId+' .cursor').css("display", "none");
-      });
-    }
-  });
+      	$('#'+parId+' .placeholder').on('mouseout', function() {
+        	$('#'+parId+' .cursor').css("display", "none");
+      	});
+    	}
+  	});
 
-  function loadFile(input) {
-    d3.csv(input.file,
-      function(data) {
-        original_data = data;
-        current_data = original_data;
-        cfdata = crossfilter(data);
-        all = cfdata.groupAll();
-      }
-    );
-  }
+  	function loadFile(input) {
+    	d3.csv(input.file, function(data) {
+				original_data = data;
+      	current_data = original_data;
+      	cfdata = crossfilter(data);
+      	all = cfdata.groupAll();
+    	});
+		}
 
-  function datasetSelected() {
-    $('#parameters').hide();
-    $('#parameter-table').empty();
-    $('#plot-container').empty();
-    $('#chart-container').empty();
+  	function datasetSelected() {
+    	$('#parameters').hide();
+    	$('#parameter-table').empty();
+    	$('#plot-container').empty();
+    	$('#chart-container').empty();
 
-    var expr = $('select option:selected').attr('value');
-    var type;
+    	var expr = $('select option:selected').attr('value');
+    	var type;
 
-    for ( var i = 0; i < csv_files.length; i++ ) {
-      if ( csv_files[i].id === expr ) {
-        //type = csv_files[i].type;
+    	for ( var i = 0; i < csv_files.length; i++ ) {
+      	if ( csv_files[i].id === expr ) {
+        	//type = csv_files[i].type;
 
-        dataset_name = csv_files[i].name;
-        dataset_id = csv_files[i].id;
-        dataset_type = csv_files[i].type;
-        dataset_descr = csv_files[i].descr;
+        	dataset_name = csv_files[i].name;
+        	dataset_id = csv_files[i].id;
+        	dataset_type = csv_files[i].type;
+        	dataset_descr = csv_files[i].descr;
 
-        loadFile(csv_files[i]);
+        	loadFile(csv_files[i]);
 
-        for ( var j = 0; j < event_types[dataset_type].length; j++ ) {
+        	for ( var j = 0; j < event_types[dataset_type].length; j++ ) {
             var par = event_types[dataset_type][j];
             $('#parameters').show();
             $('#parameter-table').append('<td><button class="parameter" title="'+ par.description +'">'+ par.name +'</button></td>');
-        }
-        return;
-      }
-    }
-  }
+        	}
+        	return;
+      	}
+    	}
+  	}
 
-  $('#dataset').change(datasetSelected);
+  	$('#dataset').change(datasetSelected);
 
   });
- </script>
+</script>
 </body>
 </html>
