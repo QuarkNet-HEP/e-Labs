@@ -145,8 +145,8 @@
     <p>
       Explore data from the CMS experiment at the Large Hadron Collider (LHC). Many particles can be produced in the proton-proton
       collisions recorded by CMS, such as J/&psi; mesons, &Upsilon; (upsilon) mesons, and W and Z bosons. These
-      particles decay very promptly and cannot be detected directly.  Some of the more familiar particles into which they can decay, 
-      such as electrons, muons, and photons, can be detected and measured in CMS.  From these particles, one can study the properties 
+      particles decay very promptly and cannot be detected directly.  Some of the more familiar particles into which they can decay,
+      such as electrons, muons, and photons, can be detected and measured in CMS.  From these particles, one can study the properties
       of the parent particles.
     </p>
     <p>
@@ -389,10 +389,10 @@
         ]
     };
 
-  for ( var i = 0; i < csv_files.length; i++ ) {
-    var id = csv_files[i].id;
-    var name = csv_files[i].name;
-    var descr = csv_files[i].descr;
+  for ( let i = 0; i < csv_files.length; i++ ) {
+    let id = csv_files[i].id;
+    let name = csv_files[i].name;
+    let descr = csv_files[i].descr;
     $('#dataset').append('<option value="'+id+'">'+descr+'</option>');
   }
 
@@ -604,7 +604,7 @@
           window.open(canvasdata, "toDataURL() image", "width=800, height=400");
         };
       });
-      
+
       $('#'+parId+' input.selector').on('change', function() {
         var bw = $('input.binwidth').val();
         var hist;
