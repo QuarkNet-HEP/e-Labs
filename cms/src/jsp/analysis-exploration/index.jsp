@@ -290,7 +290,7 @@
     // show plot container div by default
     $('#plot-container').show();
 
-    var csv_files = [
+    let csv_files = [
       {
         id:"Jpismumu",
         name: "J/&psi;&rarr;&mu;&mu;",
@@ -361,7 +361,7 @@
     // We know the names of the parameters that we have produced in the csv files.
     // We also have only two event types in the csv: lepton_neutrino and two_lepton.
     // We therefore provide some information on the parameters.
-    var event_types = {
+    let event_types = {
         "two_lepton":
         [
           {name:"E1", unit:"GeV", description:"The total energy [GeV] of the first lepton (electron or muon)"},
@@ -396,16 +396,16 @@
     	$('#dataset').append('<option value="'+id+'">'+descr+'</option>');
   	}
 
-  	var original_data;
-  	var current_data;
-  	var dataset_name;
-  	var dataset_id;
-  	var dataset_type;
-  	var dataset_descr;
-  	var cfdata, all;
+  	let original_data;
+  	let current_data;
+  	let dataset_name;
+  	let dataset_id;
+  	let dataset_type;
+  	let dataset_descr;
+  	let cfdata, all;
 
   	function getDataset(id) {
-    	for ( var i = 0; i < csv_files.length; i++ ) {
+    	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === id ) {
         	return csv_files[i];
       	}
