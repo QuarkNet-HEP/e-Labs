@@ -169,10 +169,10 @@
 
     <div id="parameters">
       <p>Choose one or more parameters:</p>
-    <table id="parameter-table">
-      <tr></tr>
-    </table>
-  </div>
+    	<table id="parameter-table">
+      	<tr></tr>
+    	</table>
+  	</div>
 
     <ul class="tab">
       <li><a href="#" class="tablinks plot active">Histograms</a></li>
