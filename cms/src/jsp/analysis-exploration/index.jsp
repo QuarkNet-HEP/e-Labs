@@ -279,6 +279,8 @@
       $('.tablinks').removeClass('active');
       $(this).addClass('active');
 
+			<!-- "plot" is for Histogram graphs
+					 "chart" is for Correlated charts graphs -->
       if ($(this).hasClass('plot')) {
         $('#chart-container').hide();
         $('#plot-container').show();
