@@ -1,4 +1,7 @@
 <!--Rev.8278-->
+<%-- Can references to JS values
+		 		 dataset_name, dataset_id, dataset_type, dataset_descr
+		 be deleted? - JG 29Jun2018 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
