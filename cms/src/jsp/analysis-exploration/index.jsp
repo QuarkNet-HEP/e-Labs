@@ -167,7 +167,7 @@
       </tr>
     </table>
 
-    <div id="parameters">
+		<div id="parameters">
       <p>Choose one or more parameters:</p>
     	<table id="parameter-table">
       	<tr></tr>
@@ -279,8 +279,8 @@
       $('.tablinks').removeClass('active');
       $(this).addClass('active');
 
-			<!-- "plot" is for Histogram graphs
-					 "chart" is for Correlated charts graphs -->
+			// "plot" is for Histogram graphs
+			// "chart" is for Correlated charts graphs
       if ($(this).hasClass('plot')) {
         $('#chart-container').hide();
         $('#plot-container').show();
@@ -292,6 +292,7 @@
       }
     });
 
+		// Parameter selector row hidden until user chooses a dataset
     $('#parameters').hide();
 
     // show plot container div by default
@@ -398,20 +399,26 @@
 
   	for ( let i = 0; i < csv_files.length; i++ ) {
     	let id = csv_files[i].id;
-    	let name = csv_files[i].name;
+			// 'name' doesn't appear to be used in this code:
+			let name = csv_files[i].name;
     	let descr = csv_files[i].descr;
     	$('#dataset').append('<option value="'+id+'">'+descr+'</option>');
   	}
 
   	let original_data;
   	let current_data;
-  	let dataset_name;
+
+		// Globals used only in datasetSelected()
+		let dataset_name;
   	let dataset_id;
   	let dataset_type;
   	let dataset_descr;
-  	let cfdata, all;
+
+		let cfdata;
+		let all;
 
   	function getDataset(id) {
+			// Return the csv_files object with the given 'id'
     	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === id ) {
         	return csv_files[i];
@@ -679,13 +686,14 @@
     	$('#plot-container').empty();
     	$('#chart-container').empty();
 
-    	var expr = $('select option:selected').attr('value');
-    	var type;
+    	let expr = $('select option:selected').attr('value');
+    	let type;
 
-    	for ( var i = 0; i < csv_files.length; i++ ) {
+    	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === expr ) {
         	//type = csv_files[i].type;
 
+					// Globals assigned values here; never used
         	dataset_name = csv_files[i].name;
         	dataset_id = csv_files[i].id;
         	dataset_type = csv_files[i].type;
@@ -693,8 +701,8 @@
 
         	loadFile(csv_files[i]);
 
-        	for ( var j = 0; j < event_types[dataset_type].length; j++ ) {
-            var par = event_types[dataset_type][j];
+        	for ( let j = 0; j < event_types[dataset_type].length; j++ ) {
+            let par = event_types[dataset_type][j];
             $('#parameters').show();
             $('#parameter-table').append('<td><button class="parameter" title="'+ par.description +'">'+ par.name +'</button></td>');
         	}
