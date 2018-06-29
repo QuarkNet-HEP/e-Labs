@@ -686,8 +686,9 @@
     	$('#plot-container').empty();
     	$('#chart-container').empty();
 
-    	let expr = $('select option:selected').attr('value');
-    	let type;
+    	//let expr = $('select option:selected').attr('value');
+			let expr = $("#dataset").children("option").filter(":selected").val()
+			let type;
 
     	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === expr ) {
