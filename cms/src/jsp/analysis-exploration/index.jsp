@@ -270,8 +270,10 @@
       </div>
     </div>
     <!-- end container -->
-  <script type="text/javascript">
-  $(function() {
+
+		<script type="text/javascript">
+		// jQuery shorthand for `$(document).ready(function() {`
+		$(function() {
 
     $('.tablinks').on('click', function() {
       $('.tablinks').removeClass('active');
