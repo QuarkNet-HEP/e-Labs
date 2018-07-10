@@ -53,6 +53,9 @@
 	}
 	
 	if ("Update Group Detector IDs".equals(submit)) {
+		/// ElabGroup `user` is defined in teacher-login-required.jsp
+		/// repo: common/src/jsp/login/teacher-login-required.jsp
+		/// - JG 10Jul2018
 		group = user.getGroup(groupName);
 		if (group == null) {
 		    throw new ElabJspException("You are not the teacher for the specified group.");
