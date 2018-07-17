@@ -254,9 +254,9 @@ public class ThresholdTimes {
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	//} else {
+        	} //else {
         	//	jd = startJd;
-        	}
+        	//}
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
