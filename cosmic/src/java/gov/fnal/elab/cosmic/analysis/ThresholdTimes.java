@@ -256,7 +256,7 @@ public class ThresholdTimes {
         		jd = nextJd;
         	//} else {
         	//	jd = startJd;
-        	//}
+        	}
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
