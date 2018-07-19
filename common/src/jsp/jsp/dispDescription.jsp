@@ -87,7 +87,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
     } //dbschema - instanceof Annotation
 
 		// Added to help fix XSS fixes - JG 19Jul2018
-		request.setAttribute("ret", ret)
+		request.setAttribute("ret", ret);
 				
 		if (dbschema != null)
     dbschema.close();
