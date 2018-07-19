@@ -85,7 +85,11 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 	          ret += e + "<BR></CENTER>";
 	      }
     } //dbschema - instanceof Annotation
-    if (dbschema != null)
+
+		// Added to help fix XSS fixes - JG 19Jul2018
+		request.setAttribute("ret", ret)
+				
+		if (dbschema != null)
     dbschema.close();
     if (annotation != null)
     ((DatabaseSchema)annotation).close();
