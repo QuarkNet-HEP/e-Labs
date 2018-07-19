@@ -3,18 +3,63 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
+<script>
+$(document).ready(function () {
+	   $("input[name='deltaTIDs']").change(function () {
+			var checkboxes = document.getElementsByName("deltaTIDs");
+			var rightCount = 2;
+			var cnt = $("input[name='deltaTIDs']:checked").length;
+	      	if (cnt > rightCount) {
+	      		$(this).prop("checked", "");
+	      		alert("Please unselect a DAQ. Total selected should be 2.")
+		    }
+	  });
+	});
+</script>
 
 <%
 	//build set of detector id locations
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(analysis.getParameterValues("rawData"));
 	Map detectors = new TreeMap();
+	Map<String,String> deltaTIDs = new TreeMap<String,String>();
 	Iterator i = rs.iterator();
+    int ndx = 0;
 	while (i.hasNext()) {
 	    CatalogEntry e = (CatalogEntry) i.next();
 	    String did = (String) e.getTupleValue("detectorid");
 	    detectors.put(did, e.getTupleValue("school") + ", " + e.getTupleValue("city") + ", " 
 	            + e.getTupleValue("state") + " (" + did + ")");
+		if (ndx < 2) {
+			deltaTIDs.put(did, "checked");
+		} else {
+			deltaTIDs.put(did, "");			
+		}
+		ndx++;
 	}
+	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+   	if ( analysisDT != null) {
+   		analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+   		for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
+   			if (analysisDT.length == 2) {
+   				if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
+   	    			  entry.setValue("checked");
+	 	    	} else {
+		    		entry.setValue("");
+		    	}						
+   	    	} else if (analysisDT.length == 1) {
+       		  	if (entry.getKey().equals(analysisDT[0])) {
+ 	    			  entry.setValue("checked");
+	 	    	} else {
+		    		entry.setValue("");
+		    	}						
+ 	    	} else {
+	    		entry.setValue("");
+	    	}						
+		}
+   	}
+	request.setAttribute("deltaTIDs", deltaTIDs);
+	request.setAttribute("deltaTIDsSize", deltaTIDs.size());
+	request.setAttribute("detectors", detectors);	
 %>
 
 <div id="analysis-controls">
@@ -76,6 +121,25 @@
 								<td class="form-control">
 									<e:trinput type="text" name="eventCoincidence" size="8" default="2"
 										onError="Must be an integer"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="form-label">
+									<label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
+								</td>
+								<td>
+									<div id="deltaTdiv" style="text-align: left;">
+										<c:forEach items="${deltaTIDs }" var="deltaTID">
+											<c:choose>
+												<c:when test='${deltaTID.value == "checked" }'>
+													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
+												</c:when>
+												<c:otherwise>
+													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
+												</c:otherwise>		
+											</c:choose>									
+										</c:forEach>
+									</div>
 								</td>
 							</tr>
 						</table>

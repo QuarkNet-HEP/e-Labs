@@ -10,6 +10,7 @@
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
+<%@ page import="gov.fnal.elab.cosmic.plot.*" %>
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
@@ -58,7 +59,10 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
+	File deltaT = new File(outputDir + "deltaT");
+	String[] deltaTIDs = (String[]) showerResults.getAttribute("deltaTIDs");
+
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, deltaT, csc, dir, eventStart, eventNum, deltaTIDs);
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
@@ -91,6 +95,35 @@
 			}
 		}
 	}
+	
+	//Edit Peronja: July 19 2018
+	// 		Delta T Histogram
+	String dtJsonFile = showerResults.getOutputDir() + "/DeltaTHistogram";
+	try {
+		//this code is for admin to be able to see the graph
+		File f = new File(dtJsonFile);
+		if (!f.exists()) {
+			String userParam = (String) request.getParameter("user");
+			if (userParam == null) {
+				userParam = (String) session.getAttribute("userParam");
+			}
+			session.setAttribute("userParam", userParam);
+			ElabGroup auser = user;
+			if (userParam != null) {
+			    if (!user.isAdmin()) {
+			    	throw new ElabJspException("You must be logged in as an administrator" 
+			        	+ "to see the status of other users' analyses");
+			    }
+			    else {
+			        auser = elab.getUserManagementProvider().getGroup(userParam);
+			    }
+			}
+			//create time of flight source data
+			DeltaTDataStream dtds = new DeltaTDataStream(showerResults.getOutputDir());
+		}
+	} catch (Exception e) {
+			message = e.getMessage();
+	}		
 	//added to keep track of the page where the last event is
 	int eventNdx = ec.getEventIndex();
 	int pageLength = 30;
@@ -119,6 +152,8 @@
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
+	request.setAttribute("deltaTIDs", deltaTIDs);
+	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -190,15 +225,23 @@
 					<th width="10%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
 					</th>
-					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
+					<th width="10%">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >&#916;T</a>			
+					</th>
+					<th width="30%">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
 					</th>
 					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '4' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
 					</th>
 				</tr>
 				<tr>
 					<td colspan="2"></td>
+					<td><strong>&nbsp;t${deltaTIDs[0]}<br />
+						<c:if test="${deltaTIDsSize == 2}">
+							-t${deltaTIDs[1]}
+						</c:if>
+					</strong></td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
@@ -265,6 +308,15 @@
 							${row.eventCoincidence}
 						</td>
 						<td>
+							<c:choose>
+								<c:when test="${ row.deltaTValue == 0}">&nbsp;
+								</c:when>
+								<c:otherwise>
+									<fmt:formatNumber pattern="######.#" value="${row.deltaTValue}" />
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td>
 							${row.numDetectors}
 								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
 						</td>
@@ -285,19 +337,30 @@
 			</table>
 		</td>
 		<td align="center" valign="top">
-			<p>
-				Click on image for a larger view
-			</p>
-			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}" target="showerPopup" width="650" height="750">
-				<img src="${results.outputDirURL}/plot_thm.png"/>
-			</e:popup>
-			<p>
-				View raw data or geometry for ${crtEventRow.dateF} for detector ID 
-				<c:forEach items="${crtEventRow.ids}" var="detectorId">
-					<a href="../analysis-shower/find-data.jsp?detectorId=${detectorId}&time=${crtEventRow.date.time}">${detectorId}</a>
-				</c:forEach>
-			</p>
-			<%@ include file="events-table.jspf" %>
+			<table>
+				<c:if test="${deltaTIDsSize == 2}">
+					<tr><td align="center" valign="top">
+						<e:popup href="../analysis-shower/show-deltaT.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}&outputDir=${showerResults.outputDir}" target="showerDeltaTPopup" width="800" height="800">
+							Click to view Delta T histogram
+						</e:popup>				
+					</td></tr>
+				</c:if>
+				<tr><td align="center" valign="top">
+					<p>
+						Click on image for a larger view
+					</p>
+					<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}" target="showerPopup" width="650" height="750">
+						<img src="${results.outputDirURL}/plot_thm.png"/>
+					</e:popup>
+					<p>
+						View raw data or geometry for ${crtEventRow.dateF} for detector ID 
+						<c:forEach items="${crtEventRow.ids}" var="detectorId">
+							<a href="../analysis-shower/find-data.jsp?detectorId=${detectorId}&time=${crtEventRow.date.time}">${detectorId}</a>
+						</c:forEach>
+					</p>
+					<%@ include file="events-table.jspf" %>
+					</td></tr>
+			</table>
 		</td>
 	</tr>
 </table>
