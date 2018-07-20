@@ -6,13 +6,19 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+
+<%-- The following five packages do not exist in the repo or on the
+		 server as of 20Jul2018, though there is documentation for them.
+		 They may be unused in this page: --%>
 <%@ page import="org.griphyn.vdl.util.*" %>
 <%@ page import="org.griphyn.vdl.dbschema.*" %>
 <%@ page import="org.griphyn.vdl.directive.*" %>
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
+
 <%-- For XSS escaping in Java: --%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
+
 <% String label = request.getParameter("label");  //label you want to show
 																											%>
 
