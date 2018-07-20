@@ -1,4 +1,9 @@
+<%-- This page provides pop-up descriptions of analysis parameters to the user via ?-boxes in the e-Lab interfaces. --%>
+<%-- This page constructs an HTML pop-up page as a String within a scriptlet, then prints that HTML.  This is... not great from an XSS-protection perspective, and JSP/JSTL provide better ways to accomplish what we want, anyway.
+Prime candidate for a rewrite.
+NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.vdl, which we don't have source code for - JG 19Jul2018 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.griphyn.vdl.util.*" %>
@@ -44,10 +49,19 @@
 <%
 String primary = request.getParameter("tr");
 String secondary = request.getParameter("arg");
+//Hack: since Java doesn't have built-in XSS escaping, exit the scriptlet and
+//  use JSTL to do it, then pass back into the scriptlet
+request.setAttribute("primary", primary);
+request.setAttribute("secondary", secondary);
+%>
+<c:set var="primary" scope="request" value="${fn:escapeXml(primary)}" />
+<c:set var="secondary" scope="request" value="${fn:escapeXml(secondary)}" />
+<%
+primary = request.getParameter("primary");
+secondary = request.getParameter("secondary");
 int kind = Annotation.CLASS_DECLARE;
 
 String ret = "";
-
 
 if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
 
@@ -87,7 +101,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
     } //dbschema - instanceof Annotation
 
 		// Added to help fix XSS fixes - JG 19Jul2018
-		request.setAttribute("ret", ret);
+		//request.setAttribute("ret", ret);
 				
 		if (dbschema != null)
     dbschema.close();
