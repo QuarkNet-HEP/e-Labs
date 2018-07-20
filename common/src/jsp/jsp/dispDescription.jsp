@@ -57,8 +57,8 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%
 String primary = request.getParameter("tr");
 String secondary = request.getParameter("arg");
-primary = StringEscapeUtils.escapeXml(primary);
-secondary = StringEscapeUtils.escapeXml(secondary);
+//primary = StringEscapeUtils.escapeXml(primary);
+//secondary = StringEscapeUtils.escapeXml(secondary);
 
 // Hack pulled out here
 
@@ -90,7 +90,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 	              for (Iterator i = list.iterator(); i.hasNext();) {
 										Tuple tuple = (Tuple)i.next(); 
 										if ((tuple.getKey()).equals("description")) {
-												ret += "<TR><TD><FONT SIZE=-1>" + tuple.getValue() + "</FONT></TD></TR>";
+												ret += "<TR><TD><FONT SIZE=-1>" + StringEscapeUtils.escapeXml(tuple.getValue()) + "</FONT></TD></TR>";
                     } //if description
                 } //for
             } //if  list!null
