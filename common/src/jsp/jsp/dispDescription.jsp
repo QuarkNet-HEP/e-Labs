@@ -11,8 +11,10 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%@ page import="org.griphyn.vdl.directive.*" %>
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
+<%-- For XSS escaping in Java: --%>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <% String label = request.getParameter("label");  //label you want to show
-%>
+																											%>
 
 <head><title><c:out value="${param.label}" /></title>
 		<%@ include file="include/javascript.jsp" %>
@@ -49,16 +51,11 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%
 String primary = request.getParameter("tr");
 String secondary = request.getParameter("arg");
-//Hack: since Java doesn't have built-in XSS escaping, exit the scriptlet and
-//  use JSTL to do it, then pass back into the scriptlet
-request.setAttribute("primary", primary);
-request.setAttribute("secondary", secondary);
-%>
-<c:set var="primary" scope="request" value="${fn:escapeXml(primary)}" />
-<c:set var="secondary" scope="request" value="${fn:escapeXml(secondary)}" />
-<%
-primary = request.getAttribute("primary");
-secondary = request.getAttribute("secondary");
+primary = StringEscapeUtils.escapeXml(primary);
+secondary = StringEscapeUtils.escapeXml(secondary);
+
+// Hack pulled out here
+
 int kind = Annotation.CLASS_DECLARE;
 
 String ret = "";
@@ -102,7 +99,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 
 		// Added to help fix XSS fixes - JG 19Jul2018
 		//request.setAttribute("ret", ret);
-				
+		
 		if (dbschema != null)
     dbschema.close();
     if (annotation != null)
