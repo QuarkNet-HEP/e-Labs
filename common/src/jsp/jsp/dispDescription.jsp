@@ -17,7 +17,7 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%@ page import="org.griphyn.common.util.Separator" %>
 
 <%-- For XSS escaping in Java: --%>
-<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
 <% String label = request.getParameter("label");  //label you want to show
 																											%>
@@ -90,7 +90,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 	              for (Iterator i = list.iterator(); i.hasNext();) {
 										Tuple tuple = (Tuple)i.next(); 
 										if ((tuple.getKey()).equals("description")) {
-												ret += "<TR><TD><FONT SIZE=-1>" + StringEscapeUtils.escapeXml((String)tuple.getValue()) + "</FONT></TD></TR>";
+												ret += "<TR><TD><FONT SIZE=-1>" + StringEscapeUtils.escapeXml10((String)tuple.getValue()) + "</FONT></TD></TR>";
                     } //if description
                 } //for
             } //if  list!null
