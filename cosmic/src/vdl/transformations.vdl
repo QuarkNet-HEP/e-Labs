@@ -394,7 +394,8 @@ TR I2U2.Cosmic::ShowerStudy(
 	inout sortOut,
 	inout thresholdAll[],
 	inout wireDelayData[],
-	none zeroZeroZeroID )
+	none zeroZeroZeroID,
+	none deltaTIDs )
 {
   call I2U2.Cosmic::ThresholdTimes(
 	detector=${none:detector},

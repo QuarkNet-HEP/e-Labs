@@ -125,7 +125,7 @@ $(document).ready(function () {
 							</tr>
 							<tr>
 								<td class="form-label">
-									<label for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</label>
+									<e:trlabel for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</e:trlabel>
 								</td>
 								<td>
 									<div id="deltaTdiv" style="text-align: left;">
