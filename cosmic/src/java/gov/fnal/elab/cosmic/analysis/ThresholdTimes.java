@@ -229,15 +229,34 @@ public class ThresholdTimes {
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
-            //459: newer cards dont use the offset
+            //459: newer cards don't use the offset
             if (currentDetector < detectorSeriesChange) {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            jd = currLineJD(offset, parts);           		            	
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            if (lastjdplustime > 0) {
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
+                    }
+            	} 
+            } else {
+                jd = currLineJD(offset, parts);           		            	
+            }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
+
         //Bug 469: the rollover of the julian day and the RE needs be in sync
         //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
@@ -254,9 +273,7 @@ public class ThresholdTimes {
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	} else {
-        		jd = startJd;
-        	}
+        	} 
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
