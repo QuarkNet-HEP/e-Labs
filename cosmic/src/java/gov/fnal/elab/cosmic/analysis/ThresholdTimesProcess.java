@@ -42,6 +42,7 @@ public class ThresholdTimesProcess {
     public final int detectorSeriesChange = 6000;
     public final double upperFirstHalfDay = 0.9999999999999999;
     public final double lowerFirstHalfDay = 0.5;
+    public static boolean dayRolled = false;
     
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
@@ -302,15 +303,18 @@ public class ThresholdTimesProcess {
         }
         
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	jd = startJd;
+        	if (!dayRolled) {
+        		jd = startJd;
+        	}
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	} else {
-        		jd = startJd;
-        	}
+        	} 
         }
-                        
+        if (jd == nextJd) {
+        	dayRolled = true;
+        }
+        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
