@@ -272,6 +272,7 @@ public class ThresholdTimes {
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
         	if (!dayRolled) {
         		jd = startJd;
+        	}
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
