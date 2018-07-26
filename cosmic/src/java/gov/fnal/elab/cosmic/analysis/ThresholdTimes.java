@@ -237,29 +237,25 @@ public class ThresholdTimes {
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             jd = currLineJD(offset, parts);           		            	
-            lastGPSDay = currGPSDay;
-            lastEdgeTime = retime[channel];
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
-                    jd = currLineJD(offset, parts);           		            	            		
+            	if (tempdiff < -0.9) {
+            		tempjdplustime = currLineJD(offset, parts)+1;
             	} else {
-                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
-                    //need to add extra testing here because in rare occasion the rint and floor mess up
-                    double newtempdiff = tempjdplustime - lastjdplustime;
-                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
-                		jd = currLineJD(offset, parts) + 1;
-                    }
-            	} 
+            		tempjdplustime = currLineJD(offset, parts);            		
+            	}
+            	jd = (int) tempjdplustime;
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
 
             lastGPSDay = currGPSDay;
-        }
+            lastEdgeTime = retime[channel];
+       }
         //Bug 469: the rollover of the julian day and the RE needs be in sync
         //		   the following code is an attempt to keep them in sync.                  
+/*
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
@@ -281,6 +277,7 @@ public class ThresholdTimes {
         if (jd == nextJd) {
         	dayRolled = true;
         }
+*/        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
 

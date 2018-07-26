@@ -275,16 +275,12 @@ public class ThresholdTimesProcess {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
-                    jd = currLineJD(offset, parts);           		            	            		
+            	if (tempdiff < -0.9) {
+            		tempjdplustime = currLineJD(offset, parts)+1;
             	} else {
-                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
-                    //need to add extra testing here because in rare occasion the rint and floor mess up
-                    double newtempdiff = tempjdplustime - lastjdplustime;
-                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
-                		jd = currLineJD(offset, parts) + 1;
-                    }
-            	} 
+            		tempjdplustime = currLineJD(offset, parts);            		
+            	}
+            	jd = (int) tempjdplustime;
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
@@ -292,7 +288,7 @@ public class ThresholdTimesProcess {
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
-
+/*
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
@@ -314,7 +310,7 @@ public class ThresholdTimesProcess {
         if (jd == nextJd) {
         	dayRolled = true;
         }
-        
+ */       
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
