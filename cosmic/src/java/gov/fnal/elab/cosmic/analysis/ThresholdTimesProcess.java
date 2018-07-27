@@ -270,8 +270,10 @@ public class ThresholdTimesProcess {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
+            jd = currLineJD(offset, parts);           		            	
             //Bug 469: the rollover of the julian day and the RE needs be in sync
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+/*
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
@@ -284,7 +286,7 @@ public class ThresholdTimesProcess {
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
-
+*/
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -473,11 +475,18 @@ public class ThresholdTimesProcess {
 
     private static double gregorianToJulian(int year, int month, int day,
             int hour, int minute, int second) {
-        if (month < 3) {
-            month = month + 12;
-            year = year - 1;
-        }      
-        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
+        //if (month < 3) {
+        //    month = month + 12;
+        //    year = year - 1;
+        //}      
+        //return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
+		double extra = (100.0 * year) + month - 190002.5;
+		return (367.0 * year) -
+				(Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12.0)) / 4.0)) +
+				Math.floor((275.0 * month) / 9.0) +
+				day + ((hour + ((minute + (second / 60.0)) / 60.0)) / 24.0) +
+				1721013.5 - ((0.5 * extra) / Math.abs(extra)) + 0.5;          
+
     }
     
     //main receives a txt file created from a query to the database
