@@ -315,9 +315,6 @@ public class ThresholdTimesProcess {
         		jd = nextJd;
         	} 
         }
-        //if (dayRolled && jd != nextJd) {
-        //	jd = nextJd;
-        //}
         
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
