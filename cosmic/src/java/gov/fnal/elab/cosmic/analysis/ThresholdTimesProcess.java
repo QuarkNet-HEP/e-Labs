@@ -270,8 +270,7 @@ public class ThresholdTimesProcess {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-             //Bug 469: the rollover of the julian day and the RE needs be in sync
-            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            //check if we are calculating the jd for the first time
             if (lastjdplustime > 0) {
             	double temp_lastjdplustime = lastjdplustime;
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
@@ -288,6 +287,7 @@ public class ThresholdTimesProcess {
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
+
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
@@ -298,7 +298,7 @@ public class ThresholdTimesProcess {
         if (dayRolled && jd != nextJd) {
         	jd = nextJd;
         }
-        
+       
 /*
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
