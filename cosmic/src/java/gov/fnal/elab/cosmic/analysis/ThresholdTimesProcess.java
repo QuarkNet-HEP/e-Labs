@@ -270,50 +270,48 @@ public class ThresholdTimesProcess {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            //check if we are calculating the jd for the first time
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
             if (lastjdplustime > 0) {
-            	double temp_lastjdplustime = lastjdplustime;
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
-            	double tempdiff = tempjdplustime - temp_lastjdplustime;
-            	if (tempdiff < -0.9) {
-            		tempjdplustime = currLineJD(offset, parts)+1;
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
             	} else {
-            		tempjdplustime = currLineJD(offset, parts);            		
-            	}
-            	jd = (int) tempjdplustime;
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
+                    }
+            	} 
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
 
+        //Bug 469: the rollover of the julian day and the RE needs be in sync
+        //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
         }
-        if (jd == nextJd) {
-        	dayRolled = true;
-        }
-        if (dayRolled && jd != nextJd) {
-        	jd = nextJd;
-        }
-       
-/*
+
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
         }
         
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	if (!dayRolled) {
-        		jd = startJd;
-        	}
+        	jd = startJd;
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
         	} 
         }
- */       
+        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
