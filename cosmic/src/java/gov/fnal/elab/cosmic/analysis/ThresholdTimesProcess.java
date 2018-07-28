@@ -42,6 +42,7 @@ public class ThresholdTimesProcess {
     public final int detectorSeriesChange = 6000;
     public final double upperFirstHalfDay = 0.9999999999999999;
     public final double lowerFirstHalfDay = 0.5;
+    public static boolean dayRolled = false;
     
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
@@ -292,25 +293,29 @@ public class ThresholdTimesProcess {
             lastEdgeTime = retime[channel];
         }
 
+        //Bug 469: the rollover of the julian day and the RE needs be in sync
+        //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
         }
-
+        if (jd == nextJd) {
+        	dayRolled = true;
+        }
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
         }
         
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	jd = startJd;
+        	if (!dayRolled) {
+        		jd = startJd;
+        	}
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	} else {
-        		jd = startJd;
-        	}
+        	} 
         }
-                        
+
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {

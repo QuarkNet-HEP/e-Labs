@@ -42,6 +42,11 @@ public class ThresholdTimesProcessDebug {
     public final int detectorSeriesChange = 6000;
     public final double upperFirstHalfDay = 0.9999999999999999;
     public final double lowerFirstHalfDay = 0.5;    
+    public static String stoppingPoint = "388FB96A"; //this is the time in the raw file where debugging is set
+    public static boolean debugFlag = false;
+    public static int debugCount = 0;
+    public static boolean dayRolled = false;
+    
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
         TIME_FORMAT.setMaximumFractionDigits(3);
@@ -100,14 +105,10 @@ public class ThresholdTimesProcessDebug {
 		    	try {
 		    		//check if the .thresh exists, if so, do not overwrite it
 		    		File tf = new File(outputFiles[i]);
-		    		//if (tf.exists()) {
-		    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-		    		//	continue;
-		    		//}
-		    		
-			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
+
+		    		BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
-			        BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_cosmic_thresh_rollover/threshcreation.txt"));
+			        BufferedWriter report = new BufferedWriter(new FileWriter("/Users/eperonja/ep_home/ep_threshold_debug/threshcreation.txt"));
 			        			        
 			        bw.write("#$md5\n");
 			        bw.write("#md5_hex(0)\n");
@@ -129,8 +130,18 @@ public class ThresholdTimesProcessDebug {
 			        
 			        boolean printoneexception = true;
 			        while (line != null) {
-			        	report.write("\n"+line+"\n");
 			            String[] parts = line.split("\\s"); // line validated in split.pl
+			            if (parts[0].equals(stoppingPoint)) {
+			            	debugFlag = true;
+			            }
+		            	if (debugFlag && debugCount < 10) {
+			            	report.write("\n"+line+"\n");
+			            	debugCount++;
+		            		debugFlag = true;
+		            	} else {
+		            		debugFlag = false;
+		            	}
+
 			            for (int j = 0; j < 4; j++) {
 			            	try {
 			            		timeOverThreshold(parts, j, detectorIDs[i], bw, report);
@@ -266,10 +277,15 @@ public class ThresholdTimesProcessDebug {
                 computeJD = false;
             }
         }
-        if (printLineCount > 48143) {
-        	report.write("trapping error");
-        }
  
+        if (debugFlag && parts[0].equals("388FB96A")) {
+        	report.write("stop right here\n");
+        }
+        
+        if (retime[channel] == 0.9999991416496734) {
+        	report.write("stop right here\n");        	
+        }
+        
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
@@ -277,11 +293,9 @@ public class ThresholdTimesProcessDebug {
             if (currentDetector < detectorSeriesChange) {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
-        	//report.write("reDiff[channel]: "+String.valueOf(reDiff[channel])+"\n");
-        	//report.write("cpldFrequency: "+String.valueOf(cpldFrequency)+"\n");
-        	//report.write("reTMC[channel]: "+String.valueOf(reTMC[channel])+"\n");
-        	//report.write("msecOffset: "+String.valueOf(msecOffset)+"\n");
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
@@ -298,33 +312,35 @@ public class ThresholdTimesProcessDebug {
             } else {
                 jd = currLineJD(offset, parts, report);           		            	
             }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
 
+        //Bug 469: the rollover of the julian day and the RE needs be in sync
+        //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
         }
-
+        if (jd == nextJd) {
+        	dayRolled = true;
+        }
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
         }
         
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	jd = startJd;
+        	if (!dayRolled) {
+        		jd = startJd;
+        	}
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	} else {
-        		jd = startJd;
-        	}
+        	} 
         }
         
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
-        //if (printLineCount == 77068){
-    	//	report.write("nanodiff (fetime[channel] - retime[channel]) * 1e9 * 86400: "+String.valueOf(nanodiff)+"\n");
-    	//}								   
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];
@@ -343,13 +359,15 @@ public class ThresholdTimesProcessDebug {
             wr.write('\t');
             wr.write(NF0F.format(fetimeINT[channel]));
             wr.write('\n');
-        	report.write("\nTHRESH FILE LINE:"+id+"\t"+
-        			String.valueOf(jd)+"\t"+
-        			NF16F.format(retime[channel])+"\t"+
-        			NF16F.format(fetime[channel])+"\t"+
-        			NF2F.format(nanodiff)+"\t"+
-        			NF0F.format(retimeINT[channel])+"\t"+
-        			NF0F.format(fetimeINT[channel])+"\n");
+            if (debugFlag) {
+	            report.write("\nTHRESH FILE LINE:"+id+"\t"+
+	        			String.valueOf(jd)+"\t"+
+	        			NF16F.format(retime[channel])+"\t"+
+	        			NF16F.format(fetime[channel])+"\t"+
+	        			NF2F.format(nanodiff)+"\t"+
+	        			NF0F.format(retimeINT[channel])+"\t"+
+	        			NF0F.format(fetimeINT[channel])+"\n");
+            }
         	
         }
     }
@@ -357,16 +375,14 @@ public class ThresholdTimesProcessDebug {
     private double calctime(int channel, int edge, String[] parts, BufferedWriter report) {
     	int tmc = edge & 0x1f;
         try {
-        	report.write("In calc time\n");
-            if (printLineCount >= 48143){
-        		report.write("Trapping problem\n");
-        	}								   
-            report.write("Channel calc: " + String.valueOf(channel) + " edge: " + String.valueOf(edge) + "\n");
+            if (debugFlag) {
+            	report.write("In calc time\n");
+            	report.write("Channel calc: " + String.valueOf(channel) + " edge: " + String.valueOf(edge) + "\n");
+            }
         	StringBuilder sb = new StringBuilder();
         	for (int i = 0; i < parts.length; i++) {
             	sb.append(parts[i] + " ");
             }
-            report.write(sb.toString() + "\n");
        	
 		    if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
 	            rePPSTime[channel] = lastRePPSTime;
@@ -411,35 +427,45 @@ public class ThresholdTimesProcessDebug {
 	            diff += 0xffffffffl;
 	            reDiff[channel] = diff;
 	        }
-        		//report.write("-->new value of diff for this channel (see code): "+String.valueOf(diff)+"\n");
-	        double first_part = rePPSTime[channel];
+        	double first_part = rePPSTime[channel];
 	        double second_part = diff / cpldFrequency;
-		    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
-		    report.write("firmware: "+String.valueOf(firmware)+"\n");
-
-		    if (parts[0].equals("232281AF")) {
-		    	System.out.print("stop here");
-		    }
-
+            if (debugFlag) {
+            	report.write("Long.parseLong(parts[0], 16): "+String.valueOf(Long.parseLong(parts[0], 16))+"\n");
+            	report.write("rePPSCount[channel]: "+String.valueOf(rePPSCount[channel])+"\n");
+            	report.write("-->new value of diff for this channel (see code): "+String.valueOf(diff)+"\n");
+    	        report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
+            	report.write("firmware: "+String.valueOf(firmware)+"\n");
+            }
 
 		    if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
 	        	if (second_part < 0.07) {
 	        		second_part = (diff / cpldFrequency) + 1.0;
-	    		    report.write("added a second when this line happened: "+parts[0]+"\n");
+	                if (debugFlag) {
+	                	report.write("added a second when this line happened: "+parts[0]+"\n");
+	                }
 	        	}
 	        }
-		    report.write("NEW value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
-	        double third_part = tmc / (cpldFrequency * 32);
+            if (debugFlag) {
+            	report.write("NEW value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
+            }
+		    double third_part = tmc / (cpldFrequency * 32);
 	       //double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
 	        double edgetime = rePPSTime[channel] + second_part + tmc / (cpldFrequency * 32);
-   	        report.write("value of rePPSTime[channel] for this channel: "+String.valueOf(first_part)+"\n");
-		    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
-		    report.write("value of tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(third_part)+"\n");
-		    report.write("value of rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(edgetime)+"\n");
+	        // rePPSTime comes from parts[10], seconds calculated
+	        // second part is the difference between parts[0] parts[9] in base 10 divided by the cpldfrequency
+	        // tmc divided b
+            if (debugFlag) {
+	   	        report.write("value of rePPSTime[channel] for this channel: "+String.valueOf(first_part)+"\n");
+			    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
+			    report.write("value of tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(third_part)+"\n");
+			    report.write("value of rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(edgetime)+"\n");
+            }
 	        if (edgetime > 86400) {
 	            edgetime -= 86400;
 	        }
-	        report.write("edgetime (if corrected): "+String.valueOf(edgetime)+"\n");
+            if (debugFlag) {
+            	report.write("edgetime (if corrected): "+String.valueOf(edgetime)+"\n");
+            }
           return edgetime;
         } catch(Exception e) {
         	
@@ -519,27 +545,32 @@ public class ThresholdTimesProcessDebug {
         int msec = Integer.parseInt(parts[10].substring(7, 10));
         long secOffset = Math.round(sec + msec / 1000.0 + offset);
         try{
-        	report.write("In currLineJD");
-        	report.write("day: "+String.valueOf(day)+"\n");
-        	report.write("month: "+String.valueOf(month)+"\n");
-        	report.write("year: "+String.valueOf(year)+"\n");
-        	report.write("hour: "+String.valueOf(hour)+"\n");
-        	report.write("min: "+String.valueOf(min)+"\n");
-        	report.write("sec: "+String.valueOf(sec)+"\n");
-        	report.write("msec: "+String.valueOf(msec)+"\n");
-        	report.write("secOffset: "+String.valueOf(secOffset)+"\n");
+            if (debugFlag) {
+	
+	        	report.write("In currLineJD");
+	        	report.write("day: "+String.valueOf(day)+"\n");
+	        	report.write("month: "+String.valueOf(month)+"\n");
+	        	report.write("year: "+String.valueOf(year)+"\n");
+	        	report.write("hour: "+String.valueOf(hour)+"\n");
+	        	report.write("min: "+String.valueOf(min)+"\n");
+	        	report.write("sec: "+String.valueOf(sec)+"\n");
+	        	report.write("msec: "+String.valueOf(msec)+"\n");
+	        	report.write("secOffset: "+String.valueOf(secOffset)+"\n");
+            }
         } catch (Exception e) {
         	
         }
-        double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset, report);
+        double jd = gregorianToJulian(parts, year, month, day, hour, min, (int) secOffset, report);
         jd = Math.rint(jd * 86400);
         double jd0 = Math.round(jd) * 86400;
         double jd1 = Math.floor(jd / 86400);
         double jd2 = jd / 86400;
         try{
-        	report.write("jd: "+String.valueOf(jd / 86400)+"\n");
-        	report.write("jd: "+String.valueOf(Math.rint(jd * 86400))+"\n");
-        	report.write("jd: "+String.valueOf((int) Math.floor(jd / 86400))+"\n");
+            if (debugFlag) {
+	        	report.write("jd: "+String.valueOf(jd / 86400)+"\n");
+	        	report.write("jd: "+String.valueOf(Math.rint(jd * 86400))+"\n");
+	        	report.write("jd: "+String.valueOf((int) Math.floor(jd / 86400))+"\n");
+            }
         } catch (Exception e) {
         	
         }
@@ -551,24 +582,32 @@ public class ThresholdTimesProcessDebug {
      * min[0..59]
      */
 
-    private static double gregorianToJulian(int year, int month, int day,
+    private static double gregorianToJulian(String[] parts, int year, int month, int day,
             int hour, int minute, int second, BufferedWriter report) {
         if (month < 3) {
             month = month + 12;
             year = year - 1;
         }      
         try{
-        	report.write("in gregorian to julian function");
-        	report.write("month: "+String.valueOf(month)+"\n");
-        	report.write("year: "+String.valueOf(year)+"\n");
-        	report.write("returns: "+String.valueOf((2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24)+"\n");
+            if (debugFlag) {	
+	        	report.write("in gregorian to julian function");
+	        	report.write("month: "+String.valueOf(month)+"\n");
+	        	report.write("year: "+String.valueOf(year)+"\n");
+	        	report.write("returns: "+String.valueOf((2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24)+"\n");
+            }
         } catch (Exception e) {
         	
         }        
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
     	//return (2 -(int($year/100))+(int($year/400))+ $day + int(365.25*($year+4716)) + int(30.6001*($month+1)) - 1524.5) + ($hour + $min/60 + $sec/3600)/24;
+		//double extra = (100.0 * year) + month - 190002.5;
+		//return (367.0 * year) -
+		//		(Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12.0)) / 4.0)) +
+		//		Math.floor((275.0 * month) / 9.0) +
+		//		day + ((hour + ((minute + (second / 60.0)) / 60.0)) / 24.0) +
+		//		1721013.5 - ((0.5 * extra) / Math.abs(extra)) + 0.5;   
     }
-    
+  
     //main receives a txt file created from a query to the database
     //the file should have 4 columns separated by commas
     //1-data path (eg. /disks/i2u2-dev/cosmic/data

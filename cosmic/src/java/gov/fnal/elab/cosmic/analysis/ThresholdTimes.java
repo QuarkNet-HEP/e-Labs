@@ -43,7 +43,9 @@ public class ThresholdTimes {
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     public final int detectorSeriesChange = 6000;
     public final double upperFirstHalfDay = 0.9999999999999999;
-    public final double lowerFirstHalfDay = 0.5;    
+    public final double lowerFirstHalfDay = 0.5;  
+    public static boolean dayRolled = false;
+    
     /**
      * Constructor arguments: Elab elab, String[] inputFiles, String detectorId
      */   
@@ -229,34 +231,55 @@ public class ThresholdTimes {
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
-            //459: newer cards dont use the offset
+            //459: newer cards don't use the offset
             if (currentDetector < detectorSeriesChange) {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            jd = currLineJD(offset, parts);           		            	
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            if (lastjdplustime > 0) {
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
+                    }
+            	} 
+            } else {
+                jd = currLineJD(offset, parts);           		            	
+            }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
+
         //Bug 469: the rollover of the julian day and the RE needs be in sync
         //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
         }
-
+        if (jd == nextJd) {
+        	dayRolled = true;
+        }
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
         }
         
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	jd = startJd;
+        	if (!dayRolled) {
+        		jd = startJd;
+        	}
         } else {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
-        	} else {
-        		jd = startJd;
-        	}
+        	} 
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
@@ -377,13 +400,18 @@ public class ThresholdTimes {
      */
     private static double gregorianToJulian(int year, int month, int day,
             int hour, int minute, int second) {
-        if (month < 3) {
-            month = month + 12;
-            year = year - 1;
-        }
+        //if (month < 3) {
+        //    month = month + 12;
+        //    year = year - 1;
+        //}
         
-        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
-        
+        //return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
+		double extra = (100.0 * year) + month - 190002.5;
+		return (367.0 * year) -
+				(Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12.0)) / 4.0)) +
+				Math.floor((275.0 * month) / 9.0) +
+				day + ((hour + ((minute + (second / 60.0)) / 60.0)) / 24.0) +
+				1721013.5 - ((0.5 * extra) / Math.abs(extra)) + 0.5;          
     }
     
 }
