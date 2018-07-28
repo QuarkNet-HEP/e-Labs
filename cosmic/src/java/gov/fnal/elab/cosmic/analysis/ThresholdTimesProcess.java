@@ -299,7 +299,9 @@ public class ThresholdTimesProcess {
         	startJd = jd;
         	nextJd = jd+1;
         }
-
+        if (jd == nextJd) {
+        	dayRolled = true;
+        }
         if (firstRE == -1.0) {
         	firstRE = retime[channel];
         }
@@ -310,6 +312,9 @@ public class ThresholdTimesProcess {
         	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
         		jd = nextJd;
         	} 
+        }
+        if (dayRolled && jd != nextJd) {
+        	jd = nextJd;
         }
         
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
