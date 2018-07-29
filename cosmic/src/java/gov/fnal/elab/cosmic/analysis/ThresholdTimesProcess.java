@@ -275,7 +275,7 @@ public class ThresholdTimesProcess {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+            	if (tempjdplustime > lastjdplustime && tempdiff < -0.9) {
                     jd = currLineJD(offset, parts);           		            	            		
             	} else {
                     tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
