@@ -5,6 +5,7 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.io.*" %>
+<%-- java.util.Iterator --%>
 <%@ page import="java.util.*" %>
 
 <%-- The following five packages do not exist in the repo or on the
@@ -90,7 +91,9 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 	              for (Iterator i = list.iterator(); i.hasNext();) {
 										Tuple tuple = (Tuple)i.next(); 
 										if ((tuple.getKey()).equals("description")) {
-												ret += "<TR><TD><FONT SIZE=-1>" + StringEscapeUtils.escapeXml10((String)tuple.getValue()) + "</FONT></TD></TR>";
+											 	String text = (String) tuple.getValue();
+											 	String escapedText = StringEscapeUtils.escapeXml10(text);
+												ret += "<TR><TD><FONT SIZE=-1>" + escapedText + "</FONT></TD></TR>";
                     } //if description
                 } //for
             } //if  list!null
@@ -125,6 +128,8 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
       <%
       }
 %>
+<%-- For a successful construction of the description pop-up, the following close-font appears
+to be superfluous: --%>
 </font>
 </body>
 </html>
