@@ -1,7 +1,7 @@
 <!--Rev.8278-->
 <%-- Can references to JS values
-		 		 dataset_name, dataset_id, dataset_type, dataset_descr
-		 be deleted? - JG 29Jun2018 --%>
+		 		 dataset_name, dataset_id, dataset_type, dataset_descr, datasetSelected.type
+		 be deleted? - JG 29Jun2018 /// --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
@@ -272,15 +272,15 @@
     <!-- end container -->
 
 		<script type="text/javascript">
-		// jQuery shorthand for `$(document).ready(function() {`
+		/// jQuery shorthand for `$(document).ready(function() {`
 		$(function() {
 
     $('.tablinks').on('click', function() {
       $('.tablinks').removeClass('active');
       $(this).addClass('active');
 
-			// "plot" is for Histogram graphs
-			// "chart" is for Correlated charts graphs
+			/// "plot" is for Histogram graphs
+			/// "chart" is for Correlated charts graphs
       if ($(this).hasClass('plot')) {
         $('#chart-container').hide();
         $('#plot-container').show();
@@ -292,7 +292,7 @@
       }
     });
 
-		// Parameter selector row hidden until user chooses a dataset
+		/// Parameter selector row hidden until user chooses a dataset
     $('#parameters').hide();
 
     // show plot container div by default
@@ -399,7 +399,7 @@
 
   	for ( let i = 0; i < csv_files.length; i++ ) {
     	let id = csv_files[i].id;
-			// 'name' doesn't appear to be used in this code:
+			/// 'name' used in datasetSelected()
 			let name = csv_files[i].name;
     	let descr = csv_files[i].descr;
     	$('#dataset').append('<option value="'+id+'">'+descr+'</option>');
@@ -408,7 +408,7 @@
   	let original_data;
   	let current_data;
 
-		// Globals used only in datasetSelected()
+		/// Globals used only in datasetSelected()
 		let dataset_name;
   	let dataset_id;
   	let dataset_type;
@@ -418,7 +418,7 @@
 		let all;
 
   	function getDataset(id) {
-			// Return the csv_files object with the given 'id'
+			/// Return the csv_files object with the given 'id'
     	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === id ) {
         	return csv_files[i];
@@ -688,13 +688,16 @@
 
     	//let expr = $('select option:selected').attr('value');
 			let expr = $("#dataset").children("option").filter(":selected").val()
+			/// 'type' appears to be unused in this code. The reference in the for/if
+			///	  below was commented out when I found it - JG Jun2018
 			let type;
 
     	for ( let i = 0; i < csv_files.length; i++ ) {
       	if ( csv_files[i].id === expr ) {
         	//type = csv_files[i].type;
 
-					// Globals assigned values here; never used
+					/// Globals declared earlier are assigned values here
+					/// Of these, only dataset_type is ever used
         	dataset_name = csv_files[i].name;
         	dataset_id = csv_files[i].id;
         	dataset_type = csv_files[i].type;
