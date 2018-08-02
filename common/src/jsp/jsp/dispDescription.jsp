@@ -116,7 +116,7 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 %>
 <body onLoad="resizeWinTo(300,'txt');" background="graphics/Quadrille.gif">
 		<font face="ariel">
-				<c:out value="${ret}" />
+				<%=ret%>
    <tr><td align="right"><HR><A HREF="javascript:window.close();"><FONT SIZE=-1>Close Window</FONT></A></td></tr></table><br>&nbsp;</div></FONT>
 
     <%
