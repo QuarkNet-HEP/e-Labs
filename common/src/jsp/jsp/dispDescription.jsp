@@ -64,8 +64,8 @@ request.setAttribute("secondary", secondary);
 <c:set var="primary" scope="request" value="${fn:escapeXml(primary)}" />
 <c:set var="secondary" scope="request" value="${fn:escapeXml(secondary)}" />
 <%
-primary = request.getAttribute("primary");
-secondary = request.getAttribute("secondary");
+primary = (String)request.getAttribute("primary");
+secondary = (String)request.getAttribute("secondary");
 
 int kind = Annotation.CLASS_DECLARE;
 
