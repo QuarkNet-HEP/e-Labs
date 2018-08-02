@@ -56,17 +56,6 @@ NB that Tuple, Annotation, etc. are used here from the VDS packages org.griphyn.
 String primary = request.getParameter("tr");
 String secondary = request.getParameter("arg");
 
-// Hack: since Java doesn't have built-in XSS escaping, exit the scriptlet and
-//   use JSTL to do it, then pass back into the scriptlet
-request.setAttribute("primary", primary);
-request.setAttribute("secondary", secondary);
-%>
-<c:set var="primary" scope="request" value="${fn:escapeXml(primary)}" />
-<c:set var="secondary" scope="request" value="${fn:escapeXml(secondary)}" />
-<%
-primary = (String)request.getAttribute("primary");
-secondary = (String)request.getAttribute("secondary");
-
 int kind = Annotation.CLASS_DECLARE;
 
 String ret = "";
@@ -95,7 +84,16 @@ if ( (primary!=null) && !(primary.equals("")) && (secondary != null) && !(second
 	              for (Iterator i = list.iterator(); i.hasNext();) {
 										Tuple tuple = (Tuple)i.next(); 
 										if ((tuple.getKey()).equals("description")) {
-												ret += "<TR><TD><FONT SIZE=-1>" + tuple.getValue() + "</FONT></TD></TR>";
+											 // Hack: since Java doesn't have built-in XSS escaping, exit the
+											 //   scriptlet and use JSTL to do it, then pass back into the scriptlet
+											 String content = (String)tuple.getValue();
+											 request.setAttribute("content", content);
+											 %>
+											 <c:set var="content" scope="request" value="${fn:escapeXml(content)}" />
+											 <%
+											 content = (String)request.getAttribute("content");
+
+											 ret += "<TR><TD><FONT SIZE=-1>" + content + "</FONT></TD></TR>";
                     } //if description
                 } //for
             } //if  list!null
