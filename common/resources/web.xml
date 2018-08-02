@@ -58,9 +58,7 @@
     	</listener-class>
 		</listener>
 
-		<!--
 		<error-page> 
 			<location>/embedded/errordefault.jsp</location> 
 		</error-page>
-		-->
 </web-app>
