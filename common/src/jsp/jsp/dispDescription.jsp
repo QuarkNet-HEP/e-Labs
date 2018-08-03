@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.griphyn.vdl.util.*" %>
@@ -73,7 +74,13 @@ if ( (primary!=null)&& !(primary.equals("")) && (secondary != null) && !(seconda
 	              for (Iterator i = list.iterator(); i.hasNext();) {
 										Tuple tuple = (Tuple)i.next(); 
 										if ((tuple.getKey()).equals("description")) {
-												ret += "<TR><TD><FONT SIZE=-1>" + tuple.getValue() + "</FONT></TD></TR>";
+											 	String content = (String)tuple.getValue();
+											 	request.setAttribute("content", content);
+											 	%>
+														<c:set var="content" scope="request" value="${fn:escapeXml(content)}" />
+											 	<%
+											 	content = (String)request.getAttribute("content");
+												ret += "<TR><TD><FONT SIZE=-1>" + content + "</FONT></TD></TR>";
                     } //if description
                 } //for
             } //if  list!null
@@ -92,7 +99,7 @@ if ( (primary!=null)&& !(primary.equals("")) && (secondary != null) && !(seconda
 %>
 <body onLoad="resizeWinTo(300,'txt');" background="graphics/Quadrille.gif">
 		<font face="ariel">
-				<c:out value="${ret}" />
+				<%=ret%>
 				<tr><td align="right"><HR><A HREF="javascript:window.close();"><FONT SIZE=-1>Close Window</FONT></A></td></tr></table><br>&nbsp;</div></FONT>
 
     <%
