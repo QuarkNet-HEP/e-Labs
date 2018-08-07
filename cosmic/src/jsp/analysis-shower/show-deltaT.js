@@ -17,11 +17,11 @@ function saveDeltaTChart(name_id, div_id, run_id) {
 	console.log(filename);
 	$.each(serialized, function(index,element){
 	     values.push(element.value);
-	   });	 
+	   });
 	var rc = true;
 	if (filename != null) {
 		if (filename.value != "") {
-			var canvas = localDeltaTdata[0].onOffPlot.getCanvas();			
+			var canvas = localDeltaTdata[0].onOffPlot.getCanvas();
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -34,7 +34,7 @@ function saveDeltaTChart(name_id, div_id, run_id) {
 						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
 					}
 				}
-			});	
+			});
 		
 		} else {
 			rc = false;
@@ -55,27 +55,28 @@ function saveDeltaTChart(name_id, div_id, run_id) {
 options = {
         axisLabels: {
             show: true
-        },		
-        legend: {  
-            show: false
-        },  
-        lines: { 
-        	show: true, 
-        	fill: false, 
-        	lineWidth: 2.0 
         },
-        xaxis: { 
+        legend: {
+            show: false
+        },
+        lines: {
+        	show: true,
+        	fill: false,
+        	lineWidth: 2.0
+        },
+        xaxis: {
         	tickDecimals: 0
         },
 		grid: {
 			hoverable: true,
-			clickable: true
-		},	
+			clickable: true,
+			backgroundColor: white
+		},
 		yaxes: {
 			axisLabelUseCanvas: true
 		},
 		xaxes: {
-			axisLabelUseCanvas: true			
+			axisLabelUseCanvas: true
 		}
 	};
 
@@ -87,28 +88,28 @@ function onDataLoad() {
 	});
 }//end of onDataLoad1
 
-function loadJSON(callback) {   
+function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
 	var outputDir = document.getElementById("outputDir");
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/deltaTHistogram", true); 
+    xobj.open('GET', outputDir.value+"/deltaTHistogram", true);
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
             callback(xobj.responseText);
           }
     };
-    xobj.send(null);  
+    xobj.send(null);
 }//end of loadJSON
 
-function onDataLoadChart(json) {	
+function onDataLoadChart(json) {
 	if (json.tdDeltaT) {
 		data = [];
 		if (json.tdDeltaT != null) {
 			tdDeltaTdata = json.tdDeltaT;
 			//console.log(tdDeltaTdata);
 			localDeltaTdata[0]={onOffPlot: "", DeltaTdata: tdDeltaTdata, data: "", originalMinX: tdDeltaTdata.minX, originalMaxX: 0,
-					originalMinY: tdDeltaTdata.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: tdDeltaTdata.label, 
+					originalMinY: tdDeltaTdata.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: tdDeltaTdata.label,
 					maxBins: tdDeltaTdata.maxBins, binValue: tdDeltaTdata.binValue, currentBinValue: tdDeltaTdata.binValue};
 			//console.log(localDeltaTdata[0]);
 			tdDeltaTdata.data = getDataWithBins(tdDeltaTdata.data_original, tdDeltaTdata.binValue, tdDeltaTdata.minX, tdDeltaTdata.maxX, tdDeltaTdata.nBins, tdDeltaTdata.bins);
@@ -128,7 +129,7 @@ function onDataLoadChart(json) {
 	        $('#binWidthDeltaT').val($('#rangeDeltaT').val());
 	        if ($('#rangeDeltaT').val() > 0) {
 	        	localDeltaTdata[0].currentBinValue = $('#rangeDeltaT').val();
-	        	reBinData($('#rangeDeltaT').val(), tdDeltaTdata, data, onOffPlot);       
+	        	reBinData($('#rangeDeltaT').val(), tdDeltaTdata, data, onOffPlot);
 	    		writeLegend();
 	        }
 	    });
@@ -139,7 +140,7 @@ function onDataLoadChart(json) {
 	        	reBinData($('#binWidthDeltaT').val(),tdDeltaTdata, data, onOffPlot);
 	    		writeLegend();
 	        }
-	    }); 
+	    });
 		writeLegend();
 	}
 }//end of onDataLoadChart
@@ -177,9 +178,9 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		for ( var i = 0; i < data.length; i++ ) {
 	    	outputFinal.push([data[i].x, data[i].y]);
 	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
-	    } 
+	    }
 	}
-    return outputFinal;	
+    return outputFinal;
 }//end of getDataWithBins
 
 function reBinData(binValue, deltaTdata, data, onOffPlot) {
@@ -216,7 +217,7 @@ function writeLegend() {
 		if (val.indexOf("deltaTIDs") > -1) {
 			dTcaption = val.substring(val.indexOf("Delta T:"), val.length);
 		}
-	   });	 
+	   });
 	context.textAlign = "Shower Study - "+dTcaption;
 	context.fillText("Shower Study - "+dTcaption, 90, 20);
 	context.font="10px sans-serif";
@@ -227,7 +228,7 @@ function writeLegend() {
 	var values = new Array();
 	var xcoord = 50;
 	var ycoord = 0;
-	var yspace = 10;	
+	var yspace = 10;
 	ycoord = 50;
 	$.each(serialized, function(index,element){
 		var val = element.value;
@@ -239,19 +240,19 @@ function writeLegend() {
 				if (captionArray[i].length > 38) {
 					printText = captionArray[i].substring(0, 38);
 				}
-				ycoord += yspace; 
-				context.fillText(printText, xcoord, ycoord);				
+				ycoord += yspace;
+				context.fillText(printText, xcoord, ycoord);
 			}
 		}
-	   });	 
+	   });
 	context.font="12px sans-serif";
 	context.textAlign = xAxisLabel;
-	context.fillText(xAxisLabel, 100, 420);	
+	context.fillText(xAxisLabel, 100, 420);
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 40);	
-	context.restore();		
+	context.fillText(yAxisLabel, 0, 40);
+	context.restore();
 }//end of writeLegend
 
 
@@ -270,7 +271,7 @@ redrawPlotX = function(newX, type) {
 	}
 	plot.setupGrid();
 	plot.draw();
-	writeLegend();	
+	writeLegend();
 }//end of redrawPlotX
 
 redrawPlotY = function(newY, type) {
@@ -286,7 +287,7 @@ redrawPlotY = function(newY, type) {
 	}
 	plot.setupGrid();
 	plot.draw();
-	writeLegend();	
+	writeLegend();
 }//end of redrawPlotY
 
 redrawPlotFitX = function(newMinX, newMaxX) {
@@ -307,13 +308,13 @@ redrawPlotFitX = function(newMinX, newMaxX) {
 	if (original != null) {
 		var fittedData = fitData(original.data_original, newMinX, newMaxX);
 		var nBins = Math.ceil((newMaxX - newMinX) / localDeltaTdata[0].currentBinValue);
-		var bins = [];		
+		var bins = [];
 		for (var i = (newMinX*1.00); i < (newMaxX*1.00+binValue); i += (binValue)) {
 			bins.push(i);
 		}
 		original.data = getDataWithBins(fittedData, localDeltaTdata[0].currentBinValue, newMinX, newMaxX, nBins, bins);
    		setDataStats();
-   		setStatsLegend();	      		
+   		setStatsLegend();
    		localdata.push(original);
    		plot = $.plot("#deltaTChart", localdata, options);
    		writeLegend();
@@ -326,7 +327,7 @@ function fitData(data_original, newMinX, newMaxX) {
 		if (data_original[i] >= newMinX && data_original[i] <= newMaxX) {
 			fittedData.push(data_original[i]);
 		}
-	}	
+	}
 	return fittedData;
 }//end of fitData
 
@@ -345,7 +346,7 @@ resetAll = function() {
 	if (original != null) {
 		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.bins);
    		setDataStats();
-   		setStatsLegend();	      		
+   		setStatsLegend();
    		localdata.push(original);
 	}
 	plot = localDeltaTdata[0].onOffPlot;
@@ -353,13 +354,13 @@ resetAll = function() {
 	originalmaxx = localDeltaTdata[0].originalMaxX;
 	entries = localDeltaTdata[0].numberOfEntries;
 	label = localDeltaTdata[0].label;
-	var axes = plot.getAxes();	
+	var axes = plot.getAxes();
 	axes.xaxis.options.min = originalminx;
 	axes.xaxis.options.max = originalmaxx;
 	plot = $.plot("#deltaTChart", localdata, options);
 	plot.setupGrid();
 	plot.draw();
-	writeLegend();	
+	writeLegend();
 }//end of resetAll
 
 Number.prototype.toFixedDown = function(digits) {
@@ -368,7 +369,7 @@ Number.prototype.toFixedDown = function(digits) {
 	  return n.toFixed(digits);
 }
 
-function intToFloat(num, decPlaces) { 
-	return num + '.' + Array(decPlaces + 1).join('0'); 
+function intToFloat(num, decPlaces) {
+	return num + '.' + Array(decPlaces + 1).join('0');
 }
 
