@@ -69,8 +69,7 @@ options = {
         },
 		grid: {
 			hoverable: true,
-			clickable: true,
-			backgroundColor: white
+			clickable: true
 		},
 		yaxes: {
 			axisLabelUseCanvas: true
