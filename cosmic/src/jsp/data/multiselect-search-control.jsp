@@ -186,8 +186,8 @@ $(window).scroll(function(){
 							<c:when test="${allowAllDataAccess == true}">					
 								Blessed:
 								<e:select name="blessed"
-													valueList="default, all, yes, no"
-													labelList="Default, All, Yes, No"
+													valueList="all, yes, no"
+													labelList="All, Yes, No"
 													selected="${blessed}"/>
 							</c:when>
 						</c:choose>
