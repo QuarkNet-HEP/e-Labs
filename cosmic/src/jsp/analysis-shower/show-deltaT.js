@@ -323,7 +323,7 @@ redrawPlotFitX = function(newMinX, newMaxX) {
 function fitData(data_original, newMinX, newMaxX) {
 	var fittedData = [];
 	for (var i = 0; i < data_original.length; i++) {
-		if (data_original[i] >= newMinX && data_original[i] <= newMaxX) {
+		if (parseFloat(data_original[i]) >= parseFloat(newMinX) && parseFloat(data_original[i]) <= parseFloat(newMaxX)) {
 			fittedData.push(data_original[i]);
 		}
 	}	
