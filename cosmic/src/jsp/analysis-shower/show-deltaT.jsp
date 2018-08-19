@@ -78,11 +78,16 @@
 	request.setAttribute("showerResults", showerResults);
 	
 	String[] deltaTIDs = (String[]) showerResults.getAttribute("deltaTIDs");
-	String deltaTIDsString = "t"+deltaTIDs[0] + " - t"+deltaTIDs[1];
-    //EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
+	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	String deltaTIDsString = "";
+	if (deltaTIDs.length > 1) {
+		deltaTIDsString = "t"+deltaTIDs[0] + " - t"+deltaTIDs[1];
+	}
+	//EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	String eventDir = request.getParameter("eventDir");
 	request.setAttribute("eventDir", eventDir);	
-	request.setAttribute("deltaTIDs", deltaTIDsString);
+	request.setAttribute("deltaTIDs", deltaTIDs);
+	request.setAttribute("deltaTIDsString", deltaTIDsString);
 %>
 	<div id="feedback"></div>
 	<div class="graph-container-deltaT">
@@ -182,7 +187,10 @@
 			<input type="hidden" name="metadata" value="gate int ${showerResults.analysis.parameters['gate']}"/>
 			<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
 			<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
-			<input type="hidden" name="metadata" value="deltaTIDs string Delta T: ${deltaTIDs}" />
+			<c:if test="${deltaTIDsSize == 2}">
+				<input type="hidden" name="metadata" value="deltaTIDs string ${deltaTIDs[0]} ${deltaTIDs[1]}" />
+			</c:if>
+			<input type="hidden" name="metadata" value="deltaTIDsString string ${deltaTIDsString}" />
 			<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 			<input type="hidden" name="eventCandidates" value="eventCandidates" />
 			<input type="hidden" name="eventDir" value="${eventDir}" />

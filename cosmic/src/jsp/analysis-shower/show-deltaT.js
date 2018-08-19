@@ -9,12 +9,10 @@ var loadCount = 0;
 
 
 function saveDeltaTChart(name_id, div_id, run_id) {
-	console.log("it gets here " + name_id);
 	var filename = document.getElementById(name_id);
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
 	var values = new Array();
-	console.log(filename);
 	$.each(serialized, function(index,element){
 	     values.push(element.value);
 	   });	 
@@ -148,6 +146,9 @@ function setDataStats() {
 	localDeltaTdata[0].mean = mean;
 	localDeltaTdata[0].stddev = deviation;
 	localDeltaTdata[0].numberOfEntries = numberOfEntries;
+	console.log(mean);
+	console.log(deviation);
+	console.log(numberOfEntries);
 	localDeltaTdata[0].originalMinX = localDeltaTdata[0].onOffPlot.getAxes().xaxis.min;
 	localDeltaTdata[0].originalMaxX = localDeltaTdata[0].onOffPlot.getAxes().xaxis.max;
 	localDeltaTdata[0].originalMinY = localDeltaTdata[0].onOffPlot.getAxes().yaxis.min;
@@ -195,6 +196,8 @@ function reBinData(binValue, deltaTdata, data, onOffPlot) {
 			deltaTdata.data = getDataWithBins(deltaTdata.data_original, binValue, deltaTdata.minX, deltaTdata.maxX, nBins, bins);
 			data.push(deltaTdata);
 		}
+   		setDataStats();
+   		setStatsLegend();	      		
 		onOffPlot.setData(data);
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
@@ -213,8 +216,8 @@ function writeLegend() {
 	var dTcaption = "";
 	$.each(serialized, function(index,element){
 		var val = element.value;
-		if (val.indexOf("deltaTIDs") > -1) {
-			dTcaption = val.substring(val.indexOf("Delta T:"), val.length);
+		if (val.indexOf("deltaTIDsString") > -1) {
+			dTcaption = "Delta T: " + val.substring(val.indexOf(" t"), val.length);
 		}
 	   });	 
 	context.textAlign = "Shower Study - "+dTcaption;
@@ -323,10 +326,11 @@ redrawPlotFitX = function(newMinX, newMaxX) {
 function fitData(data_original, newMinX, newMaxX) {
 	var fittedData = [];
 	for (var i = 0; i < data_original.length; i++) {
-		if (data_original[i] >= newMinX && data_original[i] <= newMaxX) {
+		if (parseFloat(data_original[i]) >= parseFloat(newMinX) && parseFloat(data_original[i]) <= parseFloat(newMaxX)) {
 			fittedData.push(data_original[i]);
+			console.log(data_original[i]);
 		}
-	}	
+	}		
 	return fittedData;
 }//end of fitData
 

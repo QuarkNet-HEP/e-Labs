@@ -34,6 +34,7 @@
         }		
 				
 	}
+	String dt = (String) entry.getTupleValue("deltaTIDs");
 	request.setAttribute("name", name);
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
@@ -44,6 +45,7 @@
 	request.setAttribute("eventStart", entry.getTupleValue("eventStart"));
 	request.setAttribute("dvName", dvName);
 	request.setAttribute("url", url);
+	request.setAttribute("deltaTIDs", dt);
 	%> 
 		<h2>
 		<c:choose>
@@ -68,7 +70,14 @@
 			<a href="../plots/view-svg.jsp?filename=${param.filename}">Show SVG Plot</a><br/>
 		</c:if>
 		<c:if test="${dvName != null}">
-			<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}">Run this study again</a><br/>
+			<c:choose>
+				<c:when test="${deltaTIDs != null }">
+					<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}&deltaTIDs=${deltaTIDs}">Run this study again</a><br/>
+				</c:when>
+				<c:otherwise>
+					<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}">Run this study again</a><br/>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 	<%
 %>
