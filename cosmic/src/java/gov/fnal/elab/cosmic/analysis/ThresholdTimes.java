@@ -249,6 +249,8 @@ public class ThresholdTimes {
                     double newtempdiff = tempjdplustime - lastjdplustime;
                     if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
                 		jd = currLineJD(offset, parts) + 1;
+                    } else {                    	
+                        jd = currLineJD(offset, parts);           		            	
                     }
             	} 
             } else {
