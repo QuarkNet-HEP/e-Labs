@@ -88,6 +88,8 @@
 	request.setAttribute("eventDir", eventDir);	
 	request.setAttribute("deltaTIDs", deltaTIDs);
 	request.setAttribute("deltaTIDsString", deltaTIDsString);
+	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	
 %>
 	<div id="feedback"></div>
 	<div class="graph-container-deltaT">
