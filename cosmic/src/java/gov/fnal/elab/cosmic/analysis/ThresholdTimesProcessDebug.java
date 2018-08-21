@@ -282,7 +282,7 @@ public class ThresholdTimesProcessDebug {
         	report.write("stop right here\n");
         }
         
-        if (retime[channel] == 0.9999991416496734) {
+        if (retime[channel] == 0.4677984689254990) {
         	report.write("stop right here\n");        	
         }
         
@@ -299,14 +299,16 @@ public class ThresholdTimesProcessDebug {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+            	if (tempjdplustime > lastjdplustime && tempdiff < -0.9) {
                     jd = currLineJD(offset, parts, report);           		            	            		
             	} else {
                     tempjdplustime = currLineJD(offset, parts, report)+ retime[channel];    
                     //need to add extra testing here because in rare occasion the rint and floor mess up
                     double newtempdiff = tempjdplustime - lastjdplustime;
-                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                    if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
                 		jd = currLineJD(offset, parts, report) + 1;
+                    } else {                    	
+                        jd = currLineJD(offset, parts, report);           		            	
                     }
             	} 
             } else {
@@ -317,29 +319,6 @@ public class ThresholdTimesProcessDebug {
             lastEdgeTime = retime[channel];
         }
 
-        //Bug 469: the rollover of the julian day and the RE needs be in sync
-        //		   the following code is an attempt to keep them in sync.                  
-        if (startJd == 0) {
-        	startJd = jd;
-        	nextJd = jd+1;
-        }
-        if (jd == nextJd) {
-        	dayRolled = true;
-        }
-        if (firstRE == -1.0) {
-        	firstRE = retime[channel];
-        }
-        
-        if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
-        	if (!dayRolled) {
-        		jd = startJd;
-        	}
-        } else {
-        	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
-        		jd = nextJd;
-        	} 
-        }
-        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
