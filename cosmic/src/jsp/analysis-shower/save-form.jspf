@@ -26,6 +26,10 @@
 		<input type="hidden" name="eventNum" value="${showerResults.analysis.parameters['eventNum']}" />
 		<input type="hidden" name="id" value="${showerResults.id}"/>
 		<input type="hidden" name="rundirid" value="${results.id}"/>
+		<c:if test="${deltaTIDsSize == 2}">
+			<input type="hidden" name="metadata" value="deltaTIDs string ${deltaTIDs[0]} ${deltaTIDs[1]}" />
+		</c:if>
+		
 		<div class="dropdown" style="text-align: left; width: 180px;">
 			<input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
 			<%@ include file="../plots/view-saved-plot-names.jsp" %>
