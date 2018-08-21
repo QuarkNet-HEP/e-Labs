@@ -213,10 +213,11 @@ function writeLegend() {
 	var dTcaption = "";
 	$.each(serialized, function(index,element){
 		var val = element.value;
-		if (val.indexOf("deltaTIDs") > -1) {
-			dTcaption = val.substring(val.indexOf("Delta T:"), val.length);
+		if (val.indexOf("deltaTIDsString") > -1) {
+			dTcaption = "Delta T: " + val.substring(val.indexOf(" t"), val.length);
 		}
-	   });
+	   });	 
+
 	context.textAlign = "Shower Study - "+dTcaption;
 	context.fillText("Shower Study - "+dTcaption, 90, 20);
 	context.font="10px sans-serif";

@@ -82,7 +82,9 @@
     //EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	String eventDir = request.getParameter("eventDir");
 	request.setAttribute("eventDir", eventDir);	
-	request.setAttribute("deltaTIDs", deltaTIDsString);
+	request.setAttribute("deltaTIDs", deltaTIDs);
+	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	request.setAttribute("deltaTIDsString", deltaTIDsString);
 %>
 	<div id="feedback"></div>
 	<div class="graph-container-deltaT">
@@ -182,13 +184,17 @@
 			<input type="hidden" name="metadata" value="gate int ${showerResults.analysis.parameters['gate']}"/>
 			<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
 			<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
-			<input type="hidden" name="metadata" value="deltaTIDs string Delta T: ${deltaTIDs}" />
+			<c:if test="${deltaTIDsSize == 2}">
+				<input type="hidden" name="metadata" value="deltaTIDs string ${deltaTIDs[0]} ${deltaTIDs[1]}" />
+			</c:if>
+			<input type="hidden" name="metadata" value="deltaTIDsString string ${deltaTIDsString}" />
 			<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 			<input type="hidden" name="eventCandidates" value="eventCandidates" />
 			<input type="hidden" name="eventDir" value="${eventDir}" />
 			<input type="hidden" name="eventNum" value="${showerResults.analysis.parameters['eventNum']}" />
 			<input type="hidden" name="id" value="${showerResults.id}"/>
 			<input type="hidden" name="rundirid" value="${results.id}"/>
+
 			
 		</div>
 		<!-- end container -->
