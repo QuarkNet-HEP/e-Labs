@@ -35,9 +35,18 @@ $(document).ready(function () {
 		}
 		ndx++;
 	}
-    String dt = request.getParameter("deltaTIDs");
-    String[] analysisDT = dt.trim().split("\\s+");
-    
+
+	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+	if (analysisDT == null) {
+		String dt = request.getParameter("deltaTIDs");
+		if (dt != null) {
+			try {
+				analysisDT = dt.split("\\s+");
+			} catch (Exception e) {
+				
+			}
+		}		
+	}
    	if ( analysisDT != null) {
    		//analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
    		for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
