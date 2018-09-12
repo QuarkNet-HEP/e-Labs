@@ -104,7 +104,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/benchmark.css"/>
-		<%-- This page uses jQuery, but it's included through nav-rollover.jspf  --%>
+		<%-- This page uses jQuery, but it's included through header.jsp  --%>
 		<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script> --%>
 		<script type="text/javascript" src="../include/jquery/js/jquery-migrate-1.4.1.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
