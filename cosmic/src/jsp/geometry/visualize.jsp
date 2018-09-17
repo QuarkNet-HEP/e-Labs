@@ -12,10 +12,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
- 		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
-		<script type="text/javascript" src="../include/highcharts/js/highcharts.js"></script>
-		<script type="text/javascript" src="../include/highcharts/js/highcharts-3d.js"></script>
-		<script type="text/javascript" src="../include/highcharts/js/modules/exporting.js"></script>
+ 		<script src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+		<script src="../include/highcharts/js/highcharts.js"></script>
+		<script src="../include/highcharts/js/highcharts-3d.js"></script>
+		<script src="../include/highcharts/js/modules/exporting.js"></script>
 		<title>Visualize Geometry</title>
 	</head>
 

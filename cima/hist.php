@@ -12,7 +12,6 @@ include 'templates/header.tpl';
 echo '<script src="js/Chart.js"> </script>';
 echo '<script src="js/MakeCharts.js"> </script>';
 
-/* $_SESSION["comb"] is set in Classes.php */
 if(!isset($_SESSION["comb"])){
 	if(!isset($_SESSION["database"])){
 		header("Location: index.php");
