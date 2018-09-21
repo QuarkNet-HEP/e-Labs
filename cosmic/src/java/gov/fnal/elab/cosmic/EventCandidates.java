@@ -1,13 +1,5 @@
 /*
  * Created on Jan 8, 2008
- * Updated Dec 2016 to add Delta-t function (JG)
- * Edit Peronja: May 29, 2018:
- * 		Removed all commented out code
- * 		Added delta T code
- */
-
-/*
- * Created on Jan 8, 2008
  */
 package gov.fnal.elab.cosmic;
 
@@ -74,7 +66,7 @@ public class EventCandidates {
         Set deltaTDetector = new HashSet();
         List deltaT = new ArrayList();
         ElabMemory em = new ElabMemory();
-        //deltaTFirstIdAdded = false;
+
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
@@ -111,14 +103,16 @@ public class EventCandidates {
                         String[] idchan = arr[i].split("\\.");
                         idchan[0] = idchan[0].intern();
                         ids.add(idchan[0]);
-                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
-                        	for (int ndx = 0; ndx < deltaTIDs.length; ndx++) {
-                        		if (idchan[0].equals(deltaTIDs[ndx])) {
-                                	deltaTDetector.add(idchan[0]);
-                                	deltaT.add(idchan[0]);
-                                	deltaT.add(arr[i+2]);                        			
-                        		}
-                        	}
+                        if (deltaTIDs != null) {
+	                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
+	                        	for (int ndx = 0; ndx < deltaTIDs.length; ndx++) {
+	                        		if (idchan[0].equals(deltaTIDs[ndx])) {
+	                                	deltaTDetector.add(idchan[0]);
+	                                	deltaT.add(idchan[0]);
+	                                	deltaT.add(arr[i+2]);                        			
+	                        		}
+	                        	}
+	                        }
                         }
                         String mult = arr[i].intern();
                         multiplicities.add(mult);
@@ -431,6 +425,6 @@ public class EventCandidates {
             else {
                 return dir * c;
             }
-        }//end of EventsComparator
+        }
     }
 }

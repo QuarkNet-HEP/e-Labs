@@ -99,32 +99,34 @@
 	
 	//Edit Peronja: June 1 2018
 	// 		Delta T Histogram
-	String dtJsonFile = showerResults.getOutputDir() + "/DeltaTHistogram";
-	try {
-		//this code is for admin to be able to see the graph
-		File f = new File(dtJsonFile);
-		if (!f.exists()) {
-			String userParam = (String) request.getParameter("user");
-			if (userParam == null) {
-				userParam = (String) session.getAttribute("userParam");
+	if (deltaTIDs != null) {
+		String dtJsonFile = showerResults.getOutputDir() + "/DeltaTHistogram";
+		try {
+			//this code is for admin to be able to see the graph
+			File f = new File(dtJsonFile);
+			if (!f.exists()) {
+				String userParam = (String) request.getParameter("user");
+				if (userParam == null) {
+					userParam = (String) session.getAttribute("userParam");
+				}
+				session.setAttribute("userParam", userParam);
+				ElabGroup auser = user;
+				if (userParam != null) {
+				    if (!user.isAdmin()) {
+				    	throw new ElabJspException("You must be logged in as an administrator" 
+				        	+ "to see the status of other users' analyses");
+				    }
+				    else {
+				        auser = elab.getUserManagementProvider().getGroup(userParam);
+				    }
+				}
+				//create time of flight source data
+				DeltaTDataStream dtds = new DeltaTDataStream(showerResults.getOutputDir());
 			}
-			session.setAttribute("userParam", userParam);
-			ElabGroup auser = user;
-			if (userParam != null) {
-			    if (!user.isAdmin()) {
-			    	throw new ElabJspException("You must be logged in as an administrator" 
-			        	+ "to see the status of other users' analyses");
-			    }
-			    else {
-			        auser = elab.getUserManagementProvider().getGroup(userParam);
-			    }
-			}
-			//create time of flight source data
-			DeltaTDataStream dtds = new DeltaTDataStream(showerResults.getOutputDir());
-		}
-	} catch (Exception e) {
-			message = e.getMessage();
-	}	
+		} catch (Exception e) {
+				message = e.getMessage();
+		}	
+	}
 	
 	//added to keep track of the page where the last event is
 	int eventNdx = ec.getEventIndex();
@@ -168,7 +170,11 @@
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
 	request.setAttribute("totalTime", totalTime);
 	request.setAttribute("deltaTIDs", deltaTIDs);
-	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	if (deltaTIDs != null) {
+		request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	} else {
+		request.setAttribute("deltaTIDsSize", 0);		
+	}
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -252,11 +258,15 @@
 				</tr>
 				<tr>
 					<td colspan="2"></td>
-					<td><strong>&nbsp;t${deltaTIDs[0]}<br />
-						<c:if test="${deltaTIDsSize == 2}">
-							-t${deltaTIDs[1]}
-						</c:if>
-					</strong></td>
+					<td>
+						<c:if test="${deltaTIDs != null}" >
+							<strong>&nbsp;t${deltaTIDs[0]}<br />
+								<c:if test="${deltaTIDsSize == 2}">
+									-t${deltaTIDs[1]}
+								</c:if>
+							</strong>
+						</c:if>						
+					</td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
@@ -324,7 +334,7 @@
 						</td>
 						<td>
 							<c:choose>
-								<c:when test="${ row.deltaTValue == 0}">&nbsp;
+								<c:when test="${ row.deltaTValue == null or row.deltaTValue == 0}">&nbsp;
 								</c:when>
 								<c:otherwise>
 									<fmt:formatNumber pattern="######.#" value="${row.deltaTValue}" />
