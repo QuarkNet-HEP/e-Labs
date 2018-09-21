@@ -100,7 +100,11 @@ public class DeltaTDataStream {
     			//bwraw.write("\n");
 			}//end of while	
 			binValue = (maxX - minX) * 0.03;
-			nBins = (maxX - minX) / binValue;
+			if (binValue > 0) {
+				nBins = (maxX - minX) / binValue;
+			} else {
+				nBins = 0;
+			}
 			maxBins = maxX - minX;			
 		} catch (Exception e) {
 			throw new ElabException("Delta T: analyzeInputFile - "+e.getMessage());

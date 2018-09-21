@@ -37,7 +37,11 @@ $(document).ready(function () {
 	}
 
     String dt = request.getParameter("deltaTIDs");
-    String[] analysisDT = dt.trim().split("\\s+");
+    String testParm = " ";
+    if (dt != null) {
+    	testParm = dt;
+    }
+    String[] analysisDT = testParm.trim().split("\\s+");
     
    	if ( analysisDT != null) {
    		//analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
@@ -51,12 +55,12 @@ $(document).ready(function () {
    	    	} else if (analysisDT.length == 1) {
        		  	if (entry.getKey().equals(analysisDT[0])) {
  	    			  entry.setValue("checked");
-	 	    	} else {
-		    		entry.setValue("");
-		    	}						
- 	    	} else {
-	    		entry.setValue("");
-	    	}						
+	 	    	} //else {
+		    		//entry.setValue("");
+		    	//}						
+ 	    	} //else {
+	    		//entry.setValue("");
+	    	//}						
 		}
    	}
 	request.setAttribute("deltaTIDs", deltaTIDs);
