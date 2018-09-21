@@ -37,6 +37,9 @@
 <p>
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
+<p>
+	<a href="../analysis-blessing/rate-pressure.jsp?id=${results.id }">View rate vs. pressure</a>
+</p>
 
 <%--<p>
 	<a href="flux-plot.jsp?id=${results.id }&message=${message}">View interactive Flux plots</a> (Beta Version)<br />
