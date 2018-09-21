@@ -16,7 +16,6 @@ $(document).ready(function () {
 	  });
 	});
 </script>
-
 <%
 	//build set of detector id locations
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(analysis.getParameterValues("rawData"));
@@ -36,34 +35,36 @@ $(document).ready(function () {
 		}
 		ndx++;
 	}
-    //String dt = request.getParameter("deltaTIDs");
-    //String[] analysisDT = dt.trim().split("\\s+");
-	String[] analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
-	
-   	if ( analysisDT != null) {
-   		analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
-   		for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
-   			if (analysisDT.length == 2) {
-   				if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
-   	    			  entry.setValue("checked");
-	 	    	} else {
-		    		entry.setValue("");
-		    	}						
-   	    	} else if (analysisDT.length == 1) {
-       		  	if (entry.getKey().equals(analysisDT[0])) {
- 	    			  entry.setValue("checked");
-	 	    	} else {
-		    		entry.setValue("");
-		    	}						
- 	    	} else {
-	    		entry.setValue("");
-	    	}						
-		}
-   	}
-	request.setAttribute("deltaTIDs", deltaTIDs);
-	request.setAttribute("deltaTIDsSize", deltaTIDs.size());
-	request.setAttribute("detectors", detectors);	
-%>
+    String dt = request.getParameter("deltaTIDs");
+	String testParm = " ";
+    if (dt != null) {
+    	testParm = dt;
+    }
+    String[] analysisDT = testParm.trim().split("\\s+");
+    
+    if ( analysisDT != null) {
+        analysisDT = (String[]) analysis.getAttribute("deltaTIDs");
+        for(Map.Entry<String,String> entry : deltaTIDs.entrySet()) {
+               if (analysisDT.length == 2) {
+                   if (entry.getKey().equals(analysisDT[0]) || entry.getKey().equals(analysisDT[1])) {
+                      entry.setValue("checked");
+                 } else {
+                    entry.setValue("");
+                }                        
+               } else if (analysisDT.length == 1) {
+                     if (entry.getKey().equals(analysisDT[0])) {
+                       entry.setValue("checked");
+                 } else {
+                    entry.setValue("");
+                }                        
+             } else {
+                entry.setValue("");
+            }                        
+        }
+    }
+ request.setAttribute("deltaTIDs", deltaTIDs);
+ request.setAttribute("deltaTIDsSize", deltaTIDs.size());
+ request.setAttribute("detectors", detectors);%>
 
 <div id="analysis-controls">
 	<form method="post" action="../analysis-shower/analysis.jsp">
@@ -126,25 +127,26 @@ $(document).ready(function () {
 										onError="Must be an integer"/>
 								</td>
 							</tr>
-							<tr>
-								<td class="form-label">
-									<e:trlabel for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</e:trlabel>
-								</td>
-								<td>
-									<div id="deltaTdiv" style="text-align: left;">
-										<c:forEach items="${deltaTIDs }" var="deltaTID">
-											<c:choose>
-												<c:when test='${deltaTID.value == "checked" }'>
-													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
-												</c:when>
-												<c:otherwise>
-													${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
-												</c:otherwise>		
-											</c:choose>									
-										</c:forEach>
-									</div>
-								</td>
-							</tr>
+								<tr>
+									<td class="form-label">
+										<e:trlabel for="deltaTIDs" name="deltaTIDs">Delta T DAQs:</e:trlabel>
+									</td>
+									<td>
+										<div id="deltaTdiv" style="text-align: left;">
+											<c:forEach items="${deltaTIDs }" var="deltaTID">
+												<c:choose>
+													<c:when test='${deltaTID.value == "checked" }'>
+														${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}" checked>
+													</c:when>
+													<c:otherwise>
+														${deltaTID.key} <input type="checkbox" name="deltaTIDs" id="deltaT${deltaTID.key}" value="${deltaTID.key}">
+													</c:otherwise>		
+												</c:choose>									
+											</c:forEach>
+										</div>
+									</td>
+								</tr>
+							
 						</table>
 					</e:hidden>
 				</e:vswitch>
