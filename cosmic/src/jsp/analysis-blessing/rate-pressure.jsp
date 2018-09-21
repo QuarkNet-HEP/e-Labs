@@ -22,7 +22,7 @@
 <%
 	String message = request.getParameter("message");
 	//create the file for the dynamic charts
-	String ratePressurePlot = results.getOutputDir() + "/RatePressure";
+	String ratePressurePlot = results.getOutputDir() + "/RatePressurePlot";
 	File[] pfns = null;
 	String[] filenames = null;
 	try {
@@ -60,7 +60,9 @@
 						}
 					}			
 					if (pfns.length > 0) {
-						RatePressure rp = new RatePressure(elab,pfns,filenames,results.getOutputDir());
+						String binValue = results.getAnalysis().getParameter("flux_binWidth").toString();
+					    Double bV = Double.valueOf(binValue);
+						RatePressure rp = new RatePressure(elab,pfns,bV,filenames,results.getOutputDir());
 					}
 				}
 		}
@@ -155,83 +157,44 @@
 			<div class="graph-container-rate-pressure">
 				<div id="chartTrigger" style="text-align: center; width:700px; height:260px;">
 					<div id="rate-pressure-title"><strong>Rate vs Pressure</strong></div>
+					<div id="trigPressChart" style="width:700px; height:250px; text-align: center;"></div>
+					<div id="trigPressLegend" style="width: 700px;"></div>
 					<div id="triggerChart" style="width:700px; height:250px; text-align: center;"></div>
 					<div id="triggerLegend" style="width: 700px;"></div>
 					<div id="pressureChart" style="width:700px; height:250px; text-align: center;"></div>
 					<div id="pressureLegend" style="width: 700px;"></div>
 				</div>
 			</div>	
-			<div class="ratePressureDetails" id="ratePressureDetails"> Advanced Controls
-				<span class="ratePressureControls" id="ratePressureControls">
-					<div id="refit" style="border: 1px dotted black;">
-						<br />
-						<div id="xrefit" style="width:245px;">
-							<table id="xrefitTable">
-								<tr>
-									<td nowrap><strong>Refit X Values:</strong> </td>
-									<td nowrap>
-										Min X: <input type="text" size="3" id="minFitX" />
-										Max X: <input type="text" size="3" id="maxFitX" />
-										<input type="button" value="Refit X" id="maxFitXButton" onclick='javascript:redrawPlotFitX(minFitX.value, maxFitX.value);' />
-									</td>
-								</tr>
-							</table>
-						</div>	
-						<div id="mean" style="font-size: x-small;"></div>
-						<div id="stddev" style="font-size: x-small;"></div>
-					</div>
-					<div id="scale" style="border: 1px dotted black;">
-						<br />
-						<div id="xaxis" style="width:245px;">
-							<table id="xaxisTable">
-								<tr>
-									<td nowrap><strong>X-axis scale:</strong> </td>
-									<td nowrap>
-										Min X: <input type="text" size="3" id="minX" /><input type="button" value="Set" id="minXButton" onclick='javascript:redrawPlotX(minX.value, "min");' />
-										Max X: <input type="text" size="3" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value, "max");' />
-									</td>
-								</tr>
-							</table>
-						</div>
-						<br />
-						<div id="yaxis" style="width:245px;">
-							<table id="yaxisTable" >
-								<tr>
-									<td nowrap><strong>Y-axis scale:</strong> </td>
-									<td nowrap> 
-										Min Y: <input type="text" size="3" id="minY" /><input type="button" value="Set" id="YMinButton" onclick='javascript:redrawPlotY(minY.value, "min");' />
-										Max Y: <input type="text" size="3" id="maxY" /><input type="button" value="Set" id="YMaxButton" onclick='javascript:redrawPlotY(maxY.value, "max");' />
-									</td>
-								</tr>
-							</table>
-						</div>	
-					</div>	
-					<div id="binning" style="border: 1px dotted black">			
-						<br />
-						<div id="incdec" style="width:245px;"><strong>Bin Width</strong>
-					   		<input type="number" name="binWidthRatePressure" id="binWidthRatePressure" min="0.5" style="width: 60px;"/>
-						</div>
-						<div class="slider" style="width:245px;">
-					    	<input id="rangeRatePressure" type="range" min="0.5" style="width: 240px;"></input>
-					    </div>
-					 </div>
-					 <div id="resetRatePressure" style="border: 1px dotted black">			
-						<br />
-						<input type="button" value="Reset All" id="ResetAll" onclick='javascript:resetAll();' />
-					 </div>
-				</span>
-				<br />
-		</div>
-		<% if (!user.isGuest()) { %>		
+			<div style="text-align: center;">
+			<!-- 
+				<div id="incdec">Bin Width
+		    		<input type="number" name="binWidth" id="binWidth" step="60" min="60" style="width: 60px;"/>
+				</div>
+				<div class="slider">
+			    	<input id="range" type="range" step="60" min="60" style="width: 650px;"></input>
+				</div>
+				-->	
+				<p>
+					Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+				</p>
+				<p>
+					Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
+						width="800" height="600" toolbar="true">analysis directory</e:popup>
+				</p>
+				<p>
+					<e:rerun type="flux" id="${results.id}" label="Change"/> your parameters	
+				</p>
+			</div>
+			<% if (!user.isGuest()) { %>		
 					<div style="text-align:center; width: 100%;">
 						<p>To save this plot permanently, enter the new name you want.</p>
 						<p>Then click <b>Save Plot</b>.</p>
 	
 						<div class="dropdown" style="text-align: left; width: 180px;">
-							<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>
+							<input type="text" name="newPlotName" id="newPlotName" value="" size="20" maxlength="30"/>
 							<%@ include file="../plots/view-saved-plot-names.jsp" %>
 						</div>(View your saved plot names)<br />
-						<input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
+						<input type="button" name="save" onclick='validatePlotName("newPlotName"); return saveRatePressureChart("newPlotName", "chartMsg", "${results.id}");' value="Save"></input>    
 					</div>
 
 					<div id="chartMsg"></div>  

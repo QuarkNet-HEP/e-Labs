@@ -1,39 +1,97 @@
 var triggerPressureData = [,];
 var triggerData = [];
 var pressureData = [];
+var ratepressData = [];
+var onOffPlot0;
 var options = "";
 var minx, maxx, mean, deviation, numberOfEntries;
-var yAxisLabel = "number of entries/time bin";
+var yAxisLabel = "average of entries/time bin";
 var xAxisLabel = "xxxx";
 var currentBinValue = 1.25;
 var chartNum = 0;
 var loadCount = 0;
 var tf = "%m/%d/%y";
+var sliderMinX = -1;
+var sliderMaxX = -1;
+
+Date.prototype.customFormat = function(formatString){
+    var YYYY,YY,MMMM,MMM,MM,M,DDDD,DDD,DD,D,hhh,hh,h,mm,m,ss,s,ampm,AMPM,dMod,th;
+    var dateObject = this;
+    YY = ((YYYY=dateObject.getFullYear())+"").slice(-2);
+    MM = (M=dateObject.getMonth()+1)<10?('0'+M):M;
+    MMM = (MMMM=["January","February","March","April","May","June","July","August","September","October","November","December"][M-1]).substring(0,3);
+    DD = (D=dateObject.getDate())<10?('0'+D):D;
+    DDD = (DDDD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dateObject.getDay()]).substring(0,3);
+    th=(D>=10&&D<=20)?'th':((dMod=D%10)==1)?'st':(dMod==2)?'nd':(dMod==3)?'rd':'th';
+    formatString = formatString.replace("#YYYY#",YYYY).replace("#YY#",YY).replace("#MMMM#",MMMM).replace("#MMM#",MMM).replace("#MM#",MM).replace("#M#",M).replace("#DDDD#",DDDD).replace("#DDD#",DDD).replace("#DD#",DD).replace("#D#",D).replace("#th#",th);
+
+    h=(hhh=dateObject.getHours());
+    if (h==0) h=24;
+    if (h>12) h-=12;
+    hh = h<10?('0'+h):h;
+    AMPM=(ampm=hhh<12?'am':'pm').toUpperCase();
+    mm=(m=dateObject.getMinutes())<10?('0'+m):m;
+    ss=(s=dateObject.getSeconds())<10?('0'+s):s;
+    return formatString.replace("#hhh#",hhh).replace("#hh#",hh).replace("#h#",h).replace("#mm#",mm).replace("#m#",m).replace("#ss#",ss).replace("#s#",s).replace("#ampm#",ampm).replace("#AMPM#",AMPM);
+}
 
 function saveRatePressureChart(name_id, div_id, run_id) {
-	//console.log("it gets here " + name_id);
 	var filename = document.getElementById(name_id);
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
 	var values = new Array();
-	console.log(filename);
+	console.log(filename.value);
 	$.each(serialized, function(index,element){
 	     values.push(element.value);
 	   });	 
 	var rc = true;
 	if (filename != null) {
 		if (filename.value != "") {
-			var canvas = localDeltaTdata[0].onOffPlot.getCanvas();			
+			//save trigger
+			var triggername = filename.value +"-trigger";
+			var canvas = triggerPressureData[0].onOffPlot.getCanvas();			
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
 			$.ajax({
 				url: "../analysis/save-plot.jsp",
 				type: 'POST',
-				data: { imagedata: image, filename: filename.value, id: run_id, metadata: values},
+				data: { imagedata: image, filename: triggername, id: run_id, metadata: values},
 				success: function (response) {
 					var msgDiv = document.getElementById(div_id);
 					if (msgDiv != null) {
-						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
+						msgDiv.innerHTML = '<a href="'+response+'">' +triggername +'</a> file created successfully.';
+					}
+				}
+			});	
+			//save pressure
+			var pressurename = filename.value +"-pressure";
+			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();			
+			var image1 = canvas1.toDataURL("image/png");
+			image1 = image1.replace('data:image/png;base64,', '');
+			$.ajax({
+				url: "../analysis/save-plot.jsp",
+				type: 'POST',
+				data: { imagedata: image1, filename: pressurename, id: run_id, metadata: values},
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML += '<br /><a href="'+response+'">' +pressurename +'</a> file created successfully.';
+					}
+				}
+			});	
+			//save rate/pressure
+			var ratename = filename.value +"-rate-pressure";
+			var canvas2 = onOffPlot0.getCanvas();			
+			var image2 = canvas2.toDataURL("image/png");
+			image2 = image2.replace('data:image/png;base64,', '');
+			$.ajax({
+				url: "../analysis/save-plot.jsp",
+				type: 'POST',
+				data: { imagedata: image2, filename: ratename, id: run_id, metadata: values},
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML += '<br /><a href="'+response+'">' +ratename +'</a> file created successfully.';
 					}
 				}
 			});	
@@ -61,11 +119,18 @@ options = {
         legend: {  
             show: false
         },  
-        lines: { 
-        	show: true, 
-        	fill: false, 
-        	lineWidth: 2.0 
-        },
+    	series: {
+    		lines: {
+    			show: false,
+				steps: false
+    		},
+    		points: {
+    			show: true,
+    			radius: 0.5,
+    			errorbars: "y", 
+    			yerr: {show:true, asymmetric:null, upperCap: "-", lowerCap: "-"}
+    		},
+    	},
         xaxis: { 
         	tickDecimals: 0
     		},
@@ -76,10 +141,52 @@ options = {
 		yaxes: {
 			axisLabelUseCanvas: true
 		},
-		xaxes: {
-			axisLabelUseCanvas: true			
-		}
+		xaxes: [{	
+			axisLabelUseCanvas: true,
+			mode: "time",
+			tickFormatter: function (val, axis) {		
+				var d = new Date(val);
+				return d.customFormat("#DD#/#MMM#<br />#hh#:#mm#");
+				}
+			}, {	
+			axisLabelUseCanvas: true,
+			mode: "time",
+			tickFormatter: function (val, axis) {		
+				var d = new Date(val);
+				return d.customFormat("#DD#/#MMM#<br />#hh#:#mm#");
+				}
+			}
+	]
+		
 	};
+
+optionsExtra = {
+		//canvas: true,
+        axisLabels: {
+            show: true
+        },		
+        legend: {  
+            show: false,  
+            margin: 10,  
+            backgroundOpacity: 0.5  
+        },  
+    	series: {
+     		points: {
+    			show: true,
+    			radius: 0.5,
+    			errorbars: "n", 
+    			yerr: {show:true, asymmetric:null, upperCap: "-", lowerCap: "-"}
+    		},
+    	},
+		yaxes: {
+			axisLabelUseCanvas: true
+		},
+		xaxes: [{	
+				axisLabelUseCanvas: true,
+				}
+		]
+};
+
 
 function onDataLoad() {
 	loadJSON(function(response) {
@@ -93,7 +200,7 @@ function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
 	var outputDir = document.getElementById("outputDir");
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/RatePressure", true); 
+    xobj.open('GET', outputDir.value+"/RatePressurePlot", true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -108,104 +215,132 @@ function onDataLoadChart(json) {
 		data = [];
 		if (json.trigger != null) {
 			triggerData = json.trigger;
-			triggerPressureData[0]={onOffPlot: "", TriggerData: triggerData, data: "", originalMinX: triggerData.minX, originalMaxX: 0,
+			triggerPressureData[0]={onOffPlot: "", TriggerData: triggerData, data: triggerData.data, originalMinX: triggerData.minX, originalMaxX: 0,
 					originalMinY: triggerData.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: triggerData.label, 
 					maxBins: triggerData.maxBins, binValue: triggerData.binValue, currentBinValue: triggerData.binValue};
-			triggerData.data = getDataWithBins(triggerData.data_original, triggerData.binValue, triggerData.minX, triggerData.maxX, triggerData.nBins, triggerData.bins);
 			triggerPressureData[0].data = data;
 		}
 		data.push(triggerData);
 		var onOffPlot = $.plot("#triggerChart", data, options);
 		triggerPressureData[0].onOffPlot = onOffPlot;
-
+		var axes = onOffPlot.getAxes();
+		axes.yaxis.options.max = 40.0;
+	    onOffPlot.setupGrid();
+	    onOffPlot.draw();
 		data1 = [];
 		if (json.pressure != null) {
 			pressureData = json.pressure;
-			triggerPressureData[1]={onOffPlot: "", PressureData: pressureData, data: "", originalMinX: pressureData.minX, originalMaxX: 0,
+			triggerPressureData[1]={onOffPlot: "", PressureData: pressureData, data: pressureData.data, originalMinX: pressureData.minX, originalMaxX: 0,
 					originalMinY: pressureData.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: pressureData.label, 
 					maxBins: pressureData.maxBins, binValue: pressureData.binValue, currentBinValue: pressureData.binValue};
-			pressureData.data = getDataWithBins(pressureData.data_original, pressureData.binValue, pressureData.minX, pressureData.maxX, pressureData.nBins, pressureData.bins);
 			triggerPressureData[1].data = data1;
 		}
 		data1.push(pressureData);
 		var onOffPlot1 = $.plot("#pressureChart", data1, options);
 		triggerPressureData[1].onOffPlot = onOffPlot1;
-				
-		setDataStats();
-		setStatsLegend();
-		writeLegend();
+		setSliders(60, 86400);				
+		writeLegend('trigger');
+		writeLegend('pressure');
 
-		$("#rangeRatePressure").attr({"min":triggerData.binValue, "max":Math.floor(triggerData.maxBins), "value": triggerData.binValue, "step": triggerData.binValue});
-		$("#binWidthRatePressure").attr({"min":triggerData.binValue, "max":Math.floor(triggerData.maxBins), "value": triggerData.binValue, "step": triggerData.binValue});
-	    $('#rangeRatePressure').on('input', function(){
-	        $('#binWidthRatePressure').val($('#rangeRatePressure').val());
-	        if ($('#rangeRatePressure').val() > 0) {
-	        	localDeltaTdata[0].currentBinValue = $('#rangeRatePressure').val();
-	        	localDeltaTdata[1].currentBinValue = $('#rangeRatePressure').val();
-	        	reBinDataTrigger($('#rangeRatePressure').val(), triggerData, data, onOffPlot);       
-	        	reBinDataPressure($('#rangeRatePressure').val(), pressureData, data1, onOffPlot1);       
-	    		writeLegend();
+		$("#range").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": triggerData.binValue});
+		$("#binWidth").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": triggerData.binValue});
+
+	    $('#range').on('input', function(){
+	        $('#binWidth').val($('#range').val());
+	        if ($('#range').val() > 0) {
+	        	reBinDataTrigger($('#range').val(),triggerData,data,onOffPlot);
+	        	reBinDataPressure($('#range').val(),pressureData,data1,onOffPlot1);
 	        }
 	    });
-	    $('#binWidthRatePressure').on('change', function(){
-	        $('#rangeRatePressure').val($('#binWidthRatePressure').val());
-	        if ($('#binWidthRatePressure').val() > 0) {
-	        	localDeltaTdata[0].currentBinValue = $('#binWidthRatePressure').val();
-	        	localDeltaTdata[1].currentBinValue = $('#binWidthRatePressure').val();
-	        	reBinDataTrigger($('#binWidthRatePressure').val(),triggerData, data, onOffPlot);
-	        	reBinDataPressure($('#binWidthRatePressure').val(),pressureData, data1, onOffPlot1);
-	    		writeLegend();
+	    $('#binWidth').on('change', function(){
+	        $('#range').val($('#binWidth').val());
+	        if ($('#binWidth').val() > 0) {
+	        	reBinDataTrigger($('#binWidth').val(),triggerData,data,onOffPlot);
+	        	reBinDataPressure($('#binWidth').val(),pressureData,data1,onOffPlot1);
 	        }
-	    }); 
-		writeLegend();
+	    });
+		data0 = [];		
+		if (json.ratepressure != null) {
+			ratepressData = json.ratepressure;
+		}
+		data0.push(ratepressData);
+		onOffPlot0 = $.plot("#trigPressChart", data0, optionsExtra);
+		writeLegend('trigpres')
+	    
 	}
 }//end of onDataLoadChart
 
-function setDataStats() {
-	triggerPressureData[0].mean = mean;
-	triggerPressureData[0].stddev = deviation;
-	triggerPressureData[0].numberOfEntries = numberOfEntries;
-	triggerPressureData[0].originalMinX = triggerPressureData[0].onOffPlot.getAxes().xaxis.min;
-	triggerPressureData[0].originalMaxX = triggerPressureData[0].onOffPlot.getAxes().xaxis.max;
-	triggerPressureData[0].originalMinY = triggerPressureData[0].onOffPlot.getAxes().yaxis.min;
-	triggerPressureData[0].originalMaxY = triggerPressureData[0].onOffPlot.getAxes().yaxis.max;
-	triggerPressureData[1].mean = mean;
-	triggerPressureData[1].stddev = deviation;
-	triggerPressureData[1].numberOfEntries = numberOfEntries;
-	triggerPressureData[1].originalMinX = triggerPressureData[0].onOffPlot.getAxes().xaxis.min;
-	triggerPressureData[1].originalMaxX = triggerPressureData[0].onOffPlot.getAxes().xaxis.max;
-	triggerPressureData[1].originalMinY = triggerPressureData[0].onOffPlot.getAxes().yaxis.min;
-	triggerPressureData[1].originalMaxY = triggerPressureData[0].onOffPlot.getAxes().yaxis.max;
-}//end of setDataStats
-
-function setStatsLegend() {
-	var meandiv = document.getElementById("mean");
-	meandiv.innerHTML = "Mean: "+parseFloat(triggerPressureData[0].mean).toFixed(2);
-	var stddevdiv = document.getElementById("stddev");
-	stddevdiv.innerHTML = "Std Dev: "+parseFloat(triggerPressureData[0].stddev).toFixed(2);
-}//end of setStatsLegend
 
 function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 	//create histogram data
     var outputFinal = [];
+    var newNBins = nBins / 1000;
+    var frequency = [newNBins];
+    for (var j = 0; j < frequency.length; j++) {
+    	frequency[j] = 0;
+    }
+    var binMillis = [newNBins];
+    var values = [newNBins];
+    var errors = [newNBins];
+	var secsToPartialDay = localBinValue * 1000; //to millis
+	var counter = 0;
 	if (rawData != null) {
 		binValue = localBinValue;
-		var histogram = d3.layout.histogram();
-		histogram.bins(bins);
-		var data = histogram(rawData);
-		//console.log(bins);
-		//console.log(binValue);
-		//console.log(rawData);
-		//console.log(data);
-		//minx = Math.min.apply(Math,rawData);
-		//maxx = Math.max.apply(Math,rawData);
-		mean = d3.mean(rawData);
-		deviation = d3.deviation(rawData);
-		numberOfEntries = rawData.length;
-		for ( var i = 0; i < data.length; i++ ) {
-	    	outputFinal.push([data[i].x, data[i].y]);
-	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
-	    } 
+		var halfBin = localBinValue / 2.0;
+		for (var i = 0; i < rawData.length - 1; i++) {
+			var bin = (rawData[i][0] - minX) / secsToPartialDay;
+			var nextBin = (rawData[i+1][0] - minX) / secsToPartialDay;
+			if (localBinValue < 0) {}
+			else if (parseInt(bin) >= newNBins) {}
+			else {
+				counter ++;
+				frequency[parseInt(bin)] = counter;
+			}
+			if ((parseInt(nextBin) - parseInt(bin)) >= 1) {
+				counter = 0;
+			}			
+		}
+		frequency[frequency.length-1] = 0;
+		var halfBin = (localBinValue * 1000) / 2
+		var ndx = 0;
+		for (var i = minX; i < maxX && ndx < newNBins; i+=(localBinValue * 1000)) {
+			binMillis[ndx] = i+halfBin+0.00001;
+			ndx ++;
+		}
+		console.log(rawData);
+		var dataPointer = 0;
+		for (var i = 0; i < frequency.length; i++) {
+			var frequencySum = 0.0;
+			var frequencyAvg = 0.0;
+			var errorSum = 0.0;
+			var errorN = 0;
+			if (frequency[i] > 0) {
+				for (var j = 0; j < frequency[i]; j++) {
+					frequencySum += rawData[j+dataPointer][1];
+					if (rawData[j+dataPointer][2] > 0.0) {
+	 					errorSum += rawData[j+dataPointer][1];
+ 						errorN += 1.0;
+ 					} else {
+ 						errorSum += 0.0;
+ 						errorN += 0;
+ 					}
+					dataPointer++;
+				}
+				frequencyAvg = frequencySum / frequency[i];
+				values[i] = frequencyAvg
+				if (errorN > 0) {
+					errors[i] = Math.sqrt(errorSum) / errorN;
+				}
+			}
+		}
+		for (var i = 0; i < frequency.length; i++){
+			if (binMillis[i] > 0 && values[i] > 0 && localBinValue > 0 && frequency[i] > 1) {
+ 				var xValue = binMillis[i];
+	 			var yValue = values[i];
+	 			var eValue = errors[i];
+	 			outputFinal.push([xValue, yValue, eValue]);	
+			}
+		}
 	}
     return outputFinal;	
 }//end of getDataWithBins
@@ -224,6 +359,8 @@ function reBinDataTrigger(binValue, triggerData, data, onOffPlot) {
 			data.push(triggerData);
 		}
 		onOffPlot.setData(data);
+		var axes = onOffPlot.getAxes();
+		axes.yaxis.options.max = 20.0;
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
 	}
@@ -242,14 +379,29 @@ function reBinDataPressure(binValue, pressureData, data, onOffPlot1) {
 			pressureData.data = getDataWithBins(pressureData.data_original, binValue, pressureData.minX, pressureData.maxX, nBins, bins);
 			data.push(pressureData);
 		}
-		onOffPlot.setData(data);
-	    onOffPlot.setupGrid();
-	    onOffPlot.draw();
+		onOffPlot1.setData(data);
+	    onOffPlot1.setupGrid();
+	    onOffPlot1.draw();
 	}
 }//end of reBinData
 
-function writeLegend() {
+function writeLegend(dataGroup) {
+	if (dataGroup == 'trigpres') {
+		
+	}
 	var context = triggerPressureData[0].onOffPlot.getCanvas().getContext('2d');
+	var localLabel = triggerPressureData[0].label;
+	if (dataGroup == 'trigpres') {
+		context = onOffPlot0.getCanvas().getContext('2d');
+		localLabel = "Trigger over Pressure";
+		yAxisLabel = "average trigger/pressure";
+	} else {
+		yAxisLabel = "average of entries/time bin";		
+	}
+	if (dataGroup == 'pressure') {
+		context = triggerPressureData[1].onOffPlot.getCanvas().getContext('2d');
+		localLabel = triggerPressureData[1].label;
+	}
 	context.lineWidth=3;
 	context.fillStyle="#000000";
 	context.lineStyle="#ffff00";
@@ -261,10 +413,10 @@ function writeLegend() {
 	context.textAlign = "Flux Study - Rate vs Pressure";
 	context.fillText("Flux Study -  Rate vs Pressure", 90, 20);
 	context.font="10px sans-serif";
-	context.textAlign = triggerPressureData[0].label;
-	context.fillText(triggerPressureData[0].label, 130, 30);
-	context.textAlign = '# of Entries: '+ triggerPressureData[0].numberOfEntries;
-	context.fillText('# of Entries: '+ triggerPressureData[0].numberOfEntries, 140, 40);
+	context.textAlign = localLabel;
+	context.fillText(localLabel, 130, 30);
+	//context.textAlign = '# of Entries: '+ triggerPressureData[0].numberOfEntries;
+	//context.fillText('# of Entries: '+ triggerPressureData[0].numberOfEntries, 140, 40);
 	var values = new Array();
 	var xcoord = 50;
 	var ycoord = 0;
@@ -291,7 +443,7 @@ function writeLegend() {
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 40);	
+	context.fillText(yAxisLabel, 0, 45);	
 	context.restore();		
 }//end of writeLegend
 
@@ -373,46 +525,49 @@ function fitData(data_original, newMinX, newMaxX) {
 
 resetAll = function() {
 	var plot, originalminx, originalmaxx, label, entries, original;
-	document.getElementById("minFitX").value = "";
-	document.getElementById("maxFitX").value = "";;
-	document.getElementById("minX").value = "";;
-	document.getElementById("maxX").value = "";;
-	document.getElementById("minY").value = "";;
-	document.getElementById("maxY").value = "";;
-	$("#rangeRatePressure").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
-	$("#binWidthRatePressure").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
-	original = localDeltaTdata[0].TriggerData;
-	localdata = [];
-	if (original != null) {
-		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.bins);
-   		setDataStats();
-   		setStatsLegend();	      		
-   		localdata.push(original);
-	}
+	$("#range").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
+	$("#binwidth").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
+	
 	plot = triggerPressureData[0].onOffPlot;
 	originalminx = triggerPressureData[0].originalMinX;
 	originalmaxx = triggerPressureData[0].originalMaxX;
-	entries = triggerPressureData[0].numberOfEntries;
-	label = triggerPressureData[0].label;
 	var axes = plot.getAxes();	
 	axes.xaxis.options.min = originalminx;
 	axes.xaxis.options.max = originalmaxx;
-	plot = $.plot("#triggerChart", localdata, options);
+	plot = $.plot("#triggerChart", triggerPressureData[0].data, options);
 	plot.setupGrid();
 	plot.draw();
+
 	plot1 = triggerPressureData[1].onOffPlot;
 	originalminx = triggerPressureData[1].originalMinX;
 	originalmaxx = triggerPressureData[1].originalMaxX;
-	entries = triggerPressureData[1].numberOfEntries;
-	label = triggerPressureData[1].label;
 	var axes = plot1.getAxes();	
 	axes.xaxis.options.min = originalminx;
 	axes.xaxis.options.max = originalmaxx;
-	plot1 = $.plot("#pressureChart", localdata, options);
+	plot1 = $.plot("#triggerChart", triggerPressureData[1].data, options);
 	plot1.setupGrid();
 	plot1.draw();
+	
 	writeLegend();	
 }//end of resetAll
+
+function setSliders(minX, maxX) {
+	//get values for the slider from the data
+	if (sliderMinX <= 0 ) {
+		sliderMinX = minX;
+	} else {
+		if (minX < sliderMinX) {
+			sliderMinX = minX;
+		}
+	}
+	if (sliderMaxX <= 0 ) {
+		sliderMaxX = maxX;
+	} else {
+		if (maxX > sliderMaxX) {
+			sliderMaxX = maxX;
+		}
+	}	
+}//end of setSliders
 
 Number.prototype.toFixedDown = function(digits) {
 	  var n = this - Math.pow(10, -digits)/2;
