@@ -1,7 +1,3 @@
-/*
- * Edit Peronja - July 19 2018
- * 		Prepare data for flot chart display of delta T
-*/
 package gov.fnal.elab.cosmic.plot;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,6 +37,7 @@ public class DeltaTDataStream {
 	String analysisDir;
 	String outputfile = "";
 	String inputfile = "";
+	//String outputdata = "";
 	DecimalFormat f = new DecimalFormat("##.00");
 	List<String> deltaTvalue = new ArrayList<String>();
 	double minX, maxX, nBins, maxBins;
@@ -51,18 +48,25 @@ public class DeltaTDataStream {
 		this.analysisDir = analysisDir;
 		outputfile = analysisDir+"/deltaTHistogram";
 		inputfile = analysisDir+"/deltaT";
+		//outputdata = analysisDir+"/deltaTRawData";
 		minX = maxX = nBins = maxBins = 0.0;
 		binValue = 2.0;
 
 		try {
+			//String debuggingfile = analysisDir+"/timeOfFlightCalculations";
 			JsonWriter writer = new JsonWriter(new FileWriter(outputfile));
 			BufferedReader br = new BufferedReader(new FileReader(inputfile));
+			//BufferedWriter bw = new BufferedWriter(new FileWriter(outputdata));
+			//BufferedWriter bw = new BufferedWriter(new FileWriter(debuggingfile));
 			analyzeInputFile(br);
 			saveFileHistogramData(writer);
 			writer.close();
 			br.close();
+			//saveOutputData(bw);
+			//bw.close();
 			long estimatedtime = System.currentTimeMillis() - starttime;
 			System.out.println("Delta T took: " + String.valueOf(estimatedtime)+"\n");
+			//bwraw.close();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -92,14 +96,20 @@ public class DeltaTDataStream {
 						maxX = newmaxx;
 					}
 				}
+				//bw.write(line+"\n");
+    			//bwraw.write("\n");
 			}//end of while	
 			binValue = (maxX - minX) * 0.03;
-			nBins = (maxX - minX) / binValue;
+			if (binValue > 0) {
+				nBins = (maxX - minX) / binValue;
+			} else {
+				nBins = 0;
+			}
 			maxBins = maxX - minX;			
 		} catch (Exception e) {
 			throw new ElabException("Delta T: analyzeInputFile - "+e.getMessage());
 		}
-	}//end of analyzeInputFile
+	}//end of analyzeEventFile
 	
 	public void saveFileHistogramData(JsonWriter writer) throws ElabException {
 		try {
@@ -148,5 +158,4 @@ public class DeltaTDataStream {
 			throw new ElabException("Delta T: saveFileHistogramData - "+e.getMessage());
 		}				
 	}//end of saveFileHistogramData	
-	
-}//end of class
+}

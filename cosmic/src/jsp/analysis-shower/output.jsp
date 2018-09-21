@@ -12,6 +12,7 @@
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>
 <%
+	long startTime = System.currentTimeMillis();
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
 	
@@ -96,34 +97,37 @@
 		}
 	}
 	
-	//Edit Peronja: July 19 2018
+	//Edit Peronja: June 1 2018
 	// 		Delta T Histogram
-	String dtJsonFile = showerResults.getOutputDir() + "/DeltaTHistogram";
-	try {
-		//this code is for admin to be able to see the graph
-		File f = new File(dtJsonFile);
-		if (!f.exists()) {
-			String userParam = (String) request.getParameter("user");
-			if (userParam == null) {
-				userParam = (String) session.getAttribute("userParam");
+	if (deltaTIDs != null) {
+		String dtJsonFile = showerResults.getOutputDir() + "/DeltaTHistogram";
+		try {
+			//this code is for admin to be able to see the graph
+			File f = new File(dtJsonFile);
+			if (!f.exists()) {
+				String userParam = (String) request.getParameter("user");
+				if (userParam == null) {
+					userParam = (String) session.getAttribute("userParam");
+				}
+				session.setAttribute("userParam", userParam);
+				ElabGroup auser = user;
+				if (userParam != null) {
+				    if (!user.isAdmin()) {
+				    	throw new ElabJspException("You must be logged in as an administrator" 
+				        	+ "to see the status of other users' analyses");
+				    }
+				    else {
+				        auser = elab.getUserManagementProvider().getGroup(userParam);
+				    }
+				}
+				//create time of flight source data
+				DeltaTDataStream dtds = new DeltaTDataStream(showerResults.getOutputDir());
 			}
-			session.setAttribute("userParam", userParam);
-			ElabGroup auser = user;
-			if (userParam != null) {
-			    if (!user.isAdmin()) {
-			    	throw new ElabJspException("You must be logged in as an administrator" 
-			        	+ "to see the status of other users' analyses");
-			    }
-			    else {
-			        auser = elab.getUserManagementProvider().getGroup(userParam);
-			    }
-			}
-			//create time of flight source data
-			DeltaTDataStream dtds = new DeltaTDataStream(showerResults.getOutputDir());
-		}
-	} catch (Exception e) {
-			message = e.getMessage();
-	}		
+		} catch (Exception e) {
+				message = e.getMessage();
+		}	
+	}
+	
 	//added to keep track of the page where the last event is
 	int eventNdx = ec.getEventIndex();
 	int pageLength = 30;
@@ -141,6 +145,18 @@
 	}
 	int	pageStart = (eventNdx / pageLength) * pageLength;
 	int totalPages = rows.size() / 30;
+	long endTime = System.currentTimeMillis();
+	long totalTime = endTime - startTime;
+
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
+	request.setAttribute("memory", memory);
+
+	
 	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("totalPages", totalPages);	
 	request.setAttribute("message", message);
@@ -152,8 +168,13 @@
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
 	request.setAttribute("displayMultiplicity", displayMultiplicity);
+	request.setAttribute("totalTime", totalTime);
 	request.setAttribute("deltaTIDs", deltaTIDs);
-	request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	if (deltaTIDs != null) {
+		request.setAttribute("deltaTIDsSize", deltaTIDs.length);
+	} else {
+		request.setAttribute("deltaTIDsSize", 0);		
+	}
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -165,7 +186,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>			
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>			
 		<script>
 		$(document).ready(function(){
 			$("#viewAdvanced").bind("change", function() {
@@ -237,11 +258,15 @@
 				</tr>
 				<tr>
 					<td colspan="2"></td>
-					<td><strong>&nbsp;t${deltaTIDs[0]}<br />
-						<c:if test="${deltaTIDsSize == 2}">
-							-t${deltaTIDs[1]}
-						</c:if>
-					</strong></td>
+					<td>
+						<c:if test="${deltaTIDs != null}" >
+							<strong>&nbsp;t${deltaTIDs[0]}<br />
+								<c:if test="${deltaTIDsSize == 2}">
+									-t${deltaTIDs[1]}
+								</c:if>
+							</strong>
+						</c:if>						
+					</td>
 					<td>
 					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
@@ -309,7 +334,7 @@
 						</td>
 						<td>
 							<c:choose>
-								<c:when test="${ row.deltaTValue == 0}">&nbsp;
+								<c:when test="${ row.deltaTValue == null or row.deltaTValue == 0}">&nbsp;
 								</c:when>
 								<c:otherwise>
 									<fmt:formatNumber pattern="######.#" value="${row.deltaTValue}" />
@@ -365,7 +390,8 @@
 	</tr>
 </table>
 <p>
-	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
+	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
+	EventCandidates Time: ${totalTime }<br />
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 

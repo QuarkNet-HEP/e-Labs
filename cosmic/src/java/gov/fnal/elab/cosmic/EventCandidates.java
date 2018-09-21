@@ -1,7 +1,5 @@
 /*
  * Created on Jan 8, 2008
- * Edit Peronja - July 19 2018
- * 		Added code to calculate delta T between two detectors
  */
 package gov.fnal.elab.cosmic;
 
@@ -24,7 +22,7 @@ import java.util.*;
 
 public class EventCandidates {
     public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors", "multiplicityCount", "deltaT" };
+            "eventCoincidence", "numDetectors", "multiplicityCount", "deltaT"};
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
@@ -68,6 +66,7 @@ public class EventCandidates {
         Set deltaTDetector = new HashSet();
         List deltaT = new ArrayList();
         ElabMemory em = new ElabMemory();
+
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
@@ -104,14 +103,16 @@ public class EventCandidates {
                         String[] idchan = arr[i].split("\\.");
                         idchan[0] = idchan[0].intern();
                         ids.add(idchan[0]);
-                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
-                        	for (int ndx = 0; ndx < deltaTIDs.length; ndx++) {
-                        		if (idchan[0].equals(deltaTIDs[ndx])) {
-                                	deltaTDetector.add(idchan[0]);
-                                	deltaT.add(idchan[0]);
-                                	deltaT.add(arr[i+2]);                        			
-                        		}
-                        	}
+                        if (deltaTIDs != null) {
+	                        if (!deltaTDetector.contains(idchan[0]) && deltaTDetector.size() < 3) {
+	                        	for (int ndx = 0; ndx < deltaTIDs.length; ndx++) {
+	                        		if (idchan[0].equals(deltaTIDs[ndx])) {
+	                                	deltaTDetector.add(idchan[0]);
+	                                	deltaT.add(idchan[0]);
+	                                	deltaT.add(arr[i+2]);                        			
+	                        		}
+	                        	}
+	                        }
                         }
                         String mult = arr[i].intern();
                         multiplicities.add(mult);
@@ -121,7 +122,6 @@ public class EventCandidates {
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
                     row.setMultiplicityCount();
-                    setMultiplicityFilter(multiplicities.size());
                     if (deltaTIDs != null) {
                     	row.setDeltaTFirstId(deltaTIDs[0]);
                     } else {
@@ -136,7 +136,8 @@ public class EventCandidates {
                     	deltaT.add("0");
                     	row.setDeltaT((String[]) deltaT.toArray(STRING_ARRAY));
                     }
-                   
+                    setMultiplicityFilter(multiplicities.size());
+                    
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -161,23 +162,23 @@ public class EventCandidates {
     			break;
     		}
     	}
-        //write multiplicity summary
-        try {
-        	saveMultiplicitySummary(bw);
-        } catch (Exception e) {
-        	throw new Exception(e.getMessage());
-        }
     	//write Delta T
 		try {
 			saveDeltaT(bwDelta);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
-        
+
+    	//write multiplicity summary
+        try {
+        	saveMultiplicitySummary(bw);
+        } catch (Exception e) {
+        	throw new Exception(e.getMessage());
+        }
+
         bw.close();
         br.close();
         bwDelta.close();
-        
     }
     
     public Collection getRows() {
@@ -273,11 +274,11 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
-        private int multiplicityCount;
         private double deltaT;
         private String[] deltaTComponents;
         private String deltaTFirstId;
-
+        private int multiplicityCount;
+ 
         public int getEventCoincidence() {
             return eventCoincidence;
         }
@@ -330,22 +331,6 @@ public class EventCandidates {
             this.ids = ids;
         }
 
-        public String[] getMultiplicity() {
-            return multiplicity;
-        }
-
-        public void setMultiplicity(String[] multiplicity) {
-            this.multiplicity = multiplicity;
-        }
-        
-        public int getMultiplicityCount() {
-        	return multiplicityCount;
-        }
-        
-        public void setMultiplicityCount() {
-        	this.multiplicityCount = multiplicity.length;
-        }
- 
         public void setDeltaTFirstId(String deltaTFirstId) {
         	this.deltaTFirstId = deltaTFirstId;
         }
@@ -369,6 +354,22 @@ public class EventCandidates {
         	}
         }
         
+        public String[] getMultiplicity() {
+            return multiplicity;
+        }
+
+        public void setMultiplicity(String[] multiplicity) {
+            this.multiplicity = multiplicity;
+        }
+        
+        public int getMultiplicityCount() {
+        	return multiplicityCount;
+        }
+        
+        public void setMultiplicityCount() {
+        	this.multiplicityCount = multiplicity.length;
+        }
+                
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
         	for (int i=0; i < ids.length; i++) {
