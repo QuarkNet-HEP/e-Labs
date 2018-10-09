@@ -53,21 +53,23 @@
 				${name}
 			</c:when>
 			<c:otherwise>
-				${param.filename}
+					<!-- XSS fixes for filename, menu - JG 9Oct2018 -->
+					<c:out value="${param.filename}" />
 			</c:otherwise>
 		</c:choose>
 		</h2><br/>
 		<img src="${url}"/><br/>
-		<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
+
+		<a href="../data/view-metadata.jsp?filename=${fn:escapeXml(param.filename)}&menu=${fn:escapeXml(param.menu)}">Show details (metadata)</a><br/>
 		<c:if test="${provenance != null}">
-			<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
+				<e:popup href="../plots/view-provenance.jsp?filename=${fn:escapeXml(param.filename)}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
 		</c:if>
 		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 		<c:if test="${eventCandidates != null }">
-			<a href="../plots/view-events.jsp?filename=${param.filename}">Show Event Candidates</a><br/>
+				<a href="../plots/view-events.jsp?filename=${fn:escapeXml(param.filename)}">Show Event Candidates</a><br/>
 		</c:if>
 		<c:if test="${svg != null }">
-			<a href="../plots/view-svg.jsp?filename=${param.filename}">Show SVG Plot</a><br/>
+				<a href="../plots/view-svg.jsp?filename=${fn:escapeXml(param.filename)}">Show SVG Plot</a><br/>
 		</c:if>
 		<c:if test="${dvName != null}">
 			<c:choose>
