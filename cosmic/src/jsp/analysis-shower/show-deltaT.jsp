@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -190,7 +191,7 @@
 			<input type="hidden" name="metadata" value="deltaTIDsString string ${deltaTIDsString}" />
 			<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 			<input type="hidden" name="eventCandidates" value="eventCandidates" />
-			<input type="hidden" name="eventDir" value="${eventDir}" />
+			<input type="hidden" name="eventDir" value="${fn:escapeXml(eventDir)}" />
 			<input type="hidden" name="eventNum" value="${showerResults.analysis.parameters['eventNum']}" />
 			<input type="hidden" name="id" value="${showerResults.id}"/>
 			<input type="hidden" name="rundirid" value="${results.id}"/>
