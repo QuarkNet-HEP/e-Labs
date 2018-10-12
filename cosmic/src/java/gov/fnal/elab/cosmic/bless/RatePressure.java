@@ -377,7 +377,7 @@ public class RatePressure {
 			writer.endObject();
 			writer.name("lines");
 			writer.beginObject();
-			writer.name("show").value(true);
+			writer.name("show").value(false);
 			writer.endObject();
 			writer.endObject();
 			writer.flush();			
