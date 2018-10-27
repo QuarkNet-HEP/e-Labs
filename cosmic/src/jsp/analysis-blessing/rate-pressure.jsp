@@ -22,7 +22,7 @@
 <%
 	String message = request.getParameter("message");
 	//create the file for the dynamic charts
-	String ratePressurePlot = results.getOutputDir() + "/RatePressurePlot";
+	String ratePressurePlot = results.getOutputDir() + "/RatePressureFlotPlot";
 	File[] pfns = null;
 	String[] filenames = null;
 	try {
@@ -85,10 +85,6 @@
 	request.setAttribute("id", id);
 	request.setAttribute("outputDir", results.getOutputDirURL());
 	request.setAttribute("message", message);
-
-	 //EPeronja-09/24/2015: populated saved plots dropdowns
-	 //ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
-	 //request.setAttribute("plotNames",plotNames); 
 	
 %>
 
@@ -166,14 +162,6 @@
 				</div>
 			</div>	
 			<div style="text-align: center;">
-			<!-- 
-				<div id="incdec">Bin Width
-		    		<input type="number" name="binWidth" id="binWidth" step="60" min="60" style="width: 60px;"/>
-				</div>
-				<div class="slider">
-			    	<input id="range" type="range" step="60" min="60" style="width: 650px;"></input>
-				</div>
-				-->	
 				<p>
 					Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
 				</p>

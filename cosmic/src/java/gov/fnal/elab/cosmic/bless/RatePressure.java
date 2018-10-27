@@ -11,9 +11,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
-
 import org.apache.commons.lang.time.DateUtils;
-
 import gov.fnal.elab.Elab;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.*;
-
 import gov.fnal.elab.datacatalog.*;
 import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
@@ -29,7 +26,6 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabMemory;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.NanoDate;
-
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.JsonReader;
@@ -37,41 +33,52 @@ import com.google.gson.stream.JsonReader;
 public class RatePressure {
 	private ArrayList<Long> seconds;
 	private ArrayList<Double> trigger;
+	private ArrayList<Double> correctedTrigger;
 	private ArrayList<Double> triggerGap;
 	private ArrayList<Double> pressure;
 	private ArrayList<Double> pressureDistinct;
 	private String filename = "";
 	private String ratePressureFile = "";
 	private String rateAvgPressureFile = "";
+	private String rateCorrectionFile = "";
 	TreeMap<Double, Double> pressureRate = new TreeMap<Double, Double>();
+	TreeMap<Double, Double> pressureRateError = new TreeMap<Double, Double>();
+	TreeMap<Double, Double> rateCorrectionWithoutPressure = new TreeMap<Double, Double>();
 	ElabMemory em;
 	Long minXL, maxXL;
 	Double binValue;
-	Double minX, maxX, nBins, maxBins;
+	Double minX, maxX, minY, maxY, nBins, maxBins;
 	private int roundedBin;
 	private ArrayList<String> defaultHistogramTrigger;
+	private ArrayList<String> defaultHistogramCorrectedTrigger;
 	private ArrayList<String> defaultHistogramPressure;
 	private Double maxYaxis = -1.0;
 	private Double maxError = -1.0;
 	
-	//EPeronja: attempt to concatenate a few days together
+	//EPeronja: calculate Rate vs Pressure from Flux Study and bless files
 	public RatePressure(Elab elab, File[] file, Double bV, String[] filenames, String outputDir) throws Exception {
 		seconds = new ArrayList<Long>();
 		trigger = new ArrayList<Double>();
+		correctedTrigger = new ArrayList<Double>();
 		triggerGap = new ArrayList<Double>();
 		pressure = new ArrayList<Double>();
+		//EPeronja: to get the data ready for the json files
 		defaultHistogramTrigger = new ArrayList<String>();
+		defaultHistogramCorrectedTrigger = new ArrayList<String>();
 		defaultHistogramPressure = new ArrayList<String>();
 		em = new ElabMemory();
-		filename = outputDir+"/RatePressurePlot";
+		//EPeronja: output files
+		filename = outputDir+"/RatePressureFlotPlot";
 		ratePressureFile = outputDir+"/RatePressureValues";
 		rateAvgPressureFile = outputDir+"/RateAvgOverPressureValues";
+		rateCorrectionFile = outputDir+"/RateCorrectionTable";
 		minXL = maxXL = 0L;
 		binValue = bV;
 		
 		JsonWriter writer = new JsonWriter(new FileWriter(filename));	
         BufferedWriter bw = new BufferedWriter(new FileWriter(ratePressureFile));
         BufferedWriter bw1 = new BufferedWriter(new FileWriter(rateAvgPressureFile));
+        BufferedWriter bw2 = new BufferedWriter(new FileWriter(rateCorrectionFile));
 		try {
 			for (int i = 0; i < file.length; i++) {
 				try {				
@@ -79,10 +86,13 @@ public class RatePressure {
 					String line;
 					String[] split; 
 					Long ts; 
-					//get startdate from database
+					//get startdate from filename
 					Timestamp startDate;
 					Long secs = 0L;
 					try {
+						//EPeronja: this code will figure out the date of these files so 
+						//we can add the seconds from the bless files - needed for potting
+						//several bless files concatenated
 						String[] nameParts = filenames[i].split("\\.");
 						String filedate = nameParts[1]+nameParts[2];
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -94,7 +104,7 @@ public class RatePressure {
 					} catch (Exception e) {	
 						String message = e.toString();
 					}
-
+					//start reading the bless files one at a time
 					while ((line = br.readLine()) != null) {
 						if (line.startsWith("#")) {
 							continue; // comment line
@@ -104,11 +114,12 @@ public class RatePressure {
 							if (split.length != 15) {
 								throw new IOException(file[i].getName() + " has malformed data. "); 
 							}
+							//parse and store data for later use
 							trigger.add(parseToDouble(split[9]));
+							correctedTrigger.add(parseToDouble(split[9]));
 							pressure.add(parseToDouble(split[11]));
 							ts = secs + (parseToLong(split[0]) * 1000);
 							seconds.add(ts);
-							
 							Long newminx = ts;
 							if (minXL == 0L) {
 								minXL = newminx;
@@ -141,6 +152,7 @@ public class RatePressure {
 			}//end of for loop
 			seconds.add(0L);
 			trigger.add(0.0);
+			correctedTrigger.add(0.0);
 			pressure.add(0.0);
 			minX = minXL.doubleValue() - (binValue * DateUtils.MILLIS_PER_SECOND);
 			maxX = maxXL.doubleValue() + (binValue * DateUtils.MILLIS_PER_SECOND * 2);
@@ -148,27 +160,70 @@ public class RatePressure {
 			roundedBin = (int) Math.ceil(nBins);
 			maxBins = maxX - minX;
 			prepareDefaultHistogram(trigger, defaultHistogramTrigger);
+			prepareDefaultHistogram(correctedTrigger, defaultHistogramCorrectedTrigger);
 			prepareDefaultHistogram(pressure, defaultHistogramPressure);
-			saveRatePressureValues(bw);
 			buildPressureValuePlot();
-			savePressureValuePlot(bw1);
+			buildRateCorrectionLookupTable();
+			saveRatePressureValues(bw);
+			saveRateCorrectionTable(bw2);
+			savePressureValues(bw1);
 			saveFluxRatePressure(writer);
 			writer.close();
 			bw.close();
 			bw1.close();
+			bw2.close();
 		} catch (Exception e) {
 			throw e;
 		}
 	}//end of Blessdata for concatenated files
 
-	public void savePressureValuePlot(BufferedWriter bw1) throws ElabException {
+	public void saveRateCorrectionTable(BufferedWriter bw2) throws ElabException {
 		try {
-			bw1.write("#Pressure\tAverage Rate\n");
+			bw2.write("#Pressure\tCorrection for Trigger\n");
+			for (Map.Entry<Double,Double> entry : rateCorrectionWithoutPressure.entrySet()) {
+				bw2.write(String.valueOf(entry.getKey()));
+				bw2.write("\t");
+				bw2.write(String.valueOf(entry.getValue()));
+				bw2.write("\n");
+			}
+		} catch (Exception e) {
+			throw new ElabException(e.getMessage());
+		}
+	}//end of saveRateCorrectionTable
+
+	public void savePressureValues(BufferedWriter bw1) throws ElabException {
+		try {
+			bw1.write("#Pressure\tAverage Rate\tError\n");
 			for(Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
 				bw1.write(String.valueOf(entry.getKey()));
 				bw1.write("\t");
 				bw1.write(String.valueOf(entry.getValue()));
+				bw1.write("\t");
+				double key = entry.getKey();
+				bw1.write(String.valueOf(pressureRateError.get(key)));
 				bw1.write("\n");
+			}
+		} catch (Exception e) {
+			throw new ElabException(e.getMessage());
+		}
+	}//end of saveRatePressureValues
+
+	public void saveRatePressureValues(BufferedWriter bw) throws ElabException {
+		try {
+			bw.write("#Seconds\tTrigger\tTimeGap\tPressure\tCorrected Trigger\n");
+			for (int i = 0; i < trigger.size(); i++) {
+				if (seconds.get(i) > 0L) {
+					bw.write(seconds.get(i).toString());
+					bw.write("\t");
+					bw.write(trigger.get(i).toString());
+					bw.write("\t");
+					bw.write(triggerGap.get(i).toString());
+					bw.write("\t");
+					bw.write(pressure.get(i).toString());
+					bw.write("\t");
+					bw.write(correctedTrigger.get(i).toString());
+					bw.write("\n");
+				}
 			}
 		} catch (Exception e) {
 			throw new ElabException(e.getMessage());
@@ -181,25 +236,86 @@ public class RatePressure {
 			if (!pressureDistinct.contains(pressure.get(i)) && pressure.get(i) > 0.0) {
 				pressureDistinct.add(pressure.get(i));
 			}		
-		}
-		
+		}		
 		//loop through each
 		for (int i = 0; i < pressureDistinct.size(); i++) {
 			Double rateSum = 0.0;
 			Double rateN = 0.0;
+			double pressureValue = pressureDistinct.get(i);
 			for (int j = 0; j < pressure.size(); j++) {
-				if (pressureDistinct.get(i) == pressure.get(j)) {
-					rateSum += trigger.get(j);
-					rateN += 1.0;
+				if (pressure.get(j) == pressureValue) {
+					System.out.println("Loop: "+String.valueOf(j)+ " pressureValue: "+ String.valueOf(pressureValue)+ " pressure: "+String.valueOf(pressure.get(j))+" isValid?: " + String.valueOf(trigger.get(j)) + " " + String.valueOf(isTriggerValid(rateSum, rateN, trigger.get(j))));
+					if (trigger.get(j) > 0.0 && isTriggerValid(rateSum, rateN, trigger.get(j))) {
+						rateSum += trigger.get(j);
+						rateN += 1.0;
+					}
 				}
 			}
 			if (rateN > 0) {
 				pressureRate.put(pressureDistinct.get(i), rateSum / rateN);
 			}
+			double meanTriggerDiffSquared = 0.0;
+			for (int j = 0; j < pressure.size(); j++) {
+				if (pressure.get(j) == pressureValue) {
+					double mean = rateSum/rateN;
+					if (trigger.get(j) > 0.0 && isTriggerValid(rateSum, rateN, trigger.get(j))) {
+						double diffSquared = Math.pow((trigger.get(j) - mean), 2);
+						meanTriggerDiffSquared += diffSquared;
+					}
+				}
+			}
+			if (rateN > 1) {
+				double ratio = meanTriggerDiffSquared / (rateN-1);
+				pressureRateError.put(pressureDistinct.get(i), Math.sqrt(ratio));
+			}
 		}
-
 	}// end of buildPressureValuePlot
-	
+
+	boolean	isTriggerValid(double rateSum, double rateN, double trigger) {	
+		//arbitrarily remove those trigger values that do not fall within
+		//the 40% threshold (zero values or really small values)
+		boolean isValid = false;
+		double averageSoFar = 0.0;
+		double threshold = 0.4;
+		if (rateN != 0) {
+			averageSoFar = rateSum / rateN;
+		}
+		if (trigger/averageSoFar >= threshold) {
+			isValid = true;
+		}
+		return isValid;
+	}// end of isTriggerValid
+		
+	public void buildRateCorrectionLookupTable() {
+		//this function will calculate the correction rate for the trigger
+		//when removing the pressure from the equation
+		Set<Double> keys = pressureRate.keySet();
+		int setMidSize = (keys.size()/2) - 1;
+		int i = 0;
+		Double midKey = 0.0;
+		Double middleRate = 0.0;
+		for (Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
+			if (i == setMidSize) {
+				midKey = entry.getKey();
+				middleRate = entry.getValue();
+				i++;
+			}
+		}
+		for (Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
+			rateCorrectionWithoutPressure.put(entry.getKey(),(entry.getValue()/middleRate));
+		}		
+		for (Map.Entry<Double,Double> entry : rateCorrectionWithoutPressure.entrySet()) {
+			Double localPressure = entry.getKey();
+			Double correctionFactor = entry.getValue();
+			for (i = 0; i < pressure.size(); i++) {
+				if (pressure.get(i).intValue() == localPressure.intValue()) {
+					double fixedTrigger = correctedTrigger.get(i) * correctionFactor;
+					correctedTrigger.set(i, fixedTrigger);
+				}
+			}
+		}
+	}//end of buildRateCorrectionLookupTable
+
 	//prepare the default Histogram to be displayed
  	public void prepareDefaultHistogram(ArrayList<Double> data, ArrayList<String> defaultHistogram) throws ElabException {
  		try {
@@ -282,7 +398,6 @@ public class RatePressure {
 		 				binAverageRateError[i] = Math.sqrt(errorSum) / errorN;
 		 			} 
 	 			}
-	 			//report.write(String.valueOf(i)+","+String.valueOf(frequencyAvg)+","+String.valueOf(frequency[i])+"\n");
 	 		}
 
 	 		for (int i = 0; i < frequency.length; i++) {
@@ -291,39 +406,18 @@ public class RatePressure {
 		 			double yValue = binAverageRate[i];
 		 			double error = binAverageRateError[i];	
 		 			defaultHistogram.add(String.valueOf(xValue)+","+String.valueOf(yValue)+","+String.valueOf(error));
-//		 			defaultHistogram.add(String.valueOf(xValue)+","+String.valueOf(yValue));
 	 			}
 	 		}
-	 		//report.close();
  		} catch (Exception e) {
  			throw new ElabException("RatePressure: Exception in prepareDefaultHistogram: "+e.getMessage());
  		}
  	}//end of prepareDefaultHistogram
-
-	public void saveRatePressureValues(BufferedWriter bw) throws ElabException {
-		try {
-			bw.write("#Seconds\tTrigger\tTimeGap\tPressure\n");
-			for (int i = 0; i < trigger.size(); i++) {
-				if (seconds.get(i) > 0L) {
-					bw.write(seconds.get(i).toString());
-					bw.write("\t");
-					bw.write(trigger.get(i).toString());
-					bw.write("\t");
-					bw.write(triggerGap.get(i).toString());
-					bw.write("\t");
-					bw.write(pressure.get(i).toString());
-					bw.write("\n");
-				}
-			}
-		} catch (Exception e) {
-			throw new ElabException(e.getMessage());
-		}
-	}//end of saveRatePressureValues
 	
 	public void saveFluxRatePressure(JsonWriter writer) throws ElabException {
 		try {
 			writer.beginObject();
 			saveData(writer, seconds, defaultHistogramTrigger, trigger, "magenta", "trigger", "Trigger", "circle", 0, false, true);
+			saveData(writer, seconds, defaultHistogramCorrectedTrigger, correctedTrigger, "green", "correctedtrigger", "Corrected Trigger", "square", 0, false, true);
 			saveData(writer, seconds, defaultHistogramPressure, pressure, "black", "pressure", "Pressure", "circle", 0, true, false);
 			saveRatePressure(writer);
 			writer.endObject();
@@ -343,6 +437,8 @@ public class RatePressure {
 				writer.beginArray();
 				writer.value(entry.getKey());
 				writer.value(entry.getValue());
+				double key = entry.getKey();
+				writer.value(pressureRateError.get(key));
 				writer.endArray();
 			}
 			writer.endArray();
@@ -361,14 +457,14 @@ public class RatePressure {
 			writer.endObject();
 			writer.name("points");
 			writer.beginObject();
-			writer.name("errorbars").value("n");				
+			writer.name("errorbars").value("y");				
 			writer.name("show").value(true);
 			writer.name("symbol").value("triangle");
 			writer.name("color").value("red");
 			writer.name("radius").value(1.5);
 			writer.name("yerr");
 			writer.beginObject();
-			writer.name("show").value(false);
+			writer.name("show").value(true);
 			writer.name("upperCap").value("-");
 			writer.name("lowerCap").value("-");
 			writer.name("color").value("red");
@@ -384,10 +480,10 @@ public class RatePressure {
 		} catch (Exception e) {
 			throw new ElabException(e.getMessage());
 		}		
-		
-	}
+	}//end of saveRatePressure
 	
 	public void saveData(JsonWriter writer, List<Long> seconds, ArrayList<String> defaultHistogram, List<Double> data, String color, String name, String label, String symbol, int ndx, boolean line, boolean errorCheck) throws ElabException {
+		//add fixes for Corrected Trigger
 		try {
 			writer.name(name);
 			writer.beginObject();
@@ -454,14 +550,18 @@ public class RatePressure {
 			}
 			writer.name("symbol").value(symbol);
 			writer.name("color").value(color);
-			writer.name("radius").value(1.5);
+			if (name.equals("correctedtrigger")) {
+				writer.name("radius").value(3);				
+			} else {
+				writer.name("radius").value(1.5);
+			}
 			writer.name("yerr");
 			writer.beginObject();
-			writer.name("show").value(true);
+			writer.name("show").value(true);				
 			writer.name("upperCap").value("-");
 			writer.name("lowerCap").value("-");
 			writer.name("color").value(color);
-			writer.name("radius").value(1.5);			
+			writer.name("radius").value(1.5);
 			writer.endObject();
 			writer.endObject();
 			writer.name("lines");
@@ -475,6 +575,8 @@ public class RatePressure {
 			writer.name("binValue").value(binValue);
 			writer.name("minX").value(minX);
 			writer.name("maxX").value(maxX);
+			writer.name("minY").value(Collections.min(data));
+			writer.name("maxY").value(Collections.max(data));
 			writer.name("nBins").value(roundedBin);
 			writer.name("maxBins").value(maxBins);
 			writer.name("bins");

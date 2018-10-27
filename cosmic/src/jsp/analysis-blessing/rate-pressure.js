@@ -1,5 +1,6 @@
-var triggerPressureData = [,];
+var triggerPressureData = [,,];
 var triggerData = [];
+var correctedTriggerData = [];
 var pressureData = [];
 var ratepressData = [];
 var onOffPlot0;
@@ -200,7 +201,7 @@ function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
 	var outputDir = document.getElementById("outputDir");
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/RatePressurePlot", true); 
+    xobj.open('GET', outputDir.value+"/RatePressureFlotPlot", true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -216,15 +217,22 @@ function onDataLoadChart(json) {
 		if (json.trigger != null) {
 			triggerData = json.trigger;
 			triggerPressureData[0]={onOffPlot: "", TriggerData: triggerData, data: triggerData.data, originalMinX: triggerData.minX, originalMaxX: 0,
-					originalMinY: triggerData.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: triggerData.label, 
+					originalMinY: triggerData.minY, originalMaxY: triggerData.maxY, numberOfEntries: 0, mean: 0, stddev: 0, label: triggerData.label, 
 					maxBins: triggerData.maxBins, binValue: triggerData.binValue, currentBinValue: triggerData.binValue};
 			triggerPressureData[0].data = data;
+			correctedTriggerData = json.correctedtrigger;
+			triggerPressureData[2]={onOffPlot: "", TriggerData: correctedTriggerData, data: correctedTriggerData.data, originalMinX: correctedTriggerData.minX, originalMaxX: 0,
+					originalMinY: correctedTriggerData.minY, originalMaxY: correctedTriggerData.maxY, numberOfEntries: 0, mean: 0, stddev: 0, label: correctedTriggerData.label, 
+					maxBins: correctedTriggerData.maxBins, binValue: correctedTriggerData.binValue, currentBinValue: correctedTriggerData.binValue};
+			triggerPressureData[2].data = data;
 		}
+		data.push(correctedTriggerData);
 		data.push(triggerData);
 		var onOffPlot = $.plot("#triggerChart", data, options);
 		triggerPressureData[0].onOffPlot = onOffPlot;
 		var axes = onOffPlot.getAxes();
-		axes.yaxis.options.max = 40.0;
+		axes.yaxis.options.min = triggerPressureData[0].originalMinY;
+		//axes.yaxis.options.max = 40.0;
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
 		data1 = [];
@@ -238,152 +246,23 @@ function onDataLoadChart(json) {
 		data1.push(pressureData);
 		var onOffPlot1 = $.plot("#pressureChart", data1, options);
 		triggerPressureData[1].onOffPlot = onOffPlot1;
-		setSliders(60, 86400);				
 		writeLegend('trigger');
 		writeLegend('pressure');
 
-		$("#range").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": triggerData.binValue});
-		$("#binWidth").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": triggerData.binValue});
-
-	    $('#range').on('input', function(){
-	        $('#binWidth').val($('#range').val());
-	        if ($('#range').val() > 0) {
-	        	reBinDataTrigger($('#range').val(),triggerData,data,onOffPlot);
-	        	reBinDataPressure($('#range').val(),pressureData,data1,onOffPlot1);
-	        }
-	    });
-	    $('#binWidth').on('change', function(){
-	        $('#range').val($('#binWidth').val());
-	        if ($('#binWidth').val() > 0) {
-	        	reBinDataTrigger($('#binWidth').val(),triggerData,data,onOffPlot);
-	        	reBinDataPressure($('#binWidth').val(),pressureData,data1,onOffPlot1);
-	        }
-	    });
 		data0 = [];		
 		if (json.ratepressure != null) {
 			ratepressData = json.ratepressure;
 		}
 		data0.push(ratepressData);
 		onOffPlot0 = $.plot("#trigPressChart", data0, optionsExtra);
+		var axes0 = onOffPlot0.getAxes();
+		axes0.yaxis.options.min = 15.0;
+	    onOffPlot0.setupGrid();
+	    onOffPlot0.draw();
 		writeLegend('trigpres')
 	    
 	}
 }//end of onDataLoadChart
-
-
-function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
-	//create histogram data
-    var outputFinal = [];
-    var newNBins = nBins / 1000;
-    var frequency = [newNBins];
-    for (var j = 0; j < frequency.length; j++) {
-    	frequency[j] = 0;
-    }
-    var binMillis = [newNBins];
-    var values = [newNBins];
-    var errors = [newNBins];
-	var secsToPartialDay = localBinValue * 1000; //to millis
-	var counter = 0;
-	if (rawData != null) {
-		binValue = localBinValue;
-		var halfBin = localBinValue / 2.0;
-		for (var i = 0; i < rawData.length - 1; i++) {
-			var bin = (rawData[i][0] - minX) / secsToPartialDay;
-			var nextBin = (rawData[i+1][0] - minX) / secsToPartialDay;
-			if (localBinValue < 0) {}
-			else if (parseInt(bin) >= newNBins) {}
-			else {
-				counter ++;
-				frequency[parseInt(bin)] = counter;
-			}
-			if ((parseInt(nextBin) - parseInt(bin)) >= 1) {
-				counter = 0;
-			}			
-		}
-		frequency[frequency.length-1] = 0;
-		var halfBin = (localBinValue * 1000) / 2
-		var ndx = 0;
-		for (var i = minX; i < maxX && ndx < newNBins; i+=(localBinValue * 1000)) {
-			binMillis[ndx] = i+halfBin+0.00001;
-			ndx ++;
-		}
-		console.log(rawData);
-		var dataPointer = 0;
-		for (var i = 0; i < frequency.length; i++) {
-			var frequencySum = 0.0;
-			var frequencyAvg = 0.0;
-			var errorSum = 0.0;
-			var errorN = 0;
-			if (frequency[i] > 0) {
-				for (var j = 0; j < frequency[i]; j++) {
-					frequencySum += rawData[j+dataPointer][1];
-					if (rawData[j+dataPointer][2] > 0.0) {
-	 					errorSum += rawData[j+dataPointer][1];
- 						errorN += 1.0;
- 					} else {
- 						errorSum += 0.0;
- 						errorN += 0;
- 					}
-					dataPointer++;
-				}
-				frequencyAvg = frequencySum / frequency[i];
-				values[i] = frequencyAvg
-				if (errorN > 0) {
-					errors[i] = Math.sqrt(errorSum) / errorN;
-				}
-			}
-		}
-		for (var i = 0; i < frequency.length; i++){
-			if (binMillis[i] > 0 && values[i] > 0 && localBinValue > 0 && frequency[i] > 1) {
- 				var xValue = binMillis[i];
-	 			var yValue = values[i];
-	 			var eValue = errors[i];
-	 			outputFinal.push([xValue, yValue, eValue]);	
-			}
-		}
-	}
-    return outputFinal;	
-}//end of getDataWithBins
-
-function reBinDataTrigger(binValue, triggerData, data, onOffPlot) {
-	if (binValue > 0) {
-	  	var plotData = onOffPlot.getData();
-		bins = [];
-		nBins = Math.ceil(triggerData.maxBins / binValue);
-		for (var i = (triggerData.minX*1.00); i < (triggerData.maxX*1.00+binValue*1.00); i += (binValue*1.00)) {
-			bins.push(i);
-		}
-		data = [];
-		if (triggerData != null) {
-			triggerData.data = getDataWithBins(triggerData.data_original, binValue, triggerData.minX, triggerData.maxX, nBins, bins);
-			data.push(triggerData);
-		}
-		onOffPlot.setData(data);
-		var axes = onOffPlot.getAxes();
-		axes.yaxis.options.max = 20.0;
-	    onOffPlot.setupGrid();
-	    onOffPlot.draw();
-	}
-}//end of reBinData
-
-function reBinDataPressure(binValue, pressureData, data, onOffPlot1) {
-	if (binValue > 0) {
-	  	var plotData = onOffPlot1.getData();
-		bins = [];
-		nBins = Math.ceil(pressureData.maxBins / binValue);
-		for (var i = (pressureData.minX*1.00); i < (pressureData.maxX*1.00+binValue*1.00); i += (binValue*1.00)) {
-			bins.push(i);
-		}
-		data = [];
-		if (pressureData != null) {
-			pressureData.data = getDataWithBins(pressureData.data_original, binValue, pressureData.minX, pressureData.maxX, nBins, bins);
-			data.push(pressureData);
-		}
-		onOffPlot1.setData(data);
-	    onOffPlot1.setupGrid();
-	    onOffPlot1.draw();
-	}
-}//end of reBinData
 
 function writeLegend(dataGroup) {
 	if (dataGroup == 'trigpres') {
@@ -415,8 +294,6 @@ function writeLegend(dataGroup) {
 	context.font="10px sans-serif";
 	context.textAlign = localLabel;
 	context.fillText(localLabel, 130, 30);
-	//context.textAlign = '# of Entries: '+ triggerPressureData[0].numberOfEntries;
-	//context.fillText('# of Entries: '+ triggerPressureData[0].numberOfEntries, 140, 40);
 	var values = new Array();
 	var xcoord = 50;
 	var ycoord = 0;
@@ -446,128 +323,6 @@ function writeLegend(dataGroup) {
 	context.fillText(yAxisLabel, 0, 45);	
 	context.restore();		
 }//end of writeLegend
-
-
-redrawPlotX = function(newX, type) {
-	var plot, label, entries;
-	plot = triggerPressureData[0].onOffPlot;
-	entries = triggerPressureData[0].numberOfEntries;
-	label = triggerPressureData[0].label;
-	originalminx = triggerPressureData[0].originalMinX;
-	originalmaxx = triggerPressureData[0].originalMaxX;
-	var axes = plot.getAxes();
-	if (type == "min") {
-		axes.xaxis.options.min = newX;
-	} else {
-		axes.xaxis.options.max = newX;
-	}
-	plot.setupGrid();
-	plot.draw();
-	writeLegend();	
-}//end of redrawPlotX
-
-redrawPlotY = function(newY, type) {
-	var plot, label, entries;
-	plot = triggerPressureData[0].onOffPlot;
-	entries = triggerPressureData[0].numberOfEntries;
-	label = triggerPressureData[0].label;
-	var axes = plot.getAxes();
-	if (type == "min") {
-		axes.yaxis.options.min = newY;
-	} else {
-		axes.yaxis.options.max = newY;
-	}
-	plot.setupGrid();
-	plot.draw();
-	writeLegend();	
-}//end of redrawPlotY
-
-redrawPlotFitX = function(newMinX, newMaxX) {
-	if (newMinX == null || newMinX == "") {
-		newMinX = triggerPressureData[0].originalMinX;
-	}
-	if (newMaxX == null || newMaxX == "") {
-		newMaxX = triggerPressureData[0].originalMaxX;
-	}
-	var originalminx, originalmaxx, plot, label, entries, original;
-	plot = triggerPressureData[0].onOffPlot;
-	originalminx = triggerPressureData[0].originalMinX;
-	originalmaxx = triggerPressureData[0].originalMaxX;
-	entries = triggerPressureData[0].numberOfEntries;
-	label = triggerPressureData[0].label;
-	original = triggerPressureData[0].TriggerData;
-	localdata = [];
-	if (original != null) {
-		var fittedData = fitData(original.data_original, newMinX, newMaxX);
-		var nBins = Math.ceil((newMaxX - newMinX) / triggerPressureData[0].currentBinValue);
-		var bins = [];		
-		for (var i = (newMinX*1.00); i < (newMaxX*1.00+binValue); i += (binValue)) {
-			bins.push(i);
-		}
-		original.data = getDataWithBins(fittedData, triggerPressureData[0].currentBinValue, newMinX, newMaxX, nBins, bins);
-   		setDataStats();
-   		setStatsLegend();	      		
-   		localdata.push(original);
-   		plot = $.plot("#triggerChart", localdata, options);
-   		writeLegend();
-	}
-}//end of redrawPlotFitX
-
-function fitData(data_original, newMinX, newMaxX) {
-	var fittedData = [];
-	for (var i = 0; i < data_original.length; i++) {
-		if (parseFloat(data_original[i]) >= parseFloat(newMinX) && parseFloat(data_original[i]) <= parseFloat(newMaxX)) {
-			fittedData.push(data_original[i]);
-		}
-	}	
-	return fittedData;
-}//end of fitData
-
-resetAll = function() {
-	var plot, originalminx, originalmaxx, label, entries, original;
-	$("#range").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
-	$("#binwidth").attr({"min":triggerPressureData[0].TriggerData.binValue, "max":Math.floor(triggerPressureData[0].TriggerData.maxBins), "value": triggerPressureData[0].TriggerData.binValue, "step": triggerPressureData[0].TriggerData.binValue});
-	
-	plot = triggerPressureData[0].onOffPlot;
-	originalminx = triggerPressureData[0].originalMinX;
-	originalmaxx = triggerPressureData[0].originalMaxX;
-	var axes = plot.getAxes();	
-	axes.xaxis.options.min = originalminx;
-	axes.xaxis.options.max = originalmaxx;
-	plot = $.plot("#triggerChart", triggerPressureData[0].data, options);
-	plot.setupGrid();
-	plot.draw();
-
-	plot1 = triggerPressureData[1].onOffPlot;
-	originalminx = triggerPressureData[1].originalMinX;
-	originalmaxx = triggerPressureData[1].originalMaxX;
-	var axes = plot1.getAxes();	
-	axes.xaxis.options.min = originalminx;
-	axes.xaxis.options.max = originalmaxx;
-	plot1 = $.plot("#triggerChart", triggerPressureData[1].data, options);
-	plot1.setupGrid();
-	plot1.draw();
-	
-	writeLegend();	
-}//end of resetAll
-
-function setSliders(minX, maxX) {
-	//get values for the slider from the data
-	if (sliderMinX <= 0 ) {
-		sliderMinX = minX;
-	} else {
-		if (minX < sliderMinX) {
-			sliderMinX = minX;
-		}
-	}
-	if (sliderMaxX <= 0 ) {
-		sliderMaxX = maxX;
-	} else {
-		if (maxX > sliderMaxX) {
-			sliderMaxX = maxX;
-		}
-	}	
-}//end of setSliders
 
 Number.prototype.toFixedDown = function(digits) {
 	  var n = this - Math.pow(10, -digits)/2;
