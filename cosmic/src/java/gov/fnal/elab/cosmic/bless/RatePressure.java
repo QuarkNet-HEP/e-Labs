@@ -401,7 +401,7 @@ public class RatePressure {
 	 		}
 
 	 		for (int i = 0; i < frequency.length; i++) {
-	 			if (binMillis[i] > 0 && binAverageRate[i] > 0 && binValue > 0 && frequency[i] > 1) {
+	 			if (binMillis[i] > 0 && binAverageRate[i] > 0 && binValue > 0 && frequency[i] >= 1) {
 	 				double xValue = binMillis[i];
 		 			double yValue = binAverageRate[i];
 		 			double error = binAverageRateError[i];	
