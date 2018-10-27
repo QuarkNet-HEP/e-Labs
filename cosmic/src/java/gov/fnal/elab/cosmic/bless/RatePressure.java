@@ -160,10 +160,10 @@ public class RatePressure {
 			roundedBin = (int) Math.ceil(nBins);
 			maxBins = maxX - minX;
 			prepareDefaultHistogram(trigger, defaultHistogramTrigger);
-			prepareDefaultHistogram(correctedTrigger, defaultHistogramCorrectedTrigger);
 			prepareDefaultHistogram(pressure, defaultHistogramPressure);
 			buildPressureValuePlot();
 			buildRateCorrectionLookupTable();
+			prepareDefaultHistogram(correctedTrigger, defaultHistogramCorrectedTrigger);
 			saveRatePressureValues(bw);
 			saveRateCorrectionTable(bw2);
 			savePressureValues(bw1);
