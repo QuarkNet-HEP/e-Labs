@@ -160,10 +160,10 @@ public class RatePressure {
 			roundedBin = (int) Math.ceil(nBins);
 			maxBins = maxX - minX;
 			prepareDefaultHistogram(trigger, defaultHistogramTrigger);
-			prepareDefaultHistogram(correctedTrigger, defaultHistogramCorrectedTrigger);
 			prepareDefaultHistogram(pressure, defaultHistogramPressure);
 			buildPressureValuePlot();
 			buildRateCorrectionLookupTable();
+			prepareDefaultHistogram(correctedTrigger, defaultHistogramCorrectedTrigger);
 			saveRatePressureValues(bw);
 			saveRateCorrectionTable(bw2);
 			savePressureValues(bw1);
@@ -244,7 +244,7 @@ public class RatePressure {
 			double pressureValue = pressureDistinct.get(i);
 			for (int j = 0; j < pressure.size(); j++) {
 				if (pressure.get(j) == pressureValue) {
-					System.out.println("Loop: "+String.valueOf(j)+ " pressureValue: "+ String.valueOf(pressureValue)+ " pressure: "+String.valueOf(pressure.get(j))+" isValid?: " + String.valueOf(trigger.get(j)) + " " + String.valueOf(isTriggerValid(rateSum, rateN, trigger.get(j))));
+					//System.out.println("Loop: "+String.valueOf(j)+ " pressureValue: "+ String.valueOf(pressureValue)+ " pressure: "+String.valueOf(pressure.get(j))+" isValid?: " + String.valueOf(trigger.get(j)) + " " + String.valueOf(isTriggerValid(rateSum, rateN, trigger.get(j))));
 					if (trigger.get(j) > 0.0 && isTriggerValid(rateSum, rateN, trigger.get(j))) {
 						rateSum += trigger.get(j);
 						rateN += 1.0;
@@ -298,8 +298,8 @@ public class RatePressure {
 			if (i == setMidSize) {
 				midKey = entry.getKey();
 				middleRate = entry.getValue();
-				i++;
 			}
+			i++;
 		}
 		for (Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
 			rateCorrectionWithoutPressure.put(entry.getKey(),(entry.getValue()/middleRate));
@@ -401,7 +401,7 @@ public class RatePressure {
 	 		}
 
 	 		for (int i = 0; i < frequency.length; i++) {
-	 			if (binMillis[i] > 0 && binAverageRate[i] > 0 && binValue > 0 && frequency[i] > 1) {
+	 			if (binMillis[i] > 0 && binAverageRate[i] > 0 && binValue > 0 && frequency[i] >= 1) {
 	 				double xValue = binMillis[i];
 		 			double yValue = binAverageRate[i];
 		 			double error = binAverageRateError[i];	
