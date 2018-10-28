@@ -230,8 +230,8 @@ function onDataLoadChart(json) {
 		data.push(triggerData);
 		var onOffPlot = $.plot("#triggerChart", data, options);
 		triggerPressureData[0].onOffPlot = onOffPlot;
-		var axes = onOffPlot.getAxes();
-		axes.yaxis.options.min = triggerPressureData[0].originalMinY;
+		//var axes = onOffPlot.getAxes();
+		//axes.yaxis.options.min = triggerPressureData[0].originalMinY;
 		//axes.yaxis.options.max = 40.0;
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
@@ -255,8 +255,8 @@ function onDataLoadChart(json) {
 		}
 		data0.push(ratepressData);
 		onOffPlot0 = $.plot("#trigPressChart", data0, optionsExtra);
-		var axes0 = onOffPlot0.getAxes();
-		axes0.yaxis.options.min = 15.0;
+		//var axes0 = onOffPlot0.getAxes();
+		//axes0.yaxis.options.min = 15.0;
 	    onOffPlot0.setupGrid();
 	    onOffPlot0.draw();
 		writeLegend('trigpres')

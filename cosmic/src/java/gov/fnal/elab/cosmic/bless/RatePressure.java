@@ -298,8 +298,8 @@ public class RatePressure {
 			if (i == setMidSize) {
 				midKey = entry.getKey();
 				middleRate = entry.getValue();
-				i++;
 			}
+			i++;
 		}
 		for (Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
 			rateCorrectionWithoutPressure.put(entry.getKey(),(entry.getValue()/middleRate));
