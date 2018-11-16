@@ -309,7 +309,7 @@ public class RatePressure {
 			Double correctionFactor = entry.getValue();
 			for (i = 0; i < pressure.size(); i++) {
 				if (pressure.get(i).intValue() == localPressure.intValue()) {
-					double fixedTrigger = correctedTrigger.get(i) * correctionFactor;
+					double fixedTrigger = correctedTrigger.get(i) / correctionFactor;
 					correctedTrigger.set(i, fixedTrigger);
 				}
 			}
