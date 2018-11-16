@@ -381,7 +381,7 @@ public class RatePressure {
 		 					timeGap[j+dataPointer] = 0.0;
 		 				}
 		 				if (timeGap[j+dataPointer] > 0 ) {
-		 					errorSum += data.get(j + dataPointer);
+		 					errorSum += (data.get(j + dataPointer) * timeGap[j+dataPointer]);
 		 					errorN += 1.0;
 		 				} else {
 		 					errorSum += 0.0;
@@ -394,9 +394,16 @@ public class RatePressure {
 	 				}
 		 			binAverageRate[i] = frequencyAvg;
 		 			//calculate error
-		 			if (errorN > 0) {
-		 				binAverageRateError[i] = Math.sqrt(errorSum) / errorN;
-		 			} 
+		 			//if (errorN > 0) {
+		 			//	binAverageRateError[i] = Math.sqrt(errorSum) / errorN;
+		 			//}
+		 			if (errorSum != 0) {
+		 				double percentError = 1 / Math.sqrt(errorSum);
+		 				binAverageRateError[i] = binAverageRate[i] * percentError;
+		 				//System.out.print("Average:"+ String.valueOf(binAverageRate[i])+"\n");
+		 				//System.out.print("Percentage error:"+ String.valueOf(percentError)+"\n");
+		 				//System.out.print("Actual error:"+ String.valueOf(binAverageRateError[i])+"\n");
+		 			}
 	 			}
 	 		}
 
