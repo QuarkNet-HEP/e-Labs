@@ -484,6 +484,7 @@ public class RatePressure {
 	
 	public void saveData(JsonWriter writer, List<Long> seconds, ArrayList<String> defaultHistogram, List<Double> data, String color, String name, String label, String symbol, int ndx, boolean line, boolean errorCheck) throws ElabException {
 		//add fixes for Corrected Trigger
+		data.removeAll(Arrays.asList(Double.valueOf(0.0)));
 		try {
 			writer.name(name);
 			writer.beginObject();

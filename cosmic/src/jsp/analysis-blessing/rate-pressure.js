@@ -230,8 +230,8 @@ function onDataLoadChart(json) {
 		data.push(triggerData);
 		var onOffPlot = $.plot("#triggerChart", data, options);
 		triggerPressureData[0].onOffPlot = onOffPlot;
-		//var axes = onOffPlot.getAxes();
-		//axes.yaxis.options.min = triggerPressureData[0].originalMinY;
+		var axes = onOffPlot.getAxes();
+		axes.yaxis.options.min = triggerPressureData[0].originalMinY;
 		//axes.yaxis.options.max = 40.0;
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
