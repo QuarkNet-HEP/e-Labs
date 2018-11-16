@@ -110,7 +110,6 @@
 			<div id="content">
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
