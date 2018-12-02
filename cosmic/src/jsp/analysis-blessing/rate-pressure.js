@@ -51,6 +51,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			//save trigger
 			var triggername = filename.value +"-trigger";
 			var canvas = triggerPressureData[0].onOffPlot.getCanvas();			
+			//console.log(canvas);
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -66,7 +67,8 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			});	
 			//save pressure
 			var pressurename = filename.value +"-pressure";
-			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();			
+			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();	
+			//console.log(canvas1);
 			var image1 = canvas1.toDataURL("image/png");
 			image1 = image1.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -82,7 +84,8 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			});	
 			//save rate/pressure
 			var ratename = filename.value +"-rate-pressure";
-			var canvas2 = onOffPlot0.getCanvas();			
+			//var canvas2 = onOffPlot0.getCanvas();			
+			console.log(canvas2);
 			var image2 = canvas2.toDataURL("image/png");
 			image2 = image2.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -231,8 +234,7 @@ function onDataLoadChart(json) {
 		var onOffPlot = $.plot("#triggerChart", data, options);
 		triggerPressureData[0].onOffPlot = onOffPlot;
 		var axes = onOffPlot.getAxes();
-		//axes.yaxis.options.min = triggerPressureData[0].originalMinY;
-		//axes.yaxis.options.max = 40.0;
+		axes.yaxis.options.min = triggerPressureData[0].originalMinY;
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
 		data1 = [];
@@ -256,7 +258,7 @@ function onDataLoadChart(json) {
 		data0.push(ratepressData);
 		onOffPlot0 = $.plot("#trigPressChart", data0, optionsExtra);
 		var axes0 = onOffPlot0.getAxes();
-		//axes0.yaxis.options.min = 15.0;
+		axes0.yaxis.options.min = triggerPressureData[2].originalMinY;
 	    onOffPlot0.setupGrid();
 	    onOffPlot0.draw();
 		writeLegend('trigpres')

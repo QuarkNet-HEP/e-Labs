@@ -307,10 +307,12 @@ public class RatePressure {
 		for (Map.Entry<Double,Double> entry : rateCorrectionWithoutPressure.entrySet()) {
 			Double localPressure = entry.getKey();
 			Double correctionFactor = entry.getValue();
-			for (i = 0; i < pressure.size(); i++) {
-				if (pressure.get(i).intValue() == localPressure.intValue()) {
-					double fixedTrigger = correctedTrigger.get(i) * correctionFactor;
-					correctedTrigger.set(i, fixedTrigger);
+			if (correctionFactor > 0) {
+				for (i = 0; i < pressure.size(); i++) {
+					if (pressure.get(i).intValue() == localPressure.intValue()) {
+						double fixedTrigger = correctedTrigger.get(i) / correctionFactor;
+						correctedTrigger.set(i, fixedTrigger);
+					}
 				}
 			}
 		}
@@ -381,7 +383,7 @@ public class RatePressure {
 		 					timeGap[j+dataPointer] = 0.0;
 		 				}
 		 				if (timeGap[j+dataPointer] > 0 ) {
-		 					errorSum += data.get(j + dataPointer);
+		 					errorSum += (data.get(j + dataPointer) * timeGap[j+dataPointer]);
 		 					errorN += 1.0;
 		 				} else {
 		 					errorSum += 0.0;
@@ -393,10 +395,13 @@ public class RatePressure {
 	 					frequencyAvg = frequencySum / frequency[i];
 	 				}
 		 			binAverageRate[i] = frequencyAvg;
-		 			//calculate error
-		 			if (errorN > 0) {
-		 				binAverageRateError[i] = Math.sqrt(errorSum) / errorN;
-		 			} 
+		 			if (errorSum != 0) {
+		 				double percentError = 1 / Math.sqrt(errorSum);
+		 				binAverageRateError[i] = binAverageRate[i] * percentError;
+		 				//System.out.print("Average:"+ String.valueOf(binAverageRate[i])+"\n");
+		 				//System.out.print("Percentage error:"+ String.valueOf(percentError)+"\n");
+		 				//System.out.print("Actual error:"+ String.valueOf(binAverageRateError[i])+"\n");
+		 			}
 	 			}
 	 		}
 
@@ -484,6 +489,7 @@ public class RatePressure {
 	
 	public void saveData(JsonWriter writer, List<Long> seconds, ArrayList<String> defaultHistogram, List<Double> data, String color, String name, String label, String symbol, int ndx, boolean line, boolean errorCheck) throws ElabException {
 		//add fixes for Corrected Trigger
+		data.removeAll(Arrays.asList(Double.valueOf(0.0)));
 		try {
 			writer.name(name);
 			writer.beginObject();
