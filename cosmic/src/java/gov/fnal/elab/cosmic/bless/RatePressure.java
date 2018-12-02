@@ -393,10 +393,6 @@ public class RatePressure {
 	 					frequencyAvg = frequencySum / frequency[i];
 	 				}
 		 			binAverageRate[i] = frequencyAvg;
-		 			//calculate error
-		 			//if (errorN > 0) {
-		 			//	binAverageRateError[i] = Math.sqrt(errorSum) / errorN;
-		 			//}
 		 			if (errorSum != 0) {
 		 				double percentError = 1 / Math.sqrt(errorSum);
 		 				binAverageRateError[i] = binAverageRate[i] * percentError;
