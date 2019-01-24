@@ -3,7 +3,10 @@ var triggerData = [];
 var correctedTriggerData = [];
 var pressureData = [];
 var ratepressData = [];
+var ratePressDataStat = [];
+var ratesinglepressData = [];
 var onOffPlot0;
+var onOffPlot2;
 var options = "";
 var minx, maxx, mean, deviation, numberOfEntries;
 var yAxisLabel = "average of entries/time bin";
@@ -14,6 +17,7 @@ var loadCount = 0;
 var tf = "%m/%d/%y";
 var sliderMinX = -1;
 var sliderMaxX = -1;
+var medianKey, medianError;
 
 Date.prototype.customFormat = function(formatString){
     var YYYY,YY,MMMM,MMM,MM,M,DDDD,DDD,DD,D,hhh,hh,h,mm,m,ss,s,ampm,AMPM,dMod,th;
@@ -50,8 +54,8 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 		if (filename.value != "") {
 			//save trigger
 			var triggername = filename.value +"-trigger";
-			var canvas = triggerPressureData[0].onOffPlot.getCanvas();	
-			console.log(canvas);
+			var canvas = triggerPressureData[0].onOffPlot.getCanvas();			
+			//console.log(canvas);
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -67,8 +71,8 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			});	
 			//save pressure
 			var pressurename = filename.value +"-pressure";
-			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();			
-			console.log(canvas1);
+			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();	
+			//console.log(canvas1);
 			var image1 = canvas1.toDataURL("image/png");
 			image1 = image1.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -84,7 +88,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			});	
 			//save rate/pressure
 			var ratename = filename.value +"-rate-pressure";
-			var canvas2 = onOffPlot0.getCanvas();			
+			//var canvas2 = onOffPlot0.getCanvas();			
 			console.log(canvas2);
 			var image2 = canvas2.toDataURL("image/png");
 			image2 = image2.replace('data:image/png;base64,', '');
@@ -235,7 +239,8 @@ function onDataLoadChart(json) {
 		triggerPressureData[0].onOffPlot = onOffPlot;
 		var axes = onOffPlot.getAxes();
 		axes.yaxis.options.min = triggerPressureData[0].originalMinY;
-	    onOffPlot.setupGrid();
+	    console.log(triggerPressureData[0].originalMinY);
+		onOffPlot.setupGrid(triggerPressureData[0].originalMinY);
 	    onOffPlot.draw();
 		data1 = [];
 		if (json.pressure != null) {
@@ -255,32 +260,56 @@ function onDataLoadChart(json) {
 		if (json.ratepressure != null) {
 			ratepressData = json.ratepressure;
 		}
+		if (json.ratepressurestat != null) {
+			ratepressDataStat = json.ratepressurestat;
+		}
 		data0.push(ratepressData);
+		data0.push(ratepressDataStat);
 		onOffPlot0 = $.plot("#trigPressChart", data0, optionsExtra);
-		axes.yaxis.options.min = triggerPressureData[2].originalMinY;
+		var axes0 = onOffPlot0.getAxes();
+		axes0.yaxis.options.min = ratepressData.minY - (ratepressData.minY*.03);
+		axes0.yaxis.options.max = ratepressData.maxY + (ratepressData.maxY*.03);
 	    onOffPlot0.setupGrid();
 	    onOffPlot0.draw();
 		writeLegend('trigpres')
+		data2 = [];
+		if (json.ratesinglepressure != null) {
+			ratesinglepressData = json.ratesinglepressure;
+			medianKey = ratesinglepressData.medianKey;
+			medianError = Math.round(ratesinglepressData.medianError*100)/100;
+		}
+		data2.push(ratesinglepressData);
+		console.log(data2);
+		onOffPlot2 = $.plot("#singleTrigPressChart", data2, optionsExtra);
+		var axes2 = onOffPlot2.getAxes();
+		axes2.yaxis.options.min = ratesinglepressData.minY - (ratesinglepressData.minY*.03);
+		axes2.yaxis.options.max = ratesinglepressData.maxY + (ratesinglepressData.maxY*.03);
+	    onOffPlot2.setupGrid();
+	    onOffPlot2.draw();
+	    writeLegend('singlepres');
 	    
 	}
 }//end of onDataLoadChart
 
 function writeLegend(dataGroup) {
-	if (dataGroup == 'trigpres') {
-		
-	}
+	//default for trigger data group
 	var context = triggerPressureData[0].onOffPlot.getCanvas().getContext('2d');
-	var localLabel = triggerPressureData[0].label;
+	var localLabel = "Trigger Rate vs Time";
+	yAxisLabel = "average trigger/time";
 	if (dataGroup == 'trigpres') {
 		context = onOffPlot0.getCanvas().getContext('2d');
-		localLabel = "Trigger over Pressure";
-		yAxisLabel = "average trigger/pressure";
-	} else {
-		yAxisLabel = "average of entries/time bin";		
-	}
+		localLabel = "Trigger Rate vs Pressure";
+		yAxisLabel = "average trigger/pressure";		
+	} 
+	if (dataGroup == 'singlepres') {
+		context = onOffPlot2.getCanvas().getContext('2d');
+		localLabel = "Pressure: "+medianKey+" Error: "+medianError+"\n";
+		yAxisLabel = "frequency";		
+	} 
 	if (dataGroup == 'pressure') {
 		context = triggerPressureData[1].onOffPlot.getCanvas().getContext('2d');
-		localLabel = triggerPressureData[1].label;
+		localLabel = "Pressure vs Time"
+		yAxisLabel = "average pressure/time";		
 	}
 	context.lineWidth=3;
 	context.fillStyle="#000000";
@@ -290,11 +319,11 @@ function writeLegend(dataGroup) {
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
 	var caption = "";
-	context.textAlign = "Flux Study - Rate vs Pressure";
-	context.fillText("Flux Study -  Rate vs Pressure", 90, 20);
-	context.font="10px sans-serif";
 	context.textAlign = localLabel;
-	context.fillText(localLabel, 130, 30);
+	context.fillText(localLabel, 90, 20);
+	context.font="10px sans-serif";
+	//context.textAlign = localLabel;
+	//context.fillText(localLabel, 130, 30);
 	var values = new Array();
 	var xcoord = 50;
 	var ycoord = 0;
@@ -307,11 +336,17 @@ function writeLegend(dataGroup) {
 			var captionArray = caption.split("\n");
 			for (var i = 0; i < captionArray.length; i++) {
 				var printText = captionArray[i];
-				if (captionArray[i].length > 38) {
+				if (captionArray[i].startsWith("Detector")) {
 					printText = captionArray[i].substring(0, 38);
+				} else {
+					printText = "";
 				}
-				ycoord += yspace; 
-				context.fillText(printText, xcoord, ycoord);				
+				// only print the detector information from the metadata
+				if (printText != "") {
+					//ycoord += yspace; 
+					//console.log(i + " " +printText);
+					context.fillText(printText, xcoord, ycoord);				
+				}
 			}
 		}
 	   });	 
@@ -321,7 +356,7 @@ function writeLegend(dataGroup) {
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 45);	
+	context.fillText(yAxisLabel, 0, 40);	
 	context.restore();		
 }//end of writeLegend
 
