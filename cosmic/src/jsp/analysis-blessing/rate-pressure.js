@@ -303,7 +303,7 @@ function writeLegend(dataGroup) {
 	} 
 	if (dataGroup == 'singlepres') {
 		context = onOffPlot2.getCanvas().getContext('2d');
-		localLabel = "Pressure: "+medianKey+" Error: "+medianError+"\n";
+		localLabel = "Sample Pressure: "+medianKey+" Error: "+medianError+"\n";
 		yAxisLabel = "frequency";		
 	} 
 	if (dataGroup == 'pressure') {
