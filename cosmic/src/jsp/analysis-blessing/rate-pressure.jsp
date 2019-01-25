@@ -146,19 +146,17 @@
 		});
 
 		</script>	
-<h1>View rate vs pressure</h1>
+<h1>Rate vs Pressure</h1>
 <div style="text-align: center;"><a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a>
 	<c:choose>
 		<c:when test="${empty message }">
 			<div class="graph-container-rate-pressure">
 				<div id="chartTrigger" style="text-align: center; width:700px; height:260px;">
-					<div id="rate-pressure-title"><strong>Rate vs Pressure</strong></div>
+					<div id="rate-pressure-title"><strong>Trigger with Pressure Correction</strong></div>
 					<div id="trigPressChart" style="width:700px; height:250px; text-align: center;"></div>
-					<div id="trigPressLegend" style="width: 700px;"></div>
+					<div id="singleTrigPressChart" style="width:700px; height:250px; text-align: center;"></div>
 					<div id="triggerChart" style="width:700px; height:250px; text-align: center;"></div>
-					<div id="triggerLegend" style="width: 700px;"></div>
 					<div id="pressureChart" style="width:700px; height:250px; text-align: center;"></div>
-					<div id="pressureLegend" style="width: 700px;"></div>
 				</div>
 			</div>	
 			<div style="text-align: center;">
