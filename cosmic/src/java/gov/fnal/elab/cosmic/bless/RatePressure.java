@@ -58,6 +58,8 @@ public class RatePressure {
 	private ArrayList<String> defaultHistogramPressure;
 	private Double maxYaxis = -1.0;
 	private Double maxError = -1.0;
+	//set development to true for debugging file
+	private boolean development = false;
 	
 	//EPeronja: calculate Rate vs Pressure from Flux Study and bless files
 	public RatePressure(Elab elab, File[] file, Double bV, String[] filenames, String outputDir) throws Exception {
@@ -80,6 +82,7 @@ public class RatePressure {
 		ratePressureFile = outputDir+"/RatePressureValues";
 		rateAvgPressureFile = outputDir+"/RateAvgOverPressureValues";
 		rateCorrectionFile = outputDir+"/RateCorrectionTable";
+		//report to debug for development purposes
 		ratePressureSteps = outputDir+"/RatePressureSteps";
 		minXL = maxXL = 0L;
 		binValue = bV;
@@ -192,6 +195,14 @@ public class RatePressure {
 			bw1.close();
 			bw2.close();
 			bw3.close();
+	        if (!development) {
+			      try { 
+				         File f = new File(ratePressureSteps);
+				         f.delete();
+				      } catch(Exception e) {
+				         throw e;
+				      }
+	        }
 		} catch (Exception e) {
 			throw e;
 		}
@@ -208,14 +219,16 @@ public class RatePressure {
 	 		Double[] timeGap = new Double[trigger.size()];
 	 		Arrays.fill(timeGap, 0.0);
 	 		double stTimeDiffAvg = 0.0;
- 			bw3.write("1-Prepare valid data for histogram\n");
- 			bw3.write("\tThis function examines the input data and determines whether entries are valid for the histogram.\n");
- 			bw3.write("\ta-check that the trigger rate is not too low as compared to the average trigger rate\n");
- 			bw3.write("\tb-examine the time gap of an entry when the prior bin has zero entries\n");
- 			bw3.write("\tIf the trigger or time gap is not valid, zero out the entry so it is not included in the analysis\n");
- 			bw3.write("\tValues in calculation - secsToPartialDay: "+String.valueOf(secsToPartialDay)+"\n");
+	 		if (development) {
+	 			bw3.write("1-Prepare valid data for histogram\n");
+	 			bw3.write("\tThis function examines the input data and determines whether entries are valid for the histogram.\n");
+	 			bw3.write("\ta-check that the trigger rate is not too low as compared to the average trigger rate\n");
+	 			bw3.write("\tb-examine the time gap of an entry when the prior bin has zero entries\n");
+	 			bw3.write("\tIf the trigger or time gap is not valid, zero out the entry so it is not included in the analysis\n");
+	 			bw3.write("\tValues in calculation - secsToPartialDay: "+String.valueOf(secsToPartialDay)+"\n");
+	 			bw3.write("\tLoop through the seconds to determine which bin they belong to\n");
+	 		}//end if 
  			triggerGap.add(0.0);
- 			bw3.write("\tLoop through the seconds to determine which bin they belong to\n");
 	 		if (trigger != null) {
 	 			for (int i = 0; i < trigger.size()-1; i++) {
 	 				Double bin = 0.0;
@@ -231,36 +244,48 @@ public class RatePressure {
 	 				}
 	 				triggerGap.add(timeGap[i+1]);
 	 				validTriggerGap.add(timeGap[i+1]);
-	 				bw3.write(String.valueOf(i)+": "+seconds.get(i).doubleValue()+" min:"+String.valueOf(minX));
-	 				bw3.write("bin = (seconds-minX)/secsToPartialDay : "+String.valueOf(bin)+"\n");
-	 				bw3.write(String.valueOf(i)+" next: "+seconds.get(i+1).doubleValue()+" min:"+String.valueOf(minX));
-	 				bw3.write("next bin = (next seconds-minX)/secsToPartialDay : "+String.valueOf(nextBin)+"\n");
+	 		 		if (development) {
+		 				bw3.write(String.valueOf(i)+": "+seconds.get(i).doubleValue()+" min:"+String.valueOf(minX));
+		 				bw3.write("bin = (seconds-minX)/secsToPartialDay : "+String.valueOf(bin)+"\n");
+		 				bw3.write(String.valueOf(i)+" next: "+seconds.get(i+1).doubleValue()+" min:"+String.valueOf(minX));
+		 				bw3.write("next bin = (next seconds-minX)/secsToPartialDay : "+String.valueOf(nextBin)+"\n");
+		 				bw3.write("Decide which bin it belongs to: \n");
+	 		 		}//end if
 	 				//to test intervals later
 	 				if (stTimeDiffAvg == 0.0) {
 	 					stTimeDiffAvg = timeGap[i+1];
 	 				}
-	 				bw3.write("Decide which bin it belongs to: \n");
 	 				if (bin.intValue() < 0) {}
 	 				else if (bin.intValue() >= roundedBin) {}
 	 				else {
-	 					bw3.write("incremented bin: "+String.valueOf(bin.intValue())+"\n");
+		 		 		if (development) {
+		 		 			bw3.write("incremented bin: "+String.valueOf(bin.intValue())+"\n");
+		 		 		}
 	 					frequency[bin.intValue()] += 1;
 	 				}
-	 				bw3.write("Decide about next bin: \n");
+	 		 		if (development) {
+	 		 			bw3.write("Decide about next bin: \n");
+	 		 		}
 	 				if ((nextBin.intValue() - bin.intValue()) > 1) {
-	 					bw3.write("incremented bin: "+String.valueOf(bin.intValue())+" because nextBin - bin > 1\n");
+		 		 		if (development) {
+		 		 			bw3.write("incremented bin: "+String.valueOf(bin.intValue())+" because nextBin - bin > 1\n");
+		 		 		}
 	 					frequency[bin.intValue()] += 0;
 	 				}
 	 				if (i+1 == trigger.size()) {
-	 					bw3.write("incremented bin: "+String.valueOf(bin.intValue())+" because it is the last record\n");
+		 		 		if (development) {
+		 		 			bw3.write("incremented bin: "+String.valueOf(bin.intValue())+" because it is the last record\n");
+		 		 		}
 	 					frequency[bin.intValue()] += 1;	 					
 	 				}
 	 			}
 	 		}
-	 		bw3.write("Bins and entries for these histograms\n");
-	 		for (int j = 0; j < frequency.length; j++) {
-	 			bw3.write("Bin # "+String.valueOf(j)+" entries: "+String.valueOf(frequency[j])+"\n");
-	 		}
+		 	if (development) {
+		 		bw3.write("Bins and entries for these histograms\n");
+		 		for (int j = 0; j < frequency.length; j++) {
+		 			bw3.write("Bin # "+String.valueOf(j)+" entries: "+String.valueOf(frequency[j])+"\n");
+		 		}
+		 	}
 			Double rateSum = 0.0;
 			Double rateN = 0.0;
 			for (int j = 0; j < trigger.size(); j++) {
@@ -274,26 +299,28 @@ public class RatePressure {
 					validTriggerGap.set(j,0.0);
 				}
 			}
-			bw3.write("Original and valid data side by side\n");
-			bw3.write("#Seconds\tTrigger\tValid Trigger\tTimeGap\tValid Time Gap\tPressure\tValid Pressure\n");
-			for (int i = 0; i < trigger.size(); i++) {
-				if (seconds.get(i) > 0L) {
-					bw3.write(seconds.get(i).toString());
-					bw3.write("\t");
-					bw3.write(trigger.get(i).toString());
-					bw3.write("\t");
-					bw3.write(validTrigger.get(i).toString());
-					bw3.write("\t");
-					bw3.write(triggerGap.get(i).toString());
-					bw3.write("\t");
-					bw3.write(validTriggerGap.get(i).toString());
-					bw3.write("\t");
-					bw3.write(pressure.get(i).toString());
-					bw3.write("\t");
-					bw3.write(validPressure.get(i).toString());
-					bw3.write("\n");
-				}
-			}	 		
+		 	if (development) {
+				bw3.write("Original and valid data side by side\n");
+				bw3.write("#Seconds\tTrigger\tValid Trigger\tTimeGap\tValid Time Gap\tPressure\tValid Pressure\n");
+				for (int i = 0; i < trigger.size(); i++) {
+					if (seconds.get(i) > 0L) {
+						bw3.write(seconds.get(i).toString());
+						bw3.write("\t");
+						bw3.write(trigger.get(i).toString());
+						bw3.write("\t");
+						bw3.write(validTrigger.get(i).toString());
+						bw3.write("\t");
+						bw3.write(triggerGap.get(i).toString());
+						bw3.write("\t");
+						bw3.write(validTriggerGap.get(i).toString());
+						bw3.write("\t");
+						bw3.write(pressure.get(i).toString());
+						bw3.write("\t");
+						bw3.write(validPressure.get(i).toString());
+						bw3.write("\n");
+					}
+				}	 		
+		 	}//end if
 		} catch (Exception e) {
 			throw new ElabException(e.getMessage());
 		}
@@ -318,24 +345,30 @@ public class RatePressure {
 	//prepare the default Histogram to be displayed
  	public void prepareDefaultHistogram(String label, ArrayList<Double> data, ArrayList<String> defaultHistogram, boolean calcError, BufferedWriter bw3) throws ElabException {
  		try {
- 			bw3.write("\n2-Prepare histogram for "+label+"\n");
 	 		Double[] binAverageRate = new Double[roundedBin];
 	 		Arrays.fill(binAverageRate, 0.0);
 	 		Double[] binAverageRateError = new Double[roundedBin];
 	 		Arrays.fill(binAverageRateError, 0.0);
 	 		Double[] binMillis = new Double[roundedBin];
 			double halfBin = binValue * DateUtils.MILLIS_PER_SECOND / 2.0;
-			bw3.write("Prepare bins by adding half bin to each: "+String.valueOf(halfBin)+"\n");
+			if (development) {
+				bw3.write("\n2-Prepare histogram for "+label+"\n");
+				bw3.write("Prepare bins by adding half bin to each: "+String.valueOf(halfBin)+"\n");
+			}//end if
 			int ndx = 0;
 	 		for (Double i = Math.floor(minX); i < Math.ceil(maxX) && ndx < roundedBin; i+=(binValue * DateUtils.MILLIS_PER_SECOND)) {
 				binMillis[ndx] = i+halfBin+0.00001;
-				bw3.write("Bin: "+String.valueOf(i)+" new bin: "+String.valueOf(binMillis[ndx])+"\n");
+				if (development) {
+					bw3.write("Bin: "+String.valueOf(i)+" new bin: "+String.valueOf(binMillis[ndx])+"\n");
+				}
 				ndx += 1;
 			}
  			//travel through frequency
  			int dataPointer = 0;
- 			bw3.write("Loop through the frequency to collect data for the average per bin\n");
-			bw3.write("Time\tBin Sum\tCount\tAverage\tPercentage error\tActual error\n");
+			if (development) {
+	 			bw3.write("Loop through the frequency to collect data for the average per bin\n");
+				bw3.write("Time\tBin Sum\tCount\tAverage\tPercentage error\tActual error\n");
+			}
 	 		for (int i = 0; i < frequency.length; i++) {
 	 			//travel through data to get averages
 	 			double frequencySum = 0.0;
@@ -366,11 +399,13 @@ public class RatePressure {
 		 			if (errorSum != 0) {
 		 				double percentError = 1 / Math.sqrt(errorSum);
 		 				binAverageRateError[i] = binAverageRate[i] * percentError;
-		 				if (calcError) {
-		 					bw3.write(String.valueOf(binMillis[i])+"\t"+String.valueOf(frequencySum)+"\t"+String.valueOf(frequency[i])+"\t"+String.valueOf(binAverageRate[i])+"\t"+String.valueOf(percentError)+"\t"+String.valueOf(binAverageRateError[i])+"\n");
-		 				} else {
-		 					bw3.write(String.valueOf(binMillis[i])+"\t"+String.valueOf(frequencySum)+"\t"+String.valueOf(frequency[i])+"\t"+String.valueOf(binAverageRate[i])+"\n");		 					
-		 				}
+		 				if (development) {	
+			 				if (calcError) {
+			 					bw3.write(String.valueOf(binMillis[i])+"\t"+String.valueOf(frequencySum)+"\t"+String.valueOf(frequency[i])+"\t"+String.valueOf(binAverageRate[i])+"\t"+String.valueOf(percentError)+"\t"+String.valueOf(binAverageRateError[i])+"\n");
+			 				} else {
+			 					bw3.write(String.valueOf(binMillis[i])+"\t"+String.valueOf(frequencySum)+"\t"+String.valueOf(frequency[i])+"\t"+String.valueOf(binAverageRate[i])+"\n");		 					
+			 				}
+		 				}//end if development
 		 			}
 	 			}
 	 		}
@@ -401,17 +436,21 @@ public class RatePressure {
 		}		
 		//loop through each
 		try {
-			bw3.write("\n3-Build Rate vs Pressure Plot\n");
-			bw3.write("\ta-Get distinct pressure values\n");
-			bw3.write("\tb-Loop through all values for each distinct pressure value and get the average rate for each\n");
+			if (development) {
+				bw3.write("\n3-Build Rate vs Pressure Plot\n");
+				bw3.write("\ta-Get distinct pressure values\n");
+				bw3.write("\tb-Loop through all values for each distinct pressure value and get the average rate for each\n");
+			}//end if development
 			for (int i = 0; i < pressureDistinct.size(); i++) {
 				Double rateSum = 0.0;
 				Double rateN = 0.0;
 	 			double N = 0.0;
 				double pressureValue = pressureDistinct.get(i);
 				double T = 0.0;
-				bw3.write("Pressure: "+String.valueOf(pressureValue)+"\n");
-				bw3.write("#Pressure\tTrigger\tGap\n");
+				if (development) {
+					bw3.write("Pressure: "+String.valueOf(pressureValue)+"\n");
+					bw3.write("#Pressure\tTrigger\tGap\n");
+				}
 				for (int j = 0; j < validPressure.size(); j++) {
 					if (validPressure.get(j) == pressureValue) {
 						if (validTrigger.get(j) > 0.0) {
@@ -419,7 +458,9 @@ public class RatePressure {
 							N += (validTrigger.get(j) * validTriggerGap.get(j));
 							T += validTriggerGap.get(j);
 							rateN += 1.0;
-							bw3.write(String.valueOf(pressureValue)+"\t"+String.valueOf(validTrigger.get(j))+"\t"+String.valueOf(validTriggerGap.get(j))+" Sums so far - N: "+String.valueOf(N)+"\tT: "+String.valueOf(T)+"\n");
+							if (development) {
+								bw3.write(String.valueOf(pressureValue)+"\t"+String.valueOf(validTrigger.get(j))+"\t"+String.valueOf(validTriggerGap.get(j))+" Sums so far - N: "+String.valueOf(N)+"\tT: "+String.valueOf(T)+"\n");
+							}
 						}
 					}
 				}
@@ -442,19 +483,23 @@ public class RatePressure {
 					}
 				}
 				double percentError = 1 / Math.sqrt(N);
- 				bw3.write("Pressure\tN\tPercent Error\tT\n");
-				bw3.write(String.valueOf(pressureValue)+"\t"+String.valueOf(N)+"\t"+String.valueOf(percentError)+"\t"+String.valueOf(T)+"\n");
+				if (development) {
+					bw3.write("Pressure\tN\tPercent Error\tT\n");
+					bw3.write(String.valueOf(pressureValue)+"\t"+String.valueOf(N)+"\t"+String.valueOf(percentError)+"\t"+String.valueOf(T)+"\n");
+				}
 				if (rateN > 1) {
 					double ratio = meanTriggerDiffSquared / (rateN-1);
 					pressureRateError.put(pressureDistinct.get(i), Math.sqrt(ratio));
 	 				pressureRateError1.put(pressureDistinct.get(i), (N/T) * percentError);
 				}
 			}
-			bw3.write("#Pressure\tRate Average\tError\tRate Option\tError Option\n");
-			for(Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
-				double key = entry.getKey();
-				bw3.write(String.valueOf(entry.getKey())+"\t"+String.valueOf(entry.getValue())+"\t"+pressureRateError.get(key)+"\t"+pressureRate1.get(key)+"\t"+pressureRateError1.get(key)+"\n");
-			}			
+			if (development) {
+				bw3.write("#Pressure\tRate Average\tError\tRate Option\tError Option\n");
+				for(Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
+					double key = entry.getKey();
+					bw3.write(String.valueOf(entry.getKey())+"\t"+String.valueOf(entry.getValue())+"\t"+pressureRateError.get(key)+"\t"+pressureRate1.get(key)+"\t"+pressureRateError1.get(key)+"\n");
+				}			
+			}
 		} catch (Exception e) {
 			throw new ElabException(e.getMessage());			
 		}
@@ -462,7 +507,9 @@ public class RatePressure {
 
 	void buildAllTriggerSinglePressure(BufferedWriter bw3) throws ElabException {
 		try {
-			bw3.write("\n4-Build All Triggers for median pressure point\n");
+			if (development) {
+				bw3.write("\n4-Build All Triggers for median pressure point\n");
+			}
 			Set<Double> keys = pressureRate.keySet();
 			int setMidSize = (keys.size()/2) - 1;
 			int i = 0;
@@ -475,11 +522,15 @@ public class RatePressure {
 			}
 			double minRate = 0.0;
 			double maxRate = 0.0;
-			bw3.write("\tMedian key: "+String.valueOf(medianKey)+" Error: "+String.valueOf(medianError)+" - Trigger values:\n");
+			if (development) {
+				bw3.write("\tMedian key: "+String.valueOf(medianKey)+" Error: "+String.valueOf(medianError)+" - Trigger values:\n");
+			}
 			for (int j = 0; j < validPressure.size(); j++) {
 				if (validPressure.get(j) == medianKey) {
 					allTriggerSinglePressure.add(validTrigger.get(j));
-					bw3.write(String.valueOf(validTrigger.get(j))+"\n");
+					if (development) {
+						bw3.write(String.valueOf(validTrigger.get(j))+"\n");
+					}
 					double floorRate = Math.floor(validTrigger.get(j).doubleValue());
 					double ceilRate = Math.ceil(validTrigger.get(j).doubleValue());
 					if (minRate == 0.0) {
@@ -495,7 +546,9 @@ public class RatePressure {
 				}//end if
 			}//end for
 			double numBins = Math.ceil((maxRate - minRate) / medianError);
-			bw3.write("max rate: "+String.valueOf(maxRate)+ " min rate: "+String.valueOf(minRate)+" bins: "+String.valueOf(numBins)+"\n");
+			if (development) {
+				bw3.write("max rate: "+String.valueOf(maxRate)+ " min rate: "+String.valueOf(minRate)+" bins: "+String.valueOf(numBins)+"\n");
+			}
 			//prepare the data in each bin
 			//double binSize = (maxRate - minRate) / numBins;
 			int[] result = new int[(int) numBins];
@@ -514,7 +567,9 @@ public class RatePressure {
 			for (int x = 0; x < (int) numBins; x++) {
 				if (result[x] > 0) {
 					triggerSinglePressureFrequency.put(ndx, result[x]);
-					bw3.write("ndx: " + String.valueOf(ndx) + " value: "+String.valueOf(result[x])+"\n");
+					if (development) {
+						bw3.write("ndx: " + String.valueOf(ndx) + " value: "+String.valueOf(result[x])+"\n");
+					}
 				}
 				ndx += medianError;
 			}
@@ -526,7 +581,7 @@ public class RatePressure {
 	
 	public void saveTriggerVsPressureValues(BufferedWriter bw1) throws ElabException {
 		try {
-			bw1.write("#Pressure\tAverage Rate\tError\tError Option\n");
+			bw1.write("#Pressure\tAverage Rate\tDistrib Error\tStat Rate\tStat Error\n");
 			for(Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
 				bw1.write(String.valueOf(entry.getKey()));
 				bw1.write("\t");
@@ -534,6 +589,8 @@ public class RatePressure {
 				bw1.write("\t");
 				double key = entry.getKey();
 				bw1.write(String.valueOf(pressureRateError.get(key)));
+				bw1.write("\t");
+				bw1.write(String.valueOf(pressureRate1.get(key)));
 				bw1.write("\t");
 				bw1.write(String.valueOf(pressureRateError1.get(key)));
 				bw1.write("\n");
@@ -547,7 +604,9 @@ public class RatePressure {
 		//this function will calculate the correction rate for the trigger
 		//when removing the pressure from the equation
 		try {
-			bw3.write("\n5-Build Rate Correction Lookup Table\n");
+			if (development) {
+				bw3.write("\n5-Build Rate Correction Lookup Table\n");
+			}
 			Set<Double> keys = pressureRate.keySet();
 			int setMidSize = (keys.size()/2) - 1;
 			int i = 0;
@@ -560,12 +619,18 @@ public class RatePressure {
 				}
 				i++;
 			}
-			bw3.write("\tRate correction without pressure\n");
+			if (development) {
+				bw3.write("\tRate correction without pressure\n");
+			}
 			for (Map.Entry<Double,Double> entry : pressureRate.entrySet()) {
 				rateCorrectionWithoutPressure.put(entry.getKey(),(entry.getValue()/middleRate));
-				bw3.write(String.valueOf(entry.getKey())+"\t"+String.valueOf(entry.getValue()/middleRate)+"\n");
-			}		
-			bw3.write("Proceed to correct the Trigger value\n");
+				if (development) {
+					bw3.write(String.valueOf(entry.getKey())+"\t"+String.valueOf(entry.getValue()/middleRate)+"\n");
+				}
+			}	
+			if (development) {
+				bw3.write("Proceed to correct the Trigger value\n");
+			}
 			for (Map.Entry<Double,Double> entry : rateCorrectionWithoutPressure.entrySet()) {
 				Double localPressure = entry.getKey();
 				Double correctionFactor = entry.getValue();
@@ -574,7 +639,9 @@ public class RatePressure {
 						if (pressure.get(i).intValue() == localPressure.intValue()) {
 							double fixedTrigger = correctedTrigger.get(i) / correctionFactor;
 							correctedTrigger.set(i, fixedTrigger);
-							bw3.write(String.valueOf(localPressure.intValue())+"\t"+String.valueOf(i)+"\t"+String.valueOf(fixedTrigger)+"\t"+correctedTrigger.get(i)+"\t"+correctionFactor+"\n");
+							if (development) {
+								bw3.write(String.valueOf(localPressure.intValue())+"\t"+String.valueOf(i)+"\t"+String.valueOf(fixedTrigger)+"\t"+correctedTrigger.get(i)+"\t"+correctionFactor+"\n");
+							}
 						}
 					}
 				}
