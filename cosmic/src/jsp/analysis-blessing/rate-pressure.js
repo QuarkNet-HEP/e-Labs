@@ -55,7 +55,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			//save trigger
 			var triggername = filename.value +"-trigger";
 			var canvas = triggerPressureData[0].onOffPlot.getCanvas();			
-			//console.log(canvas);
+			console.log(canvas);
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -72,7 +72,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			//save pressure
 			var pressurename = filename.value +"-pressure";
 			var canvas1 = triggerPressureData[1].onOffPlot.getCanvas();	
-			//console.log(canvas1);
+			console.log(canvas1);
 			var image1 = canvas1.toDataURL("image/png");
 			image1 = image1.replace('data:image/png;base64,', '');
 			$.ajax({
@@ -88,7 +88,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			});	
 			//save rate/pressure
 			var ratename = filename.value +"-rate-pressure";
-			//var canvas2 = onOffPlot0.getCanvas();			
+			var canvas2 = onOffPlot0.getCanvas();			
 			console.log(canvas2);
 			var image2 = canvas2.toDataURL("image/png");
 			image2 = image2.replace('data:image/png;base64,', '');
@@ -96,6 +96,23 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 				url: "../analysis/save-plot.jsp",
 				type: 'POST',
 				data: { imagedata: image2, filename: ratename, id: run_id, metadata: values},
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML += '<br /><a href="'+response+'">' +ratename +'</a> file created successfully.';
+					}
+				}
+			});	
+			//save sample pressure
+			var ratename = filename.value +"-sample-pressure";
+			var canvas3 = onOffPlot2.getCanvas();			
+			console.log(canvas3);
+			var image3 = canvas3.toDataURL("image/png");
+			image3 = image3.replace('data:image/png;base64,', '');
+			$.ajax({
+				url: "../analysis/save-plot.jsp",
+				type: 'POST',
+				data: { imagedata: image3, filename: ratename, id: run_id, metadata: values},
 				success: function (response) {
 					var msgDiv = document.getElementById(div_id);
 					if (msgDiv != null) {
