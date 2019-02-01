@@ -104,7 +104,7 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 				}
 			});	
 			//save sample pressure
-			var ratename = filename.value +"-sample-pressure";
+			var ratename1 = filename.value +"-sample-pressure";
 			var canvas3 = onOffPlot2.getCanvas();			
 			console.log(canvas3);
 			var image3 = canvas3.toDataURL("image/png");
@@ -112,11 +112,11 @@ function saveRatePressureChart(name_id, div_id, run_id) {
 			$.ajax({
 				url: "../analysis/save-plot.jsp",
 				type: 'POST',
-				data: { imagedata: image3, filename: ratename, id: run_id, metadata: values},
+				data: { imagedata: image3, filename: ratename1, id: run_id, metadata: values},
 				success: function (response) {
 					var msgDiv = document.getElementById(div_id);
 					if (msgDiv != null) {
-						msgDiv.innerHTML += '<br /><a href="'+response+'">' +ratename +'</a> file created successfully.';
+						msgDiv.innerHTML += '<br /><a href="'+response+'">' +ratename1 +'</a> file created successfully.';
 					}
 				}
 			});	
