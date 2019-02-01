@@ -111,10 +111,10 @@ public class RatePressure {
 						String filedate = nameParts[1]+nameParts[2];
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 						Date date = sdf.parse(filedate);
-						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-						String dateUTC = sdf.format(date);
-						Date newDate = sdf.parse(dateUTC);
-						secs = newDate.getTime();
+						//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+						//String dateUTC = sdf.format(date);
+						//newDate = sdf.parse(dateUTC);
+						secs = date.getTime();
 					} catch (Exception e) {	
 						String message = e.toString();
 					}
@@ -832,13 +832,17 @@ public class RatePressure {
 				writer.value(entry.getKey());
 				writer.value(entry.getValue());
 				double key = entry.getKey();
-				if ((entry.getValue() - pressureRateError.get(key)) < minValue) {
-					minValue = entry.getValue() - pressureRateError.get(key);
+				if (pressureRateError.get(key) != null) {
+					if ((entry.getValue() - pressureRateError.get(key)) < minValue) {
+						minValue = entry.getValue() - pressureRateError.get(key);
+					}
+					if ((entry.getValue() + pressureRateError.get(key)) > maxValue) {
+						maxValue = entry.getValue() + pressureRateError.get(key);
+					}
+					writer.value(pressureRateError.get(key));
+				} else {
+					writer.value(0.0);					
 				}
-				if ((entry.getValue() + pressureRateError.get(key)) > maxValue) {
-					maxValue = entry.getValue() + pressureRateError.get(key);
-				}
-				writer.value(pressureRateError.get(key));
 				writer.endArray();
 			}
 			writer.endArray();
@@ -891,13 +895,17 @@ public class RatePressure {
 				writer.value(entry.getKey());
 				writer.value(entry.getValue());
 				double key = entry.getKey();
-				if ((entry.getValue() - pressureRateError1.get(key)) < minValue) {
-					minValue = entry.getValue() - pressureRateError1.get(key);
+				if (pressureRateError1.get(key) != null) {
+					if ((entry.getValue() - pressureRateError1.get(key)) < minValue) {
+						minValue = entry.getValue() - pressureRateError1.get(key);
+					}
+					if ((entry.getValue() + pressureRateError1.get(key)) > maxValue) {
+						maxValue = entry.getValue() + pressureRateError1.get(key);
+					}
+					writer.value(pressureRateError1.get(key));
+				} else {
+					writer.value(0.0);					
 				}
-				if ((entry.getValue() + pressureRateError1.get(key)) > maxValue) {
-					maxValue = entry.getValue() + pressureRateError1.get(key);
-				}
-				writer.value(pressureRateError1.get(key));
 				writer.endArray();
 			}
 			writer.endArray();
