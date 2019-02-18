@@ -182,261 +182,259 @@ public class DataTools {
         		}
         	}
         	new_count++;
-            Object[] data = new Object[KEYS.size()];
+          Object[] data = new Object[KEYS.size()];
             
-            for (Tuple t : e) {
-                Integer index = KEYS.get(t.getKey());
-                if (index != null) {
-                    data[index.intValue()] = t.getValue();
-                }
-            }
+          for (Tuple t : e) {
+              Integer index = KEYS.get(t.getKey());
+              if (index != null) {
+                  data[index.intValue()] = t.getValue();
+              }
+          }
 
-            String schoolName = (String) data[SCHOOL];
-            if (StringUtils.isBlank(schoolName)) {
-                System.out.println("WARNING: School name is missing for file " + e.getLFN());
-                schoolName = "Unknown School";
-            }
-            String cityName = (String) data[CITY];
-            if (StringUtils.isBlank(cityName)) {
-                System.out.println("WARNING: City name is missing for file " + e.getLFN());
-                cityName = "Unknown City";
-            }
-            String stateName = (String) data[STATE];
-            if (StringUtils.isBlank(stateName)) {
-                System.out.println("WARNING: State name is missing for file " + e.getLFN());
-                stateName = "Unknown State";
-            }
+          String schoolName = (String) data[SCHOOL];
+          if (StringUtils.isBlank(schoolName)) {
+              System.out.println("WARNING: School name is missing for file " + e.getLFN());
+              schoolName = "Unknown School";
+          }
+          String cityName = (String) data[CITY];
+          if (StringUtils.isBlank(cityName)) {
+              System.out.println("WARNING: City name is missing for file " + e.getLFN());
+              cityName = "Unknown City";
+          }
+          String stateName = (String) data[STATE];
+          if (StringUtils.isBlank(stateName)) {
+              System.out.println("WARNING: State name is missing for file " + e.getLFN());
+              stateName = "Unknown State";
+          }
             
-            School school = srs.getSchool(schoolName, cityName, stateName);
-            if (school == null) {
-                school = new School(schoolName, cityName, stateName);
-                srs.addSchool(school);
-            }
+          School school = srs.getSchool(schoolName, cityName, stateName);
+          if (school == null) {
+              school = new School(schoolName, cityName, stateName);
+              srs.addSchool(school);
+          }
             
-            /* Correct city and state names if there some metadata pieces have bad data.
+          /* Correct city and state names if there some metadata pieces have bad data.
             if (school.getCity().equals("Unknown City") && !cityName.equals("Unknown City"))
             	school.setCity(cityName);
             if (school.getState().equals("Unknown State") && !stateName.equals("Uknown State"))
             	school.setState(stateName);
-            */
+          */
             
+          Timestamp ts = (Timestamp) data[STARTDATE];
+          String startdate = DateFormatUtils.format(ts.getTime(), MONTH_FORMAT);
+          Month month = school.getMonth(startdate);
+          if (month == null) {
+           	month = new Month(startdate, ts);
+            school.addDay(month);
+          }
+
+          File file = new File(e.getLFN());
+          file.setStartDate((Timestamp) data[STARTDATE]);
+          file.setEndDate((Timestamp) data[ENDDATE]);
             
-            Timestamp ts = (Timestamp) data[STARTDATE];
-            String startdate = DateFormatUtils.format(ts.getTime(), MONTH_FORMAT);
-            Month month = school.getMonth(startdate);
-            if (month == null) {
-            	month = new Month(startdate, ts);
-                school.addDay(month);
-            }
+          long totalEvents = 0;
+          try {
+          	totalEvents += (Long) data[CHAN1];
+          }
+          catch(Exception ee) {}
+          try {
+           	totalEvents += (Long) data[CHAN2]; 
+          }
+          catch(Exception ee) {}
+          try {
+           	totalEvents += (Long) data[CHAN3]; 
+          }
+          catch(Exception ee) {}
+          try {
+           	totalEvents += (Long) data[CHAN4]; 
+          }
+          catch(Exception ee) {}
+  
+          file.setTotalEvents(totalEvents);
 
-            File file = new File(e.getLFN());
-            file.setStartDate((Timestamp) data[STARTDATE]);
-            file.setEndDate((Timestamp) data[ENDDATE]);
+          try {
+            file.setDetector(Integer.parseInt((String) data[DETECTORID]));
+          }
+          catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " has a malformed detector ID. Skipping.");
+            continue;
+          }
+          //EPeronja-02/04/2013: Bug472- added to set new attributes         
+          try {
+           	file.setBlessFile((String) data[BLESSFILE]);
+          } catch (Exception ex) {
+           	System.out.println("WARNING: File " + e.getLFN() + " does not have a bless file. Skipping.");
+           	continue;
+          }
+          try {
+           	file.setBlessFile((String) data[CONREG0]);
+          } catch (Exception ex) {
+           	System.out.println("WARNING: File " + e.getLFN() + " does not have register 0 conf. Skipping.");
+           	continue;
+          }
+          try {
+           	file.setBlessFile((String) data[CONREG1]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have register 1 conf. Skipping.");
+            continue;
+          }
+          try {
+            file.setBlessFile((String) data[CONREG2]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have register 2 conf. Skipping.");
+            continue;
+          }
+          try {
+           	file.setBlessFile((String) data[CONREG3]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
+            continue;
+          }
+          //EPeronja-04/25/2013: Golden File attributes
+          try {
+            file.setBenchmarkFile((Boolean) data[BENCHMARKFILE]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
+            continue;
+          }
+          try {
+            file.setBenchmarkDefault((Boolean) data[BENCHMARKDEFAULT]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
+            continue;
+          }  
+          try {
+            file.setBenchmarkLabel((String) data[BENCHMARKLABEL]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark label. Skipping.");
+            continue;
+          }  
+          try {
+            file.setBenchmarkReference((String) data[BENCHMARKREFERENCE]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark reference. Skipping.");
+            continue;
+          }  
+          try {
+            file.setBenchmarkFail((String) data[BENCHMARKFAIL]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
+            continue;
+          }  
+          //EPeronja-06/25/2013: 289- Lost functionality on data search
+          try {
+            file.setGroup((String) data[GROUP]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
+            continue;
+          }  
+
+          try {
+          	file.setComments((String) data[COMMENTS]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
+            continue;
+          } 
+
+          try {
+            file.setCreationDate((java.util.Date) data[CREATIONDATE]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have a creation date failure. Skipping.");
+            continue;
+          }  
+          try {
+            file.setChannel1((Long) data[CHAN1]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            continue;
+          }  
+          try {
+            file.setChannel2((Long) data[CHAN2]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            continue;
+          }  
+          try {
+            file.setChannel3((Long) data[CHAN3]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            continue;
+          }  
+          try {
+            file.setChannel4((Long) data[CHAN4]);
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            continue;
+          }  
+
+          if (file.getStartDate() == null) {
+            System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
+            continue;
+          }
+          if (file.getEndDate() == null) {
+            System.out.println("WARNING: File " + e.getLFN() + " is missing the end date. Defaulting to start date.");
+            file.setEndDate(file.getStartDate());
+          }
+
+          if (startDate == null || startDate.after(file.getStartDate())) {
+            startDate = file.getStartDate();
+          }
+
+          if (endDate == null || endDate.before(file.getEndDate())) {
+            endDate = file.getEndDate();
+          }
             
-            long totalEvents = 0;
-            try {
-            	totalEvents += (Long) data[CHAN1];
-            }
-            catch(Exception ee) {}
-            try {
-            	totalEvents += (Long) data[CHAN2]; 
-            }
-            catch(Exception ee) {}
-            try {
-            	totalEvents += (Long) data[CHAN3]; 
-            }
-            catch(Exception ee) {}
-            try {
-            	totalEvents += (Long) data[CHAN4]; 
-            }
-            catch(Exception ee) {}
-            
-            file.setTotalEvents(totalEvents);
-            
-            try {
-                file.setDetector(Integer.parseInt((String) data[DETECTORID]));
-            }
-            catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " has a malformed detector ID. Skipping.");
-            	continue;
-            }
-            //EPeronja-02/04/2013: Bug472- added to set new attributes         
-            try {
-            	file.setBlessFile((String) data[BLESSFILE]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a bless file. Skipping.");
-            	continue;
-            }
-            try {
-            	file.setBlessFile((String) data[CONREG0]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 0 conf. Skipping.");
-            	continue;
-            }
-            try {
-            	file.setBlessFile((String) data[CONREG1]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 1 conf. Skipping.");
-            	continue;
-            }
-            try {
-            	file.setBlessFile((String) data[CONREG2]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 2 conf. Skipping.");
-            	continue;
-            }
-            try {
-            	file.setBlessFile((String) data[CONREG3]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
-            	continue;
-            }
-            //EPeronja-04/25/2013: Golden File attributes
-            try {
-            	file.setBenchmarkFile((Boolean) data[BENCHMARKFILE]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
-            	continue;
-            }
-            try {
-            	file.setBenchmarkDefault((Boolean) data[BENCHMARKDEFAULT]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setBenchmarkLabel((String) data[BENCHMARKLABEL]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark label. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setBenchmarkReference((String) data[BENCHMARKREFERENCE]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark reference. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setBenchmarkFail((String) data[BENCHMARKFAIL]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
-            	continue;
-            }  
-            //EPeronja-06/25/2013: 289- Lost functionality on data search
-            try {
-            	file.setGroup((String) data[GROUP]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
-            	continue;
-            }  
-
-            try {
-            	file.setComments((String) data[COMMENTS]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
-            	continue;
-            } 
-
-            try {
-            	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have a creation date failure. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setChannel1((Long) data[CHAN1]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setChannel2((Long) data[CHAN2]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setChannel3((Long) data[CHAN3]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
-            	continue;
-            }  
-            try {
-            	file.setChannel4((Long) data[CHAN4]);
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
-            	continue;
-            }  
-
-            if (file.getStartDate() == null) {
-            	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
-            	continue;
-            }
-            if (file.getEndDate() == null) {
-                System.out.println("WARNING: File " + e.getLFN() + " is missing the end date. Defaulting to start date.");
-                file.setEndDate(file.getStartDate());
-            }
-
-            if (startDate == null || startDate.after(file.getStartDate())) {
-                startDate = file.getStartDate();
-            }
-
-            if (endDate == null || endDate.before(file.getEndDate())) {
-                endDate = file.getEndDate();
-            }
-            
-            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
-            try {
-            	file.setTriggers((Long) data[TRIGGERS]);
-            } catch (Exception ex) {
-            	file.setTriggers(0L);
-            	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
-            }  
-			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
-			if (duration > 0) {
-				file.setFileDuration(duration);
-			} else {
-				file.setFileDuration(0L);
-			}
+          //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
+          try {
+            file.setTriggers((Long) data[TRIGGERS]);
+          } catch (Exception ex) {
+            file.setTriggers(0L);
+            System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
+          }  
+			    Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
+			    if (duration > 0) {
+				    file.setFileDuration(duration);
+			    } else {
+				    file.setFileDuration(0L);
+			    }
 			
-            if (Boolean.TRUE.equals(data[BLESSED])) {
-                file.setBlessed(true);
-                school.incBlessed();
-            }
+          if (Boolean.TRUE.equals(data[BLESSED])) {
+            file.setBlessed(true);
+            school.incBlessed();
+          }
  
-            //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag.
-            boolean hasGeoEntry = false;
-            try {
-            	hasGeoEntry = getGeoFileEntry(e.getLFN());   
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + ". Failed to find geo entry.");            	
-            }
-            //EPeronja-03/12/2015: 657-Check before trusting the metadata stacked field.
-            if (hasGeoEntry) {
+          //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag.
+          boolean hasGeoEntry = false;
+          try {
+            hasGeoEntry = getGeoFileEntry(e.getLFN());
+          } catch (Exception ex) {
+            System.out.println("WARNING: File " + e.getLFN() + ". Failed to find geo entry.");
+          }
+          //EPeronja-03/12/2015: 657-Check before trusting the metadata stacked field.
+          if (hasGeoEntry) {
 		        file.setStacked((Boolean) data[STACKED]);
 		        if (Boolean.TRUE.equals(data[STACKED])) {
-		            school.incStacked();
+		          school.incStacked();
 		        }
-            }
+          }
 	        int events = 0;
-            for (int k = CHAN1; k <= CHAN4; k++) {
-                if (data[k] != null) {
-                    events += ((Long) data[k]).intValue();
-                }
+          for (int k = CHAN1; k <= CHAN4; k++) {
+            if (data[k] != null) {
+              events += ((Long) data[k]).intValue();
             }
-            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
-            //school.incEvents(events);
+          }
+          //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
+          //school.incEvents(events);
 
-            int triggers = 0;
-            if (data[TRIGGERS] != null) {
-            	triggers = ((Long) data[TRIGGERS]).intValue();
-            }
+          int triggers = 0;
+          if (data[TRIGGERS] != null) {
+            triggers = ((Long) data[TRIGGERS]).intValue();
+          }
             
-            
-            school.incEvents((int) triggers);
+          school.incEvents((int) triggers);
 
-            school.incDataFiles();
-            month.addFile(file);
+          school.incDataFiles();
+          month.addFile(file);
         }
         srs.setStartDate(startDate);
         srs.setEndDate(endDate);
@@ -486,27 +484,27 @@ public class DataTools {
         	throw new ElabException(ex);
         }
         return hasGeoEntry;
-    }//end of getGeoFileEntry  
+    }//end of getGeoFileEntry
     
     //EPeronja-05/20/2014: Insert Analysis results for statistics
     public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
         Connection conn = null;
-        PreparedStatement psAnalysisResult; 
+        PreparedStatement psAnalysisResult;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             psAnalysisResult = conn.prepareStatement(
             				"INSERT INTO analysis_results (job_id, date_started, date_finished, study_type, study_runmode, rawdata, study_result, research_group) " +
-                    		"VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;"); 
+                    		"VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             try {
                 conn.setAutoCommit(false);
                 
-                psAnalysisResult.setString(1, ar.getId()); 
+                psAnalysisResult.setString(1, ar.getId());
                 Long startmillis = ar.getStartTime().getTime();
                 java.sql.Timestamp startDate = new java.sql.Timestamp(startmillis);
                 psAnalysisResult.setTimestamp(2, startDate);
                 Long endmillis = ar.getStartTime().getTime();
-                java.sql.Timestamp endDate = new java.sql.Timestamp(endmillis);                
+                java.sql.Timestamp endDate = new java.sql.Timestamp(endmillis);
                 psAnalysisResult.setTimestamp(3, endDate);
                 String type = (String) ar.getAttribute("type");
                 if (type == null || type.equals("")) {
@@ -522,15 +520,15 @@ public class DataTools {
                 if (rawdata != null) {
                 	psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
                 } else {
-                	psAnalysisResult.setString(6, "unknown");                	
+                	psAnalysisResult.setString(6, "unknown");
                 }
                 psAnalysisResult.setString(7, String.valueOf(ar.getStatus()));
                 String owner = (String) ar.getAttribute("owner");
                 if (owner == null || owner.equals("")) {
                 	owner = "unknown";
-                }                
+                }
                 psAnalysisResult.setString(8, owner);
-                java.sql.ResultSet rs = psAnalysisResult.executeQuery(); 
+                java.sql.ResultSet rs = psAnalysisResult.executeQuery();
                 conn.commit();
             }
             catch (SQLException e) {
@@ -548,7 +546,7 @@ public class DataTools {
             if (conn != null) {
                 DatabaseConnectionManager.close(conn);
             }
-        }    	
+        }	
     }//end of insertAnalysisResults
     
     //EPeronja-07/25/2013: Poster Tags
@@ -566,9 +564,9 @@ public class DataTools {
 			    	CatalogEntry ce = dcp.getEntry(taggedFiles[x]);
 			    	ce.setTupleValue("postertag","");
 			    	dcp.insert(ce);
-			    }			
-			}	    
-	    	CatalogEntry tag = dcp.getEntry(removeTags[i]);			
+			    }
+			}
+	    	CatalogEntry tag = dcp.getEntry(removeTags[i]);
 			dcp.delete(tag);
     	}
     }//end of removePosterTags
@@ -589,7 +587,7 @@ public class DataTools {
 					e.printStackTrace();
 				}
 			}
-		}		   	
+		}
     }//end of insertTags
     
 	public static ResultSet retrieveTags(Elab elab) throws ElabException {
@@ -598,7 +596,7 @@ public class DataTools {
 		and.add(new Equals("project", elab.getName()));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
-	}    
+	}
 
     //EPeronja-06/21/2013: 222-Allow Admin user to delete data files but check dependencies
     public static int checkFileDependency(Elab elab, String filename) throws ElabException{
@@ -611,10 +609,10 @@ public class DataTools {
 	  		count = rs.size();
 		}
         return count;
-    }	
+    }
 
     public static String[] getFileDependency(Elab elab, String filename) throws ElabException{
-    	String[] plots = null; 
+    	String[] plots = null;
 		In and = new In();
 		and.add(new Equals("type", "plot"));
 		and.add(new Like("source", "%"+filename+"%"));
@@ -623,7 +621,7 @@ public class DataTools {
 	  		plots = rs.getLfnArray();
 		}
         return plots;
-    }	
+    }
   
     //check benchmark dependency
     public static int checkBenchmarkDependency(Elab elab, String filename) throws ElabException{
@@ -636,10 +634,10 @@ public class DataTools {
 	  		count = rs.size();
 		}
         return count;
-    }	
+    }
 
     public static String[] getBenchmarkDependency(Elab elab, String filename) throws ElabException{
-    	String[] blessedFiles = null; 
+    	String[] blessedFiles = null;
 		In and = new In();
 		and.add(new Equals("type", "split"));
 		and.add(new Equals("benchmarkreference", filename));
@@ -648,7 +646,7 @@ public class DataTools {
 			blessedFiles = rs.getLfnArray();
 		}
         return blessedFiles;
-    }    
+    }
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
@@ -657,7 +655,7 @@ public class DataTools {
         PreparedStatement ps = null;
         //check logbook first
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             
             ps = con.prepareStatement(
                     "SELECT count(*) as COUNT " +
@@ -670,8 +668,8 @@ public class DataTools {
             } catch (Exception e) {
                 throw new ElabException("Problem with encoding the name in DataTools.checkPlotDependency().");
             }
-            ps.setString(1, "%"+fileName+"%");            
-            java.sql.ResultSet rs = ps.executeQuery(); 
+            ps.setString(1, "%"+fileName+"%");    
+            java.sql.ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
@@ -681,7 +679,7 @@ public class DataTools {
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
         
         In and = new In();
         and.add(new Like("type","poster"));
@@ -689,9 +687,9 @@ public class DataTools {
         ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
         if (rs.size() > 0) {
             count = count + rs.size();
-        }        
+        }
         return count;
-    }//end of checkPlotDependency()        
+    }//end of checkPlotDependency()
     
     //EPeronja-06/14/2015: get resultset with all states
     public static TreeMap<Integer,ArrayList> getStates(Elab elab) throws ElabException{
@@ -701,13 +699,13 @@ public class DataTools {
     	TreeMap<Integer, ArrayList> states = new TreeMap<Integer, ArrayList>();
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     "SELECT id, name, abbreviation " +
                     "  FROM state " +
                     " ORDER BY type, name;");
 
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
         	if (rs != null) {
         		while (rs.next()) {
            			ArrayList singleState = new ArrayList();
@@ -717,14 +715,14 @@ public class DataTools {
            			states.put(rs.getInt(1), singleState);
         		}
         	}
-            
+
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getStates(): " + e.getMessage());
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
     	return states;
     }//end of getStates
 
@@ -736,18 +734,18 @@ public class DataTools {
         String abbrev = "";
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     "SELECT abbreviation " +
                     "  FROM state " +
                     " WHERE id = ? ;");
             ps.setInt(1, id);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
         	if (rs != null) {
         		while (rs.next()) {
         			abbrev = rs.getString(1);
         		}
-        	}            
+        	}
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getStateAbbrev(): " + e.getMessage());
