@@ -48,7 +48,7 @@
 		File f = new File(fluxJsonFile);
 		if (!f.exists()) {
 			ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
-			Collections.sort(fileArray);
+			//Collections.sort(fileArray);
 		
 			if (fileArray != null) {
 				pfns = new File[fileArray.size()];
@@ -72,7 +72,7 @@
 	}
 
 	ArrayList<String> fileArray = (ArrayList<String>) results.getAttribute("inputfiles");
-	Collections.sort(fileArray);
+	//Collections.sort(fileArray);
 	BlessPlotDisplay bpd = new BlessPlotDisplay();
 	ArrayList<String> fileIcons = new ArrayList<String>();
 	for (int i = 0; i < fileArray.size(); i++) {
