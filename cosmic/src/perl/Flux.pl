@@ -96,7 +96,7 @@ while(<IN>){
 	$firstJd=$row[1] unless defined($firstJd);
     $numBinsToUseInOneDay=(1 + int(1.0/$binwidth)) unless defined ($numBinsToUseInOneDay); 
 	$dayWBinOffset=($numBinsToUseInOneDay*$binwidth) unless defined($dayWBinOffset);
-	@range=($firstRe+$dayNumber*$dayWBinOffset,$firstRe+(1+$dayNumber)*$dayWBinOffset) unless defined(@range);
+	@range=($firstRe+$dayNumber*$dayWBinOffset,$firstRe+(1+$dayNumber)*$dayWBinOffset) unless (@range);
     
 	if(($row[1]-$firstJd+$row[2])<=$range[1] && ($row[1]-$firstJd+$row[2])>=$range[0]) {
 		push @data,( $row[2]+($row[1]-$firstJd)) if($row[2]);    #only add RE times if they are defined in the file (in 3rd column

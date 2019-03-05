@@ -43,7 +43,7 @@ while($line = <IN>){
         last;
     }
 }
-die "Error: Event number $event_num not found in the file $infile.\n" if(!defined(@event));
+die "Error: Event number $event_num not found in the file $infile.\n" if(!(@event));
 $shift_event_num = shift(@event);
 die "Error: Event number found ($shift_event_num) doesn't match event number specified ($event_num).\n" if($shift_event_num != $event_num);
 
