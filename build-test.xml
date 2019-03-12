@@ -1,0 +1,661 @@
+<project name="i2u2">
+
+	<!-- For testing on i2u2-test: -->
+	<!--<property file="build.properties"/>-->
+	<property file="build-test.properties"/>
+	
+	<target name="help">
+		<echo>
+This is the e-Lab build script. The following targets are available:
+
+help:          
+	You are looking at it
+	
+build-cms:
+	Builds the CMS Monte-Carlo/Rundata e-Lab
+			
+build-cms-tb:
+	Builds the CMS Test Beam e-Lab
+	
+build-cms-vdl2:
+	Builds the VDL2 version of the CMS e-Lab
+	
+deploy-cms:
+	Deploys the CMS Monte-Carlo/Rundata e-Lab into the container
+	
+deploy-cms-tb:
+	Deploys the CMS Test Beam e-Lab into the container
+			
+deploy-cms-vdl2:
+	Deploys the VDL2 version of the CMS e-Lab into the container
+	
+build-cosmic:
+	Builds the Cosmic e-Lab
+	
+deploy-cosmic:
+	Deploys the Cosmic e-Lab
+
+build-cosmic-vdl2:
+	Builds the VDL2 version of the Cosmic e-Lab
+	
+deploy-cosmic-vdl2:
+	Deploys the VDL2 version of the Cosmic e-Lab
+			
+deploy-cosmic-analysis-perl:
+	Deploys the perl analysis code for cosmic
+			
+build-cosmic-analysis:
+	Builds the java analysis code for cosmic
+	
+build-all:
+	Builds all of them
+	
+deploy-all:
+	Deploys all e-Labs into the container
+	
+clean:
+	Cleans previous builds
+	
+undeploy:
+	Undeploys the e-Labs from the container (removes all files in
+	the elab webapp)
+	
+distclean:
+	Removes all .jar, .class, and jsp/html files from the webapp
+	directory
+	
+deploy-all-clean:
+	Makes a clean deployment of all e-Labs (distclean followed by 
+	deploy-all)
+	
+		</echo>
+	</target>
+	
+	<path id="cp-common">
+		<fileset dir="common/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${container.home}/${container.libs}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement location="common/build"/>
+		<pathelement location="common/resources/classes"/>
+	</path>
+	
+	<path id="cp-cms">
+		<fileset dir="cms">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="cp-cms-tb">
+		<fileset dir="cms-tb">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="cp-ligo">
+		<fileset dir="ligo">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="cp-cms-vdl2">
+		<fileset dir="cms-vdl2">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="cp-cosmic">
+		<fileset dir="cosmic">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+		<pathelement location="cp-cosmic/build"/>
+	</path>
+	
+	<path id="cp-cosmic-vdl2">
+		<fileset dir="cosmic-vdl2">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+		target: common                      
+		- - - - - - - - - - - - - - - - - -->
+	<target name="build-common">
+		<mkdir dir="common/build"/>
+		<delete quiet="true">
+			<fileset dir="common/build"
+				includes="**/*.class"/>
+		</delete>
+		<javac srcdir="common/src/java" destdir="common/build" debug="true">
+			<classpath refid="cp-common"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		<!-- the properties file -->
+		<copy todir="common/build">
+			<fileset dir="common" includes="elab.properties"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="javadoc-common">
+		<mkdir dir="${javadoc.dir}/common"/>
+		<javadoc destdir="${javadoc.dir}/common">
+			<fileset dir="common/src/java"/>
+		</javadoc>
+		<mkdir dir="${tlddoc.dir}/common"/>
+		<mkdir dir=".tldbuild/WEB-INF/tags"/>
+		<copy todir=".tldbuild/WEB-INF">
+			<fileset dir="common/resources" includes="elab.tld"/>
+		</copy>
+		<copy todir=".tldbuild/WEB-INF/tags">
+			<fileset dir="common/resources/tags" includes="*.*"/>
+		</copy>
+		<java fork="true" classname="com.sun.tlddoc.TLDDoc"
+			failonerror="true">
+			<arg line="-d ${tlddoc.dir}/common"/>
+			<arg value=".tldbuild/WEB-INF/elab.tld"/>
+			<classpath>
+				<pathelement location="tools/tlddoc.jar"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="clean-classes">
+		<delete quiet="true">
+			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/classes"
+				includes="**/*.class"/>
+		</delete>
+	</target>
+	
+	<target name="clean-jars">
+		<delete quiet="true">
+			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/lib"
+				includes="**/*.jar"/>
+		</delete>
+	</target>
+	
+	<target name="clean-web">
+		<delete quiet="true">
+			<fileset dir="${container.home}/${webapps}/elab"
+				includes="**/*.jsp, **/*.jspf, **/*.html, **/*.htm"/>
+		</delete>
+	</target>
+		
+	<target name="do-deploy-common" depends="build-common, clean-jars">
+		<mkdir dir="${container.home}/${webapps}/elab"/>
+		<mkdir dir="${container.home}/${webapps}/elab/capture" />
+		<mkdir dir="${container.home}/${webapps}/elab/capture/img" />
+		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
+		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>
+		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/lib"/>
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+		
+		<copy todir="${container.home}/${webapps}/elab/capture">
+			<fileset dir="capture" includes="*" />
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/lib">
+			<fileset dir="common/lib" includes="**/*.jar"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="common/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="common/build" includes="**/*.*" excludes="elab.properties"/>
+		</copy>
+		<concat destfile="${container.home}/${webapps}/elab/WEB-INF/elab.properties" force="no">
+			<fileset dir="common/build" includes="elab.properties*"/>
+		</concat>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}">
+			<fileset dir="common/src/jsp" includes="**/*.*"/>
+		</copy>
+	</target>
+
+	<!-- ================================= 
+		target: build-cms              
+		================================= -->
+	<target name="build-cms" depends="build-common" description="--> builds CMS">
+		<mkdir dir="cms/build"/>
+		<javac srcdir="cms/src/java" destdir="cms/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-cms"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		<!-- The copying to common has to do with timestamps          -->
+		<!-- From looking at Ant, this seems like the way to achieve: -->
+		<!--   - updating of the deployed prop file IFF any of the    -->
+		<!--     common or elab properties are newer                  -->
+		<!--   - not ending up with the same property repeated        -->
+		<!--     multiple times in the deployed file                  -->
+		
+		<copy todir="common/build">
+			<fileset dir="cms" includes="elab.properties.cms"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="deploy-cms">
+		<antcall target="do-deploy-cms">
+			<param name="elab.name" value="cms"/>
+		</antcall>
+	</target>
+	
+	
+	<target name="do-deploy-cms" depends="build-cms, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="${elab.name}/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
+	</target>
+	
+	<!-- ================================= 
+		target: build-cms-tb              
+		================================= -->
+	<target name="build-cms-tb" depends="build-common" description="--> builds CMS">
+		<mkdir dir="cms-tb/build"/>
+		<javac srcdir="cms-tb/src/java" destdir="cms-tb/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-cms-tb"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		<!-- The copying to common has to do with timestamps          -->
+		<!-- From looking at Ant, this seems like the way to achieve: -->
+		<!--   - updating of the deployed prop file IFF any of the    -->
+		<!--     common or elab properties are newer                  -->
+		<!--   - not ending up with the same property repeated        -->
+		<!--     multiple times in the deployed file                  -->
+		
+		<copy todir="common/build">
+			<fileset dir="cms-tb" includes="elab.properties.cms-tb"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="deploy-cms-tb">
+		<antcall target="do-deploy-cms-tb">
+			<param name="elab.name" value="cms-tb"/>
+		</antcall>
+	</target>
+		
+	<target name="do-deploy-cms-tb" depends="build-cms-tb, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="${elab.name}/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
+	</target>
+
+	<!-- ================================= 
+		target: build-cms-vdl2
+		================================= -->
+	<target name="build-cms-vdl2" depends="build-common, build-cms" description="--> builds CMS">
+		<mkdir dir="cms-vdl2/build"/>
+        <javac srcdir="cms-vdl2/src/java" destdir="cms-vdl2/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-cms"/>
+			<classpath refid="cp-cms-vdl2"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		
+		<copy todir="common/build">
+			<fileset dir="cms-vdl2" includes="elab.properties.cms-vdl2"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="deploy-cms-vdl2">
+		<antcall target="do-deploy-cms-vdl2">
+			<param name="elab.name" value="cms"/>
+		</antcall>
+	</target>
+	
+	<target name="do-deploy-cms-vdl2" depends="build-cms-vdl2, do-deploy-cms">
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="cms-vdl2" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="cms-vdl2/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="cms-vdl2/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes" overwrite="true">
+			<fileset dir="cms-vdl2/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="cms-vdl2/src/jsp" includes="**/*.*"/>
+		</copy>
+	</target>
+
+
+	<!-- ================================= 
+		target: build-cosmic              
+		================================= -->
+	<target name="clean-cosmic-classes">
+		<delete quiet="true">
+			<fileset dir="cosmic/build"
+				includes="**/*.class"/>
+		</delete>
+	</target>
+		
+	<target name="build-cosmic" depends="build-common" description="--> builds COSMIC">
+		<mkdir dir="cosmic/build"/>
+        <javac srcdir="cosmic/src/java" destdir="cosmic/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-cosmic"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		
+		<copy todir="common/build">
+			<fileset dir="cosmic" includes="elab.properties.cosmic"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="javadoc-cosmic" depends="javadoc-common">
+		<mkdir dir="${javadoc.dir}/cosmic"/>
+		<javadoc destdir="${javadoc.dir}/cosmic">
+			<fileset dir="cosmic/src/java"/>
+		</javadoc>
+	</target>
+	
+	<target name="deploy-cosmic">
+		<antcall target="do-deploy-cosmic">
+			<param name="elab.name" value="cosmic"/>
+		</antcall>
+	</target>
+	
+	<target name="do-deploy-cosmic" depends="build-cosmic, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="cosmic" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="cosmic/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="cosmic/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="cosmic/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
+		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
+	</target>
+
+	<!-- ================================= 
+		target: build-embedded
+		================================= -->
+		
+	<target name="build-embedded" depends="build-common">		
+		<copy todir="common/build">
+			<fileset dir="embedded" includes="elab.properties.embedded"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+		
+	<target name="deploy-embedded">
+		<antcall target="do-deploy-embedded">
+			<param name="elab.name" value="embedded"/>
+		</antcall>
+	</target>
+	
+	<target name="do-deploy-embedded" depends="build-embedded, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<mkdir dir="embedded/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="embedded/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="embedded/src/jsp" includes="**/*.*"/>
+		</copy>
+		<delete dir="${container.home}/${webapps}/elab/embedded/jsp"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/posters"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/plots"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/references"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/teacher"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/test"/>
+	</target>
+
+
+	<!-- ================================= 
+		target: build-ligo              
+		================================= -->
+	<target name="build-ligo" depends="build-common" description="--> builds LIGO">
+		<mkdir dir="ligo/build"/>
+		<javac srcdir="ligo/src/java" destdir="ligo/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-ligo"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		<!-- The copying to common has to do with timestamps          -->
+		<!-- From looking at Ant, this seems like the way to achieve: -->
+		<!--   - updating of the deployed prop file IFF any of the    -->
+		<!--     common or elab properties are newer                  -->
+		<!--   - not ending up with the same property repeated        -->
+		<!--     multiple times in the deployed file                  -->
+		
+		<copy todir="common/build">
+			<fileset dir="ligo" includes="elab.properties.ligo"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="deploy-ligo">
+		<antcall target="do-deploy-ligo">
+			<param name="elab.name" value="ligo"/>
+		</antcall>
+	</target>
+	
+	<target name="do-deploy-ligo" depends="build-ligo, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="${elab.name}/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
+	</target>
+	
+	<!-- ================================= 
+		target: deploy-elab
+		================================= -->
+	
+	<target name="deploy-i2u2">
+		<copy toDir="${container.home}/${webapps}/ROOT">
+			<fileset dir="i2u2" includes="*.*"/> 
+		</copy>
+		<copy toDir="${container.home}/${webapps}">
+			<fileset dir="i2u2" excludes="*.*"/> 
+		</copy>
+	</target>
+
+	<!-- ================================= 
+		target: deploy-all
+		================================= -->
+
+	<target name="deploy-all" depends="deploy-cosmic, deploy-cms, deploy-cms-tb, deploy-ligo, deploy-embedded, deploy-i2u2">
+	</target>
+	
+	<!-- ================================= 
+		target: clean              
+		================================= -->
+	<target name="clean" description="--> description">
+        <delete dir="build"/>
+	</target>
+	
+	<target name="undeploy">
+		<delete dir="${container.home}/${webapps}/elab"/>
+	</target>
+	
+	<target name="distclean" depends="clean-jars, clean-classes, clean-web">
+	</target>
+	
+	<target name="deploy-all-clean" depends="distclean, deploy-all">
+	</target>
+	
+	<target name="gen-parser">
+		<java fork="true" jar="common/lib/grammatica-20100112.jar">
+			<arg value="common/src/grammar/i2u2exp.grammar"/>
+			<arg value="--javaoutput"/><arg value="common/src/java"/>
+			<arg value="--javapackage"/><arg value="gov.fnal.elab.expression.evaluator.parser"/>
+			<arg value="--javapublic"/>
+		</java>
+	</target>
+</project>
