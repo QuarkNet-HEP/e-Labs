@@ -1,8 +1,8 @@
 <project name="i2u2">
 
 	<!-- For testing on i2u2-test: -->
-	<!--<property file="build.properties"/>-->
-	<property file="build-test.properties"/>
+	<property file="build.properties"/>
+	<!--<property file="build-test.properties"/>-->
 	
 	<target name="help">
 		<echo>
