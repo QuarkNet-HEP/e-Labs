@@ -16,7 +16,9 @@ function db_init_aux() {
     if ($host == null) {
         $host = "localhost";
     }
-    $retval = @mysql_pconnect($host, $user, $pass);
+		// mysql_pconnect removed in PHP 7.0 - JG 27Jun2019
+		//$retval = @mysql_pconnect($host, $user, $pass);
+		$retval = @mysqli_connect($host, $user, $pass);
     if (!$retval) {
         return 1;
     }
