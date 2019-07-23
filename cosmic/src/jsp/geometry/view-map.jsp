@@ -59,7 +59,7 @@
     <link rel="stylesheet" type="text/css" href="../css/geo.css"/>
     <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
     <script type="text/javascript" src="../include/elab.js"></script>
-    <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>   
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
     <style>
         #map_wrapper {
             height: 600px;
@@ -76,7 +76,7 @@
         $(document).ready(function() {
             // Asynchronously Load the map API 
             var script = document.createElement('script');
-            script.src = "https://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAVf4myirajaV-MiYHSGewHgxxF6zok07w&sensor=false&callback=initialize";
             document.body.appendChild(script);  
         }); 
  
