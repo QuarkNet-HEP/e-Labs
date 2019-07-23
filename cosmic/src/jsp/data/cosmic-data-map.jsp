@@ -80,7 +80,7 @@
     <script type="text/javascript" src="../include/elab.js"></script>
     <script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
     <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>-->
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLzaP-ovuMxiqiuMsPKTBQLSpDdFPR4uc" type="text/javascript"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVf4myirajaV-MiYHSGewHgxxF6zok07w" type="text/javascript"></script>
     <script type="text/javascript" src="../include/oms/oms.min.js"></script>
     <script type="text/javascript" src="cosmic-data-map.js"></script>
     <style>
