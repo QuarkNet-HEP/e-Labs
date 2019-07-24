@@ -96,7 +96,11 @@ public class Downloader extends HttpServlet {
                 	if (type.equals("file")) {
                     	pfn = elab.getProperties().getDataDir() + File.separator + filename;                		
                 	} else {
-                		pfn = user.getDir(type) + File.separator + filename;
+                        if (type.equals("gps")) {
+                        	pfn = elab.getProperties().getDataDir() + File.separator + "gps" + File.separator + filename;
+                        } else {
+                        	pfn = user.getDir(type) + File.separator + filename;
+                        }
                 	}
                 }
             }
