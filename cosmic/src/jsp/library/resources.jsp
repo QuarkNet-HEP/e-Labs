@@ -150,6 +150,9 @@
 							<li>
 								"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
 							</li>
+							<li>
+								<a href="../data/gps.jsp">Step-by-Step Instructions</a> to fix the incorrect date produced by GPS hardware.
+							</li>
 						</ul>					
 					</div>
 				</div>		
