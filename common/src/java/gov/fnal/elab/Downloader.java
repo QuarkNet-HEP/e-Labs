@@ -25,9 +25,15 @@ public class Downloader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-						/* Updated to prevent directory traversal attack by 
-						 *   verifying GET parameter "elab"/elabName - JG 23March2018 */
-						/* Typically, elab.jsp will set an Elab object as a Request
+						/* The original code got elabName via GET parameter "elab", 
+						 * which allowed a directory traversal attack.
+						 * A better method is to use the request's Elab object, if available.
+						 * Keeping the original for backup/legacy, but it would be ideal if 
+						 * passing by GET could be avoided entirely.
+						 * This is also when and why I added "elab.namelist" to 
+						 * elab.properties - JG 23Mar2018
+						 */
+						/* Typically, elab.jsp will set an Elab object as a Request 
 						 *   Attribute "elab" */
 						String elabName;
 						List<String> allowedNames = Arrays.asList("cms", "cosmic", "ligo");
@@ -49,7 +55,7 @@ public class Downloader extends HttpServlet {
 						if ( !(allowedNames.contains(elabName)) ) {
 								throw new ElabJspException("Invalid e-Lab name provided");
 						}
-
+						
             ElabGroup user = ElabGroup.getUser(req.getSession());
 
             if (user == null) {
@@ -67,6 +73,8 @@ public class Downloader extends HttpServlet {
                 }
             }
 
+						/* More GET parameters, but these don't allow for directory
+						 *   traversal attacks the way "elab" did - JG 2018 */ 
             String filename = req.getParameter("filename");
             if (filename == null) {
                 throw new ElabJspException("Missing file name");
@@ -88,7 +96,11 @@ public class Downloader extends HttpServlet {
                 	if (type.equals("file")) {
                     	pfn = elab.getProperties().getDataDir() + File.separator + filename;                		
                 	} else {
-                		pfn = user.getDir(type) + File.separator + filename;
+                        if (type.equals("gps")) {
+                        	pfn = elab.getProperties().getDataDir() + File.separator + "gps" + File.separator + filename;
+                        } else {
+                        	pfn = user.getDir(type) + File.separator + filename;
+                        }
                 	}
                 }
             }
