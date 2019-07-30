@@ -143,9 +143,6 @@
 						<li>
 							<a href="http://quarknet.i2u2.org/page/equip-raspberry-pi">EQUIP on Raspberry Pi </a>
 						</li>
-						<li>
-							<a href="../data/gps.jsp">Step-by-Step Instructions</a> to fix the incorrect date produced by GPS hardware.
-						</li>
 					</ul>					
 				</div>
 			</div>		
