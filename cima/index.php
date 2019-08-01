@@ -10,4 +10,3 @@ include 'templates/front.tpl';
 include 'templates/floor.tpl';
 
 ?>
-
