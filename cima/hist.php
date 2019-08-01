@@ -14,6 +14,7 @@ echo '<script src="js/MakeCharts.js"> </script>';
 
 /* $_SESSION["comb"] is set in Classes.php */
 if(!isset($_SESSION["comb"])){
+	/* If no database is set, redirect to index.php (where databases are selected) */
 	if(!isset($_SESSION["database"])){
 		header("Location: index.php");
 	}
@@ -23,6 +24,7 @@ if(!isset($_SESSION["comb"])){
 	$datax=GetHistDataForTable($_SESSION["database"]);
 	$_SESSION["currentHist"]=$datax;
 }else{
+	/* If "comb" is set: */
 	$basescript="hist.php";
 	if(isset($_SESSION["tables"])){
 		if(isset($_GET["i"])){
@@ -32,7 +34,6 @@ if(!isset($_SESSION["comb"])){
 		}
 		include 'templates/Resnav.tpl';
 		include 'templates/histBackend.tpl';
-
 
 		foreach($tables as $t){
 			$table=GetTableByID($t);
@@ -48,13 +49,15 @@ if(!isset($_SESSION["comb"])){
 			}
 		}
 		$datax["data"]=implode(";",$data);
+
 	}else{
-	header("Location: Classes.php");
+		/* If "tables" is not set, redirect to Classes.php */
+		header("Location: Classes.php");
 	}
 }
 
 
-
+/* MakeHist() is defined in js/MakeCharts.js */
 echo '<script> MakeHist("'.$datax["data"].'"); </script>';
 include 'templates/floor.tpl';
 ?>
