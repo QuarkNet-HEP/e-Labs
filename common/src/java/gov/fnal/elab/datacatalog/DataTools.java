@@ -452,34 +452,34 @@ public class DataTools {
     public static boolean getGeoFileEntry(String filename) throws ElabException {
     	boolean hasGeoEntry = false;
     	Elab elab = Elab.getElab(null, "cosmic");
-		VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-		String julianDate = e.getTupleValue("julianstartdate").toString();
-		Integer detectorid = Integer.valueOf(e.getTupleValue("detectorid").toString());
+		  VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+		  String julianDate = e.getTupleValue("julianstartdate").toString();
+		  Integer detectorid = Integer.valueOf(e.getTupleValue("detectorid").toString());
 
-		String geoFile = elab.getProperties().getDataDir() + java.io.File.separator + String.valueOf(detectorid)+ java.io.File.separator + String.valueOf(detectorid)+".geo";
-        Pattern p1 = Pattern.compile("^[0-9]{7}(\\.[0-9]*)*$");
-        try {
-	        LineNumberReader in = new LineNumberReader(new FileReader(geoFile));
-	        String s = "";
-	        ArrayList jd = new ArrayList();
-	        while ((s = in.readLine()) != null) {
-	        	if (s != null) {
-	        		Matcher m1 = p1.matcher(s);
-	                if (m1.matches()) {
-	                	jd.add(s);
-	                }
+		  String geoFile = elab.getProperties().getDataDir() + java.io.File.separator + String.valueOf(detectorid)+ java.io.File.separator + String.valueOf(detectorid)+".geo";
+      Pattern p1 = Pattern.compile("^[0-9]{7}(\\.[0-9]*)*$");
+      try {
+	      LineNumberReader in = new LineNumberReader(new FileReader(geoFile));
+	      String s = "";
+	      ArrayList jd = new ArrayList();
+	      while ((s = in.readLine()) != null) {
+	      	if (s != null) {
+	      		Matcher m1 = p1.matcher(s);
+	          if (m1.matches()) {
+	           	jd.add(s);
+	          }
+	         }
+	      }
+	      if (jd.size() > 0) {
+	       	Double filejd = Double.valueOf(julianDate);
+	        for (int i = 0; i < jd.size(); i++) {
+	        	Double jditem = Double.valueOf(jd.get(i).toString());
+	        	if (jditem < filejd) {
+	        		hasGeoEntry = true;
 	        	}
 	        }
-	        if (jd.size() > 0) {
-	        	Double filejd = Double.valueOf(julianDate);
-	        	for (int i = 0; i < jd.size(); i++) {
-	        		Double jditem = Double.valueOf(jd.get(i).toString());
-	        		if (jditem < filejd) {
-	        			hasGeoEntry = true;
-	        		}
-	        	}
-	        }
-	        in.close();
+	      }
+	      in.close();
         } catch (Exception ex) {
         	throw new ElabException(ex);
         }
