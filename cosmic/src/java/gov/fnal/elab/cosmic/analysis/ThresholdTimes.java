@@ -99,14 +99,14 @@ public class ThresholdTimes {
 		        nextJd = 0;
 		        firstRE = -1.0;
 		        
-				String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
-				String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
-	    		//check if the .thresh exists, if so, do not overwrite it
-	    		//File tf = new File(outputFile);
-	    		//if (tf.exists()) {
-	    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-	    		//	continue;
-	    		//}
+						String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
+						String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
+						//check if the .thresh exists, if so, do not overwrite it
+						//File tf = new File(outputFile);
+						//if (tf.exists()) {
+						//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+						//	continue;
+						//}
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 		
@@ -118,7 +118,7 @@ public class ThresholdTimes {
 		        currentDetector = Integer.parseInt(detectorIDs[i]);
 		        firmware = firmwares[i];
 		        if (cpldFrequency == 0) {
-		        	if (currentDetector < detectorSeriesChange) {
+								if (currentDetector < detectorSeriesChange) {
 		        		cpldFrequency = 41666667;
 		        	} else {
 		        		cpldFrequency = 25000000;
@@ -151,50 +151,60 @@ public class ThresholdTimes {
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
     	double edgetimeSeconds = 0;
     	long exp = Double.valueOf("1.0E+11").longValue();   	
-        int indexRE = channel * 2 + 1;
-        int indexFE = indexRE + 1;
+			int indexRE = channel * 2 + 1;
+			int indexFE = indexRE + 1;
 
-        int type = Integer.parseInt(parts[1], 16);
-        if ((type & 0x80) != 0) {
-            retime[channel] = 0;
-            retimeINT[channel] = 0;            
-        }
+			/* 'parts' is the array breakdown of the 16-word raw data line
+				 'parts[1]' is RE0, which includes the trigger tag in the 8th bit */
+			int type = Integer.parseInt(parts[1], 16);
+			// '&' is bitwise AND: (type & 0x80) != 0 iff 'type' has a '1' in the 8th bit
+			if ((type & 0x80) != 0) {
+					// Zero the times if there's a trigger tag
+					retime[channel] = 0;
+					retimeINT[channel] = 0;
+			}
 
-        int decFE = Integer.parseInt(parts[indexFE], 16);
-        int decRE = Integer.parseInt(parts[indexRE], 16);
+			/* These are the hexadecimal-format falling and rising edge times of
+				 the given channel.  Why 'dec' instead of 'hex'? */
+			int decFE = Integer.parseInt(parts[indexFE], 16);
+			int decRE = Integer.parseInt(parts[indexRE], 16);
 
-        if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+			/* This block is executed if the line is non-trigger AND a valid edge
+				 bit exists for the given channel */
+			/* Can it happen that a line has no trigger bit, yet has a retime=0 for 
+				 a channel? */
+			if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
         	edgetimeSeconds = calctime(channel, decFE, parts);
         	fetime[channel] = edgetimeSeconds/86400;
         	fetimeINT[channel] = edgetimeSeconds * exp;
         	
-            if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
+					if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
             	printData(channel, parts, detector, bw);
-                clearChannelState(channel);
-            }
-
-            if (isEdge(decRE)) {
+							clearChannelState(channel);
+					}
+					
+					if (isEdge(decRE)) {
             	edgetimeSeconds = calctime(channel, decRE, parts);
-                retime[channel] = edgetimeSeconds/86400;
-                retimeINT[channel] = edgetimeSeconds * exp;
-            }
-        }
-        else if (isEdge(decRE)) {
+							retime[channel] = edgetimeSeconds/86400;
+							retimeINT[channel] = edgetimeSeconds * exp;
+					}
+			}
+			else if (isEdge(decRE)) {
         	edgetimeSeconds = calctime(channel, decRE, parts);
-            retime[channel] = edgetimeSeconds/86400;
-            retimeINT[channel] = edgetimeSeconds * exp;
-            if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+					retime[channel] = edgetimeSeconds/86400;
+					retimeINT[channel] = edgetimeSeconds * exp;
+					if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
             	edgetimeSeconds = calctime(channel, decFE, parts);
-                fetime[channel] = edgetimeSeconds/86400;
-                fetimeINT[channel] = edgetimeSeconds * exp;
-            }
-            if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
-                printData(channel, parts, detector, bw);
-                clearChannelState(channel);
-            }
-        }
+							fetime[channel] = edgetimeSeconds/86400;
+							fetimeINT[channel] = edgetimeSeconds * exp;
+					}
+					if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
+							printData(channel, parts, detector, bw);
+							clearChannelState(channel);
+					}
+			}
     }
-
+		
     /**
      * Clear channel state for a given channel. 
      * 
@@ -211,7 +221,14 @@ public class ThresholdTimes {
         reTMC[channel] = 0;
     }
 
-    private boolean isEdge(int v) {
+		/**
+		 * Check a RE/FE data word for the "valid edge" bit.
+		 *
+		 * @param v 8-bit hexadecimal integer to check.
+		 */
+		private boolean isEdge(int v) {
+				/* '&' is bitwise AND: (v & 0x20) != 0 iff 'v' has a '1' in the 6th bit,
+					 defined to indicate a valid rising/falling edge */
         return ((v & 0x20) != 0);
     }
 
@@ -264,6 +281,7 @@ public class ThresholdTimes {
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
 
+				// The thresh file itself is written here:
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];        	
             wr.write(id);
@@ -284,39 +302,92 @@ public class ThresholdTimes {
     }
 
     private double calctime(int channel, int edge, String[] parts) {
-        int tmc = edge & 0x1f;
+				/* 'tmc' is the hex value of the 1st 5 bits of 'edge', representing 
+					 the TMC clock reading */
+				int tmc = edge & 0x1f;
 
-        if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
-            rePPSTime[channel] = lastRePPSTime;
+				/* What sets '(lastR|r)ePPS(Time|Count)' the first time they are
+					 encountered in this conditional block? */
+				/* rePPSTime[] and rePPSCount[] are zeroed by clearChannelState().
+					 lastRePPSTime and lastRePPSCount are zeroed by createThresholdFiles().
+					 Otherwise, all four values are determined by only the following 
+					 block. */
+				if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
+						/* 'lastRePPS*' do not exist outside the current block and are 
+							 used to store values between executions of calctime() */
+						rePPSTime[channel] = lastRePPSTime;
             rePPSCount[channel] = lastRePPSCount;
 
+						/* parts[10] is the last GPS update in UTC time
+							 parts[15] is the time delay between that and the 1PPS
+							 This is String concatenation, not math! */
             String currSecString = parts[10] + parts[15];
-        	if (currentDetector >= detectorSeriesChange) {
-        		currSecString = parts[10];
-        	}    
+						/// Ex: currSecString = "202133.242-0389"
+						/* Most DAQs now are 6000-series.
+							 To (negligibly) optimize we would invert this check */
+						if (currentDetector >= detectorSeriesChange) {
+								// For 6000-series DAQs we drop the time delay from currSecString
+								currSecString = parts[10];
+								/// Ex: currSecString = "202133.242"
+						}
+
+						/* 'lastSecString' is initialized to "" by createThresholdFiles().
+							 Otherwise, its value is determined by only the following 
+							 block. */
             if (!currSecString.equals(lastSecString)) {
-            	//for bug 459
-            	if (currentDetector >= detectorSeriesChange) {
-            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
-            	} else {
-            		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
-            	}
-            	
+								//for bug 459
+								/* Set 'rePPSTime' to the integer number of seconds since the 
+									 most recent UTC 12:00:00 associated with the matching 
+									 1PPS signal: */
+								if (currentDetector >= detectorSeriesChange) {
+										// For 6000-series DAQs,
+										rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
+								} else {
+										// For 5000-series and proto DAQs,
+										rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);
+								}
+
+								// parts[9] is the CPLD count of the last 1PPS as a 32-bit hex
                 rePPSCount[channel] = Long.parseLong(parts[9], 16);
-                lastRePPSTime = rePPSTime[channel];
+								/* Neither 'rePPSCount' nor 'rePPSTime' are directly related 
+									 to a rising edge PMT signal.  I don't know what the 're'
+									 prefix represents here. */
+
+								lastRePPSTime = rePPSTime[channel];
                 lastRePPSCount = rePPSCount[channel];
 
-                lastSecString = currSecString;               
+                lastSecString = currSecString;
             }
 
+						/* 'reTMC[]' and 'reDiff[]' are used only to calculate 'offset' 
+							 in printData() */
             reTMC[channel] = tmc;
+						/* 'parts[0]' is the CPLD count of the trigger as a 32-bit hex.
+							 'rePPSCount' is the CPLD count of the last 1PPS as a 32-bit hex.
+							 'reDiff' represents the number of CPLD ticks between the 1PPS 
+							 signal and the trigger. */
             reDiff[channel] = Long.parseLong(parts[0], 16) - rePPSCount[channel];
         }
 
+				/* The block immediately above can affect 'rePPSCount'.  Under what
+					 conditions does that make 'reDiff' different from 'diff'? */
         long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 
+				/* 'aaaaaaaa' is 2863311530 CPLD ticks, or 
+					     ~114.5s @ 40ns/25MHz      (6000 series)
+							  ~63.7s @ 24ns/41.666MHz  (5000 series)
+					 Why this number?
+					 The condition is true if the trigger occurs more than 114.5s 
+					 *before* the milestone 1PPS signal being used.  How is this even
+					 possible?  How do the other 113 1PPS signals get missed? */
+				/* This must have something to do with the CPLD rolling over, but 
+					 I can't figure out what.  A comment or two would do wonders here. */
         if (diff < -0xaaaaaaaal) {
             diff += 0xffffffffl;
+						/* 'ffffffff' is 4294967295 CPLD ticks, or
+							     ~171.8s @ 40ns/25MHz      (6000 series)
+									 ~103.1s @ 24ns/41.666MHz  (5000 series)
+						*/
             //Bug 469: if the difference is negative, the number needs to be corrected
             //		   but it was not stored for later use, now fixed by this:
             reDiff[channel] = diff;
@@ -325,7 +396,8 @@ public class ThresholdTimes {
         //As per Mark Adams' feedback, we should run the following check for firmware less than 1.12
         //and DAQ 6000 series and add a second if the diff/cpld is less than 0.07
         double diffOverCpld = diff / cpldFrequency;
-        
+
+				// Can use 'detectorSeriesChange' to avoid hard-coding 5999
         if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
         	if (diffOverCpld < 0.07) {
         		diffOverCpld = (diff / cpldFrequency) + 1.0;
@@ -341,7 +413,22 @@ public class ThresholdTimes {
         return edgetime;
     }
 
-    private static long currentPPSSeconds(String num, String offset) {
+		/**
+		 * Finds the nearest whole UTC second given a GPS data time and its offset 
+		 * and returns is as the integer number of seconds since the most recent 
+		 * UTC 12:00:00.  This integer second is taken to be that of the 
+		 * associated 1PPS signal.
+		 *
+		 * @param num String representing the UTC time of a GPS data signal.
+		 * @param offset String representing the millisecond correction to 'num'
+		 */
+		private static long currentPPSSeconds(String num, String offset) {
+				/* For UTC hour '20', this gives 'hour' = 8.
+					 For UTC hour '08', this gives 'hour' = 20.
+					 If we don't care about the date, this is shifting the timescale
+					 by 12 hours; i.e. noon -> midnight.
+					 If we do care about the date, this is flip-flopping AM to PM.
+					 I can't imagine a reason ever to do that. */
         int hour = (Integer.parseInt(num.substring(0, 2)) + 12) % 24;
         int min = Integer.parseInt(num.substring(2, 4));
         double sec = Double.parseDouble(num.substring(4));
@@ -350,9 +437,12 @@ public class ThresholdTimes {
             sign = -1;
         }
 
+				// The UTC seconds value plus offset, rounded to the nearest integer
         long secoffset = Math.round(sec + sign * Integer.parseInt(offset.substring(1)) / 1000.0);
-        
-        long daySeconds = hour * 3600 + min * 60 + secoffset; 
+
+				/* Integer number of whole seconds that have elapsed since the
+					 last UTC 12:00:00 */
+        long daySeconds = hour * 3600 + min * 60 + secoffset;
         
         return daySeconds;
     }

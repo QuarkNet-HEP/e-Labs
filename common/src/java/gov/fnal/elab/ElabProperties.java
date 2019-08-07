@@ -27,7 +27,7 @@ public class ElabProperties extends AbstractProperties {
     public static final String PROP_RUN_DIR = "run.dir";
     public static final String PROP_USER_DIR = "users.dir";
     public static final String PROP_DATA_DIR = "data.dir";
-    
+
     public static final String PROP_NEW_COSMIC_SURVEY = "cosmic.newsurvey";
     public static final String PROP_LIGO_SURVEY = "ligo.newsurvey";
     public static final String PROP_CMS_SURVEY = "cms.newsurvey";
@@ -36,7 +36,8 @@ public class ElabProperties extends AbstractProperties {
     private String elabName;
 
     public ElabProperties(String elabName) {
-        super(elabName + " elab");
+				/* AbstractProperties ctor only sets `this.name` */
+				super(elabName + " elab");
         this.elabName = elabName;
         put("provider.notifications", DatabaseNotificationsProvider.class.getName());
     }
@@ -47,7 +48,7 @@ public class ElabProperties extends AbstractProperties {
     public String getFormalName() {
         return getProperty(ElabProperties.PROP_ELAB_FORMAL_NAME, elabName);
     }
-    
+
     public String getWebapp() {
         return getRequired(ElabProperties.PROP_WEBAPP);
     }
@@ -115,15 +116,15 @@ public class ElabProperties extends AbstractProperties {
     public String getUsersDir() {
         return getRequired(ElabProperties.PROP_USER_DIR);
     }
-    
+
     /**
-     * Returns the configuration-defined survey IDs from the database. 
+     * Returns the configuration-defined survey IDs from the database.
      */
-    
+
     public String getCosmicSurveyId() {
     	return getRequired(ElabProperties.PROP_NEW_COSMIC_SURVEY);
     }
-    
+
     public String getLigoSurveyId() {
     	return getRequired(ElabProperties.PROP_LIGO_SURVEY);
     }
