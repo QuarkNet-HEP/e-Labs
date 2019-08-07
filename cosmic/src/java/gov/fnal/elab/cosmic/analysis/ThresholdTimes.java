@@ -250,7 +250,12 @@ public class ThresholdTimes {
                     if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
                 		jd = currLineJD(offset, parts) + 1;
                     } else {                    	
-                        jd = currLineJD(offset, parts);           		            	
+                        jd = currLineJD(offset, parts);
+                        //this is to prevent rolling over too soon
+                        tempdiff = jd+retime[channel] - lastjdplustime;
+                        if (lastjdplustime > 0 && tempdiff >= 1.0) {
+                        	jd = jd-1;
+                        }
                     }
             	} 
             } else {

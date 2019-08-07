@@ -108,7 +108,7 @@ public class ThresholdTimesProcessDebug {
 
 		    		BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
-			        BufferedWriter report = new BufferedWriter(new FileWriter("/Users/eperonja/ep_home/ep_threshold_debug/threshcreation.txt"));
+			        BufferedWriter report = new BufferedWriter(new FileWriter("/Users/eperonja/ep_home/ep_threshold/threshcreation.txt"));
 			        			        
 			        bw.write("#$md5\n");
 			        bw.write("#md5_hex(0)\n");
@@ -125,7 +125,7 @@ public class ThresholdTimesProcessDebug {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
-	        		//cpldFrequency = 25000000;
+	        		cpldFrequency = 25000000;
 			        String line = br.readLine();
 			        
 			        boolean printoneexception = true;
@@ -296,6 +296,9 @@ public class ThresholdTimesProcessDebug {
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             //Bug 469: the rollover of the julian day and the RE needs be in sync
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            if (retime[channel] == 0.9999888616778790) {
+            	System.out.println("Stop here\n");
+            }
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
@@ -308,7 +311,12 @@ public class ThresholdTimesProcessDebug {
                     if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
                 		jd = currLineJD(offset, parts, report) + 1;
                     } else {                    	
-                        jd = currLineJD(offset, parts, report);           		            	
+                        jd = currLineJD(offset, parts, report);
+                        //this is to prevent rolling over too soon
+                        tempdiff = jd+retime[channel] - lastjdplustime;
+                        if (lastjdplustime > 0 && tempdiff >= 1.0) {
+                        	jd = jd-1;
+                        }
                     }
             	} 
             } else {
