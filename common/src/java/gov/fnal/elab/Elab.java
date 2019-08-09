@@ -226,6 +226,7 @@ public class Elab implements Serializable {
     }
 
     protected void init() throws ElabInstantiationException {
+				/* AbstractProperties.resolve() */
         properties.resolve();
         try {
             updateId();
