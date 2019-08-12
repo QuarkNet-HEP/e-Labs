@@ -32,7 +32,7 @@ import java.util.concurrent.Executor;
 
 public class DatabaseConnectionManager {
     public static final boolean USE_CACHE = true;
-    
+
     public static final Object[] NO_ARGS = new Object[0];
     public static final Class<?>[] NO_ARGS_TYPE = new Class[0];
 
@@ -54,11 +54,17 @@ public class DatabaseConnectionManager {
                     l = new LinkedList<Connection>();
                     cache.put(properties, l);
                 }
+								/* What purpose does the next line serve? */
                 Connection conn;
                 if (l.size() == 0) {
                     return getConnection0(properties);
                 }
                 else {
+										/* If the cached properties are not void: */
+										/* LinkedList.removeFirst() removes and returns the first 
+										 * element from the list.  Is there a reason we expect that
+										 * element to be anything special?  Do we happen to know 
+										 * that it's a Connection object, for example? */
                     return l.removeFirst();
                 }
             }
