@@ -1517,10 +1517,16 @@ public class DataTools {
         //check state
         try {
             con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
-            ps = con.prepareStatement(
+						/* Created `project_active` to account for projects becoming 
+							 inactive - JG 21Aug2019 */
+            /*ps = con.prepareStatement(
                     " SELECT id, name " +
-                    " FROM project ;");
-
+                    " FROM project ;"); */
+						ps = con.prepareStatement(
+										" SELECT project.id, project.name " +
+										" FROM project " +
+										" INNER JOIN project_active " +
+										" ON (project.id = project_active.project_id);");
             rs = ps.executeQuery(); 
         	if (rs != null) {
         		while (rs.next()) {
