@@ -94,15 +94,20 @@
         </div>
         
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
-	
+
 		<div class="subtitle">
 			<table border="0">
 				<tr>
-					<td  valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank"><img src="../graphics/glasses_gray.jpg" ></a>
+					<td valign="middle">
+							<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">
+									<img src="../graphics/glasses_gray.jpg" >
+							</a>
 					</td>
 					<td valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">Visualize geometry</a> <i>(not compatible with Firefox)</i>
+							<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">
+									Visualize geometry
+							</a>
+							<i>(not compatible with Firefox)</i>
 					</td>
 				</tr>
 			</table>
