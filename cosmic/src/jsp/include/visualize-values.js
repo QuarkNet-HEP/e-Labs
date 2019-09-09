@@ -1,5 +1,8 @@
 //initialize toggle variables
-t1=true; t2=true; t3=true; t4=true;
+let t1=true;
+let t2=true;
+let t3=true;
+let t4=true;
 
 //CUSTOMIZED FROM:  i2u2/common/src/jsp/include/elab.js
 //Onclick, call HideShowChannel(ID) first with ch${i}-v, and then with ch${i}-h.  
