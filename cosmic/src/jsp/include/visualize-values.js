@@ -66,9 +66,9 @@ else{
 }	
 
 var urlwithcoord = "visualize.jsp?x1="+x1+"&y1="+y1+"&z1="+z1;
-var urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
-var urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
-var urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
+urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
+urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
+urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
 
 window.open (urlwithcoord,"mywindow");
 }
