@@ -96,19 +96,19 @@
                 </tr>
             </table>
         </div>
-        
+
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
 
 		<div class="subtitle">
 			<table border="0">
 				<tr>
 					<td valign="middle">
-							<a href="javascript:TestPage()" target="_blank">
+							<a href="javascript:TestPage();" target="_blank">
 									<img src="../graphics/glasses_gray.jpg" >
 							</a>
 					</td>
 					<td valign="middle">
-							<a href="javascript:TestPage()" target="_blank">
+							<a href="javascript:TestPage();" target="_blank">
 									Visualize geometry
 							</a>
 							<i>(not compatible with Firefox)</i>
