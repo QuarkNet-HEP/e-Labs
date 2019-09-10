@@ -29,6 +29,12 @@ function HideShowChannel(ID) {
 	}
 }
 
+
+function TestPage() {
+		window.open ("test.html","newwindow");
+}
+
+
 //Note:  For a new geometry, all channels are by default inactive and initialized to x=y=z=0.
 function VisualizeValues(t1, t2, t3, t4) {
 		let x1,y1,z1;

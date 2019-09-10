@@ -103,12 +103,12 @@
 			<table border="0">
 				<tr>
 					<td valign="middle">
-							<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">
+							<a href="javascript:TestPage()" target="_blank">
 									<img src="../graphics/glasses_gray.jpg" >
 							</a>
 					</td>
 					<td valign="middle">
-							<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">
+							<a href="javascript:TestPage()" target="_blank">
 									Visualize geometry
 							</a>
 							<i>(not compatible with Firefox)</i>
