@@ -1,12 +1,13 @@
-<jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
+<jsp:useBean id="errs" scope="request"
+						 class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
     <%@ include file="check-metadata.jspf" %>
-    <script type="text/javascript" src="../include/visualize-values.js"></script>
-	<c:choose>
+
+		<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
-	
+
 		<c:if test="${!nodate && !ro}">
 			Date: <e:trselect name="month"
 					valueList="1..12"
@@ -37,44 +38,47 @@
 
 		<div id="channels">
 			<table border="0" cellspacing="5" cellpadding="2">
-                <tr>
-                    <td>&nbsp;</td>
-                    <th>Active<br />Channels:</th>
-                    <c:forEach var="i" items="1,2,3,4">
-                    	<td class="channel-id">${i}
-                    			<e:trinput type="checkbox" name="chan${i}IsActive"
-																		 disabled="${ro}" 	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>
-                    	</td>
-                    </c:forEach>
-                </tr>
-                <tr id="secondary-heading">
-                    <td>&nbsp;</td>
-                    <td>Cable<br />Length<span class="unit"> (m)</span></td>
-                    <td>Area<span class="unit">(cm<sup>2</sup>)</span></td>
-                    <td align="center">x:E-W(m)</td>
-                    <td align="center">y:N-S(m)</td>
-                    <td align="center">z:Up-Dn(m)</td>
-                </tr>
-                <c:set var="v" value="visibility: visible; display:"/>
-                <c:set var="h" value="visibility: hidden; display: none"/>
-                <c:forEach var="i" items="1,2,3,4">
-                	<c:set var="isChannelActive" value="chan${i}IsActive"/>
+          <tr>
+              <td>&nbsp;</td>
+              <th>Active<br />Channels:</th>
+              <c:forEach var="i" items="1,2,3,4">
+                  <td class="channel-id">${i}
+                    	<e:trinput type="checkbox" name="chan${i}IsActive"
+																 disabled="${ro}" 	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/>
+                  </td>
+              </c:forEach>
+          </tr>
+          <tr id="secondary-heading">
+              <td>&nbsp;</td>
+              <td>Cable<br />Length<span class="unit"> (m)</span></td>
+              <td>Area<span class="unit">(cm<sup>2</sup>)</span></td>
+              <td align="center">x:E-W(m)</td>
+              <td align="center">y:N-S(m)</td>
+              <td align="center">z:Up-Dn(m)</td>
+          </tr>
+          <c:set var="v" value="visibility: visible; display:"/>
+          <c:set var="h" value="visibility: hidden; display: none"/>
+          <c:forEach var="i" items="1,2,3,4">
+              <c:set var="isChannelActive" value="chan${i}IsActive"/>
         			<tr id="ch${i}-v" style="${geoEntry[isChannelActive] ? v : h}">
-	                    <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
-	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}CableLength" size="4"/></td>
-	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Area" size="6"/></td>
-	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}X" size="5"/></td>
-	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Y" size="5"/></td>
-	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Z" size="5"/></td>
-	                </tr>
+	                <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
+	                <td><e:trinput disabled="${ro}" type="text" name="chan${i}CableLength" size="4"/></td>
+	                <td><e:trinput disabled="${ro}" type="text" name="chan${i}Area" size="6"/></td>
+	                <td><e:trinput disabled="${ro}" type="text" name="chan${i}X" size="5"/></td>
+	                <td><e:trinput disabled="${ro}" type="text" name="chan${i}Y" size="5"/></td>
+	                <td><e:trinput disabled="${ro}" type="text" name="chan${i}Z" size="5"/></td>
+	            </tr>
 	        		<tr id="ch${i}-h" style="${geoEntry[isChannelActive] ? h : v}">
-	                    <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
-				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-	                </tr>
-				</c:forEach>
+	                <td style="padding-right:5px">
+											<img src="../graphics/geo_det${i}.gif">
+									</td>
+									<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+									<td>&nbsp;</td><td>&nbsp;</td>
+	            </tr>
+					</c:forEach>
 			</table>
 		</div>
-		
+
  		<div id="orientation">
             <table border="0">
                 <tr>
@@ -112,11 +116,11 @@
 				</tr>
 			</table>
 		</div>
-		
+
 <%-- end visualization code --%>		
 
         <br></br>
-        
+
         <font size="3"><i>GPS Coordinates</i></font>
 		<div id="gps">
         	    	  

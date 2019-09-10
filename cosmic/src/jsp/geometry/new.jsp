@@ -20,8 +20,9 @@
 		<link rel="stylesheet" type="text/css" href="../css/geo.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/visualize-values.js"></script>
 	</head>
-	
+
 	<body id="new-geometry" class="upload geo">
 		<!-- entire page container -->
 		<div id="container">
@@ -32,7 +33,6 @@
 				</div>
 			</div>
 
-			
 			<div id="content">
 
 <table border="0" id="main">
@@ -42,15 +42,15 @@
 				<div class="title">New Detector ${param.detectorID} Entry:</div>
 				<%@ include file="editor.jspf" %>
 			</div>
-			
+
 			<%@ include file="list.jspf" %>
 		</td>
 	</tr>
 </table>
 
 			</div>
-			<!-- end content -->	
-		
+			<!-- end content -->
+
 			<div id="footer">
 			</div>
 		</div>
