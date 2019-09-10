@@ -11,16 +11,16 @@ let t4=true;
 function HideShowChannel(ID) {
 	if ((aLs(ID).visibility == "hidden")) {
 		aLs(ID).visibility = "visible";
-		aLs(ID).display = "";			
-//		console.log(t1); 
+		aLs(ID).display = "";
+//		console.log(t1);
 	}
 	else if (aLs(ID).visibility == "visible") {
 		aLs(ID).visibility = "hidden";
-		aLs(ID).display = "none";	
+		aLs(ID).display = "none";
 		if (ID=="ch1-v") {t1=false;}
 		if (ID=="ch2-v") {t2=false;}
 		if (ID=="ch3-v") {t3=false;}
-		if (ID=="ch4-v") {t4=false;}		
+		if (ID=="ch4-v") {t4=false;}
 		if (ID=="ch1-h") {t1=true;}
 		if (ID=="ch2-h") {t2=true;}
 		if (ID=="ch3-h") {t3=true;}
@@ -30,7 +30,7 @@ function HideShowChannel(ID) {
 }
 
 //Note:  For a new geometry, all channels are by default inactive and initialized to x=y=z=0.
-function VisualizeValues(t1, t2, t3, t4){
+function VisualizeValues(t1, t2, t3, t4) {
 		let x1,y1,z1;
 		let x2,y2,z2;
 		let x3,y3,z3;
@@ -68,9 +68,10 @@ function VisualizeValues(t1, t2, t3, t4){
 		}
 		else{
 				x4 = 0; y4 = 0; z4 = 0;
-		}	
+		}
 
-		let urlwithcoord = "visualize.jsp?x1="+x1+"&y1="+y1+"&z1="+z1;
+		let urlwithcoord = "visualize.jsp";
+		urlwithcoord = urlwithcoord+"?x1="+x1+"&y1="+y1+"&z1="+z1;
 		urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
 		urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
 		urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
