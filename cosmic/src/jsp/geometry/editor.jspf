@@ -100,8 +100,8 @@
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
 		<script type="text/javascript">
 			function LocalTestPage() {
-					alert("LocalTestPage() accessed");
-					//window.open ("test.html","newwindow");
+					//alert("LocalTestPage() accessed");
+					window.open("test.html","newwindow");
 			}
 		</script>
 
