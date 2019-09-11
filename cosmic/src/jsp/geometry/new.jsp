@@ -24,29 +24,24 @@
 
 	<body id="new-geometry" class="upload geo">
 		<!-- entire page container -->
-		<div id="container">
+			<div id="container">
 			<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
-				</div>
+					<div id="header">
+							<%@ include file="../include/header.jsp" %>
+							<%@ include file="../include/nav-rollover.jspf" %>
+					</div>
 			</div>
 
-			<div id="content">
-
-<table border="0" id="main">
-	<tr>
-		<td id="center">
-			<div id="editor">
-				<div class="title">New Detector ${param.detectorID} Entry:</div>
-				<%@ include file="editor.jspf" %>
-			</div>
-
-			<%@ include file="list.jspf" %>
-		</td>
-	</tr>
-</table>
-
+			<div id="content" style="width:100%;">
+					<div id="daqlist" style="float:left; width:50%;">
+							<%@ include file="list.jspf" %>
+					</div>
+					<div id="editor" style="float:right; width:50%;">
+							<div class="title">
+									New Detector ${param.detectorID} Entry:
+							</div>
+							<%@ include file="editor.jspf" %>
+					</div>
 			</div>
 			<!-- end content -->
 
