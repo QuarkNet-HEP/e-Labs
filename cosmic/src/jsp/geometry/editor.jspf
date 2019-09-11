@@ -2,7 +2,7 @@
 						 class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
     <%@ include file="check-metadata.jspf" %>
-
+		<script type="text/javascript" src="../include/visualize-values.js"></script>
 		<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
@@ -98,13 +98,6 @@
         </div>
 
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
-		<script type="text/javascript">
-			function LocalTestPage() {
-					//alert("LocalTestPage() accessed");
-					window.open("../include/test.html","newwindow");
-			}
-		</script>
-
 		<div class="subtitle">
 				<table border="0">
 						<tr>
@@ -114,17 +107,6 @@
 												Visualize geometry
 										</button>
 								</td>
-								<!--					<td valign="middle">
-										 <a href="#" onClick="VisualizeValues(t1,t2,t3,t4); return false;" target="_blank">
-										 <img src="../graphics/glasses_gray.jpg" >
-										 </a>
-										 </td>
-										 <td valign="middle">
-										 <a href="#" onClick="VisualizeValues(t1,t2,t3,t4); return false;" target="_blank">
-										 Visualize geometry
-										 </a>
-										 <i>(not compatible with Firefox)</i>
-										 </td> -->
 				</tr>
 			</table>
 		</div>

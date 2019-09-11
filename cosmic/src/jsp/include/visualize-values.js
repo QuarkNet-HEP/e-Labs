@@ -25,13 +25,8 @@ function HideShowChannel(ID) {
 		if (ID=="ch2-h") {t2=true;}
 		if (ID=="ch3-h") {t3=true;}
 		if (ID=="ch4-h") {t4=true;}
-		console.log(ID);
+//		console.log(ID);
 	}
-}
-
-
-function TestPage() {
-		window.open ("../include/test.html","newwindow");
 }
 
 
@@ -77,7 +72,6 @@ function VisualizeValues(t1, t2, t3, t4) {
 		}
 
 		let urlwithcoord = "visualize.jsp";
-		//let urlwithcoord = "test.html";
 		urlwithcoord = urlwithcoord+"?x1="+x1+"&y1="+y1+"&z1="+z1;
 		urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
 		urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
