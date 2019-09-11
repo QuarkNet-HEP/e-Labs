@@ -31,7 +31,7 @@ function HideShowChannel(ID) {
 
 
 function TestPage() {
-		window.open ("test.html","newwindow");
+		window.open ("../include/test.html","newwindow");
 }
 
 
