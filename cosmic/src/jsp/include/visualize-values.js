@@ -76,12 +76,12 @@ function VisualizeValues(t1, t2, t3, t4) {
 				x4 = 0; y4 = 0; z4 = 0;
 		}
 
-		//let urlwithcoord = "visualize.jsp";
-		let urlwithcoord = "test.html";
-		//urlwithcoord = urlwithcoord+"?x1="+x1+"&y1="+y1+"&z1="+z1;
-		//urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
-		//urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
-		//urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
+		let urlwithcoord = "visualize.jsp";
+		//let urlwithcoord = "test.html";
+		urlwithcoord = urlwithcoord+"?x1="+x1+"&y1="+y1+"&z1="+z1;
+		urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
+		urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
+		urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
 
-		window.open (urlwithcoord,"mywindow");
+		window.open(urlwithcoord,"mywindow");
 }
