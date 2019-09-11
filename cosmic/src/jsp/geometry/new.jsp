@@ -42,7 +42,7 @@
 			</div>
 
 			<div id="content" class="clearfix" style="width:100%;">
-					<div id="daqlist" class="clearfix" style="float:left; width:33%;">
+					<div id="daqlist" class="clearfix" style="float:left; width:30%;">
 							<%@ include file="list.jspf" %>
 					</div>
 					<div id="editor" class="clearfix" style="float:right; width:67%;">
