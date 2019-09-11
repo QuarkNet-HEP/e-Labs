@@ -109,12 +109,12 @@
 			<table border="0">
 				<tr>
 					<td valign="middle">
-							<a href="#" onClick="LocalTestPage(); return false;" target="_blank">
+							<a href="#" onClick="TestPage(); return false;" target="_blank">
 									<img src="../graphics/glasses_gray.jpg" >
 							</a>
 					</td>
 					<td valign="middle">
-							<a href="#" onClick="LocalTestPage(); return false;" target="_blank">
+							<a href="#" onClick="TestPage(); return false;" target="_blank">
 									Visualize geometry
 							</a>
 							<i>(not compatible with Firefox)</i>
