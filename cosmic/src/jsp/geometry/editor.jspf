@@ -7,12 +7,7 @@
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
-		<script type="text/javascript">
-			function LocalTestPage() {
-					alert("LocalTestPage() accessed");
-					//window.open ("test.html","newwindow");
-			}
-		</script>
+
 		<c:if test="${!nodate && !ro}">
 			Date: <e:trselect name="month"
 					valueList="1..12"
@@ -103,17 +98,23 @@
         </div>
 
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
+		<script type="text/javascript">
+			function LocalTestPage() {
+					alert("LocalTestPage() accessed");
+					//window.open ("test.html","newwindow");
+			}
+		</script>
 
 		<div class="subtitle">
 			<table border="0">
 				<tr>
 					<td valign="middle">
-							<a href="javascript:alert('href function accessed');" target="_blank">
+							<a href="javascript:LocalTestPage();" target="_blank">
 									<img src="../graphics/glasses_gray.jpg" >
 							</a>
 					</td>
 					<td valign="middle">
-							<a href="javascript:alert('href function accessed');" target="_blank">
+							<a href="javascript:LocalTestPage();" target="_blank">
 									Visualize geometry
 							</a>
 							<i>(not compatible with Firefox)</i>
