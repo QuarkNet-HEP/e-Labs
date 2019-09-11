@@ -108,12 +108,12 @@
 			<table border="0">
 				<tr>
 					<td valign="middle">
-							<a href="javascript:LocalTestPage();" target="_blank">
+							<a href="javascript:alert('href function accessed');" target="_blank">
 									<img src="../graphics/glasses_gray.jpg" >
 							</a>
 					</td>
 					<td valign="middle">
-							<a href="javascript:LocalTestPage();" target="_blank">
+							<a href="javascript:alert('href function accessed');" target="_blank">
 									Visualize geometry
 							</a>
 							<i>(not compatible with Firefox)</i>
