@@ -101,7 +101,7 @@
 		<script type="text/javascript">
 			function LocalTestPage() {
 					//alert("LocalTestPage() accessed");
-					window.open("test.html","newwindow");
+					window.open("../include/test.html","newwindow");
 			}
 		</script>
 
