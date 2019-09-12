@@ -21,36 +21,30 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
-	
+
 	<body id="new-geometry" class="upload geo">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
-				</div>
+					<div id="header">
+							<%@ include file="../include/header.jsp" %>
+							<%@ include file="../include/nav-rollover.jspf" %>
+					</div>
 			</div>
 
-			
-			<div id="content">
-
-<table border="0" id="main">
-	<tr>
-		<td id="center">
-			<div id="editor">
-				<div class="title">New Detector ${param.detectorID} Entry:</div>
-				<%@ include file="editor.jspf" %>
+			<div id="content" class="clearfix">
+					<div id="daqlist" class="clearfix">
+							<%@ include file="list.jspf" %>
+					</div>
+					<div id="editor" class="clearfix">
+							<div class="title">
+									New Detector ${param.detectorID} Entry:
+							</div>
+							<%@ include file="editor.jspf" %>
+					</div>
 			</div>
-			
-			<%@ include file="list.jspf" %>
-		</td>
-	</tr>
-</table>
+			<!-- end content -->
 
-			</div>
-			<!-- end content -->	
-		
 			<div id="footer">
 			</div>
 		</div>
