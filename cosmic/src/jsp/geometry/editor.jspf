@@ -119,13 +119,6 @@
 
 <%-- end visualization code --%>		
 
-<%--		             
-        <div class="subtitle">GPS Location 
-            <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map">
-              <img border="0" src="../graphics/world.png" height="15px" width="15px" />
-            </a>
-        </div>
---%>
         <br>
         
         <font size="3"><i>GPS Coordinates</i></font>
