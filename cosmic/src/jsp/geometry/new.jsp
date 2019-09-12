@@ -20,15 +20,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/geo.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<style type="text/css">
-		 .clearfix:after {
-				 content: " "; /* Older browser do not support empty content */
-				 visibility: hidden;
-				 display: block;
-				 height: 0;
-				 clear: both;
-		 }
-		</style>
 	</head>
 
 	<body id="new-geometry" class="upload geo">
@@ -42,10 +33,10 @@
 			</div>
 
 			<div id="content" class="clearfix">
-					<div id="daqlist" class="clearfix" style="float:left; width:30%; min-width:30%;">
+					<div id="daqlist" class="clearfix">
 							<%@ include file="list.jspf" %>
 					</div>
-					<div id="editor" class="clearfix" style="float:right; width:67%; min-width:67%;">
+					<div id="editor" class="clearfix">
 							<div class="title">
 									New Detector ${param.detectorID} Entry:
 							</div>

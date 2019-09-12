@@ -18,12 +18,30 @@
 
 .geo #editor {
     float: right;
-    width: 500px;
+    /*width: 500px;*/
+		width: 67%;
     background: #CCCCCC;
     color: #000;
     text-align:left;
     padding: 8px;
 }
+
+/* Added 12Sept2019 - JG */
+.geo #daqlist {
+		float: left;
+		width: 30%;
+}
+
+/* Allows #daqlist and #editor to float side-by-side without container collapse */
+/* TODO: Flexbox is superior solution */
+.clearfix:after {
+		content: " "; /* Older browser do not support empty content */
+		visibility: hidden;
+		display: block;
+		height: 0;
+		clear: both;
+}
+/* End added styles */	
 
 .geo #viewer {
 	margin-left: auto;
