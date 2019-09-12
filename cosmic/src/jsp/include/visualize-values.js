@@ -29,7 +29,6 @@ function HideShowChannel(ID) {
 	}
 }
 
-
 //Note:  For a new geometry, all channels are by default inactive and initialized to x=y=z=0.
 function VisualizeValues(t1, t2, t3, t4) {
 		let x1,y1,z1;
@@ -57,8 +56,7 @@ function VisualizeValues(t1, t2, t3, t4) {
 				x3 = document.getElementById("myForm").elements.namedItem("chan3X").value;
 				y3 = document.getElementById("myForm").elements.namedItem("chan3Y").value;
 				z3 = document.getElementById("myForm").elements.namedItem("chan3Z").value;
-		}
-		else{
+		} else{
 				x3 = 0; y3 = 0; z3 = 0;
 		}
 
@@ -66,8 +64,7 @@ function VisualizeValues(t1, t2, t3, t4) {
 				x4 = document.getElementById("myForm").elements.namedItem("chan4X").value;
 				y4 = document.getElementById("myForm").elements.namedItem("chan4Y").value;
 				z4 = document.getElementById("myForm").elements.namedItem("chan4Z").value;
-		}
-		else{
+		}	else{
 				x4 = 0; y4 = 0; z4 = 0;
 		}
 
