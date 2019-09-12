@@ -1,8 +1,9 @@
-<jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
+<jsp:useBean id="errs" scope="request"
+						 class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
     <%@ include file="check-metadata.jspf" %>
     <script type="text/javascript" src="../include/visualize-values.js"></script>
-	<c:choose>
+		<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
@@ -103,20 +104,19 @@
         </div>
         
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
-	
-		<div class="subtitle">	
-			<table border="0">	
-				<tr>
-					<td  valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank"><img src="../graphics/glasses_gray.jpg" ></a>
-					</td>
-					<td valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)" target="_blank">Visualize geometry</a> 	
-					</td>
+		<div class="subtitle">
+				<table border="0">
+						<tr>
+								<td valign="middle">
+										<button onclick="VisualizeValues(t1,t2,t3,t4);">
+												<img src="../graphics/glasses_gray.jpg" >
+												Visualize geometry
+										</button>
+								</td>
 				</tr>
 			</table>
-		</div>   
-		
+		</div>
+
 <%-- end visualization code --%>		
 
 <%--		             
