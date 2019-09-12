@@ -42,10 +42,10 @@
 			</div>
 
 			<div id="content" class="clearfix" style="width:100%;">
-					<div id="daqlist" class="clearfix" style="float:left; width:30%;">
+					<div id="daqlist" class="clearfix" style="float:left; width:30%; min-width:30%;">
 							<%@ include file="list.jspf" %>
 					</div>
-					<div id="editor" class="clearfix" style="float:right; width:67%;">
+					<div id="editor" class="clearfix" style="float:right; width:67%; min-width:67%;">
 							<div class="title">
 									New Detector ${param.detectorID} Entry:
 							</div>
