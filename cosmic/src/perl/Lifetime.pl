@@ -133,8 +133,10 @@ sub FindSpecificDecay
 			if( 3.4e-12 < $timeDifference && $timeDifference  < $offset )
 			{
 				# if a second signal happens within the set offset, and on the same channel, then it is a potentual decay
-				if(!$checkEnergy || $possibleEndDecayData[4]<$curTimeOverThreshold)
-				{
+				#MARK ADAMS SAYS THAT THIS TEST NEEDS TO BE REMOVED BECAUSE
+				#IN REALITY THE PULSEWITH OF THE ELECTRON IS NOT LESS THAN THE PULSEWIDTH OF THE MUON
+				#if(!$checkEnergy || $possibleEndDecayData[4]<$curTimeOverThreshold)
+				#{
 				# if the user has enabled checking for energy signatures then make sure the timeOverThreshold of the second signal is less than the timeOverThreshold of the first. if user user has specified that this check isn't necessary, then just write the decay to a (file)
 					$dif=$JulianDayDiff + $possibleEndDecayData[2]-$curTime;
 					$difInMicroSeconds=$dif*($numSecondsInDay*1e6);
@@ -144,7 +146,7 @@ sub FindSpecificDecay
                     $foundDecays="true";
                     #last is used to stop the search for decay events once the first one is found.
                     last;
-				}
+				#}
 			}
 		}
 		$i++;
@@ -161,6 +163,8 @@ sub FindPossibleStartDecayWithCoincidenceCheck
         &CheckThatReadingFromCorrectDetector();
     	@currentRow=split(/\s+/,$array[$currentBufferPosition]);
         &updateStackTime($currentRow[1],$detectorsToCheck[$detector_Number_Checking]);
+        #THIS IS A TEST TO JUST IGNORE THE STACKED/UNSTACKED GEOMETRY
+        $noStack = 1;
         if($noStack)
         {
             #if no stack for this detector exists, then try to find decay event for this signal
