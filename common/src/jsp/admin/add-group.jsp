@@ -32,8 +32,8 @@
     String passwd2 = request.getParameter("passwd2");
 	String newAccState, newAccCity, newAccSchool, newAccTeacher, newAccEmail, newAccRG, newAccAY, newAccGR, newAccDAQ, newAccRP, newAccSurvey;
 	newAccState=newAccCity=newAccSchool=newAccTeacher=newAccEmail=newAccRG=newAccAY=newAccGR=newAccDAQ=newAccRP=newAccSurvey="";
-		
-	String submit =  request.getParameter("submitinfo");	
+
+	String submit =  request.getParameter("submitinfo");
 
 	int stateId = 0;
 	String stateName = "";
@@ -47,7 +47,7 @@
 	ServletContext context = getServletContext();
 	String home = context.getRealPath("").replace('\\', '/');
 
-	TreeMap<Integer, ArrayList> states = new TreeMap<Integer, ArrayList>();;
+	TreeMap<Integer, ArrayList> states = new TreeMap<Integer, ArrayList>();
 	TreeMap<Integer, ArrayList> cities = new TreeMap<Integer, ArrayList>();
 	TreeMap<Integer, ArrayList> schools = new TreeMap<Integer, ArrayList>();
 	TreeMap<Integer, ArrayList> teachers = new TreeMap<Integer, ArrayList>();
@@ -70,20 +70,20 @@
 	int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
 	for (int i = 2004; i <= currentYear+1; i++){
 		academicyears.put(String.valueOf(i), String.valueOf(i)+"-"+String.valueOf(i + 1));
-	}	
+	}
 	//take into account that year changes in July
 	int defaultYear = currentYear;
 	if (currentMonth > 6) {
 		defaultYear = currentYear + 1;
 	}
-			
+
 	if (submit != null && submit.equals("Submit")) {
 		if (!stateNew.equals("") && !stateAbbrev.equals("") && !stateType.equals("")) {
 			//need to add a new state - checkings should be done by javascript before submitting
 			newAccState = stateAbbrev;
 			int statetype = Integer.parseInt(stateType);
 			stateId = DataTools.insertState(elab, stateNew, stateAbbrev, statetype);
-			stateName = stateAbbrev;	
+			stateName = stateAbbrev;
 		} else {
 			if (state != null && !state.equals("")) {
 				stateId = Integer.valueOf(state);
@@ -124,7 +124,7 @@
 				teacherId = DataTools.insertTeacher(elab, teacherNew, teacherEmail, schoolId);
 				newAccTeacher = teacherName = teacherNew;
 				newAccEmail = teacherEmail;
-			} 
+			}
 		}
 		String[] researchProjectName = new String[researchProject.length];
 		for (int i = 0; i < researchProject.length; i++) {
@@ -150,13 +150,13 @@
 	            //directory structure:
 	            //home + users + ay/state/city/school/teacher/group/
 	            String[] newDirsArray = new String[] {
-	                ay, 
-	                stateName, 
-	                cityName.replaceAll(" ", "_"), 
-	                schoolName.replaceAll(" ", "_"), 
-	                teacherName.replaceAll(" ", "_"), 
-	                researchGroup, 
-	                singleResearchProjectName};	
+	                ay,
+	                stateName,
+	                cityName.replaceAll(" ", "_"),
+	                schoolName.replaceAll(" ", "_"),
+	                teacherName.replaceAll(" ", "_"),
+	                researchGroup,
+	                singleResearchProjectName};
 	             String currDir = home + "/" + singleResearchProjectName + "/users"; 
 	             File newDir;
 	             for(int i=0; i<7; i++){
@@ -186,7 +186,7 @@
 	
 	            //setup subdirectories - Note that users is actually a symlink to  users -> /export/d1/quarknet/portal/users
 	            // Each e-Lab will need a similar symlink.
-	                                               
+
 	            String[] newSubdirsArray = new String[] {"plots", "posters", "scratch"};
 	            for(int i=0; i<3; i++){
 	                currDir = home + "/" +researchProjectName+"/users/" + newUserArea + "/" + researchProjectName + "/" + newSubdirsArray[i];
@@ -207,16 +207,16 @@
 	            }
 	            //add the new registration information to research_group
 	            int i=0;
-	            
+
 	            // Generate hashed passwords just one time
-	            if ( x == 0 ) { 
+	            if ( x == 0 ) {
 		            String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
 		            researchGroupId = DataTools.insertGroup(elab, researchGroup, hashedPassword, groupRole, newUserArea, ay, survey, teacherId);
-	            }	
+	            }
 		        //add the new group-project pair to research_group_project
-				i = DataTools.insertGroupProject(elab, Integer.parseInt(researchProject[x]), researchGroupId);			
+				i = DataTools.insertGroupProject(elab, Integer.parseInt(researchProject[x]), researchGroupId);
 	            //add the new group-detectorID pair(s) to research_group_detectorid (if there are any) and just one time
-	           	if ( x == 0 ) { 
+	           	if ( x == 0 ) {
 		            if(detectorString != null && !detectorString.equals("")) {
 		            	newAccDAQ = detectorString;
 		            	String[] detectorIds = detectorString.split(",");
@@ -244,17 +244,17 @@
 	request.setAttribute("academicyears", academicyears);
 	request.setAttribute("defaultYear", defaultYear);
 	request.setAttribute("survey", survey);
-	request.setAttribute("newAccState",newAccState);	
-	request.setAttribute("newAccCity",newAccCity);	
-	request.setAttribute("newAccSchool",newAccSchool);	
-	request.setAttribute("newAccTeacher",newAccTeacher);	
-	request.setAttribute("newAccEmail",newAccEmail);	
-	request.setAttribute("newAccRG",newAccRG);	
-	request.setAttribute("newAccAY",newAccAY);	
-	request.setAttribute("newAccGR",newAccGR);	
-	request.setAttribute("newAccDAQ",newAccDAQ);	
-	request.setAttribute("newAccRP",newAccRP);	
-	request.setAttribute("newAccSurvey",newAccSurvey);	
+	request.setAttribute("newAccState",newAccState);
+	request.setAttribute("newAccCity",newAccCity);
+	request.setAttribute("newAccSchool",newAccSchool);
+	request.setAttribute("newAccTeacher",newAccTeacher);
+	request.setAttribute("newAccEmail",newAccEmail);
+	request.setAttribute("newAccRG",newAccRG);
+	request.setAttribute("newAccAY",newAccAY);
+	request.setAttribute("newAccGR",newAccGR);
+	request.setAttribute("newAccDAQ",newAccDAQ);
+	request.setAttribute("newAccRP",newAccRP);
+	request.setAttribute("newAccSurvey",newAccSurvey);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -266,7 +266,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/add-group.css"/>
 		<!-- <script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>	-->
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
-		<script type="text/javascript" src="add-group.js"></script>	
+		<script type="text/javascript" src="add-group.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
   	</head>
 	<body id="add-group">
@@ -280,12 +280,12 @@
 					</div>
 				</div>
 			</div>
-			<div id="content">	
+			<div id="content">
 	    		<h1>Input the information for your new teacher.</h1>
     		    <form name="myform" method="post" onsubmit="return validateForm();">
 		    		<table width="740" border="1">
 					<c:choose>
-					<c:when test='${done == "" }'>		
+					<c:when test='${done == "" }'>
     		        <tr>
     		        	<td>
     						<center>
@@ -313,7 +313,7 @@
 										<option value="2">Province</option>
 										<option value="3">Country</option>
 									</select>
-									<br />						
+									<br />
 								</td>
 							</tr>
 							<tr>
@@ -321,23 +321,23 @@
 								<td>
 									<select name="city" id="city"></select>
 								</td>
-								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input> 
+								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input>
 									<div class="details" id="cityList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
 										<span class="tooltip" id="cityTooltip"></span>
 									</div>
    								</td>
-							</tr>							
+							</tr>
 							<tr>
 								<td>School/Institution</td>
 								<td>
-									<select name="school" id="school"></select>	
+									<select name="school" id="school"></select>
 								</td>
-								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input> 
+								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input>
 									<div class="details" id="schoolList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
 										<span class="tooltip" id="schoolTooltip"></span>
 									</div>
 								</td>
-							</tr>					
+							</tr>
 							<tr>
 								<td>New teacher/leader</td>
 								<td colspan="2"><input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input>
@@ -381,7 +381,7 @@
 										</c:forEach>
 									</select>
 								</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td>In Survey</td>
 								<td colspan="2">
@@ -392,12 +392,12 @@
                             <tr>
                             	<td>Password</td>
                             	<td colspan="2"><input type="password" name="passwd1" id="passwd1" size="16" maxlength="72"></td>
-                            </tr>	
+                            </tr>
                             <tr>
                             	<td>Verify Password</td>
                             	<td colspan="2"><input type="password" name="passwd2" id="passwd2" size="16" maxlength="72"></td>
-                            </tr>							
-							<tr><td colspan="3"><div style="text-align: center;"><input type="submit" name="submitinfo" value="Submit"></div></td></tr>							
+                            </tr>
+							<tr><td colspan="3"><div style="text-align: center;"><input type="submit" name="submitinfo" value="Submit"></div></td></tr>
     						</table>
     						</center>
     					 </td>
@@ -419,45 +419,45 @@
  													<tr>
  														<td>City: </td>
  														<td>${newAccCity }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>School/Institution: </td>
  														<td>${newAccSchool }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Teacher/Leader: </td>
  														<td>${newAccTeacher }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Teacher's/Leader's Email: </td>
  														<td>${newAccEmail }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Group Name: </td>
  														<td>${newAccRG }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Project(s): </td>
  														<td>${newAccRP }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Academic Year: </td>
  														<td>${newAccAY }</td>
- 													</tr>					
+ 													</tr>
  													<tr>
  														<td>Role: </td>
  														<td>${newAccGR }</td>
- 													</tr>		
- 													<c:if test='${newAccDAQ != "" }'>			
+ 													</tr>
+ 													<c:if test='${newAccDAQ != "" }'>
 	 													<tr>
 	 														<td>DAQ Board ID(s): </td>
 	 														<td>${newAccDAQ }</td>
-	 													</tr>					
+	 													</tr>
 	 												</c:if>
  													<tr>
  														<td>In Survey: </td>
  														<td>${newAccSurvey }</td>
- 													</tr>		
+ 													</tr>
  												</table>
  											<c:if test='${ survey == "Yes" }'>
  												If you wish to add students to your group (who must complete the survey), 
@@ -471,7 +471,7 @@
    									</c:choose>
    								</td>
    							</tr>
-							<tr><td><div style="text-align: center;"><input type="submit" name="submitinfo" value="Add a new teacher"></div></td></tr>							
+							<tr><td><div style="text-align: center;"><input type="submit" name="submitinfo" value="Add a new teacher"></div></td></tr>
     				    </table>
     				</td></tr>
     				</c:otherwise>
@@ -497,11 +497,11 @@
 	<input type="hidden" name="groups" value="${g.value}">
 </c:forEach>
 
-			<!-- end content -->	
-		
+			<!-- end content -->
+
 			<div id="footer">
 			</div>
 		</div>
-		<!-- end container -->		
+		<!-- end container -->
 	</body>
 </html>
