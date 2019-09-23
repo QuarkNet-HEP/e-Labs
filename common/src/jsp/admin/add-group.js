@@ -1,6 +1,7 @@
 function validateForm() {
 	var messages = document.getElementById("messages");
 	var stateAbbrevFromDD = "";
+
 	//STATE CHECKINGS
 	//check new state, allow only letters, spaces, periods and dashes
 	var stateNew = document.getElementById("stateNew");
@@ -12,14 +13,15 @@ function validateForm() {
 			messages.innerHTML = "*Please only use letters, spaces, periods, and dashes for your state.";
 			stateNew.value = "";
 			return false;
-		} 
+		}
 		//make sure state doesn't already exist
-		for(var i = 0, opts = document.getElementById("state").options; i < opts.length; ++i)
-			   if( opts[i].value === stateNew.value.toUpperCase() ) {
-				  messages.innerHTML = stateNew.value + " is already in the pull-down list.";
-				  stateNew.value = "";
-				  return false;
-			}
+		for(var i = 0, opts = document.getElementById("state").options; i < opts.length; ++i) {
+			  if( opts[i].value === stateNew.value.toUpperCase() ) {
+						messages.innerHTML = stateNew.value + " is already in the pull-down list.";
+						stateNew.value = "";
+						return false;
+				}
+		}
 		//checks for the stateAbbreviation
 		var stateAbbrev = document.getElementById("stateAbbrev");
 		if ((stateAbbrev.value == null || stateAbbrev.value == "") && stateNew.value != "") {
@@ -74,9 +76,9 @@ function validateForm() {
 				var clean = citiesInState[i].value.replace(/[\[\]']+/g,'');
 				var parts = clean.split(",");
 				if( parts[2].trim().toUpperCase() === cityNew.value.trim().toUpperCase() ) {
-				  messages.innerHTML = cityNew.value + " city is already in the pull-down list.";
-				cityNew.value="";
-				  return false;
+						messages.innerHTML = cityNew.value + " city is already in the pull-down list.";
+						cityNew.value="";
+						return false;
 				}
 			}
 		}
@@ -97,12 +99,12 @@ function validateForm() {
 			messages.innerHTML = "*Please only use letters, spaces, periods, and dashes for your school.";
 			schoolNew.value = "";
 			return false;
-		} 
+		}
 		//make sure school doesn't already exist
 		var city = document.getElementById("city");
 		var state = document.getElementById("state");
 		if (state != null && state != "") {
-			stateAbbrevFromDD = state.options[state.selectedIndex].text;	
+			stateAbbrevFromDD = state.options[state.selectedIndex].text;
 			if (stateAbbrevFromDD != "") {
 				cityNameFromDD = city.options[city.selectedIndex].text;
 				if (cityNameFromDD != null && cityNameFromDD != "") {
@@ -119,7 +121,7 @@ function validateForm() {
 				}
 			}
 		}
-	}	
+	}
 	if (schoolNew.value == null || schoolNew.value == "") {
 		var school = document.getElementById("school");
 		if (school.value == null || school.value == "") {
@@ -127,7 +129,7 @@ function validateForm() {
 			return false;
 		}
 	}
-	
+
 	//TEACHER CHECKINGS
 	var teacherNew = document.getElementById("teacherNew");
 	if (teacherNew.value != null && teacherNew.value != "") {
@@ -136,7 +138,7 @@ function validateForm() {
 			messages.innerHTML = "*Please only use letters, spaces, periods, and dashes for your teacher.";
 			teacherNew.value = "";
 			return false;
-		} 
+		}
 		//make sure teacher doesn't already exist
 		var state = document.getElementById("state");
 		var city = document.getElementById("city");
@@ -159,7 +161,6 @@ function validateForm() {
 							}
 						}
 					}
-					
 				}
 			}
 		}
@@ -174,7 +175,7 @@ function validateForm() {
 		messages.innerHTML = "Please enter an email.";
 		return false;		
 	}
-	
+
 	//GROUP CHECKINGS
 	var groupNew = document.getElementById("researchGroup");
 	if (groupNew.value != null && groupNew.value != "") {
@@ -193,13 +194,13 @@ function validateForm() {
 				groupNew.value = "";
 				return false;
 			}
-		}	
+		}
 	}
 	if (groupNew.value == null || groupNew.value == "") {
 		messages.innerHTML = "Please select or enter a group name.";
 		return false;
-	}	
-	
+	}
+
 	//DETECTOR STRING CHECKING
 	var detectorString = document.getElementById("detectorString");
 	if (detectorString.value != null && detectorString.value != "") {
@@ -207,34 +208,32 @@ function validateForm() {
 		if (! pattern.test(detectorString.value)) {
 			messages.innerHTML = "*Please go back and enter a detector (or detectors) as a comma delimited list.";
 			detectorString.value = "";
-			return false;			
+			return false;
 		}
 	}
-	
-	//PROJECT CHECKING
-	var researchProject = document.getElementsByName("researchProject");
-    var checked = false;
-    for(var i= 0; i < researchProject.length; i++)
-    {
-        if(researchProject[i].checked)
-        {
+
+		//PROJECT CHECKING
+		var researchProject = document.getElementsByName("researchProject");
+		var checked = false;
+    for(var i= 0; i < researchProject.length; i++) {
+        if(researchProject[i].checked) {
             checked = true;
             break;
         }
     }
-    
+
     if (checked == false) {
-		messages.innerHTML = "Please select a project.";
-		return false;
-	}	
-	
+				messages.innerHTML = "Please select a project.";
+				return false;
+		}
+
 	//ROLE CHECKING
 	//var role = document.getElementById("groupRole");
 	//if (role.value == null || role.value == "") {
 	//	messages.innerHTML = "Please select a role.";
 	//	return false;
-	//}	
-	
+	//}
+
 	//PASSWORD CHECKING
 	var password1 = document.getElementById("passwd1");
 	var password2 = document.getElementById("passwd2");
@@ -243,7 +242,7 @@ function validateForm() {
 			messages.innerHTML = "*Please go back - Your passwords do not match!.";
 			password1.value = "";
 			password2.value = "";
-			return false;			
+			return false;
 		}
 		var pattern = /".*[\"'\\(\\)*].*"/;
 		if (pattern.test(password1.value)) {
@@ -257,9 +256,9 @@ function validateForm() {
 		messages.innerHTML = "*Please go back and enter a password.";
 		password1.value = "";
 		password2.value = "";
-		return false;						
+		return false;
 	}
-	
+
 	return true;
 }
 
@@ -276,14 +275,14 @@ $(document).ready(function() {
 	    createOption(document.getElementById("city"), cities, 2);
 	    var cityList = "";
 	    for (var i = 0; i < cities.length; i++) {
-			var clean = cities[i].value.replace(/[\[\]']+/g,'');
-			var values = clean.split(",");
-			cityList = cityList + values[2] + "<br />";
+					var clean = cities[i].value.replace(/[\[\]']+/g,'');
+					var values = clean.split(",");
+					cityList = cityList + values[2] + "<br />";
 	    }
 	    document.getElementById("cityTooltip").innerHTML=cityList;
 	});
 
-	
+
 	$("#city").bind("change", function() {
 	    city = $(this).find("option:selected").attr("name");
 	    var schools = document.getElementsByName("schoolIn"+stateAbbrev+city.trim());
@@ -291,9 +290,9 @@ $(document).ready(function() {
 	    createOption(document.getElementById("school"), schools, 3);
 	    var schoolList = "";
 	    for (var i = 0; i < schools.length; i++) {
-			var clean = schools[i].value.replace(/[\[\]']+/g,'');
-			var values = clean.split(",");
-			schoolList = schoolList + values[3] + "<br />";
+					var clean = schools[i].value.replace(/[\[\]']+/g,'');
+					var values = clean.split(",");
+					schoolList = schoolList + values[3] + "<br />";
 	    }
 	    document.getElementById("schoolTooltip").innerHTML=schoolList;
 	});
@@ -302,9 +301,9 @@ $(document).ready(function() {
 	    var teachers = document.getElementsByName("teacherIn"+stateAbbrev+city.trim()+school.trim());
 	    var teacherList = "";
 	    for (var i = 0; i < teachers.length; i++) {
-			var clean = teachers[i].value.replace(/[\[\]']+/g,'');
-			var values = clean.split(",");
-			teacherList = teacherList + "<strong>"+values[1]+"</strong>: " + values[6] +"<br />";
+					var clean = teachers[i].value.replace(/[\[\]']+/g,'');
+					var values = clean.split(",");
+					teacherList = teacherList + "<strong>"+values[1]+"</strong>: " + values[6] +"<br />";
 	    }
 	    document.getElementById("teacherTooltip").innerHTML=teacherList;
 	});
