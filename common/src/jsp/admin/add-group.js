@@ -260,7 +260,8 @@ function validateForm() {
 	}
 
 	return true;
-}
+} /* End validateForm() */
+
 
 $(document).ready(function() {
 	var stateAbbrev = "";
@@ -307,16 +308,20 @@ $(document).ready(function() {
 	    }
 	    document.getElementById("teacherTooltip").innerHTML=teacherList;
 	});
-	$("#project1").bind("change", function() {
-		var $el = $(this);
-		if ($el.prop("checked")) {
-			//$('#groupRole').append('<option value="upload">upload</option>');
-			document.getElementById("daqs").style.visibility = "visible";
-		} else {
-			//$('#groupRole option[value="upload"]').remove();			
-			document.getElementById("daqs").style.visibility = "hidden";
-		}
-	});
+
+		/* id='project1' is cosmic, from its project.id key in the database.
+		 * We set a listener to make the DAQ entry box visible when its Project
+		 * checkbox is selected */
+		$("#project1").bind("change", function() {
+				var $el = $(this);
+				if ($el.prop("checked")) {
+						//$('#groupRole').append('<option value="upload">upload</option>');
+						document.getElementById("daqs").style.visibility = "visible";
+				} else {
+						//$('#groupRole option[value="upload"]').remove();			
+						document.getElementById("daqs").style.visibility = "hidden";
+				}
+		});
 
 });
 
