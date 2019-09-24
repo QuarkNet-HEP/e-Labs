@@ -201,16 +201,21 @@ function validateForm() {
 		return false;
 	}
 
-	//DETECTOR STRING CHECKING
-	var detectorString = document.getElementById("detectorString");
-	if (detectorString.value != null && detectorString.value != "") {
-		var pattern = /^[0-9]+(,[0-9]+)*$/;
-		if (! pattern.test(detectorString.value)) {
-			messages.innerHTML = "*Please go back and enter a detector (or detectors) as a comma delimited list.";
-			detectorString.value = "";
-			return false;
+		//DETECTOR STRING CHECKING
+		/* id='project1' is cosmic, from its project.id key in the database.
+		 * If 'cosmic' is selected, check to make sure the DAQ string is valid */
+		let cosmicCheckbox = document.getElementById("project1");
+		if(cosmicCheckbox.checked) {
+				var detectorString = document.getElementById("detectorString");
+				if (detectorString.value != null && detectorString.value != "") {
+						var pattern = /^[0-9]+(,[0-9]+)*$/;
+						if (! pattern.test(detectorString.value)) {
+								messages.innerHTML = "*Please go back and enter a detector (or detectors) as a comma delimited list.";
+								detectorString.value = "";
+								return false;
+						}
+				}
 		}
-	}
 
 		//PROJECT CHECKING
 		var researchProject = document.getElementsByName("researchProject");
