@@ -76,6 +76,8 @@
 		defaultYear = currentYear + 1;
 	}
 
+	// The form on this page POSTs back to the page.
+	// If we're processing POSTed data:
 	if (submit != null && submit.equals("Submit")) {
 		if (!stateNew.equals("") && !stateAbbrev.equals("") && !stateType.equals("")) {
 			//need to add a new state - checkings should be done by javascript before submitting
@@ -135,103 +137,116 @@
 				}
 			}
 		}
+
 		//create directories that are needed
-        if(researchGroup != null && researchProject != null && ay != null && groupRole != null && survey != null && passwd1 != null && passwd2 !=null) {
-            //Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
-           	//EPeronja 06/18/2015: I think the answer is that if we fail to create the directory then we do not have a userarea?
+		if(researchGroup != null && researchProject != null && ay != null && groupRole != null && survey != null && passwd1 != null && passwd2 !=null) {
+			// Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
+			//EPeronja 06/18/2015: I think the answer is that if we fail to create the directory then we do not have a userarea?
 			newAccRG = researchGroup;
 			newAccAY = ay;
 			newAccGR = groupRole;
 			newAccSurvey = survey;
-           	for (int x = 0; x < researchProject.length; x++) {
+			// Iterate over all submitted projects (cosmic, cms, ...)
+			for (int x = 0; x < researchProject.length; x++) {
 				String singleResearchProjectName = researchProjectName[x];
-	            boolean mkdir, isDirectory;
-	            //directory structure:
-	            //home + users + ay/state/city/school/teacher/group/
-	            String[] newDirsArray = new String[] {
-	                ay,
-	                stateName,
-	                cityName.replaceAll(" ", "_"),
-	                schoolName.replaceAll(" ", "_"),
-	                teacherName.replaceAll(" ", "_"),
-	                researchGroup,
-	                singleResearchProjectName};
-	             String currDir = home + "/" + singleResearchProjectName + "/users"; 
-	             File newDir;
-	             for(int i=0; i<7; i++){
-	                currDir = currDir + "/" + newDirsArray[i].replaceAll(" ", "_"); //replace spaces with underscores for the directory name
-	                newDir = new File(currDir);
-	                try {
-	                    isDirectory = newDir.isDirectory();
-	                } catch(SecurityException e) {
-	                    messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
-	                    return;
-	                }
-	                if(!isDirectory){
-	                    mkdir = newDir.mkdirs();
-	                    if(mkdir == false){
-	                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newDirsArray[i] + ")";
-	                        return;
-	                    }
-	                }
-	                //else if we're adding the group...
-	                else if(i==5){
-	                	messages = "The group directory: " + newDirsArray[i] + " already exists on the system.\n<br>Use the back button on your browser and enter a different group name.";
-	                    return;
-	                }
-	            }
-	            //the newUserArea base dir is now totally setup
-	            String newUserArea = newDirsArray[0] + "/" + newDirsArray[1] + "/" + newDirsArray[2] + "/" + newDirsArray[3] + "/" + newDirsArray[4] + "/" + newDirsArray[5];
-	
-	            //setup subdirectories - Note that users is actually a symlink to  users -> /export/d1/quarknet/portal/users
-	            // Each e-Lab will need a similar symlink.
+				boolean mkdir, isDirectory;
+				//directory structure:
+				//home + users + ay/state/city/school/teacher/group/
+				String[] newDirsArray = new String[] {
+						ay,
+						stateName,
+						cityName.replaceAll(" ", "_"),
+						schoolName.replaceAll(" ", "_"),
+						teacherName.replaceAll(" ", "_"),
+						researchGroup,
+						singleResearchProjectName
+				};
+				String currDir = home + "/" + singleResearchProjectName + "/users"; 
+				File newDir;
+				for(int i=0; i<7; i++){
+					currDir = currDir + "/" + newDirsArray[i].replaceAll(" ", "_"); //replace spaces with underscores for the directory name
+					newDir = new File(currDir);
+					try {
+						isDirectory = newDir.isDirectory();
+					} catch(SecurityException e) {
+						messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
+						return;
+					}
 
-	            String[] newSubdirsArray = new String[] {"plots", "posters", "scratch"};
-	            for(int i=0; i<3; i++){
-	                currDir = home + "/" +researchProjectName+"/users/" + newUserArea + "/" + researchProjectName + "/" + newSubdirsArray[i];
-	                newDir = new File(currDir);
-	                try {
-	                    isDirectory = newDir.isDirectory();
-	                } catch(SecurityException e) {
-	                	messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
-	                    return;
-	                }
-	                if(!isDirectory){
-	                    mkdir = newDir.mkdirs();
-	                    if(mkdir == false){
-	                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newSubdirsArray[i] + ")";
-	                        return;
-	                    }
-	                }
-	            }
-	            //add the new registration information to research_group
-	            int i=0;
+					if(!isDirectory){
+						mkdir = newDir.mkdirs();
+						if(mkdir == false){
+							messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newDirsArray[i] + ")";
+							return;
+						}
+					}
+					//else if we're adding the group...
+					else if(i==5){
+						messages = "The group directory: " + newDirsArray[i] + " already exists on the system.\n<br>Use the back button on your browser and enter a different group name.";
+						return;
+					}
+				}
 
-	            // Generate hashed passwords just one time
-	            if ( x == 0 ) {
-		            String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
-		            researchGroupId = DataTools.insertGroup(elab, researchGroup, hashedPassword, groupRole, newUserArea, ay, survey, teacherId);
-	            }
-		        //add the new group-project pair to research_group_project
+				//the newUserArea base dir is now totally setup
+				String newUserArea = newDirsArray[0] + "/" + newDirsArray[1] + "/" + newDirsArray[2] + "/" + newDirsArray[3] + "/" + newDirsArray[4] + "/" + newDirsArray[5];
+
+				//setup subdirectories - Note that users is actually a symlink to
+				// users -> /export/d1/quarknet/portal/users
+				// Each e-Lab will need a similar symlink.
+				String[] newSubdirsArray = new String[] {"plots", "posters", "scratch"};
+				for(int i=0; i<3; i++){
+					currDir = home + "/" +researchProjectName+"/users/" + newUserArea + "/" + researchProjectName + "/" + newSubdirsArray[i];
+					newDir = new File(currDir);
+					try {
+						isDirectory = newDir.isDirectory();
+					} catch(SecurityException e) {
+						messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
+						return;
+					}
+
+					if(!isDirectory){
+						mkdir = newDir.mkdirs();
+						if(mkdir == false){
+							messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newSubdirsArray[i] + ")";
+							return;
+						}
+					}
+				}
+
+				//add the new registration information to research_group
+				int i=0;
+
+				// Generate hashed passwords just one time
+				if ( x == 0 ) {
+					String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
+					researchGroupId = DataTools.insertGroup(elab, researchGroup, hashedPassword, groupRole, newUserArea, ay, survey, teacherId);
+				}
+
+				//add the new group-project pair to research_group_project
 				i = DataTools.insertGroupProject(elab, Integer.parseInt(researchProject[x]), researchGroupId);
-	            //add the new group-detectorID pair(s) to research_group_detectorid (if there are any) and just one time
-	           	if ( x == 0 ) {
-		            if(detectorString != null && !detectorString.equals("")) {
-		            	newAccDAQ = detectorString;
-		            	String[] detectorIds = detectorString.split(",");
+				//add the new group-detectorID pair(s) to research_group_detectorid (if there are any) and just one time
+				if ( x == 0 ) {
+					if(detectorString != null && !detectorString.equals("")) {
+						newAccDAQ = detectorString;
+						String[] detectorIds = detectorString.split(",");
 						i = DataTools.insertGroupDetector(elab, researchGroupId, detectorIds);
-	        	    }
-	           	}
+					}
+				}
 			}//end of looping through the projects
-            done = "done";
-        } else {
-        	messages = "Failed to add teacher. Report problem to e-labs@fnal.gov.";
-        }
+
+			done = "done";
+
+		} else {
+			messages = "Failed to add teacher. Report problem to e-labs@fnal.gov.";
+		}
 	}//end of submit
+
+	// This is the alternate form of POST submission processing
 	if (submit != null && submit.equals("Add a new teacher")) {
 		done = "";
 		messages = "";
 	}
+
 	request.setAttribute("messages", messages);
 	request.setAttribute("done", done);
 	request.setAttribute("states", states);
