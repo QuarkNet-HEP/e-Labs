@@ -15,21 +15,21 @@
 	String stateNew = request.getParameter("stateNew");
 	String stateType = request.getParameter("stateType");
 	String stateAbbrev = request.getParameter("stateAbbrev");
-    String city = request.getParameter("city");
-    String cityNew = request.getParameter("cityNew");
-    String school = request.getParameter("school");
-    String schoolNew = request.getParameter("schoolNew");
-    //String teacher = request.getParameter("teacher");
-    String teacherNew = request.getParameter("teacherNew");
-    String teacherEmail = request.getParameter("teacherEmail");
-    String researchGroup = request.getParameter("researchGroup");
-    String[] researchProject = request.getParameterValues("researchProject");
-    String ay = request.getParameter("ay");
-    String groupRole = request.getParameter("groupRole");
-    String detectorString = request.getParameter("detectorString");
-    String survey = request.getParameter("survey");
-    String passwd1 = request.getParameter("passwd1");
-    String passwd2 = request.getParameter("passwd2");
+	String city = request.getParameter("city");
+	String cityNew = request.getParameter("cityNew");
+	String school = request.getParameter("school");
+	String schoolNew = request.getParameter("schoolNew");
+	//String teacher = request.getParameter("teacher");
+	String teacherNew = request.getParameter("teacherNew");
+	String teacherEmail = request.getParameter("teacherEmail");
+	String researchGroup = request.getParameter("researchGroup");
+	String[] researchProject = request.getParameterValues("researchProject");
+	String ay = request.getParameter("ay");
+	String groupRole = request.getParameter("groupRole");
+	String detectorString = request.getParameter("detectorString");
+	String survey = request.getParameter("survey");
+	String passwd1 = request.getParameter("passwd1");
+	String passwd2 = request.getParameter("passwd2");
 	String newAccState, newAccCity, newAccSchool, newAccTeacher, newAccEmail, newAccRG, newAccAY, newAccGR, newAccDAQ, newAccRP, newAccSurvey;
 	newAccState=newAccCity=newAccSchool=newAccTeacher=newAccEmail=newAccRG=newAccAY=newAccGR=newAccDAQ=newAccRP=newAccSurvey="";
 
@@ -64,7 +64,6 @@
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
-
 
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
@@ -260,7 +259,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Add Users</title>
- 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/add-group.css"/>
@@ -268,7 +267,7 @@
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript" src="add-group.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
-  	</head>
+	</head>
 	<body id="add-group">
 		<!-- entire page container -->
 		<div id="container">
@@ -281,226 +280,314 @@
 				</div>
 			</div>
 			<div id="content">
-	    		<h1>Input the information for your new teacher.</h1>
-    		    <form name="myform" method="post" onsubmit="return validateForm();">
-		    		<table width="740" border="1">
-					<c:choose>
-					<c:when test='${done == "" }'>
-    		        <tr>
-    		        	<td>
-    						<center>
-    						<table id="main-table">
-    						<tr><td></td><td colspan="3"><br />States includes states from the U.S., provinces from Canada, and countries.  
-    											When registering countries other than Canada and the U.S., use the country name 
-    											for state and these three letter
-    											<e:popup href="../jsp/abbrev.jsp" target="abbrev" width="400" height="700">abbreviations</e:popup>.
-    							</td>
-    						</tr>
-							<tr>
-								<td>State or Country</td>
-								<td><select name="state" id="state">
-										<option></option>
-										<c:forEach items="${states }" var="state">
-											<option name="${state.value[2] }" value="${state.key }">${state.value[2] }</option>
-										</c:forEach>
-									</select>
-								</td>
-								<td>OR enter a new province/country, abbreviation and state type.<br />
-									<input type="text" id="stateNew" name="stateNew" value="" size="30" maxlength="50"></input>
-									<input type="text" id="stateAbbrev" name="stateAbbrev" value="" size="5" maxlength="3"></input>
-									<select name="stateType" id="stateType">
-										<option value="0" selected>Select type</option>
-										<option value="2">Province</option>
-										<option value="3">Country</option>
-									</select>
-									<br />
-								</td>
-							</tr>
-							<tr>
-								<td>City</td>
-								<td>
-									<select name="city" id="city"></select>
-								</td>
-								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input>
-									<div class="details" id="cityList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
-										<span class="tooltip" id="cityTooltip"></span>
-									</div>
-   								</td>
-							</tr>
-							<tr>
-								<td>School/Institution</td>
-								<td>
-									<select name="school" id="school"></select>
-								</td>
-								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input>
-									<div class="details" id="schoolList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
-										<span class="tooltip" id="schoolTooltip"></span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>New teacher/leader</td>
-								<td colspan="2"><input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input>
-									<div class="details" id="teacherList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
-										<span class="tooltip" id="teacherTooltip"></span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Teacher's/Leader's Email</td>
-								<td colspan="2"><input type=text name=teacherEmail id="teacherEmail" value="" size=30 maxlength=50></input></td>
-							</tr>
-							<tr>
-								<td>Group Name</td>
-								<td colspan="2">
-									<input type=text name=researchGroup id="researchGroup" value="" size=30 maxlength=50>
-								</td>
-							</tr>
-							<tr>
-								<td>Project</td>
-								<td>
-									<c:forEach items="${projects }" var="p">
-										<input type="checkbox" name="researchProject" value="${p.key }" id="project${p.key }"> ${p.value }</input>
-									</c:forEach>
-								</td>
-								<td><div id="daqs" style="visibility: hidden;">DAQ Board ID(s) <input type="text" name="detectorString" id="detectorString" value="" size=30 maxlength=500></input> (e.g. 180,181,182)</div></td>
-							</tr>
-							<tr>
-								<td>Academic Year</td>
-								<td colspan="2">
-									<select name="ay" id="ay">
-										<c:forEach items="${academicyears }" var="ay">
-											<c:choose>
-												<c:when test="${defaultYear == ay.key }">
-													<option value ="AY${ay.key }" selected>${ay.value }</option>
-												</c:when>
-												<c:otherwise>
-													<option value ="AY${ay.key }">${ay.value }</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>In Survey</td>
-								<td colspan="2">
-									<input type="radio" name="survey" value="no" checked> No 
-									<input type="radio" name="survey" value="no" > Yes 
-								</td>
-							</tr>
-                            <tr>
-                            	<td>Password</td>
-                            	<td colspan="2"><input type="password" name="passwd1" id="passwd1" size="16" maxlength="72"></td>
-                            </tr>
-                            <tr>
-                            	<td>Verify Password</td>
-                            	<td colspan="2"><input type="password" name="passwd2" id="passwd2" size="16" maxlength="72"></td>
-                            </tr>
-							<tr><td colspan="3"><div style="text-align: center;"><input type="submit" name="submitinfo" value="Submit"></div></td></tr>
-    						</table>
-    						</center>
-    					 </td>
-					</tr>
-    				</c:when>
-    				<c:otherwise>
-   					<tr><td>
-   						<table width="100%">
-   							<tr>
-   								<td>
-   									<c:choose>
-   										<c:when test='${done == "done" }'>
- 												<table>
-													<tr><td colspan="2"><font color="green">New group: ${newAccRG } created successfully!</font><br /></td></tr>
- 													<tr>
- 														<td>State or Country: </td>
- 														<td>${newAccState }</td>
- 													</tr>
- 													<tr>
- 														<td>City: </td>
- 														<td>${newAccCity }</td>
- 													</tr>
- 													<tr>
- 														<td>School/Institution: </td>
- 														<td>${newAccSchool }</td>
- 													</tr>
- 													<tr>
- 														<td>Teacher/Leader: </td>
- 														<td>${newAccTeacher }</td>
- 													</tr>
- 													<tr>
- 														<td>Teacher's/Leader's Email: </td>
- 														<td>${newAccEmail }</td>
- 													</tr>
- 													<tr>
- 														<td>Group Name: </td>
- 														<td>${newAccRG }</td>
- 													</tr>
- 													<tr>
- 														<td>Project(s): </td>
- 														<td>${newAccRP }</td>
- 													</tr>
- 													<tr>
- 														<td>Academic Year: </td>
- 														<td>${newAccAY }</td>
- 													</tr>
- 													<tr>
- 														<td>Role: </td>
- 														<td>${newAccGR }</td>
- 													</tr>
- 													<c:if test='${newAccDAQ != "" }'>
-	 													<tr>
-	 														<td>DAQ Board ID(s): </td>
-	 														<td>${newAccDAQ }</td>
-	 													</tr>
-	 												</c:if>
- 													<tr>
- 														<td>In Survey: </td>
- 														<td>${newAccSurvey }</td>
- 													</tr>
- 												</table>
- 											<c:if test='${ survey == "Yes" }'>
- 												If you wish to add students to your group (who must complete the survey), 
- 												return to the <a href="../login/logout.jsp">Registration Page</a> and login with your new group name.<br />
- 											</c:if>
- 											<c:if test='${ groupRole == "teacher" }'>
- 												You may add <a href="../login/login.jsp?user=<%=researchGroup%>&pass=<%=passwd1%>&project=<%=researchProject%>">
- 												teachers or research groups</a> as a teacher with logon group <%=researchGroup%>.<br />
- 											</c:if>
-   										</c:when>
-   									</c:choose>
-   								</td>
-   							</tr>
-							<tr><td><div style="text-align: center;"><input type="submit" name="submitinfo" value="Add a new teacher"></div></td></tr>
-    				    </table>
-    				</td></tr>
-    				</c:otherwise>
-    				</c:choose>
-    				</table>
-					<input type="hidden" name="groupRole" id="groupRole" value="teacher"></input>
-    		    </form>
-    		    <div id="messages">${messages }</div>
-			</div>
-<c:forEach items="${states }" var="sa">
-	<input type="hidden" name="stateAbbreviation" value="${sa.value }">
-</c:forEach>
-<c:forEach items="${cities }" var="c">
-	<input type="hidden" name="cityIn${c.value[1] }" value="${c.value}">
-</c:forEach>
-<c:forEach items="${schools }" var="s">
-	<input type="hidden" name="schoolIn${s.value[1]}${s.value[2]}" value="${s.value}">
-</c:forEach>
-<c:forEach items="${teachers }" var="t">
-	<input type="hidden" name="teacherIn${t.value[3]}${t.value[4]}${t.value[5]}" value="${t.value}">
-</c:forEach>
-<c:forEach items="${groups }" var="g">
-	<input type="hidden" name="groups" value="${g.value}">
-</c:forEach>
+				<h1>Input the information for your new teacher.</h1>
+				<form name="myform" method="post" onsubmit="return validateForm();">
+					<table width="740" border="1">
+						<c:choose>
+							<c:when test='${done == "" }'>
+								<tr>
+									<td>
+										<center>
+											<table id="main-table">
+												<tr>
+													<td></td>
+													<td colspan="3"><br />
+														States includes states from the U.S., provinces from Canada, and countries.  
+    												When registering countries other than Canada and the U.S., use the country name 
+    												for state and these three letter
+    												<e:popup href="../jsp/abbrev.jsp" target="abbrev"
+																		 width="400" height="700">abbreviations
+														</e:popup>.
+													</td>
+												</tr>
+												<tr>
+													<td>State or Country</td>
+													<td>
+														<select name="state" id="state">
+															<option></option>
+															<c:forEach items="${states }" var="state">
+																<option name="${state.value[2] }"
+																				value="${state.key }">${state.value[2] }
+																</option>
+															</c:forEach>
+														</select>
+													</td>
+													<td>
+														OR enter a new province/country, abbreviation and state type.<br />
+														<input type="text" id="stateNew" name="stateNew"
+																	 value="" size="30" maxlength="50">
+														</input>
+														<input type="text" id="stateAbbrev" name="stateAbbrev"
+																	 value="" size="5" maxlength="3">
+														</input>
+														<select name="stateType" id="stateType">
+															<option value="0" selected>Select type</option>
+															<option value="2">Province</option>
+															<option value="3">Country</option>
+														</select>
+														<br />
+													</td>
+												</tr>
+												<tr>
+													<td>City</td>
+													<td>
+														<select name="city" id="city"></select>
+													</td>
+													<td>
+														OR enter a new city
+														<input type=text name=cityNew id="cityNew" value=""
+																	 size=30 maxlength=50 >
+														</input>
+														<div class="details" id="cityList"
+																 style="display: inline-block;" >
+															<img src="../graphics/view_data.gif" alt=" "
+																	 border="0" />
+															<span class="tooltip" id="cityTooltip"></span>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>School/Institution</td>
+													<td>
+														<select name="school" id="school"></select>
+													</td>
+													<td>
+														OR enter a new school/institution
+														<input type=text id="schoolNew" name=schoolNew
+																	 value="" size=30 maxlength=50>
+														</input>
+														<div class="details" id="schoolList"
+																 style="display: inline-block;" >
+															<img src="../graphics/view_data.gif" alt=" "
+																	 border="0" />
+															<span class="tooltip" id="schoolTooltip"></span>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>New teacher/leader</td>
+													<td colspan="2">
+														<input type=text name=teacherNew id="teacherNew"
+																	 value="" size=30 maxlength=50>
+														</input>
+														<div class="details" id="teacherList"
+																 style="display: inline-block;" >
+															<img src="../graphics/view_data.gif" alt=" "
+																	 border="0" />
+															<span class="tooltip" id="teacherTooltip"></span>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>Teacher's/Leader's Email</td>
+													<td colspan="2">
+														<input type=text name=teacherEmail id="teacherEmail"
+																	 value="" size=30 maxlength=50>
+														</input>
+													</td>
+												</tr>
+												<tr>
+													<td>Group Name</td>
+													<td colspan="2">
+														<input type=text name=researchGroup id="researchGroup"
+																	 	value="" size=30 maxlength=50>
+														</input>
+													</td>
+												</tr>
+												<tr>
+													<td>Project</td>
+													<td>
+														<c:forEach items="${projects }" var="p">
+															<input type="checkbox" name="researchProject"
+																		 value="${p.key }" id="project${p.key }">
+																${p.value }
+															</input>
+														</c:forEach>
+													</td>
+													<td>
+														<div id="daqs" style="visibility: hidden;">
+															DAQ Board ID(s)
+															<input type="text" name="detectorString"
+																		 id="detectorString" value="" size=30
+																		 maxlength=500>
+															</input>
+															(e.g. 180,181,182)
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>Academic Year</td>
+													<td colspan="2">
+														<select name="ay" id="ay">
+															<c:forEach items="${academicyears }" var="ay">
+																<c:choose>
+																	<c:when test="${defaultYear == ay.key }">
+																		<option value ="AY${ay.key }" selected>
+																			${ay.value }
+																		</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value ="AY${ay.key }">
+																			${ay.value }
+																		</option>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>In Survey</td>
+													<td colspan="2">
+														<input type="radio" name="survey" value="no" checked>
+															No
+														</input>
+														<input type="radio" name="survey" value="no" >
+															Yes
+														</input>
+													</td>
+												</tr>
+												<tr>
+													<td>Password</td>
+													<td colspan="2">
+														<input type="password" name="passwd1" id="passwd1"
+																	 size="16" maxlength="72">
+													</td>
+                        </tr>
+												<tr>
+													<td>Verify Password</td>
+													<td colspan="2">
+														<input type="password" name="passwd2" id="passwd2"
+																	 size="16" maxlength="72">
+													</td>
+												</tr>
+												<tr>
+													<td colspan="3">
+														<div style="text-align: center;">
+															<input type="submit" name="submitinfo" value="Submit">
+														</div>
+													</td>
+												</tr>
+											</table>
+										</center>
+									</td>
+								</tr>
+							</c:when>
+    					<c:otherwise>
+								<tr>
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<c:choose>
+														<c:when test='${done == "done" }'>
+															<table>
+																<tr>
+																	<td colspan="2"><font color="green">
+																		New group: ${newAccRG } created successfully!
+																	</font><br /></td>
+																</tr>
+																<tr>
+																	<td>State or Country: </td>
+ 																	<td>${newAccState }</td>
+																</tr>
+																<tr>
+																	<td>City: </td>
+																	<td>${newAccCity }</td>
+																</tr>
+																<tr>
+																	<td>School/Institution: </td>
+																	<td>${newAccSchool }</td>
+																</tr>
+																<tr>
+																	<td>Teacher/Leader: </td>
+																	<td>${newAccTeacher }</td>
+																</tr>
+																<tr>
+																	<td>Teacher's/Leader's Email: </td>
+																	<td>${newAccEmail }</td>
+																</tr>
+																<tr>
+																	<td>Group Name: </td>
+																	<td>${newAccRG }</td>
+																</tr>
+																<tr>
+																	<td>Project(s): </td>
+																	<td>${newAccRP }</td>
+																</tr>
+																<tr>
+																	<td>Academic Year: </td>
+																	<td>${newAccAY }</td>
+																</tr>
+																<tr>
+																	<td>Role: </td>
+																	<td>${newAccGR }</td>
+																</tr>
+																<c:if test='${newAccDAQ != "" }'>
+																	<tr>
+																		<td>DAQ Board ID(s): </td>
+																		<td>${newAccDAQ }</td>
+																	</tr>
+																</c:if>
+																<tr>
+																	<td>In Survey: </td>
+																	<td>${newAccSurvey }</td>
+																</tr>
+															</table>
+ 															<c:if test='${ survey == "Yes" }'>
+ 																If you wish to add students to your group (who must complete the survey), 
+ 																return to the
+																a href="../login/logout.jsp">Registration Page</a> and login with your new group name.<br />
+															</c:if>
+															<c:if test='${ groupRole == "teacher" }'>
+																You may add
+															<a href="../login/login.jsp?user=<%=researchGroup%>&pass=<%=passwd1%>&project=<%=researchProject%>">
+																 teachers or research groups</a> as a teacher with logon group <%=researchGroup%>.<br />
+															</c:if>
+														</c:when>
+													</c:choose>
+												</td>
+											</tr>
+											<tr><td>
+												<div style="text-align: center;">
+													<input type="submit" name="submitinfo"
+															 	 value="Add a new teacher">
+													</input>
+												</div>
+											</td></tr>
+										</table>
+									</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</table>
+					<input type="hidden" name="groupRole" id="groupRole" value="teacher">
+					</input>
+				</form>
+				<div id="messages">${messages }</div>
+			</div><!-- End <div id="content"> -->
+			
+			<c:forEach items="${states }" var="sa">
+				<input type="hidden" name="stateAbbreviation" value="${sa.value }">
+			</c:forEach>
+			<c:forEach items="${cities }" var="c">
+				<input type="hidden" name="cityIn${c.value[1] }" value="${c.value}">
+			</c:forEach>
+			<c:forEach items="${schools }" var="s">
+				<input type="hidden" name="schoolIn${s.value[1]}${s.value[2]}"
+							 value="${s.value}">
+			</c:forEach>
+			<c:forEach items="${teachers }" var="t">
+				<input type="hidden" name="teacherIn${t.value[3]}${t.value[4]}${t.value[5]}"
+							 value="${t.value}">
+			</c:forEach>
+			<c:forEach items="${groups }" var="g">
+				<input type="hidden" name="groups" value="${g.value}">
+			</c:forEach>
 
 			<!-- end content -->
 
-			<div id="footer">
-			</div>
+			<div id="footer"></div>
 		</div>
 		<!-- end container -->
 	</body>
