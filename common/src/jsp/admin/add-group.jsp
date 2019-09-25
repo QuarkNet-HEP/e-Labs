@@ -15,21 +15,21 @@
 	String stateNew = request.getParameter("stateNew");
 	String stateType = request.getParameter("stateType");
 	String stateAbbrev = request.getParameter("stateAbbrev");
-    String city = request.getParameter("city");
-    String cityNew = request.getParameter("cityNew");
-    String school = request.getParameter("school");
-    String schoolNew = request.getParameter("schoolNew");
-    //String teacher = request.getParameter("teacher");
-    String teacherNew = request.getParameter("teacherNew");
-    String teacherEmail = request.getParameter("teacherEmail");
-    String researchGroup = request.getParameter("researchGroup");
-    String[] researchProject = request.getParameterValues("researchProject");
-    String ay = request.getParameter("ay");
-    String groupRole = request.getParameter("groupRole");
-    String detectorString = request.getParameter("detectorString");
-    String survey = request.getParameter("survey");
-    String passwd1 = request.getParameter("passwd1");
-    String passwd2 = request.getParameter("passwd2");
+	String city = request.getParameter("city");
+	String cityNew = request.getParameter("cityNew");
+	String school = request.getParameter("school");
+	String schoolNew = request.getParameter("schoolNew");
+	//String teacher = request.getParameter("teacher");
+	String teacherNew = request.getParameter("teacherNew");
+	String teacherEmail = request.getParameter("teacherEmail");
+	String researchGroup = request.getParameter("researchGroup");
+	String[] researchProject = request.getParameterValues("researchProject");
+	String ay = request.getParameter("ay");
+	String groupRole = request.getParameter("groupRole");
+	String detectorString = request.getParameter("detectorString");
+	String survey = request.getParameter("survey");
+	String passwd1 = request.getParameter("passwd1");
+	String passwd2 = request.getParameter("passwd2");
 	String newAccState, newAccCity, newAccSchool, newAccTeacher, newAccEmail, newAccRG, newAccAY, newAccGR, newAccDAQ, newAccRP, newAccSurvey;
 	newAccState=newAccCity=newAccSchool=newAccTeacher=newAccEmail=newAccRG=newAccAY=newAccGR=newAccDAQ=newAccRP=newAccSurvey="";
 		
@@ -244,17 +244,17 @@
 	request.setAttribute("academicyears", academicyears);
 	request.setAttribute("defaultYear", defaultYear);
 	request.setAttribute("survey", survey);
-	request.setAttribute("newAccState",newAccState);	
-	request.setAttribute("newAccCity",newAccCity);	
-	request.setAttribute("newAccSchool",newAccSchool);	
-	request.setAttribute("newAccTeacher",newAccTeacher);	
-	request.setAttribute("newAccEmail",newAccEmail);	
-	request.setAttribute("newAccRG",newAccRG);	
-	request.setAttribute("newAccAY",newAccAY);	
-	request.setAttribute("newAccGR",newAccGR);	
-	request.setAttribute("newAccDAQ",newAccDAQ);	
-	request.setAttribute("newAccRP",newAccRP);	
-	request.setAttribute("newAccSurvey",newAccSurvey);	
+	request.setAttribute("newAccState",newAccState);
+	request.setAttribute("newAccCity",newAccCity);
+	request.setAttribute("newAccSchool",newAccSchool);
+	request.setAttribute("newAccTeacher",newAccTeacher);
+	request.setAttribute("newAccEmail",newAccEmail);
+	request.setAttribute("newAccRG",newAccRG);
+	request.setAttribute("newAccAY",newAccAY);
+	request.setAttribute("newAccGR",newAccGR);
+	request.setAttribute("newAccDAQ",newAccDAQ);
+	request.setAttribute("newAccRP",newAccRP);
+	request.setAttribute("newAccSurvey",newAccSurvey);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
