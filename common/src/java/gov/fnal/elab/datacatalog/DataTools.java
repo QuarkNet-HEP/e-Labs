@@ -1512,17 +1512,19 @@ public class DataTools {
     
     //EPeronja-06/16/2015: get all groups
     public static TreeMap<Integer, String> getProjects(Elab elab) throws ElabException{
-    	java.sql.ResultSet rs;
+        java.sql.ResultSet rs;
         Connection con = null;
         PreparedStatement ps = null;
         TreeMap<Integer, String> projects = new TreeMap<Integer, String>();
         //check state
         try {
             con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            /* `project_active` accounts for projects becoming inactive */
             ps = con.prepareStatement(
-                    " SELECT id, name " +
-                    " FROM project ;");
-
+                    " SELECT project.id, project.name " +
+                    " FROM project " +
+                    " INNER JOIN project_active " +
+                    " ON (project.id = project_active.project_id);");
             rs = ps.executeQuery(); 
         	if (rs != null) {
         		while (rs.next()) {
