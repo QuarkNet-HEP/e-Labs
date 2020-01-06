@@ -56,6 +56,9 @@ $currentBufferPosition=-1;
 $totalStackTime=0;
 $foundDecays="false";
 $first_fileRead=1;
+$noStack = 0;
+$timeDiff = 0.2; #200 nanoseconds in microseconds
+$lastRE = 0.00;
 
 #variables for stack reading
 $previousDetector=0;
@@ -133,11 +136,18 @@ sub FindSpecificDecay
 			if( 3.4e-12 < $timeDifference && $timeDifference  < $offset )
 			{
 				# if a second signal happens within the set offset, and on the same channel, then it is a potentual decay
-				if(!$checkEnergy || $possibleEndDecayData[4]<$curTimeOverThreshold)
-				{
+				#MARK ADAMS SAYS THAT THIS TEST NEEDS TO BE REMOVED BECAUSE
+				#IN REALITY THE PULSEWITH OF THE ELECTRON IS NOT LESS THAN THE PULSEWIDTH OF THE MUON
+				#if(!$checkEnergy || $possibleEndDecayData[4]<$curTimeOverThreshold)
+				#{
 				# if the user has enabled checking for energy signatures then make sure the timeOverThreshold of the second signal is less than the timeOverThreshold of the first. if user user has specified that this check isn't necessary, then just write the decay to a (file)
-					$dif=$JulianDayDiff + $possibleEndDecayData[2]-$curTime;
-					$difInMicroSeconds=$dif*($numSecondsInDay*1e6);
+				$dif=$JulianDayDiff + $possibleEndDecayData[2]-$curTime;
+				$difInMicroSeconds=$dif*($numSecondsInDay*1e6);
+#$timeDiff = 0.02;
+#$lastRE = 0.00;
+				$REDiff = ($lastRE - $curTime)*86400/1e-6; #to check whether it could be the same event or not
+				if (abs($REDiff) > $timeDiff) {
+					$lastRE = $curTime;
 					$PossibleDecayNumber++;
 					# The Difference is output in seconds, and the RE and FE is outputted as a partial day.
 					printf OUT1 ("%s\t%s\t%.5f\t%.16f\t%.16f\t%s\t%s\t%s\n", $curChan, $curJulianDay, $difInMicroSeconds, $curTime, $possibleEndDecayData[2],$curTimeOverThreshold, $possibleEndDecayData[4], $PossibleDecayNumber);
@@ -145,6 +155,7 @@ sub FindSpecificDecay
                     #last is used to stop the search for decay events once the first one is found.
                     last;
 				}
+				#}
 			}
 		}
 		$i++;
@@ -161,6 +172,8 @@ sub FindPossibleStartDecayWithCoincidenceCheck
         &CheckThatReadingFromCorrectDetector();
     	@currentRow=split(/\s+/,$array[$currentBufferPosition]);
         &updateStackTime($currentRow[1],$detectorsToCheck[$detector_Number_Checking]);
+        #FROM NOW ON WE WILL IGNORE THE STACKED/UNSTACKED GEOMETRY
+        $noStack = 1;
         if($noStack)
         {
             #if no stack for this detector exists, then try to find decay event for this signal
