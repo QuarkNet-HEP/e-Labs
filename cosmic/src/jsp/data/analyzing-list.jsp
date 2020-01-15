@@ -18,7 +18,12 @@ Collection bin_width = Collections.EMPTY_SET;
 if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
 		bin_width = analysis.getParameterValues("flux_binWidth");
 }
-
+String chanRequire = "";
+String chanVeto = "";
+if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+		chanRequire = (String) analysis.getParameter("singleChannel_require");
+		chanVeto = (String) analysis.getParameter("singleChannel_veto");
+}
 if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
 		request.setAttribute("remfiles", r);
@@ -40,11 +45,22 @@ if (request.getParameter("remove") != null) {
 		if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
 				newAnalysis.setParameter("flux_binWidth", bin_width);
 		}
+	  if (analysis.getType().equals("I2U2.Cosmic::TimeOfFlight")) {
+				newAnalysis.setParameter("singleChannel_require", chanRequire);
+				newAnalysis.setParameter("singleChannel_veto", chanVeto);
+		}
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
 }
+boolean isLifetime = false;
+if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy")) {
+	isLifetime = true;
+}
+
 ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
 request.setAttribute("count", new Integer(f.size()));
+request.setAttribute("isLifetime", isLifetime);
+
 %>
 <div id="analyzing-ist">
 		<form method="post" id="remove-form">
@@ -52,235 +68,268 @@ request.setAttribute("count", new Integer(f.size()));
 						<input type="hidden" name="remfile" value="${fn:escapeXml(r)}" />
 				</c:forEach>
 				<table colspace="4" border="0" width="100%">
-						<tbody>
-								<tr>
-										<td align="center">DAQ#</td>
-										<td align="center">You're analyzing...</td>
-										<td align="center">Chan1 events</td>
-										<td align="center">Chan2 events</td>
-										<td align="center">Chan3 events</td>
-										<td align="center">Chan4 events</td>
-										<td colspan="3" align="center">Raw Data</td>
-										<c:if test="${count > 1}">
-												<td align="center">Remove from analysis</td>
-										</c:if>
-								</tr>
-								<c:forEach items="${missing}" var="m">
-										<tr>
-												<td>${m} not found</td>
-										</tr> 
-								</c:forEach>
-								<%
-								//variables provided for the page including this file
-								HashSet detectorIDs = new HashSet();
-								boolean[] validChans = new boolean[4];
-								int chanTotal[] = new int[4];
-								int allChanTotal = 0;
-								Date startdate = null;
-								Date enddate = null;
-								
-								//strings that are used for information on the plots
-								String rawDataString = "Data: ";
-								String detectorIDString = "Detector(s): ";
-								String queryFilenames = "";
-								
-								//for using with other analysis pages
-								String filenames_str = "";
-								
-								//number of files. Initially display the top 10
-								int num_files = 0;
-								SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
-								//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-								SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
-								//Since we're using Java classes and don't know what class instance to call,
-								// some kind of common variable needs to be setup for this page to reference.
-								// Since we're listing raw data files, use the variable "rawData".
-								for (Iterator i = rs.iterator(); i.hasNext(); ) {
-										CatalogEntry e = (CatalogEntry) i.next();
-										String lfn = e.getLFN();
-										
-										if(e.getTuples().size() == 0){
-								%> 
-								<tr><td colspan="8"><span class="error">Missing file: <%= lfn %></span>
-								</td></tr>
-								<%
-								continue;
-								}
-								//check also for physical file, otherwise do not count it
-								if (!ElabUtil.fileExists(elab, lfn)) {
-								%> 
-		        		<tr><td colspan="8"><span class="error">Missing physical file: <%= lfn %></span>
-								</td></tr>
-		        		<%
-		        		continue;	
-								}
-								//create a string of the date for the file and find start and end date
-								Date fileStartDate = (Date) e.getTupleValue("startdate");
-								//EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
-								//					  Code assumes that fileStartDate is never null: wrong
-								String filedate = "";
-								if(fileStartDate == null){
-								%> 
-								<tr><td colspan="8"><span class="error">Missing Start Date: <%= lfn %></span>
-								</td></tr>
-								<%
-								continue;
-								} else {
-										filedate = sdf.format(fileStartDate);
-										filedate = filedate.replaceAll(" ", "&nbsp;");
-										
-										if(startdate == null || startdate.after(fileStartDate)){
-												startdate = fileStartDate;
-										}
-								}
+	<tbody>
+		<tr>
+		  <td align="center">DAQ#</td>
+			<td align="center">You're analyzing...</td>
+			<td align="center">Chan1 events</td>
+			<td align="center">Chan2 events</td>
+			<td align="center">Chan3 events</td>
+			<td align="center">Chan4 events</td>
+			<c:if test="${isLifetime}">
+				<td align="center">Trigger Gate</td>
+				<td align="center">Delay</td>
+			</c:if>			
+			<td colspan="3" align="center">Raw Data</td>
+			<c:if test="${count > 1}">
+				<td align="center">Remove from analysis</td>
+			</c:if>
+		</tr>
+		<c:forEach items="${missing}" var="m">
+			<tr>
+				<td>${m} not found</td>
+			</tr> 
+		</c:forEach>
+		<%
+			//variables provided for the page including this file
+			HashSet detectorIDs = new HashSet();
+			boolean[] validChans = new boolean[4];
+			int chanTotal[] = new int[4];
+			int allChanTotal = 0;
+			Date startdate = null;
+			Date enddate = null;
+			
+			//strings that are used for information on the plots
+			String rawDataString = "Data: ";
+			String detectorIDString = "Detector(s): ";
+			String queryFilenames = "";
+			
+			//for using with other analysis pages
+			String filenames_str = "";
 
-								Date fileEndDate = (Date) e.getTupleValue("enddate");
-								//EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
-								//					  Code assumes that fileEndDate is never null: wrong			    
-								if(fileEndDate == null){
-								%> 
-								<tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
-								</td></tr>
-								<%
-								continue;
-								} else {
-										if(enddate == null || enddate.before(fileEndDate)){
-												enddate = fileEndDate;
-										}			    	
-								}
-								
-								//create a string of filenames to send to rawanalyzeMultiple for comparison
-								queryFilenames += "f=" + lfn + "&";
-								
-								//create a string of rawData files delimited by commas
-								rawDataString += filedate + ", ";
-								
-								//raw data string for use in passing to other analysis pages
-								filenames_str += "&f=" + lfn;
-								
-								//create a list of detector IDs delimited by commas
-								detectorIDString += e.getTupleValue("detectorid") + ", ";
-								
-								//variables provided for calling page
-								detectorIDs.add(e.getTupleValue("detectorid"));
-								
-								//channel events
-								int chan[] = new int[4];
-								for (int j = 0; j < 4; j++) {
-			    					Long l = (Long) e.getTupleValue("chan" + (j + 1));
-			    					if (l == null) {
-			    							chan[j] = 0;
-			    					}
-			    					else {
-			    							chan[j] = l.intValue();
-			    					}
-			    					validChans[j] = chan[j] > 0 || validChans[j];
-			    					chanTotal[j] += chan[j];
-			    					allChanTotal += chan[j];
-								}
-								
-								//set variables from metadata
-								String city = (String) e.getTupleValue("city");
-								String school = (String) e.getTupleValue("school");
-								school = school.replaceAll(" ", "&nbsp;");
-								String group = (String) e.getTupleValue("group");
-								String detector = (String) e.getTupleValue("detectorid");
-								String title = city + ", " + group + ", Detector: " + detector;
-								
-								if (num_files == 10) {
-										out.println("</tbody><tbody id=\"tog2\" style=\"display:none\">");
-								}
-								
-								//row classes
-								String r_class = "";
-								if (num_files%2 == 0) {
-										r_class = "even";
-								}
-								else{
-										r_class = "odd";
-								}
-								
-								num_files++;    //add a count
-								
-								%>
-								<tr class="<%=r_class%>">
-				    				<td align-"center"><%= detector %></td>
-										<td align="center">
-												<%= school %>&nbsp;<%= filedate %>&nbsp;UTC
-										</td>
-										<td align=center><%=chan[0]%></td>
-										<td align=center><%=chan[1]%></td>
-										<td align=center><%=chan[2]%></td>
-										<td align=center><%=chan[3]%></td>
-										<td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>">View</a>&nbsp</td>
-										<td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
-										<td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
-										<c:if test="${count > 1}">
-												<td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
-										</c:if>
-								</tr>
-				<%
-				}
-				//EPeronja-10/24/2013: Bug 511: unable to rerun study.
-				//					This was caused by not finding the metadata for a certain data file.
-				//					It seems the metadata was deleted while there existed plots referencing it.
-				//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
-				//					The code will break in an ugly fashion.
-				session.setAttribute("num_files", num_files);
-				if (startdate != null) {
-						request.setAttribute("startDate", sef.format(startdate));
-						if (enddate == null) {
-								enddate = startdate;
-						}
-						request.setAttribute("endDate", sef.format(enddate));
-				}
-				//trim off extra ", " in Strings
-				rawDataString = rawDataString.substring(0, rawDataString.length()-2);
-				detectorIDString = detectorIDString.substring(0, detectorIDString.length() - 2);
-				//trim off last "&"
-				if (queryFilenames.length() > 0) {
-						queryFilenames = queryFilenames.substring(0, queryFilenames.length() - 1);
-				}
-				//get total events in all chans
+			//to display for Lifetime
+			String ConReg2 = "";
+			String TMCReg2 = "";
+			String TMCReg1 = "";
+			String triggerRate = "";
+			String delay = "";
 
-				//only show "show more files" link if there's more files to show...
-				if(num_files > 10){
-				%>
-						</tbody>
-						<tbody>
-								<tr>
-										<td></td>
-										<td colspan="1" align="center">
-												<a href="#" id="tog1" onclick="toggle('tog1', 'tog2', '...show more files', 'show fewer files...')">...show more files</a></td>
-										<td colspan="8"></td>
-								</tr>
-				<%
+			//number of files. Initially display the top 10
+			int num_files = 0;
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+			//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
+			//Since we're using Java classes and don't know what class instance to call,
+			// some kind of common variable needs to be setup for this page to reference.
+			// Since we're listing raw data files, use the variable "rawData".
+			for (Iterator i = rs.iterator(); i.hasNext(); ) {
+			    CatalogEntry e = (CatalogEntry) i.next();
+			    String lfn = e.getLFN();
+			
+			    if(e.getTuples().size() == 0){
+			        %> 
+			        <tr><td colspan="8"><span class="error">Missing file: <%= lfn %></span>
+					</td></tr>
+			        <%
+			        continue;
+			    }
+				//check also for physical file, otherwise do not count it
+				if (!ElabUtil.fileExists(elab, lfn)) {
+			        %> 
+		        	<tr><td colspan="8"><span class="error">Missing physical file: <%= lfn %></span>
+					</td></tr>
+		        	<%
+		        	continue;	
 				}
+				//EPeronja: check if there is a .thresh file associated with this lfn
+				if (!ElabUtil.fileExists(elab, lfn+".thresh")) {
+			        %> 
+		        	<tr><td colspan="8"><span class="error">Missing .thresh file: <%= lfn %></span>
+					</td></tr>
+		        	<%
+		        	continue;	
+				}
+				
+			    //create a string of the date for the file and find start and end date
+			    Date fileStartDate = (Date) e.getTupleValue("startdate");
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileStartDate is never null: wrong
+			    String filedate = "";
+			    if(fileStartDate == null){
+			        %> 
+			        <tr><td colspan="8"><span class="error">Missing Start Date: <%= lfn %></span>
+					</td></tr>
+			        <%
+			        continue;
+			    } else {
+				    filedate = sdf.format(fileStartDate);
+				    filedate = filedate.replaceAll(" ", "&nbsp;");
+				    
+				    if(startdate == null || startdate.after(fileStartDate)){
+				        startdate = fileStartDate;
+				    }
+			    }
+
+			    Date fileEndDate = (Date) e.getTupleValue("enddate");
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileEndDate is never null: wrong			    
+			    if(fileEndDate == null){
+			        %> 
+			        <tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
+					</td></tr>
+			        <%
+					continue;
+			    } else {
+				    if(enddate == null || enddate.before(fileEndDate)){
+				        enddate = fileEndDate;
+				    }			    	
+			    }
+			
+			    //create a string of filenames to send to rawanalyzeMultiple for comparison
+			    queryFilenames += "f=" + lfn + "&";
+			
+			    //create a string of rawData files delimited by commas
+			    rawDataString += filedate + ", ";
+			
+			    //raw data string for use in passing to other analysis pages
+			    filenames_str += "&f=" + lfn;
+			
+			    //create a list of detector IDs delimited by commas
+			    detectorIDString += e.getTupleValue("detectorid") + ", ";
+			
+			    //variables provided for calling page
+			    detectorIDs.add(e.getTupleValue("detectorid"));
+			    		
+				//to display for Lifetime
+			    ConReg2 = e.getTupleValue("ConReg2").toString();
+			    int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
+			    triggerRate = String.valueOf(ConReg2Int);
+				TMCReg2 = e.getTupleValue("TMCReg2").toString();
+				TMCReg1 = e.getTupleValue("TMCReg1").toString();
+				int delayInt = Integer.parseInt(TMCReg2,16) - Integer.parseInt(TMCReg1,16);
+				delay = String.valueOf(delayInt*10);
+			    
+			    //channel events
+			    int chan[] = new int[4];
+			    for (int j = 0; j < 4; j++) {
+			    	Long l = (Long) e.getTupleValue("chan" + (j + 1));
+			    	if (l == null) {
+			    		chan[j] = 0;
+			    	}
+			    	else {
+			    		chan[j] = l.intValue();
+			    	}
+			    	validChans[j] = chan[j] > 0 || validChans[j];
+			    	chanTotal[j] += chan[j];
+			    	allChanTotal += chan[j];
+			    }
+
+			    //set variables from metadata
+			    String city = (String) e.getTupleValue("city");
+			    String school = (String) e.getTupleValue("school");
+			    school = school.replaceAll(" ", "&nbsp;");
+			    String group = (String) e.getTupleValue("group");
+			    String detector = (String) e.getTupleValue("detectorid");
+			    String title = city + ", " + group + ", Detector: " + detector;
+
+			    if (num_files == 10) {
+			        out.println("</tbody><tbody id=\"tog2\" style=\"display:none\">");
+			    }
+
+			    //row classes
+			    String r_class = "";
+			    if (num_files%2 == 0) {
+			        r_class = "even";
+			    }
+			    else{
+			        r_class = "odd";
+			    }
+			
+			    num_files++;    //add a count
+			
 				%>
-				<tr>
-						<td></td>
-						<td align="center">
-								<font color="grey">Total (<%=num_files%> files <%=allChanTotal%> events)</font>
-						</td>
-						<td align="center">
-								<font color="grey"><%=chanTotal[0]%></font>
-						</td>
-						<td align="center">
-								<font color="grey"><%=chanTotal[1]%></font>
-						</td>
-						<td align="center">
-								<font color="grey"><%=chanTotal[2]%></font>
-						</td>
-						<td align="center">
-								<font color="grey"><%=chanTotal[3]%></font>
-						</td>
-						<td colspan="2" align="center">
-	    					<a href="../analysis-raw-multiple/analysis.jsp?submit=true&<%=queryFilenames%>">Compare files</a>
-						</td>
-						<c:if test="${count > 1}">
-								<!--  allow removal of files if analyzing more than one -->
-	        			<td colspan="7" align="center">
-	            			<input name="remove" type="submit" value="Remove" />
+				    <tr class="<%=r_class%>">
+				    	<td align-"center"><%= detector %></td>
+				        <td align="center">
+				            <%= school %>&nbsp;<%= filedate %>&nbsp;UTC
+				        </td>
+				        <td align=center><%=chan[0]%></td>
+				        <td align=center><%=chan[1]%></td>
+				        <td align=center><%=chan[2]%></td>
+				        <td align=center><%=chan[3]%></td>
+						<c:if test="${isLifetime}">
+					        <td align=center><%=triggerRate%>ns</td>
+					        <td align=center><%=delay%>ns</td>
+					    </c:if>				        
+				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>">View</a>&nbsp</td>
+				        <td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
+				        <td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
+				        <c:if test="${count > 1}">
+				            <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
+				        </c:if>
+				    </tr>
+				<%
+			}
+			//EPeronja-10/24/2013: Bug 511: unable to rerun study.
+			//					This was caused by not finding the metadata for a certain data file.
+			//					It seems the metadata was deleted while there existed plots referencing it.
+			//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
+			//					The code will break in an ugly fashion.
+			session.setAttribute("num_files", num_files);
+			if (startdate != null) {
+				request.setAttribute("startDate", sef.format(startdate));
+				if (enddate == null) {
+					enddate = startdate;
+				}
+				request.setAttribute("endDate", sef.format(enddate));
+			}
+			//trim off extra ", " in Strings
+			rawDataString = rawDataString.substring(0, rawDataString.length()-2);
+			detectorIDString = detectorIDString.substring(0, detectorIDString.length() - 2);
+			//trim off last "&"
+			if (queryFilenames.length() > 0) {
+				queryFilenames = queryFilenames.substring(0, queryFilenames.length() - 1);
+			}
+			//get total events in all chans
+
+			//only show "show more files" link if there's more files to show...
+			if(num_files > 10){
+				%>
+		</tbody>
+		<tbody>
+		<tr>
+			<td></td>
+		    <td colspan="1" align="center">
+			    <a href="#" id="tog1" onclick="toggle('tog1', 'tog2', '...show more files', 'show fewer files...')">...show more files</a></td>
+		    <td colspan="8"></td>
+		</tr>
+				<%
+			}
+				%>
+		<tr>
+			<td></td>
+		    <td align="center">
+		        <font color="grey">Total (<%=num_files%> files <%=allChanTotal%> events)</font>
+		    </td>
+		    <td align="center">
+		        <font color="grey"><%=chanTotal[0]%></font>
+		    </td>
+		    <td align="center">
+		        <font color="grey"><%=chanTotal[1]%></font>
+		    </td>
+		    <td align="center">
+		        <font color="grey"><%=chanTotal[2]%></font>
+		    </td>
+		    <td align="center">
+		        <font color="grey"><%=chanTotal[3]%></font>
+		    </td>
+		    <td colspan="2" align="center">
+	    	    <a href="../analysis-raw-multiple/analysis.jsp?submit=true&<%=queryFilenames%>">Compare files</a>
+		    </td>
+		    <c:if test="${count > 1}">
+			    <!--  allow removal of files if analyzing more than one -->
+	        	<td colspan="7" align="center">
+	            	<input name="remove" type="submit" value="Remove" />
 		        </td>
 			</c:if>
 		</tr>
