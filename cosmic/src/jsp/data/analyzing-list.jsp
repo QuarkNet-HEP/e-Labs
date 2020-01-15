@@ -51,8 +51,14 @@
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
 	}
+	boolean isLifetime = false;
+	if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy")) {
+		isLifetime = true;
+	}
+    
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
 	request.setAttribute("count", new Integer(f.size()));
+	request.setAttribute("isLifetime", isLifetime);
 %>
 <div id="analyzing-ist">
 <form method="post" id="remove-form">
@@ -68,6 +74,10 @@
 			<td align="center">Chan2 events</td>
 			<td align="center">Chan3 events</td>
 			<td align="center">Chan4 events</td>
+			<c:if test="${isLifetime}">
+				<td align="center">Trigger Gate</td>
+				<td align="center">Delay</td>
+			</c:if>
 			<td colspan="3" align="center">Raw Data</td>
 			<c:if test="${count > 1}">
 				<td align="center">Remove from analysis</td>
@@ -91,7 +101,12 @@
 			String rawDataString = "Data: ";
 			String detectorIDString = "Detector(s): ";
 			String queryFilenames = "";
-			
+			String ConReg2 = "";
+			String TMCReg2 = "";
+			String TMCReg1 = "";
+			String triggerRate = "";
+			String delay = "";
+
 			//for using with other analysis pages
 			String filenames_str = "";
 			
@@ -180,7 +195,15 @@
 			
 			    //variables provided for calling page
 			    detectorIDs.add(e.getTupleValue("detectorid"));
-			    
+
+				ConReg2 = e.getTupleValue("ConReg2").toString();
+			    int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
+			    triggerRate = String.valueOf(ConReg2Int);
+				TMCReg2 = e.getTupleValue("TMCReg2").toString();
+				TMCReg1 = e.getTupleValue("TMCReg1").toString();
+				int delayInt = Integer.parseInt(TMCReg2,16) - Integer.parseInt(TMCReg1,16);
+				delay = String.valueOf(delayInt*10);
+		
 			    //channel events
 			    int chan[] = new int[4];
 			    for (int j = 0; j < 4; j++) {
@@ -229,6 +252,10 @@
 				        <td align=center><%=chan[1]%></td>
 				        <td align=center><%=chan[2]%></td>
 				        <td align=center><%=chan[3]%></td>
+						<c:if test="${isLifetime}">
+					        <td align=center><%=triggerRate%>ns</td>
+					        <td align=center><%=delay%>ns</td>
+					    </c:if>
 				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>">View</a>&nbsp</td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
