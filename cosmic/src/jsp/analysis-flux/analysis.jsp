@@ -100,6 +100,10 @@
 																									--%>
 																									<e:link href="../analysis-lifetime/analysis.jsp" rawData="${analysis.parameters.rawData}">lifetime</e:link>&nbsp;or&nbsp;
 																									<e:link href="../analysis-shower/analysis.jsp" rawData="${analysis.parameters.rawData}">shower</e:link>
+																									<br>
+																									"analysis.parameters.rawData" = ${analysis.parameters.rawData}
+																									<br>
+																							    "fn:escapeXml(analysis.parameters.rawData)" = ${fn:escapeXml(analysis.parameters.rawData)}
 																							</p>
 																							
 																							<c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">
