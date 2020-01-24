@@ -51,12 +51,20 @@ public class DatabaseConnectionManager {
                 // instance, while not enforced, has invariant db props
                 LinkedList<Connection> l = cache.get(properties);
                 if (l == null) {
+										/* If the 'properties' key does not exist in 'cache', or 
+										 * if it has been assigned the value 'null' (unlikely), we 
+										 * instantiate a new LinkedlList as a value and add this  
+										 * K,V pair to 'cache'. */
+                    /* This is the only code that adds a K,V pair to 'cache' */
                     l = new LinkedList<Connection>();
-                    cache.put(properties, l);
+										cache.put(properties, l);
                 }
 								/* What purpose does the next line serve? */
                 Connection conn;
                 if (l.size() == 0) {
+										/* If the list is empty, which it will be if it was just
+										 * created in the above block, we pass off the 'properties'
+										 * key to a new method and return its result. */
                     return getConnection0(properties);
                 }
                 else {
@@ -76,15 +84,21 @@ public class DatabaseConnectionManager {
 
     private static Connection getConnection0(ElabProperties properties)
             throws SQLException {
+				/* userdb.db=//localhost/userdb2006_1022, for example */
         String userdb = properties.getProperty(ElabProperties.PROP_USERDB_DB);
-        String userdbUsername = properties
+				/* userdb.username=portal2006_1022, for example */
+				String userdbUsername = properties
                 .getProperty(ElabProperties.PROP_USERDB_USERNAME);
+				/* userdb.password='', for example */
         String userdbPassword = properties
                 .getProperty(ElabProperties.PROP_USERDB_PASSWORD);
         /*
          * Wicked. Don't remove the check below. It seems to cause jdbc to not
          * find the driver.
          */
+				/* Possible relevant notes on this at 
+				 * https://docs.oracle.com/javase/7/docs/api/java/sql/DriverManager.html
+				 * JG 20Aug2019 */
         try {
             Class.forName("org.postgresql.Driver");
         }
