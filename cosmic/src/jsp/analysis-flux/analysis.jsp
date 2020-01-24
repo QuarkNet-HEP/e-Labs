@@ -94,8 +94,12 @@
 																							
 																							<p id="other-analyses">
 																									Analyze the same files in
+																									<%-- 
 																									<e:link href="../analysis-lifetime/analysis.jsp" rawData="${fn:escapeXml(analysis.parameters.rawData)}">lifetime</e:link>&nbsp;or&nbsp;
 																									<e:link href="../analysis-shower/analysis.jsp" rawData="${fn:escapeXml(analysis.parameters.rawData)}">shower</e:link>
+																									--%>
+																									<e:link href="../analysis-lifetime/analysis.jsp" rawData="${analysis.parameters.rawData}">lifetime</e:link>&nbsp;or&nbsp;
+																									<e:link href="../analysis-shower/analysis.jsp" rawData="${analysis.parameters.rawData}">shower</e:link>
 																							</p>
 																							
 																							<c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">
