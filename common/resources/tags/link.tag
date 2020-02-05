@@ -15,7 +15,7 @@
 
 			if (value instanceof String) {
 					String valueString = (String) value;
-					out.write(value);
+					out.write(valueString);
 			}
 			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
