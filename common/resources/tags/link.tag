@@ -15,6 +15,11 @@
 
 			if (value instanceof String) {
 					String valueString = (String) value;
+					valueString = valueString.replace("[", "");
+					valueString = valueString.replace("]", "");
+					valueString = valueString.replace(" ", "");
+					valueString = valueString.replace("%20", "");
+
 					out.write(valueString);
 			}
 			else if (value.getClass().isArray()) {
