@@ -12,7 +12,30 @@
 			Map.Entry e = (Map.Entry) i.next();
 			String name = (String) e.getKey();
 			Object value = e.getValue();
-			if (value.getClass().isArray()) {
+
+			// Adding fn:escapeXml() to GET parameters causes the input to be
+			// a String literal representation of an Array, rather than the Array
+			// that was originally intended.  Added this block to accommodate that
+			// - JG Feb2020
+			if (value instanceof String) {
+				 // Remove square brackets and spaces
+				 value.replace("[", "");
+				 value.replace("]", "");
+				 value.replace(" ", "");
+
+				 // Break into individual filenames
+				 Array dataFiles = value.split(",");
+
+				 // Now do the same as the 'isArray' block below
+				 Object[] o = (Object[]) dataFiles;
+				 for (int j = 0; j < o.length; j++) {
+				 		out.write(name + "=" + o[j]);
+						if (j < o.length - 1) {
+						 		out.write("&");
+						}
+				 }
+			}
+			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
 				for (int j = 0; j < o.length; j++) {
 					out.write(name + "=" + o[j]);
