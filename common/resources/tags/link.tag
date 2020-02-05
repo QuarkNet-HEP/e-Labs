@@ -14,13 +14,24 @@
 			Object value = e.getValue();
 
 			if (value instanceof String) {
+					// Remove square brackets and spaces
 					String valueString = (String) value;
 					valueString = valueString.replace("[", "");
 					valueString = valueString.replace("]", "");
 					valueString = valueString.replace(" ", "");
 					valueString = valueString.replace("%20", "");
 
-					out.write(valueString);
+					// Break into individual filenames
+					Array dataFiles = valueString.split(",");
+
+					// Do the same as the 'if Array' block below
+					Object[] o = (Object[]) dataFiles;
+					for (int j = 0; j < o.length; j++) {
+							out.write(name + "=" + o[j]);
+							if (j < o.length - 1) {
+									out.write("&");
+							}
+					}
 			}
 			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
