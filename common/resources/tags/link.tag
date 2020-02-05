@@ -14,6 +14,7 @@
 			Object value = e.getValue();
 
 			if (value instanceof String) {
+					String valueString = (String) value;
 					out.write(value);
 			}
 			else if (value.getClass().isArray()) {
