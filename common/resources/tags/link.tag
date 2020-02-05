@@ -13,7 +13,10 @@
 			String name = (String) e.getKey();
 			Object value = e.getValue();
 
-			if (value.getClass().isArray()) {
+			if (false) {
+					int x = 5;
+			}
+			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
 				for (int j = 0; j < o.length; j++) {
 					out.write(name + "=" + o[j]);
