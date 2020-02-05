@@ -19,9 +19,9 @@
 			// - JG Feb2020
 			if (value instanceof String) {
 				 // Remove square brackets and spaces
-				 value.replace("[", "");
-				 value.replace("]", "");
-				 value.replace(" ", "");
+				 value = value.replace("[", "");
+				 value = value.replace("]", "");
+				 value = value.replace(" ", "");
 
 				 // Break into individual filenames
 				 Array dataFiles = value.split(",");
