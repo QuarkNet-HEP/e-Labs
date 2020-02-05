@@ -13,8 +13,9 @@
 			String name = (String) e.getKey();
 			Object value = e.getValue();
 
-			if (false) {
-					int x = 5;
+			if (true) {
+					String valueClass = value.getClass().getName();
+					out.write(valueClass);
 			}
 			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
