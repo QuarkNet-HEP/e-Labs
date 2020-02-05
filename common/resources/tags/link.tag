@@ -13,7 +13,7 @@
 			String name = (String) e.getKey();
 			Object value = e.getValue();
 
-			if (true) {
+			if (value instanceof String) {
 					String valueClass = value.getClass().getName();
 					out.write(valueClass);
 			}
