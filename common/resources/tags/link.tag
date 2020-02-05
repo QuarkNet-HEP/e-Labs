@@ -14,10 +14,6 @@
 			Object value = e.getValue();
 
 			if (value instanceof String) {
-					value = value.replace("[", "");
-					value = value.replace("]", "");
-					value = value.replace(" ", "");
-
 					out.write(value);
 			}
 			else if (value.getClass().isArray()) {
