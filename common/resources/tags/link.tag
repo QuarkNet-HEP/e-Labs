@@ -26,10 +26,7 @@
 
 					// Do the same as the 'if Array' block below
 					for (int j = 0; j < dataFiles.length; j++) {
-							out.write(name + "=" + dataFiles[j]);
-							if (j < dataFiles.length - 1) {
-									out.write("&");
-							}
+							out.write("text");
 					}
 			}
 			else if (value.getClass().isArray()) {
