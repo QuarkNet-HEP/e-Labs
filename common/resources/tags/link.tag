@@ -24,10 +24,7 @@
 					// Break into individual filenames
 					Array dataFiles = valueString.split(",");
 
-					// Do the same as the 'if Array' block below
-					for (int j = 0; j < dataFiles.length; j++) {
-							out.write("text");
-					}
+					out.write("placeholder");
 			}
 			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
