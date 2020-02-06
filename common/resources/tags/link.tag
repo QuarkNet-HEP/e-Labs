@@ -25,10 +25,9 @@
 					Array dataFiles = valueString.split(",");
 
 					// Do the same as the 'if Array' block below
-					Object[] o = (Object[]) dataFiles;
-					for (int j = 0; j < o.length; j++) {
-							out.write(name + "=" + o[j]);
-							if (j < o.length - 1) {
+					for (int j = 0; j < dataFiles.length; j++) {
+							out.write(name + "=" + dataFiles[j]);
+							if (j < dataFiles.length - 1) {
 									out.write("&");
 							}
 					}
