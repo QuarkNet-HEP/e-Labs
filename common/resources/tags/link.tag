@@ -24,7 +24,12 @@
 					// Break into individual filenames
 					String[] dataFiles = valueString.split(",");
 
-					out.write("placeholder");
+					for (int j = 0; j < dataFiles.length; j++) {
+							out.write(name + "=" + dataFiles[j]);
+							if (j < dataFiles.length - 1) {
+									out.write("&");
+							}
+					}
 			}
 			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
