@@ -22,7 +22,7 @@
 					valueString = valueString.replace("%20", "");
 
 					// Break into individual filenames
-					Array dataFiles = valueString.split(",");
+					String[] dataFiles = valueString.split(",");
 
 					out.write("placeholder");
 			}
