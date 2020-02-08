@@ -12,7 +12,26 @@
 			Map.Entry e = (Map.Entry) i.next();
 			String name = (String) e.getKey();
 			Object value = e.getValue();
-			if (value.getClass().isArray()) {
+
+			if (value instanceof String) {
+					// Remove square brackets and spaces
+					String valueString = (String) value;
+					valueString = valueString.replace("[", "");
+					valueString = valueString.replace("]", "");
+					valueString = valueString.replace(" ", "");
+					valueString = valueString.replace("%20", "");
+
+					// Break into individual filenames
+					String[] dataFiles = valueString.split(",");
+
+					for (int j = 0; j < dataFiles.length; j++) {
+							out.write(name + "=" + dataFiles[j]);
+							if (j < dataFiles.length - 1) {
+									out.write("&");
+							}
+					}
+			}
+			else if (value.getClass().isArray()) {
 				Object[] o = (Object[]) value;
 				for (int j = 0; j < o.length; j++) {
 					out.write(name + "=" + o[j]);
