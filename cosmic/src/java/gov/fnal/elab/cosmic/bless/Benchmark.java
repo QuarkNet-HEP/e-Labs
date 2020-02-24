@@ -53,10 +53,10 @@ public class Benchmark {
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
-		}		
+		}
 		return rs;
 	}// end of getUnblessedWithBenchmark
-	
+
 	//EPeronja: get all the benchmark info for splits given a period of time
 	public static ResultSet getSplitBenchmarkInfoByInterval(Elab elab, Date startDate, Date endDate) throws ElabException {
 		ResultSet rs = null;
@@ -67,7 +67,7 @@ public class Benchmark {
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
-		}	
+		}
 		if (rs != null) {
 			rs.sort("name", true);
 		}
@@ -86,13 +86,13 @@ public class Benchmark {
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
-		}		
+		}
 		if (rs != null) {
 			rs.sort("name", true);
 		}
 		return rs;
 	}//end of getSplitBenchmarkInfoByInterval
-	
+
 	//EPeronja: get the benchmark files for the given detector
 	public static ResultSet getBenchmarkFileName(Elab elab, Integer detectorid) throws ElabException {
 		ResultSet rs = null;
@@ -106,7 +106,7 @@ public class Benchmark {
 		}
 		return rs;
 	}//end of getBenchmarkFileName
-	
+
 	//EPeronja: get the default benchmark file for a given detector
 	public static String getDefaultBenchmark(Elab elab, Integer detectorid) throws ElabException {
 		String benchmarkDefault = "";
@@ -137,7 +137,7 @@ public class Benchmark {
 		}
 		return rs;
 	}//end of getBlessedDataFilesByBenchmark
-	
+
 	//EPeronja: get split files that could be selected as benchmark files for the given detector
 	public static ResultSet getBenchmarkCandidates(Elab elab, Integer detectorid, Date startDate, Date endDate) throws ElabException {
 		ResultSet rs = null;
@@ -147,8 +147,8 @@ public class Benchmark {
 			and.add(new Equals("type", "split"));
 			and.add(new Like("detectorid", Integer.toString(detectorid)));
 			and.add(new GreaterOrEqual("startdate", startDate));
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(endDate); 
+			Calendar c = Calendar.getInstance();
+			c.setTime(endDate);
 			c.add(Calendar.DATE, 1);
 		    endDate = c.getTime();
 			and.add(new LessOrEqual("enddate", endDate));
@@ -156,7 +156,7 @@ public class Benchmark {
 		}
 		return rs;
 	}//end of getBenchmarkCandidates
-	
+
 	//EPeronja: set file as new default benchmark
 	public static Long setFileAsBenchmark(DataCatalogProvider dcp, String benchmark, String benchmarkLabel) throws ElabException {
 	    Long duration = 0L;
@@ -179,12 +179,12 @@ public class Benchmark {
 					chan2Rate = chan2.doubleValue() / duration;
 					chan3Rate = chan3.doubleValue() / duration;
 					chan4Rate = chan4.doubleValue() / duration;
-					triggerRate = triggers.doubleValue() / duration;	
+					triggerRate = triggers.doubleValue() / duration;
 				} else {
-					chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
+					chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;
 				}
 			} catch (Exception e) {
-				chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
+				chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;
 			}
 			if (duration > 0) {
 				entry.setTupleValue("blessed", true);
@@ -209,15 +209,15 @@ public class Benchmark {
 				meta.add("chan2Rate float " + String.valueOf(chan2Rate));
 				meta.add("chan3Rate float " + String.valueOf(chan3Rate));
 				meta.add("chan4Rate float " + String.valueOf(chan4Rate));
-				meta.add("triggerRate float " + String.valueOf(triggerRate));				
-				dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
+				meta.add("triggerRate float " + String.valueOf(triggerRate));
+				dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));
 			} else {
 				throw new ElabException("Duration is either zero or negative");
 			}
-	    }
+		}
 		return duration;
 	}//end of setFileAsBenchmark
-	
+
 	//EPeronja: retrieve all the files that share geometry with the benchmark
 	public static ResultSet getAllFilesByBenchmarkGeometry(Elab elab, Integer detectorid, String benchmark) throws ElabException {
 		ResultSet rs = null;
@@ -229,17 +229,15 @@ public class Benchmark {
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
 			Date startDate = new Date();
 			if (geosBefore != null && !geosBefore.isEmpty()) {
-				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 
-		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-		        
-		        Date endDate = new Date();
-		        while (j.hasNext()) {
-		            GeoEntryBean gb = j.next();
-		            if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
-		                startDate = j.next().getDate();
-		            }
-		        }
-				
+				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey());
+				Iterator<GeoEntryBean> j = g.getGeoEntries();
+				Date endDate = new Date();
+				while (j.hasNext()) {
+					GeoEntryBean gb = j.next();
+					if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
+						startDate = j.next().getDate();
+					}
+				}
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
@@ -247,13 +245,13 @@ public class Benchmark {
 				geosAfter.remove(geosAfter.firstKey());
 				if (!geosAfter.isEmpty()) {
 					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-			        Iterator<GeoEntryBean> j = g.getGeoEntries();
+					Iterator<GeoEntryBean> j = g.getGeoEntries();
 					while (j.hasNext()) {
-			            GeoEntryBean gb = j.next();
-			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-						    endDate = geoEntryAfter.getDate(); 
-			            }
-			        }
+						GeoEntryBean gb = j.next();
+						if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+							endDate = geoEntryAfter.getDate();
+						}
+					}
 				}
 			}
 			In and = new In();
@@ -269,7 +267,7 @@ public class Benchmark {
 		}
 		return rs;
 	}//end of getAllFilesByBenchmarkGeometry
-	
+
 	//EPeronja: retrieve all the unblessed files that share geometry with the given benchmark
 	public static ResultSet getUnblessedFilesByBenchmarkGeometry(Elab elab, Integer detectorid, String benchmark) throws ElabException {
 		ResultSet rs = null;
@@ -279,17 +277,17 @@ public class Benchmark {
 			Geometries geometries = new Geometries(elab, detectorid);
 			Geometry g = geometries.getGeometry(detectorid);
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
-	        Date startDate = new Date();
+			Date startDate = new Date();
 			if (geosBefore != null && !geosBefore.isEmpty() && geosBefore.lastKey() != null) {
-				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 				
-		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-		        startDate = geoEntryBefore.getDate();
-		        while (j.hasNext()) {
-		            GeoEntryBean gb = j.next();
-		            if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
-		                startDate = j.next().getDate();
-		            }
-		        }
+				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey());
+				Iterator<GeoEntryBean> j = g.getGeoEntries();
+				startDate = geoEntryBefore.getDate();
+				while (j.hasNext()) {
+					GeoEntryBean gb = j.next();
+					if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
+						startDate = j.next().getDate();
+					}
+				}
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
@@ -297,14 +295,13 @@ public class Benchmark {
 				geosAfter.remove(geosAfter.firstKey());
 				if (!geosAfter.isEmpty()) {
 					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-			        Iterator<GeoEntryBean> j = g.getGeoEntries();
-			        
-			        while (j.hasNext()) {
-			            GeoEntryBean gb = j.next();
-			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-						    endDate = geoEntryAfter.getDate(); 
-			            }
-			        }
+					Iterator<GeoEntryBean> j = g.getGeoEntries();
+					while (j.hasNext()) {
+						GeoEntryBean gb = j.next();
+						if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+							endDate = geoEntryAfter.getDate();
+						}
+					}
 				}
 			}
 			In and = new In();
@@ -334,40 +331,40 @@ public class Benchmark {
 	        sb.append("</a>");
 		}
 		return sb.toString();
-	}//end of getSplitDetails	
-	
+	}//end of getSplitDetails
+
 	//EPeronja: get the string to display the split files plus the blessed, unblessed, comments, stacked, unstacked icons.
 	public static String getIcons(VDSCatalogEntry entry) throws ElabException {
 		StringBuilder sb = new StringBuilder("");
 		if (entry != null) {
 			String filename = entry.getLFN();
-	        sb.append("<a href=\"../jsp/comments-add.jsp?fileName="+filename);
-	        String comments = (String) entry.getTupleValue("comments");
-	        if (comments != null && !comments.equals("")) {
-	        	sb.append("\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>");
-	        } else {
-	        	sb.append("\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>");        	
-	        }	
-	        
-	        if (entry.getTupleValue("stacked") != null) {
-	        	Boolean stacked = (Boolean) entry.getTupleValue("stacked");
-	        	if (stacked) {
-	        		sb.append("<img alt=\"Stacked data\" src=\"../graphics/stacked.gif\"/>");
-	        	} else {
-	        		sb.append("<img alt=\"Unstacked data\" src=\"../graphics/unstacked.gif\"/>");
-	        	}
-	        } else {
-	        	sb.append("<i>No Geo</i>");
-	        }
-	        if (entry.getTupleValue("blessed") != null) {
-	        	Boolean blessed = (Boolean) entry.getTupleValue("blessed");
-	        	if (blessed) {
-	        		sb.append("<img alt=\"Blessed data\" src=\"../graphics/star.gif\"/>");
-	        	} else {
-	        		sb.append("<img alt=\"Unblessed data\" src=\"../graphics/unblessed.gif\"/>");       		
-	        	}
-	        }
+			sb.append("<a href=\"../jsp/comments-add.jsp?fileName="+filename);
+			String comments = (String) entry.getTupleValue("comments");
+			if (comments != null && !comments.equals("")) {
+				sb.append("\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>");
+			} else {
+				sb.append("\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>");
+			}
+
+			if (entry.getTupleValue("stacked") != null) {
+				Boolean stacked = (Boolean) entry.getTupleValue("stacked");
+				if (stacked) {
+					sb.append("<img alt=\"Stacked data\" src=\"../graphics/stacked.gif\"/>");
+				} else {
+					sb.append("<img alt=\"Unstacked data\" src=\"../graphics/unstacked.gif\"/>");
+				}
+			} else {
+				sb.append("<i>No Geo</i>");
+			}
+			if (entry.getTupleValue("blessed") != null) {
+				Boolean blessed = (Boolean) entry.getTupleValue("blessed");
+				if (blessed) {
+					sb.append("<img alt=\"Blessed data\" src=\"../graphics/star.gif\"/>");
+				} else {
+					sb.append("<img alt=\"Unblessed data\" src=\"../graphics/unblessed.gif\"/>");
+				}
+			}
 		}
 		return sb.toString();
 	}//end of getIcons
- }
+}
