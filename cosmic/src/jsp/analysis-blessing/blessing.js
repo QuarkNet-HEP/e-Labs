@@ -47,7 +47,7 @@ togglePlot = function(seriesIdx)
 
 //EPeronja-01/23/2013: Bug472- added next functions to redraw the axes based on user input, called from compare1.jsp
 redrawPlotX = function(newX, type)
-{   
+{
 	if (type == "min") {
 		chanOptions.xaxis.min = trigOptions.xaxis.min = satOptions.xaxis.min = voltOptions.xaxis.min = tempOptions.xaxis.min = pressOptions.xaxis.min = newX;
 	} else {
@@ -78,6 +78,7 @@ resetPlotX = function(objectIdXMin, objectIdXMax)
 	pressPlot = $.plot($("#pressureChart"), [ pressuredata ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	writeLegends();
 }
+
 redrawPlotY = function(newY, chart, type)
 {
 	var tempOps;
@@ -110,7 +111,7 @@ redrawPlotY = function(newY, chart, type)
 			writeLegend(satPlot.getCanvas(), "# Satellites in view", 325, 250);
 			break;
 		case ("voltage"):
-			if (type == "min") {			
+			if (type == "min") {
 				voltOptions.yaxis.min = newY;
 			} else {
 				voltOptions.yaxis.max = newY;
@@ -119,7 +120,7 @@ redrawPlotY = function(newY, chart, type)
 			writeLegend(voltPlot.getCanvas(), "Vcc (Volts)", 325, 250);
 			break;
 		case ("temperature"):
-			if (type == "min") {			
+			if (type == "min") {
 				tempOptions.yaxis.min = newY;
 			} else {
 				tempOptions.yaxis.max = newY;
@@ -135,16 +136,17 @@ redrawPlotY = function(newY, chart, type)
 			}
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
-			break;		
+			break;
 	}
 }
+
 resetPlotY = function(chart, objectIdYMin, objectIdYMax)
 {
 	var inputYMinObject = document.getElementById(objectIdYMin);
 	inputYMinObject.value = "";
 	var inputYMaxObject = document.getElementById(objectIdYMax);
 	inputYMaxObject.value = "";
-	
+
 	switch (chart) {
 		case ("channel"):
 			chanOptions.yaxis.min = originalChanYMin;
@@ -181,11 +183,11 @@ resetPlotY = function(chart, objectIdYMin, objectIdYMax)
 			pressOptions.yaxis.max = originalPressYMax;
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
-			break;		
+			break;
 	}
 }
 
-var options = { 
+var options = {
 	xaxis: {
 		labelHeight: 20,
 		min: 0,
@@ -196,22 +198,22 @@ var options = {
 		labelWidth: 40,
 		reserveSpace: true,
 	},
-	xaxes: [ 
+	xaxes: [
 		{ position: 'bottom' }
 	],
 	yaxes: {
-		axisLabelUseCanvas: true			
+		axisLabelUseCanvas: true
 	},
 	xaxes: {
-		axisLabelUseCanvas: true			
-	},	
+		axisLabelUseCanvas: true
+	},
 	colors: ["#000000"]
 };
 
-var showSeries = { 
+var showSeries = {
 	series: {
 		lines: {
-			show: false 
+			show: false
 		},
 		points: {
 			show: true,
@@ -220,10 +222,10 @@ var showSeries = {
 	}
 }
 
-var hideSeries = { 
+var hideSeries = {
 	series: {
 		lines: {
-			show: false 
+			show: false
 		},
 		points: {
 			show: false,
@@ -231,7 +233,7 @@ var hideSeries = {
 	}
 }
 
-var channelOptions = { 
+var channelOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -242,13 +244,13 @@ var channelOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
 
-var triggerOptions = { 
+var triggerOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -259,13 +261,13 @@ var triggerOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
 
-var benchmarkOptions = { 
+var benchmarkOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -277,13 +279,13 @@ var benchmarkOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
 
-var benchmarkTriggerOptions = { 
+var benchmarkTriggerOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -295,13 +297,13 @@ var benchmarkTriggerOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
 
-var satelliteOptions = { 
+var satelliteOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -312,14 +314,14 @@ var satelliteOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom'//, axisLabel: 'Seconds since midnight UTC' }
 			}
 		],
 		colors: ["#000000"]
 	};
 
-var voltageOptions = { 
+var voltageOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -330,12 +332,12 @@ var voltageOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
-var temperatureOptions = { 
+var temperatureOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -346,12 +348,12 @@ var temperatureOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
 	};
-var pressureOptions = { 
+var pressureOptions = {
 		xaxis: {
 			labelHeight: 20,
 			min: 0,
@@ -362,7 +364,7 @@ var pressureOptions = {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [ 
+		xaxes: [
 			{ position: 'bottom' }
 		],
 		colors: ["#000000"]
@@ -386,7 +388,7 @@ function seriesLabelFormatter(label, series) {
 	if (series.idx == (data.length - 1)) {
 		return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>' + reference;
 	} else {
-		return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';		
+		return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
 	}
 }
 
@@ -403,7 +405,7 @@ function writeLegend(canvas, ymessage, width, height) {
 	context.rotate(-Math.PI / 2);
 	context.textAlign = ymessage;
 	context.fillText(ymessage, 0, 10);
-	context.restore();		
+	context.restore();
 }//end of writeLegend
 
 function writeLegends() {
@@ -421,7 +423,7 @@ function writeLegends2() {
 }//end of writeLegends2
 
 
-function onDataLoad1(json) {	
+function onDataLoad1(json) {
 	// we need channel data to be selectable, so do not discard it 
 	channel1data = json.channel1;
 	channel2data = json.channel2;
@@ -432,7 +434,7 @@ function onDataLoad1(json) {
 	benchmarkChannel2data = json.benchmarkChannel2;
 	benchmarkChannel3data = json.benchmarkChannel3;
 	benchmarkChannel4data = json.benchmarkChannel4;
-	benchmarkTriggerdata = json.benchmarkTrigger;	
+	benchmarkTriggerdata = json.benchmarkTrigger;
 	data = [];
 	data.push(channel1data);
 	data.push(channel2data);
@@ -465,7 +467,7 @@ function onDataLoad1(json) {
 	originalTempYMax = tempOptions.yaxis.max;
 	originalPressYMin = pressOptions.yaxis.min;
 	originalPressYMax = pressOptions.yaxis.max;
-	
+
 	onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
 	trigPlot = $.plot($("#triggerChart"), trigger ,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 	satPlot = $.plot($("#satChart"), [ json.satellites ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
@@ -484,7 +486,7 @@ function saveChart(plot_to_save, name_id, div_id) {
 			var canvas = plot_to_save.getCanvas();
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
-		    
+
 			$.ajax({
 				url: "savecharts.jsp",
 				type: 'POST',
@@ -495,8 +497,8 @@ function saveChart(plot_to_save, name_id, div_id) {
 						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
 					}
 				}
-			});	
-		
+			});
+
 		} else {
 			rc = false;
 		}
@@ -511,9 +513,9 @@ function saveChart(plot_to_save, name_id, div_id) {
 		}
     }
     return rc;
-}	
+}
 
-function onDataLoad2(json) {	
+function onDataLoad2(json) {
 	// we need channel data to be selectable, so do not discard it 
 	channel1data = json.channel1;
 	channel2data = json.channel2;
@@ -533,13 +535,13 @@ function onDataLoad2(json) {
 	satellitedata = "";
 	voltagedata = "";
 	temperaturedata = "";
-	pressuredata = "";	
+	pressuredata = "";
 	onOffPlot = $.plot($("#benchmarkChannelChart"), data, $.extend({}, benchmarkChanOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	trigPlot = $.plot($("#benchmarkTriggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 	writeLegends2();
 }
 
-function onDataLoadWithBenchmark(json) {	
+function onDataLoadWithBenchmark(json) {
 	// we need channel data to be selectable, so do not discard it 
 	channel1data = json.channel1;
 	channel2data = json.channel2;
@@ -555,7 +557,7 @@ function onDataLoadWithBenchmark(json) {
     channel4LowerError = json.channel4LowerError;
     channel4UpperError = json.channel4UpperError;
     triggerLowerError = json.triggerLowerError;
-    triggerUpperError = json.triggerUpperError;    
+    triggerUpperError = json.triggerUpperError;  
     benchmarkChannel1data = json.benchmarkChannel1;
 	benchmarkChannel2data = json.benchmarkChannel2;
 	benchmarkChannel3data = json.benchmarkChannel3;
@@ -565,7 +567,7 @@ function onDataLoadWithBenchmark(json) {
 	voltagedata = "";
 	temperaturedata = "";
 	pressuredata = "";
-	
+
 	$.plot($("#benchmarkChannel1Chart"), [channel1LowerError, channel1UpperError, channel1data, benchmarkChannel1data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
 	$.plot($("#benchmarkChannel2Chart"), [channel2LowerError, channel2UpperError, channel2data, benchmarkChannel2data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
 	$.plot($("#benchmarkChannel3Chart"), [channel3LowerError, channel3UpperError, channel3data, benchmarkChannel3data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
