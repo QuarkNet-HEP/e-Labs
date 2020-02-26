@@ -31,7 +31,7 @@ function showChartsWithBenchmark(filename, benchmark, path){
 		type: "GET",
 		success: onDataLoadWithBenchmark,
 		error: clearPlots
-	});				
+	});
 }//end of showCharts
 
 function highlightRow(ts, filename) {
@@ -40,7 +40,7 @@ function highlightRow(ts, filename) {
 			ts[i].style.border = "solid 0px";
 			ts[i].style.backgroundColor = "#ffffff";
 		}
-	}		
+	}
 	var t = document.getElementById("table"+filename);
 	if (t) {
 		t.style.border="1px solid black";
@@ -57,7 +57,7 @@ function selectRadioRow(radios, filename) {
 	var radio = document.getElementById("benchmark"+filename);
 	if (radio) {
 		radio.checked = true;
-	}	
+	}
 }// end of selectRadioRow
 
 function showArrow(arrows, filename){
@@ -69,7 +69,7 @@ function showArrow(arrows, filename){
 	var arrow = document.getElementById("arrow"+filename);
 	if (arrow) {
 		arrow.style.visibility = "visible";
-	}	
+	}
 }//end of showArrow
 
 function clearPlots() {
@@ -131,7 +131,7 @@ function retrieveAll() {
 		if (selectedDetector.value != "") {
 			document.getElementById('submitButton').click();
 		}
-	}				
+	}
 }//end of retrieveAll
 
 function retrieveUnblessedOnly() {
@@ -167,7 +167,7 @@ function showCandidates(selectObject){
 	if (benchmark.selectedIndex != -1) {
 		benchmark.value = selectObject.value;
 		document.getElementById('submitButton').click();
-	}				
+	}
 }//end of showCandidates
 
 function checkSelection(flag) {
@@ -181,7 +181,7 @@ function checkSelection(flag) {
 					return true;
 				}
 			}
-		}		
+		}
 		var messages = document.getElementById("messages");
 		messages.innerHTML = "<i>* Select files(s) to bless.</i>"
 		return false;

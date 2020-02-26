@@ -11,7 +11,7 @@
 
 <%
 	String file = request.getParameter("file");
-    String benchmark = request.getParameter("benchmark");
+  String benchmark = request.getParameter("benchmark");
 	
 	if (StringUtils.isBlank(file)) {
 		response.sendError(HttpURLConnection.HTTP_BAD_REQUEST); 

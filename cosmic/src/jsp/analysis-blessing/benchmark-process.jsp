@@ -16,6 +16,8 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 
+<%-- This page consists of a form that includes a file selection list and a
+panel of graphs, as well as Java code (in the form of a Scriptlet) for processing the submitted form and redisplaying the page. --%>
 <%
 	ElabUserManagementProvider p = elab.getUserManagementProvider();
 	CosmicElabUserManagementProvider cp = null;
@@ -24,10 +26,10 @@
 	}
 	else {
 		throw new ElabJspException("The user management provider does not support management of DAQ IDs. ");
-	}    
+	}
 	SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 	DATEFORMAT.setLenient(false);
-	
+
 	String reqType = request.getParameter("submitButton");
 	String selectedBenchmark = request.getParameter("selectedBenchmark");
 	String includeBlessed = request.getParameter("includeBlessed");
@@ -41,7 +43,7 @@
 		if (selectedDetector.equals("Choose detector")) {
 			selectedDetector = "0";
 		}
-		benchmark = request.getParameter("benchmark");			
+		benchmark = request.getParameter("benchmark");
 		String[] filesToBless = request.getParameterValues("blessfiles");
 		if (filesToBless != null && benchmark != null) {
 			BlessProcess bp = new BlessProcess();
@@ -49,37 +51,44 @@
 		}
 	}
 	request.setAttribute("results", results);
-	//get detectors and benchmark files
+
+	// Get detectors associated with the current user
 	Collection detectors = cp.getDetectorIds(user);
+
+	// Instantiate variables for data and benchmark files
 	ResultSet searchResults = null;
 	String defaultBenchmark = "";
 	String firstDataFile = "";
 	TreeMap<String, String> filenameDisplay = new TreeMap<String, String>();
 	TreeMap<String, Integer> unblessedForDetector = new TreeMap<String, Integer>();
 	TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
-	
+
 	if (!selectedDetector.equals("")) {
-	  	//retrieve unblessed files for this detector
-	  	Integer key = Integer.parseInt(selectedDetector);
-		//get benchmark files so we can retrieve candidates for the selected detector
-	  	searchResults = Benchmark.getBenchmarkFileName(elab, key);
-  		String[] benchmarks = searchResults.getLfnArray();
+		/* Retrieve unblessed files for this detector */
+
+		Integer key = Integer.parseInt(selectedDetector);
+
+		// Get benchmark files so we can retrieve candidates for the selected detector
+		searchResults = Benchmark.getBenchmarkFileName(elab, key);
+		String[] benchmarks = searchResults.getLfnArray();
 		defaultBenchmark = "";
 		for (int i = 0; i < benchmarks.length; i++){
 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmarks[i]);
-  			benchmarkTuples.put(benchmarks[i], e);
-  		  	//if there is no selected benchmark, then we need to use the default		
-  			if (selectedBenchmark.equals("")) {
-	  			if (e != null) {
+			benchmarkTuples.put(benchmarks[i], e);
+			// If no benchmark was selected, use the default
+			if (selectedBenchmark.equals("")) {
+				if (e != null) {
 					if (e.getTupleValue("benchmarkdefault").toString().equals("true")) {
-						defaultBenchmark = e.getLFN();					
-		  			} 
+						defaultBenchmark = e.getLFN();
+		  		}
 				}
-  			} else {
-  				defaultBenchmark = selectedBenchmark;  					
-  			}
+  		} else {
+  			defaultBenchmark = selectedBenchmark;
+  		}
 		}
-		//if there is no default and/or not selected then pick the first if there is any benchmark
+
+		/* If there is no default and/or no benchmark was selected, then pick the
+		 * first if there are any at all */
 		if (defaultBenchmark.equals("") && benchmarks.length > 0) {
 			defaultBenchmark = benchmarks[0];
 		}
@@ -93,12 +102,12 @@
 			}
 			if (searchResults != null) {
 				String [] filenames = searchResults.getLfnArray();
-		  		for (int i=0; i < filenames.length; i++) {
-					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);		  			
+		  	for (int i=0; i < filenames.length; i++) {
+					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
 					String display = Benchmark.getIcons(entry);
-		  			unblessedForDetector.put(filenames[i], key);
-		  			filenameDisplay.put(display, filenames[i]);
-		  		}
+					unblessedForDetector.put(filenames[i], key);
+					filenameDisplay.put(display, filenames[i]);
+				}
 				if (filenameDisplay.size() > 0) {
 					Entry<String,String> firstEntry = filenameDisplay.firstEntry();
 					firstDataFile = firstEntry.getValue();
@@ -110,9 +119,9 @@
 	request.setAttribute("detectors", detectors);
 
 	if (benchmarkTuples.isEmpty()) {
-		request.setAttribute("unblessedForDetector", "");		
+		request.setAttribute("unblessedForDetector", "");
 	} else {
-		request.setAttribute("unblessedForDetector", unblessedForDetector);		
+		request.setAttribute("unblessedForDetector", unblessedForDetector);
 	}
 	request.setAttribute("benchmarkTuples", benchmarkTuples);
 	request.setAttribute("defaultBenchmark", defaultBenchmark);
@@ -126,13 +135,13 @@
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<title>Blessing Process</title>
-			<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />		
+			<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 			<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 			<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 			<link rel="stylesheet" type="text/css" href="../css/benchmark.css"/>
 			<script type="text/javascript" src="../include/elab.js"></script>
 		</head>
-		
+
 		<body id="benchmark-process" >
 			<!-- entire page container -->
 			<div id="container">
@@ -143,129 +152,163 @@
 					</div>
 				</div>
 				<div id="content">
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
-			<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
-			<script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
-			<script type="text/javascript" src="../include/excanvas.min.js"></script>
-			<script type="text/javascript" src="../include/elab.js"></script>      
-			<script type="text/javascript" src="blessing.js"></script>	
-			<script type="text/javascript" src="benchmark-process.js"></script>
-			<script>
-			$(document).ready(function() {
-				if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
-					showChartsWithBenchmark("<%=firstDataFile%>", "<%= defaultBenchmark %>", "benchmark-get-data.jsp");
-				}
-			});		
-			</script>			
-<h1>Bless uploaded datafiles.</h1>
+					<script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script>
+					<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
+					<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
+					<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.axislabels.js"></script>
+					<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
+					<script language="javascript" type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
+					<script type="text/javascript" src="../include/excanvas.min.js"></script>
+					<script type="text/javascript" src="../include/elab.js"></script>
+					<script type="text/javascript" src="blessing.js"></script>
+					<script type="text/javascript" src="benchmark-process.js"></script>
+					<script>
+						$(document).ready(function() {
+							if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
+								showChartsWithBenchmark("<%=firstDataFile%>", "<%= defaultBenchmark %>", "benchmark-get-data.jsp");
+							}
+						});
+					</script>
 
-<p>Blessing Tutorials: 
-	<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
-	<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a> |
-	<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
-</p>
+					<h1>Bless uploaded datafiles.</h1>
+					<p>Blessing Tutorials: 
+						<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+						<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a> |
+						<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
+					</p>
 
-<ul>
-	<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>'Retrieve All' checkbox</strong> if you want to re-bless files.</li>
-	<li>Select <strong>benchmark</strong> file from dropdown.</li>
-	<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
-	<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
-</ul>
-<form id="benchmarkProcessForm" method="post" >
-	<table style="border: 1px solid black; width: 110%; padding: 5px;">
-	    <tr class="benchmarkRow">
-	    	<td class="benchmarkHeader" >Detector<br />
-	    		<select name="detectorId" id="detectorId" onChange="javascript:showAllFiles(this);">
-   			    	<option>Choose detector</option>
-   						<c:forEach items="${detectors}" var="detectors">
-   				  			<c:choose>
-		   				  		<c:when test="${detectors == detector}">
-		 						      <option value="${detectors}" selected="true">${detectors}</option>
-		 						</c:when>
-		 						<c:otherwise>
-		 						      <option value="${detectors}">${detectors}</option> 						
-		 						</c:otherwise>
-		 				   	</c:choose>
-	   					</c:forEach>
-   				</select><br />
-   				<c:choose>
-   					<c:when test='${includeBlessed != null && includeBlessed == "YES"}'>
-	   					<input type="checkbox" id="blessAll" name="blessAll" checked onclick="javascript:retrieveUnblessedOnly();">Retrieve all</input>
-	   				</c:when>
-	   				<c:otherwise>
-	   					<input type="checkbox" id="blessAll" name="blessAll" onclick="javascript:retrieveAll();">Retrieve all</input>
-	   				</c:otherwise>
-	   			</c:choose>
-   			</td>
-   			<td class="benchmarkHeader">Benchmark<br />
-  			    <c:choose>
-   			      <c:when test="${not empty benchmarkTuples}">
-		   				<select name="benchmark" id="benchmark" onChange="javascript:showCandidates(this);">
-	   						<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
-	   				  			<c:choose>
-			   				  		<c:when test="${benchmarkTuples.key == defaultBenchmark}">
-			 						      <option value="${benchmarkTuples.key}" selected="true">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
-			 						</c:when>
-			 						<c:otherwise>
-			 						      <option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option> 						
-			 						</c:otherwise>
-			 				   	</c:choose>
-		   					</c:forEach>
-		   				</select>   
-		   			</c:when>
-		   			<c:otherwise>
-		   				<a href="benchmark.jsp">Add</a>
-		   			</c:otherwise>
-				</c:choose>   			   			
-   			</td>
-   			<td class="benchmarkHeader">
-				<input type="submit" name="submitButton" id="submitButton" value="Check Selected Files" ></input>
-   			</td>
-   	    </tr>
-	    <c:choose>
-		     <c:when test="${not empty unblessedForDetector}">
-	    	 	<tr>
-					<td class="benchmarkHeader" colspan="3"><input type="checkbox" name="checkAll" id="checkAll" onclick="javascript:selectAll(this);">Bless all files</input></td>
-	    	 	</tr>
-	    	 </c:when>
-	    	 <c:otherwise>
-		    	 <c:choose>
-		    	 	<c:when test="<%= selectedDetector == null %>">
-			    		<tr>
-			    			<td>There are no benchmark files set for this detector. <a href="benchmark.jsp">Add</a> file.</td>
-			    		</tr> 
-	 		   		</c:when>
-	    		</c:choose>
-	    	 </c:otherwise>
-	    </c:choose>
-   	 	<tr>
-		  	<td colspan="3"><div name="messages" id="messages" class="messages"></div></td>
-  	   </tr>   	    
-	  <tr>
-	    <td nowrap class="detectorList">
-    		<c:choose>
-    		  <c:when test="${not empty unblessedForDetector }"> 				  
-    		  	<div class="detectorTable" id="tableWrapper">
-					<c:forEach items="${filenameDisplay}" var="filename">
-					  <div id="${filename.value}">
-     					<table id="table${filename.value}" class="highlight">
+					<ul>
+						<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>'Retrieve All' checkbox</strong> if you want to re-bless files.</li>
+						<li>Select <strong>benchmark</strong> file from dropdown.</li>
+						<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
+						<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
+					</ul>
+
+					<form id="benchmarkProcessForm" method="post" >
+						<table style="border: 1px solid black; width: 110%; padding: 5px;">
+							<tr class="benchmarkRow">
+								<td class="benchmarkHeader" >Detector<br />
+									<% // User selects from all DAQs associated with user %>
+									<select name="detectorId" id="detectorId"
+													onChange="javascript:showAllFiles(this);">
+										<option>Choose detector</option>
+										<c:forEach items="${detectors}" var="detectors">
+											<c:choose>
+												<c:when test="${detectors == detector}">
+													<option value="${detectors}" selected="true">
+														${detectors}
+													</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${detectors}">${detectors}</option>			
+		 										</c:otherwise>
+											</c:choose>
+										</c:forEach>
+   								</select><br />
+									<% /* "Retrieve all" onclick function changes based on value of 'includeBlessed',
+											* set by benchmark-process.js */ %>
+									<c:choose>
+										<c:when test='${includeBlessed != null && includeBlessed == "YES"}'>
+	   									<input type="checkbox" id="blessAll" name="blessAll" checked
+										 				 onclick="javascript:retrieveUnblessedOnly();">
+												Retrieve all
+											</input>
+	   								</c:when>
+	   								<c:otherwise>
+											<input type="checkbox" id="blessAll" name="blessAll"
+										 				 onclick="javascript:retrieveAll();">
+												Retrieve all
+											</input>
+										</c:otherwise>
+									</c:choose>
+								</td>
+
+								<% // User selects one of the uploaded Benchmark files for this DAQ %>
+								<td class="benchmarkHeader">Benchmark<br />
+									<c:choose>
+										<c:when test="${not empty benchmarkTuples}">
+											<select name="benchmark" id="benchmark"
+															onChange="javascript:showCandidates(this);">
+												<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
+													<c:choose>
+														<c:when test="${benchmarkTuples.key == defaultBenchmark}">
+															<option value="${benchmarkTuples.key}" selected="true">
+																${benchmarkTuples.value.tupleMap.benchmarklabel}
+															</option>
+														</c:when>
+														<c:otherwise>
+															<option value="${benchmarkTuples.key}">
+																${benchmarkTuples.value.tupleMap.benchmarklabel}
+															</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
+										</c:when>
+										<c:otherwise>
+											<a href="benchmark.jsp">Add</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
+
+								<% // The form submit button %>
+								<td class="benchmarkHeader">
+									<input type="submit" name="submitButton" id="submitButton"
+							 					 value="Check Selected Files" >
+									</input>
+								</td>
+							</tr>
+
+							<c:choose>
+								<c:when test="${not empty unblessedForDetector}">
+	    	 					<tr>
+										<td class="benchmarkHeader" colspan="3">
+											<input type="checkbox" name="checkAll" id="checkAll"
+									 					 onclick="javascript:selectAll(this);">
+												Bless all files
+											</input>
+										</td>
+	    	 					</tr>
+	    	 				</c:when>
+								<c:otherwise>
+									<c:choose>
+										<c:when test="<%= selectedDetector == null %>">
+									<tr>
+										<td>There are no benchmark files set for this detector. <a href="benchmark.jsp">Add</a> file.</td>
+									</tr>
+										</c:when>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>
 							<tr>
+								<td colspan="3">
+									<div name="messages" id="messages" class="messages"></div>
+								</td>
+							</tr>
+							<% // End of top row %>
+							
+							<tr>
+								<td nowrap class="detectorList">
+									<c:choose>
+										<c:when test="${not empty unblessedForDetector }">
+											<div class="detectorTable" id="tableWrapper">
+												<c:forEach items="${filenameDisplay}" var="filename">
+													<div id="${filename.value}">
+														<table id="table${filename.value}" class="highlight">
+															<tr>
 								<td class="benchmarkSelection"><input type="checkbox" name="blessfiles" id="checkbox_${filename.value}" value="${filename.value}"></input></td>
 								<td><a href="#charts" onclick='javascript:showChartsWithBenchmark("${filename.value}", "${defaultBenchmark}", "benchmark-get-data.jsp");'>${filename.value}</a> ${filename.key}</td>
 							</tr>
 						</table>
 					  </div>
-					</c:forEach>					
+					</c:forEach>
 				</div>
 			  </c:when>
 			</c:choose>
 		</td>
 		<td style="vertical-align: top;" colspan="2">
     		<c:choose>
-    		  <c:when test="${not empty unblessedForDetector }"> 				  
+    		  <c:when test="${not empty unblessedForDetector }">
 				<%@ include file="benchmark-charts-process.jspf" %>
 			  </c:when>
 		 	</c:choose>
@@ -291,8 +334,8 @@
 	</c:when>
 </c:choose>
 				</div>
-				<!-- end content -->	
-			
+				<!-- end content -->
+
 				<div id="footer">
 				</div>
 			</div>
