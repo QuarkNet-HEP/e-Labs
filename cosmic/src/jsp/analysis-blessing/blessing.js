@@ -198,19 +198,15 @@ var options = {
 		labelHeight: 20,
 		min: 0,
 		max: 86400,
-		tickSize: 7200 // 2 hours 
+		tickSize: 7200, // 2 hours 
+		position: 'bottom',
+		axisLabelUseCanvas: true
 	},
 	yaxis: {
 		labelWidth: 40,
 		reserveSpace: true,
 	},
-	xaxes: [
-		{ position: 'bottom' }
-	],
 	yaxes: {
-		axisLabelUseCanvas: true
-	},
-	xaxes: {
 		axisLabelUseCanvas: true
 	},
 	colors: ["#000000"]
@@ -244,15 +240,13 @@ var channelOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -261,15 +255,13 @@ var triggerOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -278,16 +270,14 @@ var benchmarkOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 21600 // 6 hours 
+			tickSize: 21600, // 6 hours 
+			position: 'bottom'
 		},
 		yaxis: {
 			min: 0,
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -296,16 +286,14 @@ var benchmarkTriggerOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 21600 // 2 hours 
+			tickSize: 21600, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			min: 0,
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -314,16 +302,13 @@ var satelliteOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours 
+			position: 'bottom'//, axisLabel: 'Seconds since midnight UTC'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom'//, axisLabel: 'Seconds since midnight UTC' }
-			}
-		],
 		colors: ["#000000"]
 };
 
@@ -332,15 +317,13 @@ var voltageOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -349,15 +332,13 @@ var temperatureOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
@@ -366,15 +347,13 @@ var pressureOptions = {
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 7200, // 2 hours
+			position: 'bottom'
 		},
 		yaxis: {
 			labelWidth: 40,
 			reserveSpace: true,
 		},
-		xaxes: [
-			{ position: 'bottom' }
-		],
 		colors: ["#000000"]
 };
 
