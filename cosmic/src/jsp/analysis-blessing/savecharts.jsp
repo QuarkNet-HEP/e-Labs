@@ -21,28 +21,27 @@
 	String groupName = user.getGroup().getName();
 	String plotDir = user.getDir("plots");
 	//check if the directory exist, create otherwise
-	File file = new File(plotDir); 
+	File file = new File(plotDir);
 	if (!file.exists()) {
-		file.mkdirs(); 
+		file.mkdirs();
 	}
-	
+
 	GregorianCalendar gc = new GregorianCalendar();
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 	String date = sdf.format(gc.getTime());
 
 	String dstFile = "savedimage-" + groupName + "-" + date + ".png";
-    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm.png";
-    
-    String success = "";
-    try {
+	String dstThumb = "savedimage-" + groupName + "-" + date + "_thm.png";
+
+	String success = "";
+	try {
 		//write a image byte array into file system
 		FileOutputStream imageOutFile = new FileOutputStream(plotDir+"/"+dstFile);
 		imageOutFile.write(imageDataBytes);
 
-		
 		DataCatalogProvider dcp = elab.getDataCatalogProvider();
 		List<String> meta = new ArrayList();
-	
+
 		meta.add("city string " + group.getCity());
 		meta.add("group string " + group.getName());
 		meta.add("name string " + filename);
@@ -54,18 +53,18 @@
 		meta.add("thumbnail string " + dstFile);
 		meta.add("filename string " + dstFile);
 		meta.add("study string blesschart");
-		meta.add("type string plot"); 
-		meta.add("creationdate date " + (new Timestamp(System.currentTimeMillis())).toString()); 
-	
+		meta.add("type string plot");
+		meta.add("creationdate date " + (new Timestamp(System.currentTimeMillis())).toString());
+
 		dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
-	
+
 		imageOutFile.close();
 
     } catch (Exception e) {
     	success = e.toString();
     }
-    
-	String url = group.getDirURL("plots") + '/' + dstFile;    
+
+	String url = group.getDirURL("plots") + '/' + dstFile;
 	response.getWriter().print(url);
 %>
 
