@@ -237,9 +237,11 @@ var hideSeries = {
 
 var channelOptions = {
 		xaxis: {
+			show:true,
 			labelHeight: 20,
 			min: 0,
 			max: 86400,
+			ticks: [[0, "zero"], [1.2, "one mark"], [2.4, "two marks"]],
 			tickSize: 7200, // 2 hours
 			position: 'bottom'
 		},
