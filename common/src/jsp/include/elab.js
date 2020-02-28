@@ -324,16 +324,20 @@ function validateMultiplePlotName(existingPlotNamesId, plotNameId, onOffPlot, me
 	var newName = document.getElementById(plotNameId);
 	var existingNames = document.getElementById(existingPlotNamesId);
 	var validName = true;
-    for (var i = 0; i < existingNames.length; i++) {
-        if (newName.value == existingNames.options[i].value) {
-        	validName = false;
-        }
-    }
-    if (validName) {
-    	saveChart(onOffPlot, plotNameId, messageDivId);
-    	return true;
-    } else {
-    	alert("There is an existing plot with this name. Please choose a different name.");
-    	return false;
-    }
+
+	// Compare newName to all existingNames and invalidate the new name if found
+	for (var i = 0; i < existingNames.length; i++) {
+		if (newName.value == existingNames.options[i].value) {
+			validName = false;
+		}
+	}
+
+	// Send to blessing.js/saveChart() if valid, throw alert if not
+	if (validName) {
+		saveChart(onOffPlot, plotNameId, messageDivId);
+		return true;
+	} else {
+		alert("There is an existing plot with this name. Please choose a different name.");
+		return false;
+	}
 }
