@@ -320,24 +320,27 @@ function validatePlotName(plotNameId) {
     }
 }
 
+
+/* NB cosmic/src/jsp/analysis-blessing/blessing.js must be separately included 
+ * by whatever file includes this file in order to use this function */
 function validateMultiplePlotName(existingPlotNamesId, plotNameId, onOffPlot, messageDivId) {
-	var newName = document.getElementById(plotNameId);
-	var existingNames = document.getElementById(existingPlotNamesId);
-	var validName = true;
+		var newName = document.getElementById(plotNameId);
+		var existingNames = document.getElementById(existingPlotNamesId);
+		var validName = true;
 
-	// Compare newName to all existingNames and invalidate the new name if found
-	for (var i = 0; i < existingNames.length; i++) {
-		if (newName.value == existingNames.options[i].value) {
-			validName = false;
+		// Compare newName to all existingNames and invalidate the new name if found
+		for (var i = 0; i < existingNames.length; i++) {
+				if (newName.value == existingNames.options[i].value) {
+						validName = false;
+				}
 		}
-	}
 
-	// Send to blessing.js/saveChart() if valid, throw alert if not
-	if (validName) {
-		saveChart(onOffPlot, plotNameId, messageDivId);
-		return true;
-	} else {
-		alert("There is an existing plot with this name. Please choose a different name.");
-		return false;
+		// Send to blessing.js/saveChart() if valid, throw alert if not
+		if (validName) {
+				saveChart(onOffPlot, plotNameId, messageDivId);
+				return true;
+		} else {
+				alert("There is an existing plot with this name. Please choose a different name.");
+				return false;
 	}
 }
