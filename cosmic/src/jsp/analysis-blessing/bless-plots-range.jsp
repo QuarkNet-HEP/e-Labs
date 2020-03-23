@@ -49,19 +49,19 @@
 		if (!f.exists()) {
 			ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
 			//Collections.sort(fileArray);
-		
+
 			if (fileArray != null) {
 				pfns = new File[fileArray.size()];
 				filenames = new String[fileArray.size()];
 				for (int i = 0; i < fileArray.size(); i++) {
 					if (!fileArray.get(i).equals("[]") && !fileArray.get(i).equals("")) {
-						String temp = (String) fileArray.get(i);				
+						String temp = (String) fileArray.get(i);
 						String cleanname = temp.replace(" ","");
 						String pfn = RawDataFileResolver.getDefault().resolve(elab, cleanname) + ".bless";
 						pfns[i] = new File(pfn);
 						filenames[i] = cleanname;
 					}
-				}			
+				}
 				if (pfns.length > 0) {
 					BlessDataRange bdr = new BlessDataRange(elab,pfns,filenames,results.getOutputDir());
 				}
@@ -80,7 +80,7 @@
 		  	String iconLinks = bpd.getIcons(elab, filename);
 		  	fileIcons.add(filename+" "+iconLinks);
 	}
-	  
+
 	request.setAttribute("fileArray", fileArray);
 	request.setAttribute("fileIcons", fileIcons);
 	request.setAttribute("id", id);
@@ -89,9 +89,8 @@
 
 	 //EPeronja-09/24/2015: populated saved plots dropdowns
 	  ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
-	  request.setAttribute("plotNames",plotNames); 
+	  request.setAttribute("plotNames",plotNames);
 
-	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -99,17 +98,17 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Blessing Plots From Flux Study</title>
-		<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />		
+		<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/benchmark.css"/>
-		<%-- This page uses jQuery, but it's included through header.jsp  --%>
+		<%-- This page uses jQuery, included through header.jsp  --%>
 		<%-- <script type="text/javascript" src="../include/jquery/js/jquery-1.12.4.min.js"></script> --%>
 		<script type="text/javascript" src="../include/jquery/js/jquery-migrate-1.4.1.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
-	
+
 	<body id="benchmark"  >
 			<!-- entire page container -->
 			<div id="container">
@@ -119,7 +118,7 @@
 									<%@ include file="../include/nav-rollover.jspf" %>
 							</div>
 					</div>
-					
+
 					<div id="content">
 							<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
 							<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
@@ -220,7 +219,7 @@
 																	<option>${plotName }</option>
 															</c:forEach>
 													</select>
-													(View your saved plot names)<br />    
+													(View your saved plot names)<br />
  													</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesVoltage","voltChartName", voltPlot, "voltMsg");' value="Save Voltage Chart"></input>
 													<div id="voltMsg"></div>
 											</div>
@@ -243,7 +242,7 @@
 													</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTemperature","tempChartName", tempPlot, "tempMsg");' value="Save Temperature Chart"></input>
 													<div id="tempMsg"></div>
 											</div>
-											
+
 											<h2>Barometric Pressure</h2>
 											<!-- control added to change axes values -->
 											<jsp:include page="chartcontrols-range.jsp">
@@ -258,7 +257,7 @@
 																	<option>${plotName }</option>
 															</c:forEach>
 													</select>
-													(View your saved plot names)<br />              
+													(View your saved plot names)<br />
 													</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesPressure","pressChartName", pressPlot, "pressMg");' value="Save Pressure Chart"></input>
 													<div id="pressMsg"></div>
 											</div>
@@ -279,7 +278,7 @@
 							<input type="hidden" name="outputDir" id="outputDir" value="${outputDir}"/>
 			</div>
 			<!-- end content -->
-		
+
 			<div id="footer">
 			</div>
 		</div>
