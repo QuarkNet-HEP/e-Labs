@@ -112,7 +112,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Uploads Report</title>
+    <title>Performance Report</title>
     <link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
     <link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
     <link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
