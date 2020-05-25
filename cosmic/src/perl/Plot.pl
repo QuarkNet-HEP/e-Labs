@@ -14,15 +14,16 @@
 use Getopt::Long;
 
 if($#ARGV < 4){
-	die "usage: Plot.pl -file [datafile 1 to plot] -file [datafile 2 to plot, etc] -extra [extrafunctions file] -param [parameter filename] -svg [.png filename] -type [plot type] optional for all(-title [title label] -ylabel [ylabel] -xlabel [xlabel] -caption [caption] -lowx [x lowerbound] -highx [x upperbound] -lowy [y lowerbound] -highy [y upperbound]) optional for 3D graphs(-zlabel [zlabel] -lowz [z lowerbound] -highz [z upperbound])\n\tplot type: 0 - histogram, 1 - line, 2 - 3d, 3 - lifetime-histogram w/ best-fit line, 4 - Scatter, 5 - TEST. 6 - 3d w/o lines, 7 - histogram with color and multiple files\n";
+	die "usage: Plot.pl -file [datafile 1 to plot] -file [datafile 2 to plot, etc] -extra [extrafunctions file] -param [parameter filename] -svg [.png filename] -type [plot type] optional for all(-title [title label] -ylabel [ylabel] -xlabel [xlabel] -caption [caption] -plot_semilog [plot_semilog] -lowx [x lowerbound] -highx [x upperbound] -lowy [y lowerbound] -highy [y upperbound]) optional for 3D graphs(-zlabel [zlabel] -lowz [z lowerbound] -highz [z upperbound])\n\tplot type: 0 - histogram, 1 - line, 2 - 3d, 3 - lifetime-histogram w/ best-fit line, 4 - Scatter, 5 - TEST. 6 - 3d w/o lines, 7 - histogram with color and multiple files\n";
 }
 
 my %h = ();
 #my @infile = ();
-my $result = GetOptions(\%h, 'file=s', 'extra=s', 'param=s', 'svg=s', 'type=i', 'title=s', 'ylabel=s', 'xlabel=s', 'zlabel=s', 'caption=s', 'lowx=s', 'highx=s', 'lowy=s', 'highy=s', 'lowz=s', 'highz=s');
+my $result = GetOptions(\%h, 'file=s', 'extra=s', 'param=s', 'svg=s', 'type=i', 'title=s', 'ylabel=s', 'xlabel=s', 'zlabel=s', 'caption=s', 'plot_semilog=s', 'lowx=s', 'highx=s', 'lowy=s', 'highy=s', 'lowz=s', 'highz=s');
 
 $infileList = $h{'file'};
 @infile = split (/\s+/, $infileList);
+$logFile = 'log'+$infile[0];
 $extraFunctionsFile = $h{'extra'};
 $outfile_param = $h{'param'};
 $outfile_png = $h{'svg'};
@@ -31,6 +32,7 @@ $title = $h{'title'};
 $ylabel = $h{'ylabel'};
 $xlabel = $h{'xlabel'};
 $caption = $h{'caption'};
+$semilog = $h{'plot_semilog'};
 $lowX = $h{'lowx'};
 $highX = $h{'highx'};
 $lowY = $h{'lowy'};
@@ -61,7 +63,7 @@ for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 #zlabel ' ' 4 means to move the text 4 chars to the right
 #label 2 center refers to previous label set as number 2
 #nokey - don't display names of datasets on graph
-@options = ("set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 14 enhanced",
+@options = ("set terminal svg size 700 700 dynamic enhanced ",# fname \'Helvetica\' fsize 14",
 #@options = ("set terminal png",
 	"set output '$outfile_png'",
 	"set size 1,1", #size of the picture
@@ -104,7 +106,11 @@ elsif($plot_type == 2){	#3D
 elsif($plot_type == 3) { # lifetime fit
     push @options, "set label \"$caption\" font \"Helvetica,14\" at graph .95,.90 right";
 	&extraFunctions();
-    push @options, "plot '$infile[0]' using 1:2 with points, '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize $functionString";
+	if ($semilog == '1') {
+   		push @options, "set format y '%g'";
+    	push @options, "set logscale y";
+    }
+ 	push @options, "plot '$infile[0]' using 1:2 with points, '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize $functionString";
 }
 elsif($plot_type == 4){	#Scatter plot
     push @options, "set label \"$caption\" font \"Helvetica,14\" at graph .95,.95 right";
@@ -153,7 +159,7 @@ elsif($plot_type == 7){ # Hist w/ color (used for performance study)
     push @options, $plot;
     @label = split(/\\n/, $caption);
     $y = .95 - (($#label + 1)*.035); # sets the key placement to be dynamic based on how many lines the caption is
-    splice(@options, 3, 1, "set key graph .88,$y");
+    #splice(@options, 3, 1, "set key graph .88,$y");
 }
 else{
 	die "Must choose a plot type (0, 1, 2, 3, 4, 5, 6, or 7)\n";

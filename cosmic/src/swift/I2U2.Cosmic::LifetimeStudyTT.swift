@@ -58,7 +58,7 @@ type AxisParams {
 	}
 }
 
-(File image, File outfile_param) Plot(string ptype, string caption, AxisParams x, AxisParams y, 
+(File image, File outfile_param) Plot(string ptype, string caption, string plot_semilog, AxisParams x, AxisParams y, 
 	AxisParams z, string title, File infile, File extraFun) {
 	
 	app {
@@ -73,6 +73,7 @@ type AxisParams {
 			"-ylabel" y.label
 			"-zlabel" z.label
 			"-caption" caption
+			"-plot_semilog" plot_semilog
 			"-lowx" x.low
 			"-highx" x.high
 			"-lowy" y.low
@@ -84,7 +85,7 @@ type AxisParams {
 
 (File png) SVG2PNG(File svg, string height) {
 	app {
-		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+		SVG2PNG "-h" height "-w" height @filename(svg) "-o" @filename(png);
 	}
 }
 
@@ -131,6 +132,7 @@ File	geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string	plot_caption = @arg("plot_caption");
 
+string 	plot_semilog = @arg("plot_semilog");
 
 AxisParams x, y, z;
 
@@ -172,7 +174,7 @@ frequencyOut = Frequency(lifetimeOut, freq_binType, freq_binValue, freq_col);
 	extraFun_turnedOn);
 	
 File svg <"plot.svg">;
-(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
+(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, plot_semilog, x, y, z, plot_title,
 	frequencyOut, extraFun_out);
 
 File png <single_file_mapper;file=@arg("plot_outfile_image")>;
