@@ -115,6 +115,10 @@
 					</p>
 					
 					<jsp:include page="../data/analyzing-list.jsp"/>
+					<p id="other-analyses">
+						Analyze the same files in
+						<e:link href="../analysis-timeofflight/analysis.jsp" rawData="${analysis.parameters.rawData}">Time Of Flight</e:link>
+					</p>
 					
 				    <c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">
 				    	<h2>Invalid keys:</h2>
