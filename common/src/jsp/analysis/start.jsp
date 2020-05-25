@@ -6,6 +6,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="java.util.Iterator" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
@@ -13,6 +14,8 @@
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
 <%@ page import="gov.fnal.elab.analysis.pqueue.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.cosmic.util.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
 	if (analysis == null) {
@@ -109,6 +112,47 @@
 		    notifier = "default";
 		}
 	    
+		String studyType = (String) run.getAttribute("type");
+		
+		if (studyType.equals("ProcessUpload") || studyType.equals("EventPlot") || studyType.equals("RawAnalyzeStudy")) {
+			//ignore saving
+		} else {
+			//EPeronja-05/22/2020: Save the run info for later reports on elab performance
+			String groupName = user.getGroup().getName();
+		    GregorianCalendar gc = new GregorianCalendar();
+		    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		    String date = sdf.format(gc.getTime());
+		    java.text.SimpleDateFormat sdf1 = new java.text.SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
+		    String namedate = sdf1.format(gc.getTime());
+			//save Derivation used to create this plot
+			//ElabAnalysis //analysis = run.getAnalysis();
+			AnalysisCatalogProvider acp = elab.getAnalysisCatalogProvider();
+			DataCatalogProvider dcp = elab.getDataCatalogProvider();
+	
+		    // *** Metadata section ***
+			ArrayList meta = new ArrayList();
+			ElabGroup group = user.getGroup();		
+			Collection rawData = analysis.getParameterValues("rawData");
+			if(rawData != null) {
+				Iterator<String> it = rawData.iterator();
+				while (it.hasNext()) {
+					// Default metadata for all files saved
+					String split_name = it.next();
+					meta.add("type string report");
+					meta.add("study string " + run.getAttribute("type"));
+					meta.add("creationdate date " + date);
+					meta.add("city string " + group.getCity());
+					meta.add("group string " + group.getName());
+					meta.add("project string " + elab.getName());
+					meta.add("school string " + group.getSchool());
+					meta.add("state string " + group.getState());
+					meta.add("teacher string " + group.getTeacher());
+					meta.add("splitname string " + split_name);
+					dcp.insert(DataTools.buildCatalogEntry(split_name+"."+namedate, meta));
+				}
+			}
+		}//en of saving metadata for report
+
 	    AnalysisManager.registerAnalysisRun(elab, user, run);
 	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
 	    n.setRun(run);
