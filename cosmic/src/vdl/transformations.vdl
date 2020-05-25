@@ -48,22 +48,6 @@ TR I2U2.Cosmic::Frequency(
   argument = " "${binValue};
 }
 
-TR I2U2.Cosmic::Lifetime(
-	none coincidence,
-	none energyCheck,
-	none gatewidth,
-	input lifetimeIn,
-	output lifetimeOut,
-	none geoDir,
-	input geoFiles[] )
-{
-  argument = " "${lifetimeIn};
-  argument = " "${lifetimeOut};
-  argument = " "${gatewidth};
-  argument = " "${energyCheck};
-  argument = " "${coincidence};
-  argument = " "${geoDir};
-}
 TR I2U2.Cosmic::LifetimeStudy(
 	inout combineOut,
 	none detector,
@@ -92,6 +76,7 @@ TR I2U2.Cosmic::LifetimeStudy(
 	none geoDir,
 	input geoFiles[],
 	none plot_caption,
+	none plot_semilog,	
 	none plot_highX,
 	none plot_highY,
 	none plot_highZ,
@@ -164,6 +149,7 @@ TR I2U2.Cosmic::LifetimeStudy(
     turnedOn=${extraFun_turnedOn} );
   call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
+	plot_semilog=${plot_semilog},
 	plot_extraFunctions=${input:extraFun_out},
 	plot_highX=${plot_highX},
 	plot_highY=${plot_highY},
