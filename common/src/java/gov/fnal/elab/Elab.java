@@ -394,7 +394,7 @@ public class Elab implements Serializable {
     /**
      * Builds an absolute, HTTPS-enabled guest login link. Similar to 
 		 * getGuestLoginLink(), except that method returns a relative link to 
-		 * complement the default HTML BASE, which does not generally implement
+		 * complement the default PROTO://BASE, which does not generally implement
 		 * the HTTPS protocol.<br>
 		 * The returned link depends on the value of "elab.secure.url" given in 
 		 * <code>elab.properties</code>, which is expected to use HTTPS on an 
@@ -484,10 +484,10 @@ public class Elab implements Serializable {
     	return getURL() + '/' + properties.getWebapp() + '/' + getName() + '/' + page;
     }
 
-		
+
     /**
      * Returns an absolute, secure URL for a given input relative URL 
-		 * "page".  The HTML BASE is determined by the value of 
+		 * "page".  The URL PROTO://BASE is determined by the value of 
 		 * "elab.secure.url" in <code>elab.properties</code>.
 		 * This value is expected to implement the HTTPS protocol for 
 		 * SSL-enabled servers - JG 26Mar2018
@@ -513,7 +513,6 @@ public class Elab implements Serializable {
 				return properties.getRequired("elab.secure.url") + page;
 		}
 
-		
     private String getURL() {
     	String url = properties.getProperty("elab.url");
     	if (url == null || url.equals("")) {
