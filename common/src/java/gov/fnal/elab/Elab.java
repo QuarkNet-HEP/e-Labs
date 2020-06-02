@@ -418,7 +418,7 @@ public class Elab implements Serializable {
     /**
      * Builds an absolute, HTTPS-enabled guest login link. Similar to 
 		 * getGuestLoginLink(), except that method returns a relative link to 
-		 * complement the default HTML BASE, which does not generally implement
+		 * complement the default PROTO://BASE, which does not generally implement
 		 * the HTTPS protocol.<br>
 		 * The returned link depends on the value of "elab.secure.url" given in 
 		 * <code>elab.properties</code>, which is expected to use HTTPS on an 
@@ -432,7 +432,6 @@ public class Elab implements Serializable {
 				return getSecureUrl(getGuestLoginLink(request));
     }
 
-		
     /**
      * Return an <code>FAQ</code> instance for this elab
      */
@@ -503,14 +502,14 @@ public class Elab implements Serializable {
         return properties.getRequired("elab.secure.url") + '/'
                 + properties.getWebapp() + '/' + getName() + '/' + page;
     }
-    
+
     public String nonSecure(String page) {
     	return getURL() + '/' + properties.getWebapp() + '/' + getName() + '/' + page;
     }
-		
+
     /**
      * Returns an absolute, secure URL for a given input relative URL 
-		 * "page".  The HTML BASE is determined by the value of 
+		 * "page".  The PROTO://BASE is determined by the value of 
 		 * "elab.secure.url" in <code>elab.properties</code>.
 		 * This value is expected to implement the HTTPS protocol for 
 		 * SSL-enabled servers - JG 25Jan2018
@@ -558,7 +557,6 @@ public class Elab implements Serializable {
 				return properties.getRequired("elab.secure.url") + page;
 		}
 
-
     /**
      * Returns the <code>elab.url</code> parameter of 
 		 * <code>elab.properties</code>; if that value is void, returns the 
@@ -569,7 +567,7 @@ public class Elab implements Serializable {
 		 * care about specifying ports as much as when this was written, so 
 		 * consider deleting port code for good - JG 29Jan2018
 		 *
-     * @return An absolute URL representing the HTML BASE element of all 
+     * @return An absolute URL representing the HTTP://BASE element of all 
 		 * e-Lab URLs.
      */
     private String getURL() {
