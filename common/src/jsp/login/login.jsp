@@ -10,11 +10,19 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
-// Set page-scoped variables and request Attributes from the request parameters
+
+/* This page is the <form> action for login/login-form.jsp */
+
+/* Set page-scoped variables and request Attributes from the POSTed 
+ * request parameters */
 String username = request.getParameter("user");
 String password = request.getParameter("pass");
 String message  = request.getParameter("message");
-String guestlogin = elab.getGuestLoginLinkSecure(request);
+
+/* The login URL for the 'guest' account: */
+//String guestlogin = elab.getGuestLoginLinkSecure(request);
+String guestlogin = elab.getGuestLoginLink(request);
+
 /* TODO: Sort out prevPage stuff.  I would have used `prevPage` instead of
  * `prevPageParam` here, but `prevPage` is defined later in this file as
  * well as in other included files in the "if" blocks, making it a mess overall.
@@ -27,14 +35,17 @@ if (prevPageParam != null) {
 		prevPageSecure = elab.getSecureUrl(prevPageParam);
 }
 int loginCountPerUser = SessionListener.getUserLoginsCount(username);
+
 request.setAttribute("username", username);
 request.setAttribute("guestlogin", guestlogin);
 %>
+
 <%-- Set the email contact to be shown on the error page --%>
 <c:set var="accountEmail"
 			 value="<a href='mailto:e-labs@fnal.gov'>e-labs@fnal.gov</a>" />
-<%-- Determine maxLogins and extraMessage based on whether login is "guest" or other user --%> 
-<%-- These can be specified in elab.properties, but we provide defaults here if they aren't --%>
+
+<%-- Determine maxLogins and extraMessage based on whether login is "guest" or other user.  These can be specified in elab.properties, but we provide defaults here if they aren't --%>
+<%-- `param` is a JSP EL object that namespaces the set of request param --%>
 <c:choose>
 		<c:when test="${param.user=='guest'}">
 				<c:set var="maxLogins" scope="request"
