@@ -14,13 +14,15 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
 boolean allowAllDataAccess = false;
-if (!user.getName().equals("guest")) {
-	int teacherId = user.getTeacherId();
-	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
-	if (user.isAdmin()) {
-		allowAllDataAccess = true;
-	}
-}
+//if (!user.getName().equals("guest")) {
+//	int teacherId = user.getTeacherId();
+//	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+//	if (user.isAdmin()) {
+//		allowAllDataAccess = true;
+//	}
+//}
+allowAllDataAccess = true;
+
 String study = request.getParameter("study");
 if (study == null || study.equals("")) {
 	study = (String) session.getAttribute("study");

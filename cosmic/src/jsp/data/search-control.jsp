@@ -22,6 +22,7 @@ if (!user.getName().equals("guest")) {
 		allowAllDataAccess = true;
 	}
 }
+allowAllDataAccess = true;
 
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
