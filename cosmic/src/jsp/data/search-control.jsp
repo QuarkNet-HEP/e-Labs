@@ -15,13 +15,15 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
 boolean allowAllDataAccess = false;
-if (!user.getName().equals("guest")) {
-	int teacherId = user.getTeacherId();
-	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
-	if (user.isAdmin()) {
-		allowAllDataAccess = true;
-	}
-}
+//if (!user.getName().equals("guest")) {
+//int teacherId = user.getTeacherId();
+//allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+//if (user.isAdmin()) {
+//	allowAllDataAccess = true;
+//	}
+//}
+//EPeronja-06/04/2020: Replaced the code above in order to give everybody data access
+allowAllDataAccess = true;
 
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
