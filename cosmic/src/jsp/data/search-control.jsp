@@ -15,13 +15,15 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
 boolean allowAllDataAccess = false;
-if (!user.getName().equals("guest")) {
-	int teacherId = user.getTeacherId();
-	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
-	if (user.isAdmin()) {
-		allowAllDataAccess = true;
-	}
-}
+//if (!user.getName().equals("guest")) {
+//int teacherId = user.getTeacherId();
+//allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+//if (user.isAdmin()) {
+//	allowAllDataAccess = true;
+//	}
+//}
+//EPeronja-06/04/2020: Replaced the code above in order to give everybody data access
+allowAllDataAccess = true;
 
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
@@ -37,19 +39,19 @@ request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
-			showOn: 'button',
+			showOn: 'button', 
 			buttonImage: '../graphics/calendar-blue.png',
-			buttonImageOnly: true,
+			buttonImageOnly: true, 
 			changeMonth: true,
-			changeYear: true,
+			changeYear: true, 
 			showButtonPanel: true,
-			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find.
+			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find. 
 			maxDate: new Date() // Should not look later than today
 	};
 	$('.datepicker').datepicker(calendarParam);
 	$("#data1").datepicker('option', 'buttonText', 'Choose start date.');
 	$("#data2").datepicker('option', 'buttonText', 'Choose start date.');
-	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom');
+	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
 });
 $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});

@@ -14,13 +14,16 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
 boolean allowAllDataAccess = false;
-if (!user.getName().equals("guest")) {
-	int teacherId = user.getTeacherId();
-	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
-	if (user.isAdmin()) {
-		allowAllDataAccess = true;
-	}
-}
+//if (!user.getName().equals("guest")) {
+//	int teacherId = user.getTeacherId();
+//	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+//	if (user.isAdmin()) {
+//		allowAllDataAccess = true;
+//	}
+//}
+//EPeronja-06/04/2020: Replaced the code above in order to give everybody data access
+allowAllDataAccess = true;
+
 String study = request.getParameter("study");
 if (study == null || study.equals("")) {
 	study = (String) session.getAttribute("study");
@@ -65,7 +68,7 @@ $(window).scroll(function(){
 		<input type="hidden" name="value" value="${user.name}" />
     <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
-		<!-- 
+		<!--
 		<input type="submit" value="${user.name}" />
 		-->
 		<a href="#" onclick='$(this).closest("form").submit()'>${user.name}</a>,
@@ -110,13 +113,16 @@ $(window).scroll(function(){
 		-->
 		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>
 	</form>
-</div>
+</div><!-- class="search-quick-links" -->
 
 <form action="controller.jsp" name="search" method="post">
-	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
+	<e:select name="key"
+						id="selectOptions"
+						valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${value}"  />
+	<!-- The visible Search Data button -->
 	<input type="submit" name="action" value="Search Data" />
 	
 	<e:vswitch>
@@ -173,13 +179,19 @@ $(window).scroll(function(){
 				<tr>
 					<td>
 						Stacked:
-						<e:select name="stacked" valueList="all, yes, no" selected="${stacked}" labelList="All, Yes, No"/>
+						<e:select name="stacked"
+											valueList="all, yes, no"
+											selected="${stacked}"
+											labelList="All, Yes, No"/>
 					</td>
 					<td>
 						<c:choose>
 							<c:when test="${allowAllDataAccess == true}">					
 								Blessed:
-								<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No" selected="${blessed}"/>
+								<e:select name="blessed"
+													valueList="all, yes, no"
+													labelList="All, Yes, No"
+													selected="${blessed}"/>
 							</c:when>
 						</c:choose>
 					</td>
