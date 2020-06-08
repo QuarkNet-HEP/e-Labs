@@ -11,7 +11,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript">
-		window.onload=function(){
+
+		 <%-- This would implement the newsbox after the page loads, except that
+		 somebody commented it out - JG 3Jun2020 --%>
+		 window.onload=function(){
 			if (document.getElementById("newsbox-h") != null  && document.getElementById("newsbox-v") != null) {
 <%-- 			hideObj = document.getElementById("newsbox-h").style;
 				showObj = document.getElementById("newsbox-v").style;
@@ -21,68 +24,81 @@
 				showObj.display = "";--%>
 			}
 		}
-	
+
 	</script>
 	</head>
-	
+
 	<body id="home" class="home">
 		<!-- entire page container -->
 		<div id="container">
+
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			
+
 			<div id="content">
 				<%@ include file="../include/check-javascript.jsp" %>
-				<c:choose>
- 					<c:when test="${user == null}"> <%-- User is not logged in --%>
-						<h1>Welcome: Join an international collaboration of high school students to study cosmic rays.</h1>
-						<table border="0" id="main">
-							<tr>
-					 	 		<td>
-									<div id="left-animation">
-							 	    	<%@ include file="../home/splash-home.html" %>
-							 		</div>
-					 			</td>
-						 		<td>
-									<div id="right">
-										<jsp:include page="../login/login-control.jsp">
-											<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
-										</jsp:include>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</c:when>
-					
-					<c:otherwise> <%-- User is logged in --%>
-						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
-						
-					<%-- Newsbox --%>	
-						<%-- <%String jLIstring = request.getParameter("justLoggedIn"); %> --%>
-						
-						<c:set var="jLI" value="${param.justLoggedIn}"/>
-						
-						<c:choose>
-						<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
-							<div id="newsbox-v" style="visibility:visible; display"> 
-							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+					<c:choose>
+							<%-- request parameter 'user' is set by elab.jsp based on the
+							     Session.  --%>
+ 							<c:when test="${user == null}">
+									<%-- User is not logged in --%>
+									<h1>Welcome: Join an international collaboration of high school students to study cosmic rays.</h1>
+									<table border="0" id="main">
+											<tr>
+					 	 							<td>
+															<div id="left-animation">
+							 	    							<%@ include file="../home/splash-home.html" %>
+							 								</div>
+					 								</td>
+						 							<td>
+															<div id="right">
+																	<jsp:include page="../login/login-control.jsp">
+																			<jsp:param name="prevPage"
+																								 value="../home/login-redir.jsp"/>
+																	</jsp:include>
+															</div>
+													</td>
+											</tr>
+									</table>
+							</c:when>
+
+					<c:otherwise> <%-- User is logged in (includes 'guest') --%>
+							<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
+
+
+							<%-- Newsbox --%>	
+							<%--
+							<%String jLIstring = request.getParameter("justLoggedIn"); %>
+							--%>
+
+							<%-- GET parameter 'justLoggedIn' is set in the redirect from
+							login-redir.jsp for Teacher and Admin users only (not 'guest') --%>
+							<c:set var="jLI" value="${param.justLoggedIn}"/>
+
+							<%-- Choose whether the newsbox is shown based on 'justLoggedIn' --%>
+							<c:choose>
+									<c:when test="${jLI != 'yes'}">
+									<%--Do not show newsbox because user has not just logged in--%>
+									<div id="newsbox-v" style="visibility:visible; display">
+											<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						    </div>
-						    
+
 						    <div id="newsbox-h" style="visibility:hidden; display: none">
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
 						    <%@ include file="../include/newsbox.jsp" %>
 						   </div>
-						</c:when>
-					 	
-				        <c:otherwise> <%--Show newsbox because user has just logged in--%>
-				        <div id="newsbox-v" style="visibility:hidden; display: none">					   
+									</c:when>
+
+				    <c:otherwise>
+								<%--Show newsbox because user has just logged in--%>
+				        <div id="newsbox-v" style="visibility:hidden; display: none">
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						</div>
-						
+
 						<div id="newsbox-h" style="visibility:visible; display">
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
 							<%@ include file="../include/newsbox.jsp" %>
@@ -90,6 +106,7 @@
 					    </c:otherwise>
 					    </c:choose>
 					<%-- End Newsbox --%>
+
 
 						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</h3>
 						<div style="text-align: center;">
@@ -107,13 +124,11 @@
 	   					<a href="../library/milestones.jsp">Milestones (text version)</a>
 				 		</div>
 				 		<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results.</h4>
-					    
-					    
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<!-- end content -->	
-		
+			<!-- end content -->
+
 			<div id="footer">
 			</div>
 		</div>
