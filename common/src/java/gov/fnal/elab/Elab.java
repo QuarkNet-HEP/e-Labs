@@ -9,14 +9,15 @@
  *   1) getter methods to pull parameters from elab.properties should have 
  *      "Property" in the name, be grouped together, and do only that
  *   2) Clearly delineate tasks in terms of what URL elements they manipulate:
- *      PROTO://BASE/APPPATH/FILEPATH
+ *      PROTO://HOST/APPPATH/FILEPATH
  *      PROTO = (http | https)
- *      BASE  = www.i2u2.org (:PORT ?)
+ *      HOST  = www.i2u2.org (:PORT ?)
+ *        BASE = PROTO://HOST(:PORT)
  *      APPPATH = /elab/(cosmic|cms|ligo|etc)/
  *      FILEPATH = every/thing/else.jsp
  *   3) Clearly delineate when methods accept and return
  *      I)   Absolute URLs (including protocol)
- *      II)  URLs relative to the HTTP <BASE>
+ *      II)  URLs relative to the HTTP BASE
  *      III) URLs relative to the APPPATH 
  * - JG 29Jan2018
  */
@@ -529,7 +530,7 @@ public class Elab implements Serializable {
 				if (page.length() > 0 && page.startsWith("..") ) {
 						return page;
 				}
-				
+
 				// A relative URL may or may not begin with a '/'
 				// An absolute URL never will
 				if (page.length() > 0 && page.charAt(0) != '/') { // Potential absolute URL
@@ -539,7 +540,7 @@ public class Elab implements Serializable {
 						} else if ( page.startsWith("http://") ) {
 								page = page.replace("http://","");
 						}
-						
+
 						// Explode by slashes to look for a domain
 						List<String> pageSegments = Arrays.asList(page.split("/"));
 						if (pageSegments.get(0).contains(".")) {
@@ -561,13 +562,15 @@ public class Elab implements Serializable {
      * Returns the <code>elab.url</code> parameter of 
 		 * <code>elab.properties</code>; if that value is void, returns the 
 		 * expected value of based on the <code>elab.host</code> parameter.
+		 *
+		 * Returns HTTP protocol only; i.e. non-SSL.
 		 * 
-		 * Propose renaming this getUrlProperty() or getUrlBase() to distinguish 
+		 * Propose renaming this getUrlBase() to distinguish 
 		 * it from similar methods that construct complete URLs.  Also, we don't
 		 * care about specifying ports as much as when this was written, so 
 		 * consider deleting port code for good - JG 29Jan2018
 		 *
-     * @return An absolute URL representing the HTTP://BASE element of all 
+     * @return An absolute URL representing the HTTP://HOST element of all 
 		 * e-Lab URLs.
      */
     private String getURL() {
