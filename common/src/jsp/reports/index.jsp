@@ -45,10 +45,11 @@
             <td>&#8226; <a href="../reports/posters-report.jsp">Posters Report</a></td>
             <td>Retrieve information about posters.</td>
           </tr>
-          <tr>
+           <tr>
             <td>&#8226; <a href="../reports/performance-report.jsp">Elab Performance Report</a></td>
             <td>Retrieve information about splits and analyses.</td>
           </tr>
+
         </table>
       </div>
       <!-- end content -->  

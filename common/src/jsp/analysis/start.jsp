@@ -15,7 +15,6 @@
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
-
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
 	if (analysis == null) {
@@ -54,15 +53,11 @@
 	    if (cont == null) {
 	        throw new ElabJspException("No continuation specified");
 	    }
-	    String outputType = request.getParameter("outputType");
-	    if (outputType == null) {
-	    	outputType = "output.jsp";
-	    }
 	    if (cont.indexOf('?') != -1) {
-	        cont += "&id=" + run.getId()+"&outputType="+outputType;
+	        cont += "&id=" + run.getId();
 	    }
 	    else {
-	        cont += "?id=" + run.getId()+"&outputType="+outputType;
+	        cont += "?id=" + run.getId();
 	    }
 	    String err = request.getParameter("onError");
 	    if (err == null) {
@@ -72,7 +67,6 @@
 	    if (mFilter == null) {
 	    	mFilter = "0";
 	    }
-	    
  	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
 	    run.setAttribute("type", analysis.getName());
@@ -96,7 +90,6 @@
 			run.setAttribute("deltaTIDs", deltaTIDs);
 	    	analysis.setAttribute("deltaTIDs", deltaTIDs);
 		}
-
     	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
     	analysis.setAttribute("mFilter", mFilter);
@@ -152,7 +145,7 @@
 				}
 			}
 		}//en of saving metadata for report
-
+			
 	    AnalysisManager.registerAnalysisRun(elab, user, run);
 	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
 	    n.setRun(run);
@@ -176,20 +169,7 @@
 				}
 			});
 	    }
-	    //remember to set this up in elab.properties as cosmic.analysis = queue
-	    String runType = elab.getProperty(elab.getName() + ".analysis");
-	    if (runType != null && runType.equals("queue")) {
-		    if (run.getAttribute("type").equals("ProcessUpload") ||
-		    	run.getAttribute("type").equals("EventPlot") ||
-		    	run.getAttribute("type").equals("RawAnalyzeStudy") ||
-		    	run.getAttribute("type").equals("PerformanceStudy")) {
-		    	run.start();
-		    } else {
-		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
-		    }
-	    } else {
-	    	run.start();
-	    }
+	    run.start();
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
