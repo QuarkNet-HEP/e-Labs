@@ -92,6 +92,7 @@ TR I2U2.Cosmic::LifetimeStudy(
 	none geoDir,
 	input geoFiles[],
 	none plot_caption,
+	none plot_semilog,	
 	none plot_highX,
 	none plot_highY,
 	none plot_highZ,
@@ -164,6 +165,7 @@ TR I2U2.Cosmic::LifetimeStudy(
     turnedOn=${extraFun_turnedOn} );
   call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
+	plot_semilog=${plot_semilog},
 	plot_extraFunctions=${input:extraFun_out},
 	plot_highX=${plot_highX},
 	plot_highY=${plot_highY},
@@ -276,6 +278,7 @@ TR I2U2.Cosmic::PerformanceStudy(
 
 TR I2U2.Cosmic::Plot(
 	none plot_caption,
+	none plot_semilog,
 	input plot_extraFunctions,
 	none plot_highX,
 	none plot_highY,
@@ -301,6 +304,7 @@ TR I2U2.Cosmic::Plot(
   argument = "-ylabel ""'"${plot_ylabel}"'";
   argument = "-xlabel ""'"${plot_xlabel}"'";
   argument = "-caption ""'"${plot_caption}"'";
+  argument = "-plot_semilog ""'"${plot_semilog}"'";
   argument = "-lowx ""'"${plot_lowX}"'";
   argument = "-highx ""'"${plot_highX}"'";
   argument = "-lowy ""'"${plot_lowY}"'";
@@ -759,6 +763,7 @@ TR I2U2.Cosmic::LifetimeStudyTT(
 	none geoDir,
 	input geoFiles[],
 	none plot_caption,
+	none plot_semilog,
 	none plot_highX,
 	none plot_highY,
 	none plot_highZ,
@@ -827,6 +832,7 @@ TR I2U2.Cosmic::LifetimeStudyTT(
     turnedOn=${extraFun_turnedOn} );
   call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
+	plot_semilog=${plot_semilog},
 	plot_extraFunctions=${input:extraFun_out},
 	plot_highX=${plot_highX},
 	plot_highY=${plot_highY},

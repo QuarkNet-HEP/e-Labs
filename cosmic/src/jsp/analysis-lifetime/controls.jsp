@@ -64,6 +64,17 @@
 		</p>
 		<p>
 			<e:tr name="I2U2.Cosmic::Plot">
+				<table>
+					<tr>
+						<td class="form-label">
+							<e:trlabel for="plot_semilog" name="Semi-log Plot">Semi-log Plot:</e:trlabel>
+						</td>
+						<td class="form-control">
+							<e:trselect name="plot_semilog" valueList="1, 0" labelList="Yes, No"
+								default="0"/>								
+						</td>
+					</tr>
+				</table>
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>
