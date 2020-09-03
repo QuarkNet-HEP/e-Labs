@@ -7,7 +7,7 @@
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
-
+<%@ page import="java.lang.Math" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS);
 	Collection f = analysis.getParameterValues("rawData");
@@ -52,7 +52,7 @@
 		request.setAttribute("analysis", newAnalysis);
 	}
 	boolean isLifetime = false;
-	if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy")) {
+	if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy") || analysis.getType().equals("I2U2.Cosmic::LifetimeStudyTest")) {
 		isLifetime = true;
 	}
     
@@ -102,6 +102,7 @@
 			String detectorIDString = "Detector(s): ";
 			String queryFilenames = "";
 			String ConReg2 = "";
+			String ConReg3 = "";
 			String TMCReg2 = "";
 			String TMCReg1 = "";
 			String triggerRate = "";
@@ -196,10 +197,18 @@
 			    //variables provided for calling page
 			    detectorIDs.add(e.getTupleValue("detectorid"));
 
+				//ConReg2 = e.getTupleValue("ConReg2").toString();
+			    //int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
+			    //triggerRate = String.valueOf(ConReg2Int);
+			    //Mark's new calculation for trigger rate: gate in ns is [hex2dec(CR03)*2^8 * hex2dec(CR02)]*10
 				ConReg2 = e.getTupleValue("ConReg2").toString();
-			    int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
-			    triggerRate = String.valueOf(ConReg2Int);
-				TMCReg2 = e.getTupleValue("TMCReg2").toString();
+			    ConReg3 = e.getTupleValue("ConReg3").toString();
+				int ConReg2Int = Integer.parseInt(ConReg2,16);
+				int ConReg3Int = Integer.parseInt(ConReg3,16);
+				double constant = Math.pow(2,8);
+				double tr = ((ConReg3Int*constant)+ConReg2Int)*10; 
+				triggerRate = String.valueOf((int) tr);
+			    TMCReg2 = e.getTupleValue("TMCReg2").toString();
 				TMCReg1 = e.getTupleValue("TMCReg1").toString();
 				int delayInt = Integer.parseInt(TMCReg2,16) - Integer.parseInt(TMCReg1,16);
 				delay = String.valueOf(delayInt*10);
