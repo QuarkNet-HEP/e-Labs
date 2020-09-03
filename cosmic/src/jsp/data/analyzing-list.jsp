@@ -109,6 +109,7 @@ request.setAttribute("isLifetime", isLifetime);
 
 			//to display for Lifetime
 			String ConReg2 = "";
+			String ConReg3 = "";
 			String TMCReg2 = "";
 			String TMCReg1 = "";
 			String triggerRate = "";
@@ -201,10 +202,17 @@ request.setAttribute("isLifetime", isLifetime);
 			    detectorIDs.add(e.getTupleValue("detectorid"));
 			    		
 				//to display for Lifetime
-			    ConReg2 = e.getTupleValue("ConReg2").toString();
-			    int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
-			    triggerRate = String.valueOf(ConReg2Int);
-				TMCReg2 = e.getTupleValue("TMCReg2").toString();
+				//ConReg2 = e.getTupleValue("ConReg2").toString();
+			    //int ConReg2Int = Integer.parseInt(ConReg2,16) * 10;
+			    //triggerRate = String.valueOf(ConReg2Int);
+			    //Mark's new calculation for trigger rate: gate in ns is [hex2dec(CR03)*2^8 * hex2dec(CR02)]*10
+				ConReg2 = e.getTupleValue("ConReg2").toString();
+			    ConReg3 = e.getTupleValue("ConReg3").toString();
+				int ConReg2Int = Integer.parseInt(ConReg2,16);
+				int ConReg3Int = Integer.parseInt(ConReg3,16);
+				double constant = Math.pow(2,8);
+				double tr = ((ConReg3Int*constant)+ConReg2Int)*10; 
+				triggerRate = String.valueOf((int) tr);				TMCReg2 = e.getTupleValue("TMCReg2").toString();
 				TMCReg1 = e.getTupleValue("TMCReg1").toString();
 				int delayInt = Integer.parseInt(TMCReg2,16) - Integer.parseInt(TMCReg1,16);
 				delay = String.valueOf(delayInt*10);
