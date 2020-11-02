@@ -45,9 +45,13 @@
             <td>&#8226; <a href="../reports/posters-report.jsp">Posters Report</a></td>
             <td>Retrieve information about posters.</td>
           </tr>
-           <tr>
+          <tr>
             <td>&#8226; <a href="../reports/performance-report.jsp">Elab Performance Report</a></td>
             <td>Retrieve information about splits and analyses.</td>
+          </tr>
+          <tr>
+            <td>&#8226; <a href="../reports/analysis-details.jsp">Analysis Report</a></td>
+            <td>Retrieve information about analyses.</td>
           </tr>
          <tr>
             <td>&#8226; <a href="../reports/splits-future-date-report.jsp">Splits with Future Dates Report</a></td>
