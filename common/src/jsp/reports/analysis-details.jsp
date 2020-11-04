@@ -89,22 +89,9 @@
      //get frequency
      String studyType = "";
      int studyCount = 0;
-  	      for (int i = 0; i < analysisRunDistinct.size(); i++) {
+  	 for (int i = 0; i < analysisRunDistinct.size(); i++) {
      	  String[] details = analysisRunDistinct.get(i);
-     	  int detailCount = 0;
-          if (!studyType.equals(details[1])) {
-        	  studyType = details[1];
-        	  if (studyCount > 0) {
-        		  ArrayList<String> detailsTotal = new ArrayList<String>();
-            	  detailsTotal.add("");
-            	  detailsTotal.add("");
-            	  detailsTotal.add("<strong>"+String.valueOf(studyCount)+"</strong>");      		  
-            	  analysisReportDataDistinct.add(detailsTotal);
-     	  		}
-        	  studyCount = 1;
-          } else {
-        	  studyCount += 1;
-          }
+     	  int detailCount = 0;         
      	  for (int x = 0; x < analysisRunDistinct.size(); x++) {
      		     if (Arrays.equals(details, analysisRunDistinct.get(x))) {
      		    	  detailCount += 1;
@@ -115,15 +102,27 @@
           detailsDistinct.add(details[1]);
           detailsDistinct.add(String.valueOf(detailCount));
           if (!analysisReportDataDistinct.contains(detailsDistinct)) {
+        	   if (studyType.equals(details[1])) {
+             	   studyCount += 1;         		   
+         	   } else {
+                 	if (studyCount > 0) {
+                		ArrayList<String> detailsTotal = new ArrayList<String>();
+                    	detailsTotal.add("<strong>Total</strong>");
+                    	detailsTotal.add("<strong>"+studyType+"</strong>");
+                    	detailsTotal.add("<strong>"+String.valueOf(studyCount)+"</strong>");      		  
+                    	analysisReportDataDistinct.add(detailsTotal);
+                   	}
+        		   	studyCount = 1;
+         	   }
          	   analysisReportDataDistinct.add(detailsDistinct);
+         	   studyType = details[1];
           }
-     }
-	  ArrayList<String> detailsTotal = new ArrayList<String>();
-	  detailsTotal.add("");
-	  detailsTotal.add("");
-	  detailsTotal.add("<strong>"+String.valueOf(studyCount)+"</strong>");      		  
-	  analysisReportDataDistinct.add(detailsTotal);
-     
+  	 }     
+	ArrayList<String> detailsTotal = new ArrayList<String>();
+   	detailsTotal.add("<strong>Total</strong>");
+    detailsTotal.add("<strong>"+studyType+"</strong>");
+   	detailsTotal.add("<strong>"+String.valueOf(studyCount)+"</strong>");      		  
+   	analysisReportDataDistinct.add(detailsTotal);          
   }//end of submit
   
   request.setAttribute("reportLines", analysisReportDataDistinct);
@@ -270,7 +269,7 @@
                  	<tr name="details">
                     	<th width="200px"><strong>Study</strong></th>
                     	<th width="200px"><strong>Date</strong></th>
-                    	<th width="200px"><strong>Times</strong></th>
+                    	<th width="200px"><strong>Files Used</strong></th>
                  	</tr>
                  	<c:forEach items="${reportLines}" var="filename">
                     	<tr name="details">
