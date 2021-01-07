@@ -67,6 +67,8 @@
 			geoEntry = newGeoEntry;
 		}
 	} 
+	int year = Calendar.getInstance().get(Calendar.YEAR);
+	request.setAttribute("selectYear", year);
 	request.setAttribute("action", action);
 	request.setAttribute("geoEntry", geoEntry);
 %>
