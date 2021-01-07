@@ -13,7 +13,7 @@
 					valueList="1..12"
 					labelList="January, February, March, April, May, June, July, August, September, October, November, December"/>
 			/ <e:trselect name="day" valueList="01..31" labelList="01..31"/>
-			/ <e:trselect name="year" valueList="1999..2020" labelList="1999..2020"/>
+			/ <e:trselect name="year" valueList="1999..${selectYear}" labelList="1999..${selectYear}"/>
 			@ <e:trselect name="hour" valueList="00..23" labelList="00..23"/>
 			: <e:trselect name="minute" valueList="00..59" labelList="00..59"/>
 			<a href="javascript:glossary('UTC')">UTC</a>
