@@ -1043,3 +1043,179 @@ TR I2U2.Cosmic::TimeOfFlight(
 	gate=${gate} );
 }
 
+TR I2U2.Cosmic::LifetimeAdvanced(
+	none gatewidth,
+	none lifetime_muon_coincidence,
+	none lifetime_muon_gate,
+	none lifetime_muon_singleChannel_require,
+	none lifetime_muon_singleChannel_veto,
+	none lifetime_electron_coincidence,
+	none lifetime_electron_gate,
+	none lifetime_electron_singleChannel_require,
+	none lifetime_electron_singleChannel_veto,
+	none lifetime_minimum_delay,
+	input lifetimeIn,
+	output lifetimeOut,
+	none geoDir,
+	input geoFiles[],
+	output feedback )
+{
+  argument = " "${lifetimeIn};
+  argument = " "${lifetimeOut};
+  argument = " "${gatewidth};
+  argument = " "${lifetime_muon_coincidence};
+  argument = " "${lifetime_muon_gate};
+  argument = " "${lifetime_muon_singleChannel_require};
+  argument = " "${lifetime_muon_singleChannel_veto};
+  argument = " "${lifetime_electron_coincidence};
+  argument = " "${lifetime_electron_gate};
+  argument = " "${lifetime_electron_singleChannel_require};
+  argument = " "${lifetime_electron_singleChannel_veto};
+  argument = " "${lifetime_minimum_delay};
+  argument = " "${geoDir};
+  argument = " "${feedback};
+}
+
+
+TR I2U2.Cosmic::LifetimeStudyAdvanced(
+	inout combineOut,
+	none detector,
+	none cpldfreqs,
+	none firmwares,
+	none extraFun_alpha_guess,
+	none extraFun_alpha_variate,
+	none extraFun_constant_guess,
+	none extraFun_constant_variate,
+	none extraFun_lifetime_guess,
+	none extraFun_lifetime_variate,
+	none extraFun_maxX,
+	none extraFun_minX,
+	none extraFun_turnedOn,
+	inout extraFun_out,
+	output extraFun_rawFile,
+	none extraFun_type,
+	none freq_binType,
+	none freq_binValue,
+	none freq_col,
+	inout frequencyOut,
+	inout lifetimeOut,
+	none lifetime_gatewidth,
+	none lifetime_muon_coincidence,
+	none lifetime_muon_gate,
+	none lifetime_muon_singleChannel_require,
+	none lifetime_muon_singleChannel_veto,
+	none lifetime_electron_coincidence,
+	none lifetime_electron_gate,
+	none lifetime_electron_singleChannel_require,
+	none lifetime_electron_singleChannel_veto,
+	none lifetime_minimum_delay,
+	none geoDir,
+	input geoFiles[],
+	output feedback,
+	none plot_caption,
+	none plot_semilog,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	none plot_size,
+	output plot_outfile_param,
+	output plot_outfile_image,
+	output plot_outfile_image_thumbnail,
+	none plot_thumbnail_height, 
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	input rawData[],
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout sortOut,
+	inout wireDelayData[],
+	input thresholdAll[] )
+{
+  inout svg=@{inout:"plot.svg"};
+  
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:combineOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::LifetimeAdvanced(
+	gatewidth=${lifetime_gatewidth},
+	lifetime_muon_coincidence=${lifetime_muon_coincidence},
+	lifetime_muon_gate=${lifetime_muon_gate},
+	lifetime_muon_singleChannel_require=${lifetime_muon_singleChannel_require},
+	lifetime_muon_singleChannel_veto=${lifetime_muon_singleChannel_veto},
+	lifetime_electron_coincidence=${lifetime_electron_coincidence},
+	lifetime_electron_gate=${lifetime_electron_gate},
+	lifetime_electron_singleChannel_require=${lifetime_electron_singleChannel_require},
+	lifetime_electron_singleChannel_veto=${lifetime_electron_singleChannel_veto},
+	lifetime_minimum_delay=${lifetime_minimum_delay},
+	lifetimeIn=${input:sortOut},
+	lifetimeOut=${output:lifetimeOut},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles}
+	feedback=${output:feedback} );
+  call I2U2.Cosmic::Frequency(
+	binType=${freq_binType},
+	binValue=${freq_binValue},
+	col=${freq_col},
+	freqIn=${input:lifetimeOut},
+	freqOut=${output:frequencyOut} );
+  call I2U2.Cosmic::ExtraFunctions(
+	alphaG=${extraFun_alpha_guess},
+	alphaVar=${extraFun_alpha_variate},
+	constantG=${extraFun_constant_guess},
+	constantVar=${extraFun_constant_variate},
+	extraIn=${input:frequencyOut},
+	extraOut=${output:extraFun_out},
+	lifetimeG=${extraFun_lifetime_guess},
+	lifetimeVar=${extraFun_lifetime_variate},
+	rawFunctionFile=${output:extraFun_rawFile},
+	type=${extraFun_type},
+	xLowerbounds=${extraFun_minX},
+	xUpperbounds=${extraFun_maxX}
+    turnedOn=${extraFun_turnedOn} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_semilog=${plot_semilog},
+	plot_extraFunctions=${input:extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:frequencyOut},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel} );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
+}

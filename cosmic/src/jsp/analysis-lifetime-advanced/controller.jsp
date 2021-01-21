@@ -222,20 +222,7 @@
 	}
 	
 	/* Shoot things off for analysis */
-	else if ("Run lifetime study".equalsIgnoreCase(action)) {
-		// Get the data in the way the analysis page wants it 
-		String s = "";
-		if (h != null) {
-			for (String ids[] : h.values()) {
-				for (String id : ids) {
-					s += "rawData=" + id + "&";
-				}
-			}
-		}
-		response.setStatus(java.net.HttpURLConnection.HTTP_SEE_OTHER);
-		response.setHeader("Location", "analysis.jsp?" + s);
-	}
-	else if ("Run lifetime lifetime study".equalsIgnoreCase(action)) {
+	else if ("Run advanced lifetime study".equalsIgnoreCase(action)) {
 		// Get the data in the way the analysis page wants it 
 		String s = "";
 		if (h != null) {
