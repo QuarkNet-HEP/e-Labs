@@ -5,9 +5,13 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.StructuredResultSet.*" %>
 <%@ page import="java.io.IOException" %>
-
-<% response.setHeader("Expires", (new java.util.Date()).toGMTString());
-   response.setHeader("Cache-Control", "no-cache, no-store"); 
+<%
+session.setAttribute("key", "");
+session.setAttribute("value", "");
+session.setAttribute("date1", "");
+session.setAttribute("date2", "");
+session.setAttribute("stacked", "");
+session.setAttribute("blessed", "");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,25 +24,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/ltbr.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script>
-			function countDataChecked(form) {
-				var index, element;
-				var checked = 0;
-				for (index = 0; index < form.elements.length; index++) {
-					element = form.elements[index];
-					if (element.type.toUpperCase() == "CHECKBOX" && element.checked) {
-						checked++;
-					}
-				}
-				if (checked > 180) {
-					var divMsg = document.getElementById("msg");
-					divMsg.innerHTML = "<i>*Please limit your data selection to less than 180 days</i>";
-					return false;
-				}
-				return true;
-			}
-		</script>
-
 	</head>
 	
 	<body id="lifetime" class="data">
@@ -53,10 +38,9 @@
 			
 			<div id="content">
 				
-<h1>Choose data for lifetime study.</h1>
+<h1>Lifetime: Choose data for lifetime study.</h1>
 <div id="rationale">One way to classify objects is by measurable characteristics. All electrons have the same mass, charge and spin. What characteristics can you measure about the cosmic ray particles that reach Earth's surface? These unstable particles decay with a characteristic <a href="javascript:glossary('signal',350)">signal</a> in a characteristic time. Can you measure it? If so, that characteristic is one way to determine what the particles are.</div>
-<div id="rationale">Gain confidence by running a practice analysis.</div>
-
+<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/lifetime-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">lifetime analysis</a> done.</div>
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -64,31 +48,14 @@
 				<div id="top-left">
 					<jsp:include page="../data/multiselect-search-control.jsp">
 						<jsp:param name="type" value="split"/>
+            <jsp:param name="study" value="analysis-lifetime-advanced"/>
 					</jsp:include>
+					<jsp:include page="../data/search-number.jsp"/>
 				</div>
-				<form action="controller.jsp" method="post" id="results-form" onsubmit="return countDataChecked(this);">
-					<div id="bottom-left">
-						<jsp:useBean scope="request" 
-							class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
-							id="searchResultsDisplayer"/>
-						<div class="search-results">
-							<jsp:include page="../data/multiselect-search-results.jsp"/>
-						</div>
-					</div>
-					<!-- this kind of nesting is an interesting problem -->
-					<div id="right">
-						<div id="analyze" class="study-right">
-							<h2>Analyze</h2>
-							<input type="submit" name="action" value="Run lifetime study"/>
-							<br />
-							<br />
-							<input type="submit" name="action" value="Run advanced lifetime study"/>
-							<center><div id="msg" style="color: red;"></div></center>
-						</div>
-						<%@ include file="help.jsp" %>
-						<%@ include file="../data/legend.jsp" %>
-					</div>
-				</form>
+				<div id="right">
+					<%@ include file="help.jsp" %>
+					<%@ include file="../data/legend.jsp" %>
+				</div>
 			</div>
 		</td>
 	</tr>

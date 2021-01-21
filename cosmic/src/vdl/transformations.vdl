@@ -1063,7 +1063,7 @@ TR I2U2.Cosmic::TimeOfFlight(
 }
 
 
-TR I2U2.Cosmic::LifetimeTest(
+TR I2U2.Cosmic::LifetimeAdvanced(
 	none gatewidth,
 	none lifetime_muon_coincidence,
 	none lifetime_muon_gate,
@@ -1077,7 +1077,8 @@ TR I2U2.Cosmic::LifetimeTest(
 	input lifetimeIn,
 	output lifetimeOut,
 	none geoDir,
-	input geoFiles[] )
+	input geoFiles[],
+	output feedback )
 {
   argument = " "${lifetimeIn};
   argument = " "${lifetimeOut};
@@ -1092,10 +1093,11 @@ TR I2U2.Cosmic::LifetimeTest(
   argument = " "${lifetime_electron_singleChannel_veto};
   argument = " "${lifetime_minimum_delay};
   argument = " "${geoDir};
+  argument = " "${feedback};
 }
 
 
-TR I2U2.Cosmic::LifetimeStudyTest(
+TR I2U2.Cosmic::LifetimeStudyAdvanced(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
@@ -1129,6 +1131,7 @@ TR I2U2.Cosmic::LifetimeStudyTest(
 	none lifetime_minimum_delay,
 	none geoDir,
 	input geoFiles[],
+	output feedback,
 	none plot_caption,
 	none plot_semilog,
 	none plot_highX,
@@ -1169,7 +1172,7 @@ TR I2U2.Cosmic::LifetimeStudyTest(
 	key2=${sort_sortKey2},
 	sortIn=${input:combineOut},
 	sortOut=${output:sortOut} );
-  call I2U2.Cosmic::LifetimeTest(
+  call I2U2.Cosmic::LifetimeAdvanced(
 	gatewidth=${lifetime_gatewidth},
 	lifetime_muon_coincidence=${lifetime_muon_coincidence},
 	lifetime_muon_gate=${lifetime_muon_gate},
@@ -1183,7 +1186,8 @@ TR I2U2.Cosmic::LifetimeStudyTest(
 	lifetimeIn=${input:sortOut},
 	lifetimeOut=${output:lifetimeOut},
 	geoDir=${geoDir},
-	geoFiles=${input:geoFiles} );
+	geoFiles=${input:geoFiles}
+	feedback=${output:feedback} );
   call I2U2.Cosmic::Frequency(
 	binType=${freq_binType},
 	binValue=${freq_binValue},

@@ -23,6 +23,18 @@
 		chanRequire = (String) analysis.getParameter("singleChannel_require");
 		chanVeto = (String) analysis.getParameter("singleChannel_veto");
 	}
+    String muon_chanRequire = "";
+    String muon_chanVeto = "";
+    String electron_chanRequire = "";
+    String electron_chanVeto = "";
+    
+    if (analysis.getType().equals("I2U2.Cosmic::LifetimeAdvanced")) {
+		muon_chanRequire = (String) analysis.getParameter("lifetime_muon_singleChannel_require");
+		muon_chanVeto = (String) analysis.getParameter("lifetime_muon_singleChannel_veto");
+		electron_chanRequire = (String) analysis.getParameter("lifetime_electron_singleChannel_require");
+		electron_chanVeto = (String) analysis.getParameter("lifetime_electron_singleChannel_veto");
+	}
+
     if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
 		request.setAttribute("remfiles", r);
@@ -48,11 +60,17 @@
 			newAnalysis.setParameter("singleChannel_require", chanRequire);
 			newAnalysis.setParameter("singleChannel_veto", chanVeto);
 		}
+	    if (analysis.getType().equals("I2U2.Cosmic::LifetimeAdvanced")) {
+			newAnalysis.setParameter("lifetime_muon_singleChannel_require", muon_chanRequire);
+			newAnalysis.setParameter("lifetime_muon_singleChannel_veto", muon_chanVeto);
+			newAnalysis.setParameter("lifetime_electron_singleChannel_require", electron_chanRequire);
+			newAnalysis.setParameter("lifetime_electron_singleChannel_veto", electron_chanVeto);
+		}
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
 	}
 	boolean isLifetime = false;
-	if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy") || analysis.getType().equals("I2U2.Cosmic::LifetimeStudyTest")) {
+	if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy") || analysis.getType().equals("I2U2.Cosmic::LifetimeStudyAdvanced")) {
 		isLifetime = true;
 	}
     
