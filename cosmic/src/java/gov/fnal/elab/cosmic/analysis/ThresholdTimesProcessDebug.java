@@ -214,6 +214,13 @@ public class ThresholdTimesProcessDebug {
         int decFE = Integer.parseInt(parts[indexFE], 16);
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
+        //if (printLineCount >=795) { //line 798 presents the problem for 6134
+        //if (printLineCount >=28471) { //line 28471 presents the problem for 6848
+        	
+        //    	System.out.println("Stop here\n");           	
+        //}
+       
+        
         if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
         	edgetimeSeconds = calctime(channel, decFE, parts, report);
         	fetime[channel] = edgetimeSeconds/86400;
@@ -296,9 +303,9 @@ public class ThresholdTimesProcessDebug {
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             //Bug 469: the rollover of the julian day and the RE needs be in sync
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
-            if (retime[channel] == 0.9999888616778790) {
-            	System.out.println("Stop here\n");
-            }
+            //if (retime[channel] == 0.9928986072347802 && (detector + "." + (channel + 1))=="6134.4") {            	
+            //	System.out.println("Stop here\n");
+            //}
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
@@ -410,7 +417,8 @@ public class ThresholdTimesProcessDebug {
 		    long parsed = Long.parseLong(parts[0], 16);
 	        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 	
-	        if (diff < -0xaaaaaaaal) {
+//	        if (diff < -0xaaaaaaaal) {
+	        if (diff < -0x22222222l) {
 	            diff += 0xffffffffl;
 	            reDiff[channel] = diff;
 	        }
