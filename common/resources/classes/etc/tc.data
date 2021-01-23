@@ -27,7 +27,7 @@ localhost	Sort			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Sort.pl							INSTALL
 localhost	Flux			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Flux.pl							INSTALLED       INTEL32::LINUX null
 localhost	Plot			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Plot.pl							INSTALLED       INTEL32::LINUX null
 localhost	Lifetime		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Lifetime.pl						INSTALLED       INTEL32::LINUX null
-localhost	Lifetime		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/LifetimeAdvanced.pl						INSTALLED       INTEL32::LINUX null
+localhost	LifetimeAdvanced	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/LifetimeAdvanced.pl						INSTALLED       INTEL32::LINUX null
 localhost	Frequency		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Frequency.pl						INSTALLED       INTEL32::LINUX null
 localhost	ExtraFunctions	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
 localhost	EventSearch		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/EventSearch.pl					INSTALLED       INTEL32::LINUX null
