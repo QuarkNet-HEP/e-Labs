@@ -2,7 +2,7 @@ $(document).ready(function(){
     $("#lifetime_muon_gate" ).change(function() {
     	var mindelay = $('#lifetime_minimum_delay').val();
     	var muongate = $('#lifetime_muon_gate').val();
-    	if (mindelay <= muongate) {
+    	if (parseInt(mindelay) < parseInt(muongate)) {
     		$('#lifetime_muon_gate').val("250");
     		$('#lifetime_minimum_delay').val("300");    		
     		alert("Minimum delay has to be larger than the muon gate");
@@ -14,7 +14,7 @@ $(document).ready(function(){
     $("#lifetime_minimum_delay" ).change(function() {
     	var mindelay = $('#lifetime_minimum_delay').val();
     	var muongate = $('#lifetime_muon_gate').val();
-    	if (mindelay <= muongate) {
+    	if (parseInt(mindelay) < parseInt(muongate)) {
     		$('#lifetime_muon_gate').val("250");
     		$('#lifetime_minimum_delay').val("300");    		
     		alert("Minimum delay has to be larger than the muon gate");

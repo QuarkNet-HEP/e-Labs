@@ -5,10 +5,46 @@
 <%@ page import="org.griphyn.vdl.directive.*" %>
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
-     <% String label = request.getParameter("label");  //label you want to show
-      %>
-     
-<head><title><%=label%></title>
+<% 
+String label = request.getParameter("label");  //label you want to show
+String primary = request.getParameter("tr");
+String secondary = request.getParameter("arg");
+int kind = Annotation.CLASS_DECLARE;
+String message = "";
+if ((primary!=null)&& !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
+   // Connect the database.
+   String schemaName = ChimeraProperties.instance().getVDCSchemaName();
+   Connect connect = new Connect();
+   DatabaseSchema dbschema = connect.connectDatabase(schemaName);
+   Annotation annotation = null;
+  if (! (dbschema instanceof Annotation)) {
+      message = "The database does not support metadata!";
+   } else {
+      try {
+        annotation = (Annotation)dbschema;
+        java.util.List list = annotation.loadAnnotation(primary, secondary, kind);
+        if (list!=null && !list.isEmpty() ) {
+            for (Iterator i = list.iterator(); i.hasNext();) {
+	            Tuple tuple = (Tuple)i.next(); 
+	            if ((tuple.getKey()).equals("description")) {
+	            	message += tuple.getValue();
+                } //if description
+              } //for
+            } //if  list!null
+        } //try
+        catch (Exception e) {
+            message = e.getMessage();
+        }
+    } //dbschema - instanceof Annotation
+    if (dbschema != null)
+         dbschema.close();
+    if (annotation != null)
+         ((DatabaseSchema)annotation).close();
+}
+request.setAttribute("message", message);
+request.setAttribute("label", label);
+%>     
+<head><title>${label}</title>
 <%@ include file="include/javascript.jsp" %>
 <script language='javascript'>
 function getRefToDivMod( divID, oDoc ) {
@@ -35,74 +71,14 @@ function resizeWinTo(oW, idOfDiv ) {
         if( x.focus ) { x.focus(); }
 }
 </script>
-
 </head>
 <link rel="stylesheet"  href="include/styletut.css" type="text/css">
-
-
-<%
-      String primary = request.getParameter("tr");
-      String secondary = request.getParameter("arg");
-      int kind = Annotation.CLASS_DECLARE;
-
-      String ret = "";
-
-
-      if ( (primary!=null)&& !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
-
-         // Connect the database.
-         String schemaName = ChimeraProperties.instance().getVDCSchemaName();
-
-         Connect connect = new Connect();
-         DatabaseSchema dbschema = connect.connectDatabase(schemaName);
-         Annotation annotation = null;
-
-	    if (! (dbschema instanceof Annotation)) {
-            ret = "<CENTER><FONT color= red>" + 
-	          "The database does not support metadata!" +
-	          "</FONT><BR><BR></CENTER>";
-	     } else {
-            try {
-	          annotation = (Annotation)dbschema;
-	          java.util.List list = annotation.loadAnnotation(primary, secondary, kind);
-	          ret += "<div ID=\"txt\" style=\"left:0px;top:0px;text-align:center;\"><TABLE align='center' WIDTH=240>";
-	         // if (label != null) ret += "<TR><TH align='left'><HR>"+label;
-	          ret += "</TH></TR>";	
-              if (list!=null && !list.isEmpty() ) {
-	              for (Iterator i = list.iterator(); i.hasNext();) {
-		            Tuple tuple = (Tuple)i.next(); 
-		            if ((tuple.getKey()).equals("description")) {
-		                 ret += "<TR><TD><FONT SIZE=-1>" + tuple.getValue() + "</FONT></TD></TR>";
-                      } //if description
-                    } //for
-                  } //if  list!null
-	          } //try
-	          catch (Exception e) {
-                  ret = "<CENTER><FONT color=red>" + 
-	              "Error viewing metadata..." +
-	             "</FONT><BR><BR>";
-	              ret += e + "<BR></CENTER>";
-	          }
-           } //dbschema - instanceof Annotation
-           if (dbschema != null)
-               dbschema.close();
-           if (annotation != null)
-               ((DatabaseSchema)annotation).close();
-     %>
-<body onLoad="resizeWinTo(300,'txt');" background="graphics/Quadrille.gif">
+<body onLoad="resizeWinTo(450,'txt');" background="graphics/Quadrille.gif">
 <font face="ariel">
-    <%=ret%>
-   <tr><td align="right"><HR><A HREF="javascript:window.close();"><FONT SIZE=-1>Close Window</FONT></A></td></tr></table><br>&nbsp;</div></FONT>
-
-    <%
-      }  //if good args
-      else
-      { 
-      %>
-      <b>Argument not properly described.</b>
-      <%
-      }
-%>
+<table>
+	<tr><td>${message}</td></tr>
+    <tr><td align="right"><a href="javascript:window.close();">Close Window</a></td></tr>
+</table>
 </font>
 </body>
 </html>
