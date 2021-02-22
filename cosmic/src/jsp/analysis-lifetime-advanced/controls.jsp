@@ -90,8 +90,8 @@
 									<e:trlabel for="lifetime_gatewidth" name="Gate Width (seconds)">Gate width (seconds):</e:trlabel>
 								</td>
 								<td class="form-control">
-									<e:trinput type="text" name="lifetime_gatewidth" size="8" default="1e-4"
-										onError="Must be an integer or number of the form (1e-5)"/>
+									<e:trinput type="text" name="lifetime_gatewidth" size="8" default="2e-5"
+										onError="Must be an integer or number of the form (2e-5)"/>
 								</td>
 							</tr>
 							<tr>
@@ -133,8 +133,8 @@
 									<e:trlabel for="lifetime_muon_coincidence" name="Muon Channel Coincidence">Muon Channel Coincidence:</e:trlabel>
 								</td>
 								<td class="form-control">								
-									<e:trselect name="lifetime_muon_coincidence" 
-										valueList="1, 2, 3, 4" labelList="1, 2, 3, 4" default="2"/>
+									<e:trselect name="lifetime_muon_coincidence"  id="lifetime_muon_coincidence"
+										valueList="2, 3, 4" labelList="2, 3, 4" default="2"/>
 								</td>
 							</tr>
 							<tr>
@@ -191,7 +191,7 @@
 									<e:trlabel for="lifetime_electron_coincidence" name="Electron Channel Coincidence">Electron Channel Coincidence:</e:trlabel>
 								</td>
 								<td class="form-control">								
-									<e:trselect name="lifetime_electron_coincidence" 
+									<e:trselect name="lifetime_electron_coincidence" id="lifetime_electron_coincidence"
 										valueList="1, 2, 3, 4" labelList="1, 2, 3, 4" default="1"/>
 								</td>
 							</tr>
@@ -204,6 +204,15 @@
 										onError="Must be an integer"/>
 								</td>
 							</tr>
+							<tr>
+								<td class="form-label">
+									<e:trlabel for="lifetime_minimum_delay" name="Minimum Delay">Minimum Delay (ns):</e:trlabel>
+								</td>
+								<td class="form-control">
+									<e:trinput type="text" name="lifetime_minimum_delay" id="lifetime_minimum_delay" size="8" default="300"
+										onError="Must be an integer"/>
+								</td>
+							</tr>							
 							<tr>
 								<td class="form-label">
 									<e:trlabel for="lifetime_electron_softTriggers" name="Electron Soft Triggers">Electron Soft Triggers?</e:trlabel>
@@ -232,15 +241,6 @@
 											${vcv.key}  <input type="checkbox" name="lifetime_electron_singleChannel_veto${vcv.key}" id="lifetime_electron_veto${vcv.key}" ${vcv.value }>											
 										</c:forEach>
 									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="form-label">
-									<e:trlabel for="lifetime_minimum_delay" name="Minimum Delay">Minimum Delay (ns):</e:trlabel>
-								</td>
-								<td class="form-control">
-									<e:trinput type="text" name="lifetime_minimum_delay" id="lifetime_minimum_delay" size="8" default="300"
-										onError="Must be an integer"/>
 								</td>
 							</tr>
 						</table>
@@ -316,7 +316,7 @@
 									<label for="plot_caption">Figure caption:</label>
 								</td>
 								<td class="form-control">
-									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
+									<e:trtextarea name="plot_caption" id="plot_caption" rows="5" cols="30"><e:default>
 <%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 									</e:default></e:trtextarea>									
 

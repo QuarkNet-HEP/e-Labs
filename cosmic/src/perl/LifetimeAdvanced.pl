@@ -123,7 +123,7 @@ while($buffersize > 0) {
 print LIFEOUT ("#SUMMARY:\n");
 print LIFEOUT ("#-Number of buffers that pass a good muon: ",$bufferwithgoodmuons,"\n");
 print LIFEOUT ("#-Total decays found: ", $totaldecaysfound, "\n");
-print LIFEOUT ("#-Number of electrons between the min decay and 6ms: ", $electrontail, "\n");
+#print LIFEOUT ("#-Number of electrons between the min decay and 6ms: ", $electrontail, "\n");
 
 close(IN);
 close(OUT);
