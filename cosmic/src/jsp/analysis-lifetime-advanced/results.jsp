@@ -14,7 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Choose data for lifetime study</title>
+		<title>Choose data for  lifetime study</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
@@ -41,7 +41,7 @@
 
 	</head>
 	
-	<body id="lifetime" class="data">
+	<body id="lifetime-advanced" class="data">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -79,9 +79,6 @@
 					<div id="right">
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
-							<input type="submit" name="action" value="Run lifetime study"/>
-							<br />
-							<br />
 							<input type="submit" name="action" value="Run advanced lifetime study"/>
 							<center><div id="msg" style="color: red;"></div></center>
 						</div>
