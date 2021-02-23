@@ -11,6 +11,7 @@ String primary = request.getParameter("tr");
 String secondary = request.getParameter("arg");
 int kind = Annotation.CLASS_DECLARE;
 String message = "";
+
 if ((primary!=null)&& !(primary.equals("")) && (secondary != null) && !(secondary.equals(""))) {
    // Connect the database.
    String schemaName = ChimeraProperties.instance().getVDCSchemaName();
