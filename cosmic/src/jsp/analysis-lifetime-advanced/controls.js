@@ -1,5 +1,11 @@
 $(document).ready(function(){
 	var original_caption = document.getElementById("plot_caption").value;
+	var original_caption_test = original_caption.trim();
+	var subcaption_begin_index = original_caption_test.indexOf("Input",0);
+	if (subcaption_begin_index != -1) {
+		var subcaption_end_index = original_caption_test.indexOf(":***");
+		original_caption = original_caption_test.substring(0,subcaption_begin_index).trim()+""+original_caption_test.substring(subcaption_end_index+4);
+	}
 	setCaption(original_caption);
 	$("#lifetime_muon_coincidence").change(function() {
 		setCaption(original_caption);
@@ -270,7 +276,7 @@ function setCaption(original_caption) {
 	var electron_gate = document.getElementById("lifetime_electron_gate").value;
 	var minimum_delay = document.getElementById("lifetime_minimum_delay").value;
 	var added_caption = "\nInputs: muon "+muon_coincidence+" hits "+muon_gate+"ns R"+muon_require+" V"+muon_veto;
-	added_caption = added_caption +"; electron "+ electron_coincidence+" hit "+electron_gate+"ns delay "+minimum_delay+"ns R"+electron_require+" V"+electron_veto+"\n";
+	added_caption = added_caption +"; electron "+ electron_coincidence+" hit "+electron_gate+"ns delay "+minimum_delay+"ns R"+electron_require+" V"+electron_veto+" :***";
 	var new_caption = plot_caption + added_caption;
 	document.getElementById("plot_caption").value = new_caption;
 }
@@ -278,3 +284,4 @@ function setMessage(message) {
 	var msg = document.getElementById("message");
 	msg.innerHTML = "<i>*"+message+"</>";
 }
+
