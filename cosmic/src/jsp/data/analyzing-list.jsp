@@ -71,7 +71,7 @@ if (request.getParameter("remove") != null) {
 		request.setAttribute("analysis", newAnalysis);
 }
 boolean isLifetime = false;
-if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy") || analysis.getType().equals("I2U2.Cosmic::LieftimeStudyAdvanced")) {
+if (analysis.getType().equals("I2U2.Cosmic::LifetimeStudy") || analysis.getType().equals("I2U2.Cosmic::LifetimeStudyAdvanced")) {
 	isLifetime = true;
 }
 
