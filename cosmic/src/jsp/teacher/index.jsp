@@ -3,14 +3,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-	// Check if the teacher is in the study
-	ElabGroup user = (ElabGroup) request.getAttribute("user");
-	if (user != null) {
+// Check if the teacher is in the study
+ElabGroup user = (ElabGroup) request.getAttribute("user");
+if (user != null) {
 		boolean newSurvey = user.isStudy();
+		/// Why create a Boolean object instead of using existing primitive?
 		request.setAttribute("newSurvey", new Boolean(newSurvey));
-	}
-
+}
 %>
+
+<%--
+TODO:
+* CSS styling and JavaScript should be exported to external files.
+* 'onclick' attributes should be replaced with JS methods.
+* Remove the use of <table> for formatting; replace with CSS Grid or
+equivalent.
+--%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,38 +27,37 @@
 		<title>Cosmic Teacher Page</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-	<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/elab.js"></script>
 <%--<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
 <%--<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>--%>    
-    	
-<script type="text/javascript">
-	window.onload=function(){
-	 hideAll(1,9);
-}
-	function showAll(start, finish)
-	{
-	for (var i = start; i < finish; i++) {
-		showObj = document.getElementById("vsId" + i +"-h").style;
-		hideObj = document.getElementById("vsId" + i +"-v").style;
-		hideObj.visibility = "hidden";
-		hideObj.display = "none";
-		showObj.visibility = "visible";
-		showObj.display = "";
-	}
-}
-	function hideAll(start, finish)
-	{
-	for (var i = start; i < finish; i++) {
-		hideObj = document.getElementById("vsId" + i +"-h").style;
-		showObj = document.getElementById("vsId" + i +"-v").style;
-		hideObj.visibility = "hidden";
-		hideObj.display = "none";
-		showObj.visibility = "visible";
-		showObj.display = "";
-	}
-}
-	
-	</script>
+
+		<%-- This is show/hide JS for the 8 pairs of #vsId{N}-(v|h) <div>
+		elements that form the bulk of the page content --%>
+		<script type="text/javascript">
+		  window.onload=function() {
+					hideAll(1,9);
+			}
+		 function showAll(start, finish) {
+				 for (var i = start; i < finish; i++) {
+						 showObj = document.getElementById("vsId" + i +"-h").style;
+						 hideObj = document.getElementById("vsId" + i +"-v").style;
+						 hideObj.visibility = "hidden";
+						 hideObj.display = "none";
+						 showObj.visibility = "visible";
+						 showObj.display = "";
+				 }
+		 }
+		 function hideAll(start, finish) {
+				 for (var i = start; i < finish; i++) {
+						 hideObj = document.getElementById("vsId" + i +"-h").style;
+						 showObj = document.getElementById("vsId" + i +"-v").style;
+						 hideObj.visibility = "hidden";
+						 hideObj.display = "none";
+						 showObj.visibility = "visible";
+						 showObj.display = "";
+				 }
+		 }
+		</script>
 	</head>
 
 	<body id="teacher">
@@ -64,97 +71,85 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="content">
 
-<h1>Teacher Home - Bookmark It!</h1>
-				<%@ include file="../include/check-javascript.jsp" %>
-				
-<%--Newsbox --%>
-<%String jLIstring = request.getParameter("justLoggedIn"); %>
-			<c:set var="jLI" value="${param.justLoggedIn}"/>
-						
-			<c:choose>
-			<c:when test="${jLI != 'yes'}"> <%--Do not show newsbox because user has not just logged in--%>
-				<div id="newsbox-v" style="visibility:visible; display"> 
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
-			    </div>
-						    
-			    <div id="newsbox-h" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-			    <%@ include file="../include/newsbox.jsp" %>
-	   		    </div>
-			</c:when>
-				
-	        <c:otherwise> <%--Show newsbox because user has just logged in--%>
-			    <div id="newsbox-v" style="visibility:hidden; display: none">					   
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
-				</div>
-						
-     			<div id="newsbox-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-				<%@ include file="../include/newsbox.jsp" %>
-				</div>
-			</c:otherwise>
-			</c:choose>				
-<%-- End Newsbox --%>
+					<h1>Teacher Home - Bookmark It!</h1>
+					<%@ include file="../include/check-javascript.jsp" %>
 
-<table border="0" id="main">
-	<tr>
-		<td>
-			<div id="left">
-			</div>
-		</td>
-		
-		<td>
-			<div id="expandHeading">
-			    <p>Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science and engineering practices. See Standards link in the menu for listing.</p>
-				<p>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
-				only work when you have Javascript enabled in your web browser.</p>
-				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
-				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
+					<%--Newsbox --%>
 
-				<div id="vsId1-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
-				</div>
-				
-				<div id="vsId1-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
-					<p>
-						Working in a research group, students experience the environment of scientific collaborations 
-						in this series of investigations into high-energy cosmic rays. 
+					<%-- End Newsbox --%>
+
+					<%--
+					Errors often occur where no content shows past this point.
+					Sometimes restarting Tomcat fixes it.
+					Still not sure of the cause(s) - JG 30Mar2021
+					--%>
+					<%--
+					The rest of the page is within the <table id="main"> element.
+					The bulk of the content of the table is a series of 8 pairs
+					of <div>s of the form
+					  <div id="vsId{N}-v"></div>
+					  <div id="vsId{N}-h"></div>
+					where {N} = 1..8.  Each contains a block of content that can be
+					shown or hidden.  The 'v' element of the pair shows the header only
+					while hiding the text; the 'h' element shows the text.
+					Visibility is controlled by JavaScript included earlier in the page.
+					--%>
+					<table border="0" id="main">
+							<tr>
+									<td><div id="left"></div></td>
+									<td><div id="expandHeading">
+											<p>
+													Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science and engineering practices. See Standards link in the menu for listing.
+											</p>
+											<p>
+													Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These only work when you have Javascript enabled in your web browser.
+											</p>
+											<div id="all-v"
+													 style="text-align:center; visibility:visible; display:">
+													<a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a>
+											</div>
+											<div id="all-h"
+													 style="text-align:center; visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a>
+											</div>
+
+											<div id="vsId1-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+											</div>
+
+											<div id="vsId1-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+
+													<p>
+															Working in a research group, students experience the environment of scientific collaborations in this series of investigations into high-energy cosmic rays.
 						From start to finish this is a student-led, <b>teacher-guided</B> project. 
 						Schools with cosmic ray detectors can upload data to the web. 
 						A virtual data portal enables students to share these data and 
 						associated analysis code with students at other schools whether 
 						or not those schools have their own cosmic ray detectors. 
-					</p>
+													</p>
 
-					<p>
-						Students begin their research by watching a Cool Science video to understand the context of they project. They check the performance of the detectors they 
-						have chosen for their study. Then they can perform one of three 
-						investigations: muon lifetime, muon flux or extended air showers. 
-						Students can use the project milestones to conduct their research and
-						can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
-						The real scientific collaboration follows. Students can 
-						review the results of other studies online comparing data and 
-						analyses. Using online tools, they can correspond with other 
-						research groups, post comments and questions, prepare summary 
-						reports and, in general, participate in the part of scientific 
-						research that is often left out of classroom experiments. 
-					</p>
-					<p> Two sample posters are available:</p>
-					<ul>
-						<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
-						<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
-					</ul>
-				</div>
-					
-				<div id="vsId2-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
-									</div>
-				<div id="vsId2-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
+													<p>
+															Students begin their research by watching a Cool Science video to understand the context of they project. They check the performance of the detectors they have chosen for their study. Then they can perform one of three investigations: muon lifetime, muon flux or extended air showers. 
+															Students can use the project milestones to conduct their research and can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
+															The real scientific collaboration follows. Students can review the results of other studies online comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and, in general, participate in the part of scientific research that is often left out of classroom experiments. 
+													</p>
+													<p> Two sample posters are available:</p>
+													<ul>
+															<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
+															<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
+													</ul>
+											</div>
+
+											<div id="vsId2-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
+											</div>
+
+											<div id="vsId2-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
 				<p>
 					Cosmic rays are typically protons, neutrons, gamma rays or other 
 					particles that originate in any number of astronomical objects. 
@@ -182,12 +177,13 @@
 						Project</a> (an array in Argentina)</li>.
 					</ul>
 				</p>
-					</div>
+											</div>
 				
-				<div id="vsId3-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
-									</div>
-				<div id="vsId3-h" style="visibility:visible; display">
+											<div id="vsId3-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+											</div>
+
+											<div id="vsId3-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					How much area can a cosmic ray shower cover? Where do cosmic 
@@ -207,12 +203,14 @@
 					data to a collaboration of their peers. 
 				</p>
 				
-				</div>
-				<div id="vsId4-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
-						</div>
-						<div id="vsId4-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+											</div>
+
+											<div id="vsId4-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+											</div>
+
+											<div id="vsId4-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>
 					Before doing this project, students should know how to: 
 				</p>
@@ -227,13 +225,14 @@
 					We provide refresher references for students who need to brush up on 
 					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Map</a>. 
 					</p>
-					</div>
-					
-					<div id="vsId5-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
-							</div>
-							<div id="vsId5-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+											</div>
+
+											<div id="vsId5-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+											</div>
+
+											<div id="vsId5-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 					<p>
 						Students will know and be able to: 
 					</p>
@@ -288,21 +287,18 @@
 							
 							</li>
 							<li>
-							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the project milestones to another. 
+									<b>Milestone Seminars:</b> Check student understanding before they move from one section of the project milestones to another. 
 							</li>
-					
 				</ul>
-			
-					 
-					</div>
+											</div>
 				
-				<div id="vsId6-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-				</div>
+											<div id="vsId6-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+											</div>
 				
-				<div id="vsId6-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-					<div style="margin-left: 20px">
+											<div id="vsId6-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+													<div style="margin-left: 20px">
 						<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="/elab/cosmic/home/cool-science.jsp">Standalone Movie</a> and enlarge the window.</p>
 						<%--<p>Questions to ask students? How to motivate students. BOB</p>--%>
 				
@@ -388,16 +384,21 @@
 						</p>
 					
 					<p><b>Other Studies Devised by Students</b></p>
-					</div>
-				</div>
-			
-				<h2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></h2>
+													</div>
+											</div>
 
-				<div id="vsId7-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
-				</div>
-				<div id="vsId7-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+											<h2>&nbsp;&nbsp;&nbsp;
+													<a href="web-guide.jsp">
+															Navigating Students Through the e-Lab
+													</a>
+											</h2>
+
+											<div id="vsId7-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+											</div>
+
+											<div id="vsId7-h" style="visibility:visible; display">
+													<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
 					<p>
 						<table style="margin-left:20px">
 							<tr>
@@ -412,12 +413,13 @@
 					     
 					     </table>
 					</p> 
-				</div>
+											</div>
 			
-				<div id="vsId8-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
-				</div>
-				<div id="vsId8-h" style="visibility:visible; display:">
+											<div id="vsId8-v" style="visibility:hidden; display: none">
+													<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+											</div>
+
+											<div id="vsId8-h" style="visibility:visible; display:">
 					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 					<p>Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
 					<ul>
@@ -427,9 +429,9 @@
 					<p>
 					 Ask your tech support person if you need help with browser settings. The Resources in the Library and the background material may include YouTube videos and java applets, but these are not critical for using the e-Lab.  
 					</p>
-				</div>
-					
-				</div>
+											</div>
+
+									</div>
 		</td>
 		<td>
 			<div id="right">
@@ -439,7 +441,7 @@
 			</div>
 		</td>
 	</tr>
-</table>
+					</table>
 
 			</div>
 			<!-- end content -->
