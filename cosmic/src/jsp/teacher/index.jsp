@@ -103,8 +103,7 @@ equivalent.
 
      							<div id="newsbox-h" style="visibility:visible; display">
 											<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-
-
+											<%@ include file="../include/newsbox.jsp" %>
 									</div>
 							</c:otherwise>
 					</c:choose>
