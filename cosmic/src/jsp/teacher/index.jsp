@@ -78,7 +78,6 @@ equivalent.
 					<%@ include file="../include/check-javascript.jsp" %>
 
 					<%--Newsbox --%>
-					<%String jLIstring = request.getParameter("justLoggedIn"); %>
 					<c:set var="jLI" value="${param.justLoggedIn}"/>
 
 					<c:choose>
