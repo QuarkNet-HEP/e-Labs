@@ -97,7 +97,7 @@ equivalent.
 
 										<%--Show newsbox because user has just logged in--%>
 										<c:otherwise>
-												<div id="newsbox-v" style="visibility:hidden;"></div>
+												<div id="newsbox-v" style="visibility:hidden; display: none"></div>
 										</c:otherwise>
 								</c:choose>
 								<%-- End Newsbox --%>
