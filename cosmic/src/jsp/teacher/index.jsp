@@ -97,18 +97,7 @@ equivalent.
 
 										<%--Show newsbox because user has just logged in--%>
 										<c:otherwise>
-												<div id="newsbox-v"
-														 style="visibility:hidden; display: none">
-														<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;">
-																<H2> View News Alert</H2></a>
-												</div>
-
-     										<div id="newsbox-h"
-														 style="visibility:visible; display: contents;">
-														<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;">
-																<H2> View News Alert</H2></a>
-														<%@ include file="../include/newsbox.jsp" %>
-												</div>
+												<div id="newsbox-v"></div>
 										</c:otherwise>
 								</c:choose>
 								<%-- End Newsbox --%>
