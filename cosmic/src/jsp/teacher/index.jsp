@@ -78,7 +78,9 @@ equivalent.
 					<%@ include file="../include/check-javascript.jsp" %>
 
 					<%--Newsbox --%>
-					<c:set var="jLI" value="${param.justLoggedIn}"/>
+					<%-- I believe 'jLIstring' is unused - JG 30Mar2021 --%>
+					<%String jLIstring = request.getParameter("justLoggedIn"); %>
+					<c:set var="jLI" value="yes"/>
 
 					<c:choose>
 							<%--Do not show newsbox because user has not just logged in--%>
