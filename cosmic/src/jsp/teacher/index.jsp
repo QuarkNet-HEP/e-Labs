@@ -97,7 +97,15 @@ equivalent.
 
 										<%--Show newsbox because user has just logged in--%>
 										<c:otherwise>
-												<div><p>This works</p></div>
+												<div id="newsbox-v"
+														 style="visibility:hidden; display: none">					   
+														<H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2>
+												</div>
+
+     										<div id="newsbox-h" style="visibility:visible; display">
+														<H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2>
+														<%@ include file="../include/newsbox.jsp" %>
+												</div>
 										</c:otherwise>
 								</c:choose>
 								<%-- End Newsbox --%>
