@@ -104,7 +104,7 @@ equivalent.
 												</div>
 
      										<div id="newsbox-h"
-														 style="visibility:visible; display">
+														 style="visibility:visible; display: contents;">
 														<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;">
 																<H2> View News Alert</H2></a>
 														<%@ include file="../include/newsbox.jsp" %>
