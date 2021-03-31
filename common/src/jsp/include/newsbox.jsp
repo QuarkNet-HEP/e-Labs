@@ -9,30 +9,21 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 
 <%
-    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-    List<Notification> l = np.getSystemNotifications();
-    List<Notification> nl = new ArrayList<Notification>();
-    for (Notification n : l) {
-    //    if (n.getPriority() == Notification.PRIORITY_SYSTEM_MESSAGE) {
-            nl.add(n);
-    //    }
-    }
-    request.setAttribute("notifications", nl);
 
-    //old newsbox until I get notifications to work
-	CatalogEntry e = elab.getDataCatalogProvider().getEntry("News_" + elab.getName() + "_status");
-	if (e != null) {
-		request.setAttribute("e", e.getTupleMap());
-		SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm:ss aaa");
+//old newsbox until I get notifications to work
+CatalogEntry e = elab.getDataCatalogProvider().getEntry("News_" + elab.getName() + "_status");
+if (e != null) {
+    request.setAttribute("e", e.getTupleMap());
+    SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm:ss aaa");
 		sdf.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
 		request.setAttribute("now", new Date());
 		if (e.getTupleValue("time") != null) {
-			request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
+				request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
 		}
 		if (e.getTupleValue("expire") != null) {
-			request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
+				request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
 		}
-	}
+}
 
 %>
 <c:if test="${!empty notifications}">
