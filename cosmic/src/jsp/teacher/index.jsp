@@ -78,31 +78,6 @@ equivalent.
 								<%@ include file="../include/check-javascript.jsp" %>
 
 								<%--Newsbox --%>
-								<%-- I believe 'jLIstring' is unused - JG 30Mar2021 --%>
-								<%String jLIstring = request.getParameter("justLoggedIn"); %>
-								<c:set var="jLI" value="yes"/>
-
-								<c:choose>
-										<%--Do not show newsbox because user has not just logged in--%>
-										<c:when test="${jLI != 'yes'}">
-												<div id="newsbox-v" style="visibility:visible; display"> 
-														<a href="#"												 onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
-												</div>
-
-												<div id="newsbox-h" style="visibility:hidden; display: none">
-														<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
-														<%@ include file="../include/newsbox.jsp" %>
-	   										</div>
-										</c:when>
-
-										<%--Show newsbox because user has just logged in--%>
-										<c:otherwise>
-												<div id="newsbox-v" style="visibility:hidden; display: none"><a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a></div>
-
-												<div id="newsbox-h" style="visibility:visible; display"><a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a><%@ include file="../include/newsbox.jsp" %></div>
-
-										</c:otherwise>
-								</c:choose>
 								<%-- End Newsbox --%>
 
 								<%--
