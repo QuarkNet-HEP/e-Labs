@@ -68,24 +68,26 @@ deploy-all-clean:
 	
 		</echo>
 	</target>
-	
+
 	<path id="cp-common">
 		<fileset dir="common/lib">
 			<include name="**/*.jar"/>
 		</fileset>
-		<fileset dir="${container.home}/${container.libs}">
+		<!-- Edited to facilitate move to Tomcat 9 - JG 2Jun2021 -->
+		<!--<fileset dir="${container.home}/${container.libs}">-->
+		<fileset dir="${container.libroot}/${container.libs}">
 			<include name="**/*.jar"/>
 		</fileset>
 		<pathelement location="common/build"/>
 		<pathelement location="common/resources/classes"/>
 	</path>
-	
+
 	<path id="cp-cms">
 		<fileset dir="cms">
 			<include name="lib/**/*.jar"/>
 		</fileset>
 	</path>
-	
+
 	<path id="cp-cms-tb">
 		<fileset dir="cms-tb">
 			<include name="lib/**/*.jar"/>
