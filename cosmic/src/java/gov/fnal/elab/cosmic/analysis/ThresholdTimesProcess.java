@@ -351,7 +351,8 @@ public class ThresholdTimesProcess {
 		    long parsed = Long.parseLong(parts[0], 16);
 		    //diff between word 0 and 9
 	        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
-	
+	        
+	        //EPeronja 09/28/2021: changed overflow check from 0xaaaaaaaal
 	        if (diff < -0x22222222l) {
 	            diff += 0xffffffffl;
 	            //Bug 469: if the difference is negative, the number needs to be corrected

@@ -319,7 +319,8 @@ public class ThresholdTimes {
 
         long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 
-        if (diff < -0xaaaaaaaal) {
+        //EPeronja 09/28/2021: changed overflow check from 0xaaaaaaaal
+        if (diff < -0x22222222l) {
             diff += 0xffffffffl;
             //Bug 469: if the difference is negative, the number needs to be corrected
             //		   but it was not stored for later use, now fixed by this:
