@@ -387,7 +387,7 @@ public class ThresholdTimes {
 					 possible?  How do the other 113 1PPS signals get missed? */
 				/* This must have something to do with the CPLD rolling over, but 
 					 I can't figure out what.  A comment or two would do wonders here. */
-        if (diff < -0xaaaaaaaal) {
+        if (diff < -0x22222222l) {
             diff += 0xffffffffl;
 						/* 'ffffffff' is 4294967295 CPLD ticks, or
 							     ~171.8s @ 40ns/25MHz      (6000 series)
