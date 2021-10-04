@@ -40,7 +40,8 @@
 		//"user" is set in cosmic/src/jsp/include/elab.jsp from the session data, and getDir() is a method belonging to user.
 		
 		String dD = user.getDir("plots");//dD = destination Directory
-		String src = "/usr/local/Cellar/tomcat@8/8.5.69/libexec/webapps"+sD+"/"+sF;
+		String src = "webapps"+sD+"/"+sF;
+		//String src = "/usr/local/Cellar/tomcat@8/8.5.69/libexec/webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
