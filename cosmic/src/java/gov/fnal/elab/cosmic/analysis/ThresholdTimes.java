@@ -265,7 +265,9 @@ public class ThresholdTimes {
                     //need to add extra testing here because in rare occasion the rint and floor mess up
                     double newtempdiff = tempjdplustime - lastjdplustime;
                     if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
-                		jd = currLineJD(offset, parts) + 1;
+                    	if ((currLineJD(offset, parts) + 1) == jd+1) {
+                    		jd = currLineJD(offset, parts) + 1;
+                    	}
                     } else {                    	
                         jd = currLineJD(offset, parts);
                         //this is to prevent rolling over too soon
