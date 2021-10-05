@@ -72,7 +72,8 @@ type AxisParams {
 
 (File png) SVG2PNG(File svg, string height) {
   app {
-    SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+    //SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+    SVG2PNG @filename(svg) "-o" @filename(png) "-h" height "-w" height;
   }
 }
 
