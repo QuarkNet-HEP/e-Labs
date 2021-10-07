@@ -10,6 +10,8 @@
 # ndettman 6/27/05 changing the arguments style to use Getopt, so that this script can handle the dynamic number of datafiles that may need to be plotted.  This is dynamic because we are now plotting multiple channels for the performance study on the same graph.
 # Jordan removed error bars from flux plots (type = 1) and set Ymin = 0 for same
 # ndettman, FNAL 6/11/07: corrected the Ymin = 0 argument so it works
+# Changed `fname \"Helvetica\" fsize 14` to `font \"Helvetica,14\"` for
+#   Gnuplot 4 -> 5 version upgrade - JG 7Oct2021
 
 use Getopt::Long;
 
@@ -63,8 +65,8 @@ for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 #zlabel ' ' 4 means to move the text 4 chars to the right
 #label 2 center refers to previous label set as number 2
 #nokey - don't display names of datasets on graph
-@options = ("set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 14 enhanced",
 #@options = ("set terminal png",
+@options = ("set terminal svg size 700 700 dynamic font \"Helvetica,14\" enhanced",
 	"set output '$outfile_png'",
 	"set size 1,1", #size of the picture
 	"set nokey",
@@ -74,13 +76,11 @@ for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 	"set xlabel \"$xlabel\"",
 	"set xrange [$lowX:$highX]",
 	"set yrange [$lowY:$highY]");
-		
-#print "Lowx is $lowX, and HighX is $highX\n";
+
 #see http://t16web.lanl.gov/Kawano/gnuplot/intro/style-e.html for information on plot types
 if($plot_type == 0){	#Histogram
     push @options, "set label \"$caption\" font \"Helvetica,14\" at graph .95,.95 right";
-	#push @options, "plot '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize, '$infile[0]' using 1:2 with histeps lw $lineWidthSize";
-	push @options, "plot '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize, '$infile[0]' using 1:2 with histeps lw $lineWidthSize";
+    push @options, "plot '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize, '$infile[0]' using 1:2 with histeps lw $lineWidthSize";
 }
 elsif($plot_type == 1){	#Line
     #splice(@options, 0, 1, "set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 15 enhanced");
@@ -90,8 +90,8 @@ elsif($plot_type == 1){	#Line
     &ticLevels();
     push @options, $setTics;
 
-	#Plot Flux error bars by using pre computer error from column 4.(bz343)
-	push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:4 with yerrorbars";
+    #Plot Flux error bars by using pre computer error from column 4.(bz343)
+    push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:4 with yerrorbars";
 
 }
 elsif($plot_type == 2){	#3D
