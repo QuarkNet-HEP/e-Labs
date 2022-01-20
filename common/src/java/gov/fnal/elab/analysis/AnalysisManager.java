@@ -147,8 +147,9 @@ public class AnalysisManager {
             }
             catch (Exception e) {
                 lifetime = 1;
-                logger.warn("Invalid max.analysis.lifetime: " + hr
-                        + ". Using default: " + lifetime + " hr");
+                //logger.warn("Invalid max.analysis.lifetime: " + hr
+                //        + ". Using default: " + lifetime + " hr");
+                logger.warn("Invalid max.analysis.lifetime: {}. Using default: {} hr", hr, lifetime);
             }
             lifetime *= 3600 * 1000;
         }
@@ -189,12 +190,14 @@ public class AnalysisManager {
                     AnalysisRun run = (AnalysisRun) e.getValue();
                     Date started = run.getStartTime();
                     if (started == null) {
-                        logger.warn("Missing start time for run " + id);
+                        //logger.warn("Missing start time for run " + id);
+                        logger.warn("Missing start time for run {}", id);
                     }
                     else {
                         if (started.getTime() + lifetime < now.getTime()
                                 || index + MAX_ANALYSES < analyses.size()) {
-                            logger.info("Reaping run " + id);
+                            //logger.info("Reaping run " + id);
+                            logger.info("Reaping run {}", id);
                             l.add(id);
                         }
                     }
