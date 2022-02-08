@@ -241,13 +241,15 @@ public class ThresholdTimes {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
             	if (tempjdplustime > lastjdplustime && tempdiff < -0.9) {
-                    jd = currLineJD(offset, parts);           		            	            		
+                    jd = currLineJD(offset, parts); 
             	} else {
                     tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
                     //need to add extra testing here because in rare occasion the rint and floor mess up
                     double newtempdiff = tempjdplustime - lastjdplustime;
                     if (newtempdiff == tempdiff && tempdiff < -0.9 && retime[channel] < 0.1) {
-                		jd = currLineJD(offset, parts) + 1;
+                    	if ((currLineJD(offset, parts) + 1) == jd+1) {
+                    		jd = currLineJD(offset, parts) + 1;
+                    	}
                     } else {                    	
                         jd = currLineJD(offset, parts);
                         //this is to prevent rolling over too soon
@@ -258,9 +260,8 @@ public class ThresholdTimes {
                     }
             	} 
             } else {
-                jd = currLineJD(offset, parts);           		            	
+                jd = currLineJD(offset, parts);                    
             }
-            
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -319,7 +320,8 @@ public class ThresholdTimes {
 
         long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 
-        if (diff < -0xaaaaaaaal) {
+        //if (diff < -0xaaaaaaaal) {
+	    if (diff < -0x22222222l) {
             diff += 0xffffffffl;
             //Bug 469: if the difference is negative, the number needs to be corrected
             //		   but it was not stored for later use, now fixed by this:
