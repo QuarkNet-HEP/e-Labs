@@ -7,19 +7,19 @@ require_once('../inc/util.inc');
 
 function db_init_aux() {
     $config = get_config();
-	$user = parse_config($config, "<db_user>");
-	$pass = parse_config($config, "<db_passwd>");
-	$host = parse_config($config, "<db_host>");
+    $user = parse_config($config, "<db_user>");
+    $pass = parse_config($config, "<db_passwd>");
+    $host = parse_config($config, "<db_host>");
 
     if( empty($pass) ) return 3;
 
     if ($host == null) {
         $host = "localhost";
     }
-		// mysql_pconnect removed in PHP 7.0 - JG 27Jun2019
-		//$retval = @mysql_pconnect($host, $user, $pass);
-		$retval = @mysqli_connect($host, $user, $pass);
-		if (!$retval) {
+    // mysql_pconnect removed in PHP 7.0 - JG 27Jun2019
+    //$retval = @mysql_pconnect($host, $user, $pass);
+    $retval = @mysqli_connect($host, $user, $pass);
+    if (!$retval) {
         return 1;
     }
 
