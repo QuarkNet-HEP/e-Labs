@@ -12,6 +12,7 @@ function db_init() {
             Please try again later. ");
         exit();
     }
+    // `db_init_aux()` defined in `inc/db.inc`
     $retval = db_init_aux();
     if ($retval == 1) {
         error_page("Unable to connect to database - please try again later\n".
