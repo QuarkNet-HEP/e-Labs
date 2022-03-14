@@ -5,6 +5,17 @@ require_once('../inc/util.inc');
 // database-related functions.
 // Presentation code (HTML) shouldn't be here
 
+// `mysql_query()` was removed from PHP since this file was written.  This breaks // `HelpDeskRequest.php`.
+// However, that file doesn't actually use the functions that use `mysql_query()`.
+// Under the assumption that `HelpDeskRequest.php` is the only element of the
+// BOINC code that's still used, the simple solution is to comment out all
+// instances of `mysql_query()`.
+// If it turns out that BOINC code is used for other parts of the e-Labs that
+// I'm unaware of, or if you wish to reactivate them, then the `mysql_query()`
+// calls below will have to be restored and replaced with current MySQL-access
+// fucntions, which are 'PDO' and 'mysqli' as of PHP 7.4.
+//   - JG 11Mar2022
+
 function db_init_aux() {
     $config = get_config();
     $user = parse_config($config, "<db_user>");
@@ -32,7 +43,8 @@ function db_init_aux() {
 }
 
 function lookup_user_auth($auth) {
-    $result = @mysql_query("select * from user where authenticator='$auth'");
+    ///$result = @mysql_query("select * from user where authenticator='$auth'");
+    $result = null;
     if ($result) {
         $user = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -42,7 +54,8 @@ function lookup_user_auth($auth) {
 }
 
 function lookup_user_id($id) {
-    $result = @mysql_query("select * from user where id=$id");
+    ///$result = @mysql_query("select * from user where id=$id");
+    $result = null;
     if ($result) {
         $user = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -52,7 +65,8 @@ function lookup_user_id($id) {
 }
 
 function lookup_user_email_addr($email_addr) {
-    $result = @mysql_query("select * from user where email_addr='$email_addr'");
+    ///$result = @mysql_query("select * from user where email_addr='$email_addr'");
+    $result = null;
     if ($result) {
         $user = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -62,7 +76,8 @@ function lookup_user_email_addr($email_addr) {
 }
 
 function lookup_host($id) {
-    $result = mysql_query("select * from host where id=$id");
+    ///$result = mysql_query("select * from host where id=$id");
+    $result = null;
     if ($result) {
         $host = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -72,7 +87,8 @@ function lookup_host($id) {
 }
 
 function lookup_team($id) {
-    $result = mysql_query("select * from team where id=$id");
+    ///$result = mysql_query("select * from team where id=$id");
+    $result = null;
     if ($result) {
         $team = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -82,12 +98,14 @@ function lookup_team($id) {
 }
 
 function lookup_team_founder($id) {
-    $result = mysql_query("select * from team where userid=$id");
+    ///$result = mysql_query("select * from team where userid=$id");
+    $result = null;
     return $result;
 }
 
 function lookup_wu($id) {
-    $result = mysql_query("select * from workunit where id=$id");
+    ///$result = mysql_query("select * from workunit where id=$id");
+    $result = null;
     if ($result) {
         $wu = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -97,7 +115,8 @@ function lookup_wu($id) {
 }
 
 function lookup_result($id) {
-    $result = mysql_query("select * from result where id=$id");
+    ///$result = mysql_query("select * from result where id=$id");
+    $result = null;
     if ($result) {
         $r = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -107,7 +126,8 @@ function lookup_result($id) {
 }
 
 function lookup_app($id) {
-    $result = mysql_query("select * from app where id=$id");
+    ///$result = mysql_query("select * from app where id=$id");
+    $result = null;
     if ($result) {
         $app = mysql_fetch_object($result);
         mysql_free_result($result);
@@ -117,7 +137,8 @@ function lookup_app($id) {
 }
 
 function lookup_tentative_user($nonce) {
-    $result = mysql_query("select * from tentative_user where nonce='$nonce'");
+    ///$result = mysql_query("select * from tentative_user where nonce='$nonce'");
+    $result = null;
     if ($result) {
         $tu = mysql_fetch_object($result);
         mysql_free_result($result);
