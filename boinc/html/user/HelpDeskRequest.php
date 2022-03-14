@@ -39,7 +39,8 @@ include_once("../project/roles.php");     // for user permissions
 set_debug_level(0);
 
 // List of addresses to send to (comma separated):
-//
+
+/* Use personal address for dev/testing (4.0-ND-dev branch)
 //$Email_List = "e-labs@fnal.gov";
 $Email_List = "jgriffi8@nd.edu";
 
@@ -63,8 +64,7 @@ $elab_list=array('any' => 'Any/All',
 		 'adler' => 'Adler iLab');
 
 // TODO: This will become a list of checkboxes, possibly each with
-// it's own class, to allow us to control visibility.
-
+// its own class, to allow us to control visibility.
 $part_list = array('Unknown',   // remove this one?  add "all/several"?
                    'DAQ Hardware', 'Data Upload',   // mainly Cosmics
                    'Data Preparation',              // mainly LIGO
@@ -90,7 +90,7 @@ $role_list=array('Student', 'Teacher', 'QuarkNet Fellow',
 //
 $elab_forum_id= array('any' => 52,
                       'cosmic' => 57,
-											'cms' => 60,
+                      'cms' => 60,
                       'ligo' => 58);
 
 // For testing.  If the server name contains "spy-hill"
@@ -100,7 +100,7 @@ if( strpos($_SERVER['SERVER_NAME'], "spy-hill" ) ){
   $Email_List = "myers@spy-hill.net";
   $Email_From = "i2u2@spy-hill.net";
 }
-if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) !== false ){
+if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) ){
   $Email_List = "jgriffi8@nd.edu";
   $Email_From = "jgriffi8@nd.edu";
 }
@@ -111,8 +111,8 @@ if( strpos($_SERVER['SERVER_NAME'], "i2u2-dev" ) !== false ){
 
 $self = $_SERVER['PHP_SELF'];                           // who we are (path only)
 $my_url = "http://" . $_SERVER['SERVER_NAME'] . $self;  // this form (full URL)
-$referer = $_SERVER['HTTP_REFERER'];                 		// from whence we came (full URL)
-$user_agent = $_SERVER['HTTP_USER_AGENT'];           		// User's browser
+$referer = $_SERVER['HTTP_REFERER'];                 	// from whence we came (full URL)
+$user_agent = $_SERVER['HTTP_USER_AGENT'];           	// User's browser
 
 
 $input_error=array();           // empty means no errors (yet)
@@ -293,7 +293,7 @@ if( !function_exists('selector_from_array') ) {// in case another
     function selector_from_array($name, $array, $selection, $onChange='') {
         $out = "\n<select name=\"$name\" ";
         if(!empty($onChange)) {
-	  				$out .= " onChange=\"$onChange\" ";
+            $out .= " onChange=\"$onChange\" ";
         }
         $out .= ">";
 
@@ -345,7 +345,7 @@ function time_button($label,$days_past=0){
 function setup_referer_button(){
     global $referer, $my_url;
     if( empty($referer) ) return;
-		$referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
+    $referer_escaped = htmlspecialchars($referer, ENT_QUOTES, "utf-8");
 		
     //TODO: fix this to strip out any _GET parameters
     if( $referer == $my_url ) return;
@@ -554,7 +554,7 @@ function send_report_via_email($thread_id=0){
     $to_address = $Email_List;
 
     //$self = $_SERVER['PHP_SELF'];
-		$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
+    $self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
 		
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
@@ -611,15 +611,15 @@ function send_report_via_email($thread_id=0){
 
 function do_post($url, $data)
 {
-	$ch = curl_init($url);
+    $ch = curl_init($url);
 
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-	$response = curl_exec($ch);
-	curl_close($ch);
-	return $response;
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
 }
 
 
@@ -628,16 +628,15 @@ function do_post($url, $data)
  * Return value is the $thread_id of the posting, which can be used
  * to build a URL, or 0 on failure.
  */
-
-  function post_report_to_helpdesk(){
+function post_report_to_helpdesk(){
     global $logged_in_user;
     global $subject, $problem, $error_msg;
     global $elab, $elab_list, $elab_forum_id, $forum_id;
     global $user_name, $user_role, $role_list, $return_address;
 
     if( !array_key_exists($elab,$elab_forum_id) ) {
-      debug_msg(1,"Cannot find forum_id for e-Lab $elab");
-      return;
+        debug_msg(1,"Cannot find forum_id for e-Lab $elab");
+        return;
     }
     $forum_id = $elab_forum_id[$elab];   // and it's global, for later
 
@@ -645,28 +644,28 @@ function do_post($url, $data)
       $forum_id;
 
     if( $logged_in_user ) {
-      $auth = $logged_in_user->authenticator;
+        $auth = $logged_in_user->authenticator;
     }
     else {
-      debug_msg(2,"User not logged in, so use guest auth..");
+        debug_msg(2,"User not logged in, so use guest auth..");
 
-      if(0 && $user_role=="Student"){ // student TODO: REAL ONE
-	$auth="f1b25af57a295dba967175626c6236d4";
-      }
-      if(0 && $user_role=="Teacher"){ // teacher TODO: REAL GUEST ACCT AUTH
-	$auth="f1b25af57a295dba967175626c6236d4";
-      }
-      else {   // Guest User (generic)
-	$auth="bc347a3a65dce517cc98a3948d1bb44a";
-      }
+        if(0 && $user_role=="Student"){ // student TODO: REAL ONE
+	    $auth="f1b25af57a295dba967175626c6236d4";
+        }
+        if(0 && $user_role=="Teacher"){ // teacher TODO: REAL GUEST ACCT AUTH
+	    $auth="f1b25af57a295dba967175626c6236d4";
+        }
+        else {   // Guest User (generic)
+	    $auth="bc347a3a65dce517cc98a3948d1bb44a";
+        }
 
-      // Pirates@Home exception - post there not here
-      // (do this after the checks above to make it override).
-      //
-      if( isset($_COOKIE['pirates_auth']) ){
-          $form_url="http://pirates.spy-hill.net/forum_post.php?id=23";
-          $auth="f1b25af57a295dba967175626c6236d4";   //Code Dwarf's account
-      }
+        // Pirates@Home exception - post there not here
+        // (do this after the checks above to make it override).
+        //
+        if( isset($_COOKIE['pirates_auth']) ){
+            $form_url="http://pirates.spy-hill.net/forum_post.php?id=23";
+            $auth="f1b25af57a295dba967175626c6236d4";   //Code Dwarf's account
+        }
     }
 
 
@@ -686,7 +685,7 @@ function do_post($url, $data)
 
 
     //$hidden_addr_url = recaptcha_mailhide_url($mailhide_public_key, $mailhide_private_key, $return_address);
-		$hidden_addr_url = "hello";
+    $hidden_addr_url = "hello";
 
     $forum_body = "[pre]".preg_replace("/Submitted by: (.*) \<(.*\@.*)\>/",
                          "[/pre]Submitted by: [url=".$hidden_addr_url."]$1[/url][pre]", $body)."[/pre]";
@@ -706,8 +705,7 @@ function do_post($url, $data)
 
     //$response = http_post_fields($form_url, $form_fields, $form_files,
     //                             $form_options );
-		$response = do_post($form_url, $form_fields);
-
+    $response = do_post($form_url, $form_fields);
 
     if( $response === FALSE ){
         debug_msg(1,"http_post_fields() failed! (FALSE)");
@@ -724,23 +722,23 @@ function do_post($url, $data)
 
     debug_msg(2,"Check for 302 response...");
     if( preg_match("/HTTP\/\d.\d 302 Found/", $response, $matches) ){
-      debug_msg(2,"Found 302.  Try to extract the thread ID...");
-      $thread_id = -1;
-      if( preg_match("/Location: .*thread\.php\?id=(\d+)/", $response, $matches) ){
-	$thread_id = $matches[1];
-	debug_msg(2,"  ... thread ID is $thread_id");
-      }
-      return $thread_id;
+        debug_msg(2,"Found 302.  Try to extract the thread ID...");
+        $thread_id = -1;
+        if( preg_match("/Location: .*thread\.php\?id=(\d+)/", $response, $matches) ){
+            $thread_id = $matches[1];
+            debug_msg(2,"  ... thread ID is $thread_id");
+        }
+        return $thread_id;
     }
 
     debug_msg(2,"Check for 200 response (and save it)...");
     if(preg_match("/HTTP\/\d.\d 200 /", $response, $matches) ){
-      $fh = fopen("/tmp/bug_report.log", "a");
-      fwrite($fh,"\n-------------------".date('c')."-------------------\n");
-      fwrite($fh, $response);
-      fwrite($fh,"\n\n");
-      fclose($fh);
-      return 0;
+        $fh = fopen("/tmp/bug_report.log", "a");
+        fwrite($fh,"\n-------------------".date('c')."-------------------\n");
+        fwrite($fh, $response);
+        fwrite($fh,"\n\n");
+        fclose($fh);
+        return 0;
     }
 
     return 0;
