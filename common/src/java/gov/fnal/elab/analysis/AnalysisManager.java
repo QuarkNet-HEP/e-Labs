@@ -18,14 +18,13 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  * This class is used to manage a set of analyses in a session
  */
 public class AnalysisManager {
-    public static final Logger logger = LogManager.getLogger(AnalysisManager.class);
+    public static final Logger logger = Logger.getLogger(AnalysisManager.class);
 
     /**
      * The interval, in milliseconds at which the reaper wakes and reaps
@@ -147,9 +146,8 @@ public class AnalysisManager {
             }
             catch (Exception e) {
                 lifetime = 1;
-                //logger.warn("Invalid max.analysis.lifetime: " + hr
-                //        + ". Using default: " + lifetime + " hr");
-                logger.warn("Invalid max.analysis.lifetime: {}. Using default: {} hr", hr, lifetime);
+                logger.warn("Invalid max.analysis.lifetime: " + hr
+                        + ". Using default: " + lifetime + " hr");
             }
             lifetime *= 3600 * 1000;
         }
@@ -190,14 +188,12 @@ public class AnalysisManager {
                     AnalysisRun run = (AnalysisRun) e.getValue();
                     Date started = run.getStartTime();
                     if (started == null) {
-                        //logger.warn("Missing start time for run " + id);
-                        logger.warn("Missing start time for run {}", id);
+                        logger.warn("Missing start time for run " + id);
                     }
                     else {
                         if (started.getTime() + lifetime < now.getTime()
                                 || index + MAX_ANALYSES < analyses.size()) {
-                            //logger.info("Reaping run " + id);
-                            logger.info("Reaping run {}", id);
+                            logger.info("Reaping run " + id);
                             l.add(id);
                         }
                     }
