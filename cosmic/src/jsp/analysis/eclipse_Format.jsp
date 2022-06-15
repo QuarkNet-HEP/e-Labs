@@ -41,7 +41,6 @@
 		
 		String dD = user.getDir("plots");//dD = destination Directory
 		String src = "webapps"+sD+"/"+sF;
-		//String src = "/usr/local/Cellar/tomcat@8/8.5.69/libexec/webapps"+sD+"/"+sF;
 		String dst = dD+"/"+dF;
 		
 		//copy eventCandidates file to eFtemp in user's "plots" directory
@@ -329,7 +328,7 @@
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
 
 								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123++;}//if
-								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount134++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124++;}//if
 								if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134++;}//if
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234++;}//if
 
@@ -597,4 +596,3 @@
 	
 	</body>
 </html>
-
