@@ -36,9 +36,7 @@
 
 <p>
 	<br /><br />
-	<p>${user.outputDir}</p>
 	<a href="${results.outputDirURL}/hybridOut">Analysis output file</a> <br /> <br /><br />
-	<a href="download.jsp?filename=hybridOut&path=${userDirectory}&id=${results.id}">download the actual file</a>  
 	The link above will open the file on the browser. <br /><br />
 	To download the file to your computer, right click on the link and select "Download Linked File as..." <br /> <br /><br />
 </p>
