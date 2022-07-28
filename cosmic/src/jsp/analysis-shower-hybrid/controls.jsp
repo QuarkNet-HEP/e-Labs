@@ -42,7 +42,15 @@
 										onError="Must be an integer or number of the form (2e-5)"/>
 								</td>
 							</tr>
-						</table>
+							<tr>
+								<td class="form-label">
+									<e:trlabel for="channel_coincidence" name="Channel Coincidence">Channel Coincidence:</e:trlabel>
+								</td>
+								<td class="form-control">
+									<e:trselect name="channel_coincidence" 
+										valueList="1, 2, 3, 4" labelList="1, 2, 3, 4" default="2"/>
+								</td>
+							</tr>						</table>
 					</e:hidden>
 					</e:vswitch>
 			</e:tr>

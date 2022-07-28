@@ -7,9 +7,9 @@
 # 3-Look for hits per counter and their pulsewidths
 # 4-Write to output file
 
-if($#ARGV < 3){    
+if($#ARGV < 4){    
     die "usage: LifetimeShowerHybrid.pl [filename to open] [filename to save to] [file to save feedback]".
-        "[gatewidth in seconds]"
+     "[gatewidth in seconds] [channel coincidence]"
 }
 
 #/Users/eperonja/ep_home/ep_fermi/6674/sortOutShort /Users/eperonja/ep_home/ep_fermi/6674/hybridOut /Users/eperonja/ep_home/ep_fermi/6674/hybrid_fb 1e-4 2 250 0 4 2 100 0 0 300 6674
@@ -22,6 +22,7 @@ $feedback = $ARGV[2];
 open(OUT, ">$ofile")  || die "Unable to open $ofile for output";
 open(LIFEOUT,">$feedback") || die "Unable to open $ofile_feedback for feedback";
 $gatewidth=$ARGV[3];
+$coincidence=$ARGV[4];
 
 # Constants
 $numSecondsInADay=86400;
@@ -29,21 +30,22 @@ $constantTimeErrorAllowed=1e-9/$numSecondsInADay;
 $offset=$gatewidth/$numSecondsInADay; 
 $debugger = 1;
 
-print OUT ("\t\t\t\t\tFirst Hit\t\t\t\t\t\t\t\t\t",
-		   "First hits in each channel\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
-		   "Second hits from each channel\n");
-print OUT ("Event\tNmHitDAQ1\tMinFracDay\t\t\tJulDay\t\tSSDB\t\teventDateTime\t\t",
-						"Hit1.ch1\tPW1\t\t",
-						"Hit1.ch2\tPW2\t\t",
-						"Hit1.ch3\tPW3\t\t",
-						"Hit1.ch4\tPW4\t\t",
-						"Hit2.ch1\tPW1\t\t",
-						"Hit2.ch2\tPW2\t\t",
-						"Hit2.ch3\tPW3\t\t",
-						"Hit2.ch4\tPW4\t\t",
-						"\n");
+print OUT ("\t\t\t\t\tFirst Hit\t\t\t\t\t",
+						"First hits in each channel\t\t\t\t\t\t\t\t",
+						"Second hits from each channel\n");
+print OUT ("Event\tNmHitDAQ1\tMinFracDay\tJulDay\tSSDB\teventDateTime\t",
+						"Hit1.ch1\tPW1\t",
+						"Hit1.ch2\tPW2\t",
+						"Hit1.ch3\tPW3\t",
+						"Hit1.ch4\tPW4\t",
+						"Hit2.ch1\tPW1\t",
+						"Hit2.ch2\tPW2\t",
+						"Hit2.ch3\tPW3\t",
+						"Hit2.ch4\tPW4\n");
+
 print LIFEOUT "LifetimeShowerHybrid analysis - User parameters:\n";
 print LIFEOUT "Gatewidth: $gatewidth secs\n";
+print LIFEOUT "Channel coincidence: $coincidence\n";
 print LIFEOUT "Offset: $offset\n";
 # Read lines into a big buffer and ignore lines with comments when beginning to read the file
 while (<IN>) {
@@ -216,39 +218,38 @@ sub analyzeBufferForHitsCounter() {
 	}
 	#print totals
 	$totalhits = $counter1+$counter2+$counter3+$counter4;
-	push(@buffersummary,"\t\t\t\t\tFirst Hit\t\t\t\t\t\t\t\t\t",
-						"First hits in each channel\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
-						"Second hits from each channel\n");
-	push(@buffersummary,"Event\tNmHitDAQ1\tMinFracDay\t\t\tJulDay\t\tSSDB\t\teventDateTime\t\t",
-						"Hit1.ch1\tPW1\t\t",
-						"Hit1.ch2\tPW2\t\t",
-						"Hit1.ch3\tPW3\t\t",
-						"Hit1.ch4\tPW4\t\t",
-						"Hit2.ch1\tPW1\t\t",
-						"Hit2.ch2\tPW2\t\t",
-						"Hit2.ch3\tPW3\t\t",
-						"Hit2.ch4\tPW4\t\t",
-						"\n");
-	push(@buffersummary,"$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
-						"$hit1ch1\t\t$hit1pdw1\t",
-						"$hit1ch2\t\t$hit1pdw2\t",
-						"$hit1ch3\t\t$hit1pdw3\t",
-						"$hit1ch4\t\t$hit1pdw4\t",
-						"$hit2ch1\t\t$hit2pdw1\t",
-						"$hit2ch2\t\t$hit2pdw2\t",
-						"$hit2ch3\t\t$hit2pdw3\t",
-						"$hit2ch4\t\t$hit2pdw4\t",
-						"\n");
-	print OUT ("$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
-						"$hit1ch1\t\t$hit1pdw1\t",
-						"$hit1ch2\t\t$hit1pdw2\t",
-						"$hit1ch3\t\t$hit1pdw3\t",
-						"$hit1ch4\t\t$hit1pdw4\t",
-						"$hit2ch1\t\t$hit2pdw1\t",
-						"$hit2ch2\t\t$hit2pdw2\t",
-						"$hit2ch3\t\t$hit2pdw3\t",
-						"$hit2ch4\t\t$hit2pdw4\t",
-						"\n");
+	if ($totalhits >= $coincidence) {
+		push(@buffersummary,"\t\t\t\t\tFirst Hit\t\t\t\t\t",
+							"First hits in each channel\t\t\t\t\t\t\t\t",
+							"Second hits from each channel\n");
+		push(@buffersummary,"Event\tNmHitDAQ1\tMinFracDay\tJulDay\tSSDB\teventDateTime\t",
+							"Hit1.ch1\tPW1\t",
+							"Hit1.ch2\tPW2\t",
+							"Hit1.ch3\tPW3\t",
+							"Hit1.ch4\tPW4\t",
+							"Hit2.ch1\tPW1\t",
+							"Hit2.ch2\tPW2\t",
+							"Hit2.ch3\tPW3\t",
+							"Hit2.ch4\tPW4\n");
+		push(@buffersummary,"$buffercounter\t$totalhits\t$minfracdaybuffer\t$julianday\t$ssdb\t$eventDateTime\t",
+							"$hit1ch1\t$hit1pdw1\t",
+							"$hit1ch2\t$hit1pdw2\t",
+							"$hit1ch3\t$hit1pdw3\t",
+							"$hit1ch4\t$hit1pdw4\t",
+							"$hit2ch1\t$hit2pdw1\t",
+							"$hit2ch2\t$hit2pdw2\t",
+							"$hit2ch3\t$hit2pdw3\t",
+							"$hit2ch4\t$hit2pdw4\n");
+		print OUT ("$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
+							"$hit1ch1\t$hit1pdw1\t",
+							"$hit1ch2\t$hit1pdw2\t",
+							"$hit1ch3\t$hit1pdw3\t",
+							"$hit1ch4\t$hit1pdw4\t",
+							"$hit2ch1\t$hit2pdw1\t",
+							"$hit2ch2\t$hit2pdw2\t",
+							"$hit2ch3\t$hit2pdw3\t",
+							"$hit2ch4\t$hit2pdw4\n");
+	}
 }# end of analyze buffer for N Hits per Counter
 
 
