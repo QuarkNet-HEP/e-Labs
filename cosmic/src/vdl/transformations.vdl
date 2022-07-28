@@ -1222,6 +1222,7 @@ TR I2U2.Cosmic::LifetimeStudyAdvanced(
 
 TR I2U2.Cosmic::ShowerLifetimeHybrid(
 	none gatewidth,
+	none coincidence,
 	input hybridIn,
 	output hybridOut,
 	output feedback )
@@ -1229,6 +1230,7 @@ TR I2U2.Cosmic::ShowerLifetimeHybrid(
   argument = " "${hybridIn};
   argument = " "${hybridOut};
   argument = " "${gatewidth};
+  argument = " "${coincidence};
   argument = " "${feedback};
 }
 
@@ -1240,6 +1242,7 @@ TR I2U2.Cosmic::ShowerLifetimeHybridStudy(
 	none firmwares,
 	inout hybridOut,
 	none hybrid_gatewidth,
+	none channel_coincidence,
 	none geoDir,
 	input geoFiles[],
 	output feedback,
@@ -1265,6 +1268,7 @@ TR I2U2.Cosmic::ShowerLifetimeHybridStudy(
 	sortOut=${output:sortOut} );
   call I2U2.Cosmic::ShowerLifetimeHybrid(
 	gatewidth=${hybrid_gatewidth},
+	coincidence=${channel_coincidence},
 	hybridIn=${input:sortOut},
 	hybridOut=${output:hybridOut},
 	feedback=${output:feedback} );

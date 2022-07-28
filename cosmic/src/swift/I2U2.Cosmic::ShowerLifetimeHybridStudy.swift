@@ -31,10 +31,10 @@ type AxisParams {
 }
 
 (File out, File ofile_feedback) ShowerLifetimeHybrid(File inf,  
-	string gateWidth) {
+	string gateWidth, string coincidence) {
 	
 	app {
-		ShowerLifetimeHybrid @filename(inf) @filename(out) @filename(ofile_feedback) gateWidth;
+		ShowerLifetimeHybrid @filename(inf) @filename(out) @filename(ofile_feedback) gateWidth coincidence;
 	}
 }
 
@@ -51,6 +51,7 @@ string  firmwares[] = @strsplit(@arg("firmwares"), "\\s");
 File	hybridOut <single_file_mapper;file=@arg("hybridOut")>;
 File	feedback <single_file_mapper;file=@arg("feedback")>;
 string	hybrid_gatewidth = @arg("hybrid_gatewidth");
+string	channel_coincidence = @arg("channel_coincidence");
 File	combineOut <single_file_mapper;file=@arg("combineOut")>;
 File	sortOut <single_file_mapper;file=@arg("sortOut")>;
 
@@ -65,6 +66,6 @@ wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, fir
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
 
-(hybridOut, feedback) = ShowerLifetimeHybrid(sortOut, hybrid_gatewidth);
+(hybridOut, feedback) = ShowerLifetimeHybrid(sortOut, hybrid_gatewidth, channel_coincidence);
 
 
