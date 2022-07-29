@@ -145,6 +145,7 @@ sub analyzeBufferForHitsCounter() {
 	$hit1pdw1=$hit1pdw2=$hit1pdw3=$hit1pdw4=sprintf('%.2f',-1.00);
 	$hit2ch1=$hit2ch2=$hit2ch3=$hit2ch4=sprintf('%.2f',-1.00);
 	$hit2pdw1=$hit2pdw2=$hit2pdw3=$hit2pdw4=sprintf('%.2f',-1.00);
+	$chan1hit=$chan2hit=$chan3hit=$chan4hit=0;
 	for my $i (0..($buffersize-1)) {
 		@hitparts = split(/\s+/, $localbuffer[$i]);
 		@counterparts = split(/\./, $hitparts[0]);
@@ -165,6 +166,7 @@ sub analyzeBufferForHitsCounter() {
 		}
 		if ($counterparts[1] == "1") {
 			$counter1 += 1;
+			$chan1hit=1;
 			if ($counter1 == 1) {
 				$temp = $toNs*($hitparts[2] - $minfracdaybuffer);
 				$hit1ch1 = sprintf('%.2f',$temp);
@@ -177,6 +179,7 @@ sub analyzeBufferForHitsCounter() {
 			}
 		}		
 		if ($counterparts[1] == "2") {
+			$chan2hit=1;
 			$counter2 += 1;
 			if ($counter2 == 1) {
 				$temp = $toNs*($hitparts[2] - $minfracdaybuffer);
@@ -190,6 +193,7 @@ sub analyzeBufferForHitsCounter() {
 			}
 		}
 		if ($counterparts[1] == "3") {
+			$chan3hit=1;
 			$counter3 += 1;
 			if ($counter3 == 1) {
 				$temp = $toNs*($hitparts[2] - $minfracdaybuffer);
@@ -203,6 +207,7 @@ sub analyzeBufferForHitsCounter() {
 			}
 		}
 		if ($counterparts[1] == "4") {
+			$chan4hit=1;
 			$counter4 += 1;
 			if ($counter4 == 1) {
 				$temp = $toNs*($hitparts[2] - $minfracdaybuffer);
@@ -218,7 +223,8 @@ sub analyzeBufferForHitsCounter() {
 	}
 	#print totals
 	$totalhits = $counter1+$counter2+$counter3+$counter4;
-	if ($totalhits >= $coincidence) {
+	$chancoincidence = $chan1hit+$chan2hit+$chan3hit+$chan4hit;
+	if ($chancoincidence >= $coincidence) {
 		push(@buffersummary,"\t\t\t\t\tFirst Hit\t\t\t\t\t",
 							"First hits in each channel\t\t\t\t\t\t\t\t",
 							"Second hits from each channel\n");
