@@ -30,18 +30,20 @@ $constantTimeErrorAllowed=1e-9/$numSecondsInADay;
 $offset=$gatewidth/$numSecondsInADay; 
 $debugger = 1;
 
-print OUT ("\t\t\t\t\tFirst Hit\t\t\t\t\t",
-						"First hits in each channel\t\t\t\t\t\t\t\t",
-						"Second hits from each channel\n");
-print OUT ("Event\tNmHitDAQ1\tMinFracDay\tJulDay\tSSDB\teventDateTime\t",
-						"Hit1.ch1\tPW1\t",
-						"Hit1.ch2\tPW2\t",
-						"Hit1.ch3\tPW3\t",
-						"Hit1.ch4\tPW4\t",
-						"Hit2.ch1\tPW1\t",
-						"Hit2.ch2\tPW2\t",
-						"Hit2.ch3\tPW3\t",
-						"Hit2.ch4\tPW4\n");
+print OUT ("\t\t\t\t\tFirst Hit\t\t\t\t\t\t\t\t\t",
+          "First hits in each channel\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+           "Second hits from each channel\n");
+print OUT ("Event\tNmHitDAQ1\tMinFracDay\t\t\tJulDay\t\tSSDB\t\teventDateTime\t\t",
+                        "Hit1.ch1\tPW1\t\t",
+                        "Hit1.ch2\tPW2\t\t",
+                        "Hit1.ch3\tPW3\t\t",
+                        "Hit1.ch4\tPW4\t\t",
+                        "Hit2.ch1\tPW1\t\t",
+                        "Hit2.ch2\tPW2\t\t",
+                        "Hit2.ch3\tPW3\t\t",
+                        "Hit2.ch4\tPW4\t\t",
+                        "\n");
+
 
 print LIFEOUT "LifetimeShowerHybrid analysis - User parameters:\n";
 print LIFEOUT "Gatewidth: $gatewidth secs\n";
@@ -225,37 +227,39 @@ sub analyzeBufferForHitsCounter() {
 	$totalhits = $counter1+$counter2+$counter3+$counter4;
 	$chancoincidence = $chan1hit+$chan2hit+$chan3hit+$chan4hit;
 	if ($chancoincidence >= $coincidence) {
-		push(@buffersummary,"\t\t\t\t\tFirst Hit\t\t\t\t\t",
-							"First hits in each channel\t\t\t\t\t\t\t\t",
-							"Second hits from each channel\n");
-		push(@buffersummary,"Event\tNmHitDAQ1\tMinFracDay\tJulDay\tSSDB\teventDateTime\t",
-							"Hit1.ch1\tPW1\t",
-							"Hit1.ch2\tPW2\t",
-							"Hit1.ch3\tPW3\t",
-							"Hit1.ch4\tPW4\t",
-							"Hit2.ch1\tPW1\t",
-							"Hit2.ch2\tPW2\t",
-							"Hit2.ch3\tPW3\t",
-							"Hit2.ch4\tPW4\n");
-		push(@buffersummary,"$buffercounter\t$totalhits\t$minfracdaybuffer\t$julianday\t$ssdb\t$eventDateTime\t",
-							"$hit1ch1\t$hit1pdw1\t",
-							"$hit1ch2\t$hit1pdw2\t",
-							"$hit1ch3\t$hit1pdw3\t",
-							"$hit1ch4\t$hit1pdw4\t",
-							"$hit2ch1\t$hit2pdw1\t",
-							"$hit2ch2\t$hit2pdw2\t",
-							"$hit2ch3\t$hit2pdw3\t",
-							"$hit2ch4\t$hit2pdw4\n");
-		print OUT ("$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
-							"$hit1ch1\t$hit1pdw1\t",
-							"$hit1ch2\t$hit1pdw2\t",
-							"$hit1ch3\t$hit1pdw3\t",
-							"$hit1ch4\t$hit1pdw4\t",
-							"$hit2ch1\t$hit2pdw1\t",
-							"$hit2ch2\t$hit2pdw2\t",
-							"$hit2ch3\t$hit2pdw3\t",
-							"$hit2ch4\t$hit2pdw4\n");
-	}
+    	push(@buffersummary,"\t\t\t\t\tFirst Hit\t\t\t\t\t\t\t\t\t",
+       	                 "First hits in each channel\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+                         "Second hits from each channel\n");
+    	push(@buffersummary,"Event\tNmHitDAQ1\tMinFracDay\t\t\tJulDay\t\tSSDB\t\teventDateTime\t\t",
+        	                "Hit1.ch1\tPW1\t\t",
+            	            "Hit1.ch2\tPW2\t\t",
+                	        "Hit1.ch3\tPW3\t\t",
+                    	    "Hit1.ch4\tPW4\t\t",
+                        	"Hit2.ch1\tPW1\t\t",
+	                        "Hit2.ch2\tPW2\t\t",
+    	                    "Hit2.ch3\tPW3\t\t",
+        	                "Hit2.ch4\tPW4\t\t",
+            	            "\n");
+	    push(@buffersummary,"$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
+	                        "$hit1ch1\t\t$hit1pdw1\t",
+	                        "$hit1ch2\t\t$hit1pdw2\t",
+	                        "$hit1ch3\t\t$hit1pdw3\t",
+	                        "$hit1ch4\t\t$hit1pdw4\t",
+	                        "$hit2ch1\t\t$hit2pdw1\t",
+	                        "$hit2ch2\t\t$hit2pdw2\t",
+	                        "$hit2ch3\t\t$hit2pdw3\t",
+	                        "$hit2ch4\t\t$hit2pdw4\t",
+	                        "\n");
+	    print OUT ("$buffercounter\t\t$totalhits\t\t\t$minfracdaybuffer\t$julianday\t\t$ssdb\t$eventDateTime\t",
+	                        "$hit1ch1\t\t$hit1pdw1\t",
+	                        "$hit1ch2\t\t$hit1pdw2\t",
+	                        "$hit1ch3\t\t$hit1pdw3\t",
+	                        "$hit1ch4\t\t$hit1pdw4\t",
+	                        "$hit2ch1\t\t$hit2pdw1\t",
+	                        "$hit2ch2\t\t$hit2pdw2\t",
+	                        "$hit2ch3\t\t$hit2pdw3\t",
+	                        "$hit2ch4\t\t$hit2pdw4\t",
+	                        "\n");	}
 }# end of analyze buffer for N Hits per Counter
 
 
