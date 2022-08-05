@@ -1,4 +1,4 @@
-<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -14,7 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Choose data for shower study</title>
+		<title>Choose data for the hybrid study</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
@@ -41,7 +41,7 @@
 
 	</head>
 	
-	<body id="shower" class="data">
+	<body id="hybrid-study" class="data">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -53,9 +53,12 @@
 			
 			<div id="content">
 				
-<h1>Choose data for shower study.</h1>
-<div id="rationale">The universe is a big place. Cosmic ray primaries drift around and get energy boosts from multiple sources. Some primaries attain enormous energies. When they strike the upper atmosphere, they create Extended Area Showers. These events create thousands of particles that simultaneously reach a small section of Earth's surface. Can you find out how often nearby detectors "light up" with cosmic rays? If they do, is it a random coincidence or a measurement of violent conditions in another galaxy?</div>
-<div id="rationale">Gain confidence by running a practice search.</div>
+<h1>Choose data for the hybrid study.</h1>
+<!-- 
+<div id="rationale">One way to classify objects is by measurable characteristics. All electrons have the same mass, charge and spin. What characteristics can you measure about the cosmic ray particles that reach Earth's surface? These unstable particles decay with a characteristic <a href="javascript:glossary('signal',350)">signal</a> in a characteristic time. Can you measure it? If so, that characteristic is one way to determine what the particles are.</div>
+ -->
+<div id="rationale">Gain confidence by running a practice analysis.</div>
+
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -74,14 +77,12 @@
 							<jsp:include page="../data/multiselect-search-results.jsp"/>
 						</div>
 					</div>
+					<!-- this kind of nesting is an interesting problem -->
 					<div id="right">
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
-							<input type="submit" name="action" value="Run shower study"/>
-							<br />
-							<br />
 							<input type="submit" name="action" value="Run hybrid study"/>
-							<center><div id="msg" style="color: red;"></div></center>							
+							<center><div id="msg" style="color: red;"></div></center>
 						</div>
 						<%@ include file="help.jsp" %>
 						<%@ include file="../data/legend.jsp" %>

@@ -1219,3 +1219,57 @@ TR I2U2.Cosmic::LifetimeStudyAdvanced(
 	height=${plot_thumbnail_height}
   );
 }
+
+TR I2U2.Cosmic::ShowerLifetimeHybrid(
+	none gatewidth,
+	none coincidence,
+	input hybridIn,
+	output hybridOut,
+	output feedback )
+{
+  argument = " "${hybridIn};
+  argument = " "${hybridOut};
+  argument = " "${gatewidth};
+  argument = " "${coincidence};
+  argument = " "${feedback};
+}
+
+
+TR I2U2.Cosmic::ShowerLifetimeHybridStudy(
+	inout combineOut,
+	none detector,
+	none cpldfreqs,
+	none firmwares,
+	inout hybridOut,
+	none hybrid_gatewidth,
+	none channel_coincidence,
+	none geoDir,
+	input geoFiles[],
+	output feedback,
+	input rawData[],
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout sortOut,
+	inout wireDelayData[],
+	input thresholdAll[] )
+{
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:combineOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::ShowerLifetimeHybrid(
+	gatewidth=${hybrid_gatewidth},
+	coincidence=${channel_coincidence},
+	hybridIn=${input:sortOut},
+	hybridOut=${output:hybridOut},
+	feedback=${output:feedback} );
+}

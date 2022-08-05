@@ -89,7 +89,8 @@
 				int i = 0; //i keeps count of number of times through while loop
 				int eventNum = 1, numHits = 1, numBlankInt= 0; 
 				int rateCount12 = 0, rateCount13 = 0, rateCount34 = 0, rateCount1234 = 0; 
-				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0; 
+				int rateCount24 = 0, rateCount14 = 0, rateCount23 = 0;
+				int rateCount123 = 0, rateCount124 = 0, rateCount134 = 0, rateCount234 = 0;
 				
 				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
 				NanoDate nd2 = ElabUtil.julianToGregorian(Integer.parseInt(jd), minFracDay); 
@@ -215,11 +216,14 @@
 					//Calculate interval counts 
 					if (i == 3){
 						endInterval = minFracDay + rateInterval;
-						//heading - 12 columns
+						//heading - 15 columns
 						listRate.add("EndFracDay"); listRate.add("EndTime(min)"); listRate.add("IntervalEnd");
 						listRate.add("numEvents"); listRate.add("D1CH12#Evnt"); listRate.add("D1CH13#Evnt"); 
 						listRate.add("D1CH34#Evnt"); listRate.add("D1CH1234#Evnt"); listRate.add("D1CH24#Evnt"); 
-						listRate.add("D1CH14#Evnt"); listRate.add("D1CH23#Evnt"); listRate.add("Ratio(13/12)");
+						listRate.add("D1CH14#Evnt"); listRate.add("D1CH23#Evnt");
+						listRate.add("D1CH123#Evnt"); listRate.add("D1CH124#Evnt"); 
+						listRate.add("D1CH134#Evnt"); listRate.add("D1CH234#Evnt");
+				
 						
 						if (!outArray[0].equals("-1") && !outArray[1].equals("-1")){rateCount12++;}//if
 						if (!outArray[0].equals("-1") && !outArray[2].equals("-1")){rateCount13++;}//if
@@ -228,6 +232,12 @@
 						if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
 						if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
 						if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if						
+
+						if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123++;}//if
+						if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124++;}//if
+						if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134++;}//if
+						if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234++;}//if
+					
 					}//if
 					if(i > 3){
 						if (jd.equals(lastJD)){			
@@ -247,13 +257,19 @@
 								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
 								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
 								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
-								if (rateCount12 != 0) {
-									ratio13_12 = rateCount13*1.0/rateCount12;	
-								}//if
-								else {
-									ratio13_12 = -1.0;
-								}//else
-								listRate.add(String.valueOf(ratio13_12)); 
+
+								listRate.add(String.valueOf(rateCount123));//number of events that meet criteria DAQ1CH123
+								listRate.add(String.valueOf(rateCount124));//number of events that meet criteria DAQ1CH124
+								listRate.add(String.valueOf(rateCount134));//number of events that meet criteria DAQ1CH134
+								listRate.add(String.valueOf(rateCount234));//number of events that meet criteria DAQ1CH234
+
+								//if (rateCount12 != 0) {
+								//	ratio13_12 = rateCount13*1.0/rateCount12;	
+								//}//if
+								//else {
+								//	ratio13_12 = -1.0;
+								//}//else
+								//listRate.add(String.valueOf(ratio13_12)); 
 								
 								numBlankInt = (int)  ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -268,7 +284,7 @@
 									
 									listRate.add("0");//number of events	
 									//if num of events = 0, num of events that fulfill each criteria = 0 
-									for (int k = 0; k < 7; k++){ 
+									for (int k = 0; k < 10; k++){ 
 										listRate.add("0");
 									}//for
 									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
@@ -290,6 +306,16 @@
 									else {rateCount14 = 0;}//else	
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
 									else {rateCount23 = 0;}//else										
+
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123 = 1;}//if
+									else {rateCount123 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124 = 1;}//if
+									else {rateCount124 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134 = 1;}//if
+									else {rateCount134 = 0;}//else			
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234 = 1;}//if
+									else {rateCount234 = 0;}//else			
+							
 							}//if	
 							else {
 								numEvents++;
@@ -300,6 +326,12 @@
 								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
 								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
+
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124++;}//if
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234++;}//if
+
 							}//else											
 						}//if
 						
@@ -321,13 +353,19 @@
 								listRate.add(String.valueOf(rateCount24));//number of events that meet criteria DAQ1CH24
 								listRate.add(String.valueOf(rateCount14));//number of events that meet criteria DAQ1CH14
 								listRate.add(String.valueOf(rateCount23));//number of events that meet criteria DAQ1CH23
-								if (rateCount12 != 0) {
-									ratio13_12 = rateCount13*1.0/rateCount12;	
-								}//if
-								else {
-									ratio13_12 = -1.0;
-								}//else
-								listRate.add(String.valueOf(ratio13_12)); 
+
+								listRate.add(String.valueOf(rateCount123));//number of events that meet criteria DAQ1CH123
+								listRate.add(String.valueOf(rateCount124));//number of events that meet criteria DAQ1CH124
+								listRate.add(String.valueOf(rateCount134));//number of events that meet criteria DAQ1CH134
+								listRate.add(String.valueOf(rateCount234));//number of events that meet criteria DAQ1CH234
+								
+								//if (rateCount12 != 0) {
+								//	ratio13_12 = rateCount13*1.0/rateCount12;	
+								//}//if
+								//else {
+								//	ratio13_12 = -1.0;
+								//}//else
+								//listRate.add(String.valueOf(ratio13_12)); 
 								
 								numBlankInt = (int) ((minFracDay - endInterval)/rateInterval);
 								endInterval = endInterval + rateInterval;
@@ -342,7 +380,7 @@
 									
 									listRate.add("0");//number of events	
 									//if num of events = 0, num of events that fulfill each criteria = 0
-									for (int k = 0; k < 7; k++){ 
+									for (int k = 0; k < 10; k++){ 
 										listRate.add("0");//number of events	
 									}//for
 									listRate.add("-1.0");//For a blank interval, rateCount12 = 0, so ratio13_12 = -1.0
@@ -364,6 +402,16 @@
 									else {rateCount14 = 0;}//else	
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23 = 1;}//if
 									else {rateCount23 = 0;}//else															
+
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123 = 1;}//if
+									else {rateCount123 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124 = 1;}//if
+									else {rateCount124 = 0;}//else			
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134 = 1;}//if
+									else {rateCount134 = 0;}//else			
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234 = 1;}//if
+									else {rateCount234 = 0;}//else			
+							
 							}//if
 							else {
 								numEvents++;
@@ -374,6 +422,12 @@
 								if (!outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount24++;}//if
 								if (!outArray[0].equals("-1") && !outArray[3].equals("-1")){rateCount14++;}//if
 								if (!outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount23++;}//if
+
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[2].equals("-1")){rateCount123++;}//if
+								if (!outArray[0].equals("-1") && !outArray[1].equals("-1") && !outArray[3].equals("-1")){rateCount124++;}//if
+								if (!outArray[0].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount134++;}//if
+								if (!outArray[1].equals("-1") && !outArray[2].equals("-1") && !outArray[3].equals("-1")){rateCount234++;}//if
+								
 							}//else
 						}//else if		
 					}//if (i>3)
@@ -441,7 +495,7 @@
 				else if (i < 3)  {
 					bw.write(line);bw.newLine();
 					listRate.add(line);  
-					for (int k = 0; k < 11; k++){
+					for (int k = 0; k < 14; k++){
 						listRate.add("*"); 
 					}//for
 				}//else
@@ -449,15 +503,19 @@
 				line = br.readLine();        		
 			}//while
 				
-				//Write second section	
-				StringBuffer result2 = new StringBuffer();
-				for (int j = 0; j < listRate.size()  ; j+=12){
-					for (int k = 0; k < 11; k++){
+				//Write second section		
+			StringBuffer result2 = new StringBuffer();
+			for (int j = 0; j < listRate.size()  ; j+=15){
+				for (int k = 0; k < 14; k++){
+					if ((j+k) < listRate.size()) {
 						result2.append(listRate.get(j+k)); result2.append("\t");
-	           		}//for	
-	           		result2.append(listRate.get(j+11)); result2.append("\n");//last col of each row is followed by new-line, not tab		
-				}//for	
-				
+					}
+           		}//for	
+				if ((j+14) < listRate.size()) {
+					result2.append(listRate.get(j+14)); result2.append("\n");//last col of each row is followed by new-line, not tab		
+				}
+			}//for	
+							
 				//last row
 				result2.append(minFracDay); result2.append("\t");
 				result2.append(minFracDay*24.0*60.0); result2.append("\t");
@@ -473,7 +531,12 @@
 				result2.append(rateCount24); result2.append("\t");
 				result2.append(rateCount14); result2.append("\t");
 				result2.append(rateCount23); result2.append("\t");
-				result2.append(ratio13_12);	
+				result2.append(rateCount123); result2.append("\t");
+				result2.append(rateCount124); result2.append("\t");
+				result2.append(rateCount134); result2.append("\t");
+				result2.append(rateCount234); result2.append("\t");
+				
+				//result2.append(ratio13_12);	
 				
 				String outline2 = result2.toString();
 				bw2.write(outline2);						
@@ -533,4 +596,3 @@
 	
 	</body>
 </html>
-
