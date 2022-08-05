@@ -1,62 +1,63 @@
 type File {}
 
 type AxisParams {
-	string low;
-	string high;
-	string label;
+  string low;
+  string high;
+  string label;
 }
 
 (File combined) Combine(File data[]) {
-	app {
-		Combine @filename(data) @filename(combined);
-	}
+  app {
+    Combine @filename(data) @filename(combined);
+  }
 }
 
 (File out[]) SingleChannel(File inf, string channel) {
-	app {
-		SingleChannel @filename(inf) @filename(out) channel;
-	}
+  app {
+    SingleChannel @filename(inf) @filename(out) channel;
+  }
 }
 
 (File out) Frequency (File inf, string binType, string binValue, string col) {
-	app {
-		Frequency @filename(inf) @filename(out) col binType binValue;
-	}
+  app {
+    Frequency @filename(inf) @filename(out) col binType binValue;
+  }
 }
 
 (File out[]) FrequencyMultiple (File inf[], string binType, string binValue, string col) {
-	foreach data, i in inf {
-		out[i] = Frequency(inf[i], binType, binValue, col);
-	}
+  foreach data, i in inf {
+    out[i] = Frequency(inf[i], binType, binValue, col);
+  }
 }
 
 (File image, File outfile_param) Plot(string ptype, string caption, AxisParams x, AxisParams y, 
-	AxisParams z, string title, File infile[]) {
-	
-	app {
-		Plot 
-			"-file" @filename(infile)
-			"-param" @filename(outfile_param)
-			"-svg" @filename(image)
-			"-type" ptype
-			"-title" title
-			"-xlabel" x.label
-			"-ylabel" y.label
-			"-zlabel" z.label
-			"-caption" caption
-			"-lowx" x.low
-			"-highx" x.high
-			"-lowy" y.low
-			"-highy" y.high
-			"-lowz" z.low
-			"-highz" z.high;
-	}
+  AxisParams z, string title, File infile[]) {
+  
+  app {
+    Plot 
+      "-file" @filename(infile)
+      "-param" @filename(outfile_param)
+      "-svg" @filename(image)
+      "-type" ptype
+      "-title" title
+      "-xlabel" x.label
+      "-ylabel" y.label
+      "-zlabel" z.label
+      "-caption" caption
+      "-lowx" x.low
+      "-highx" x.high
+      "-lowy" y.low
+      "-highy" y.high
+      "-lowz" z.low
+      "-highz" z.high;
+  }
 }
 
 (File png) SVG2PNG(File svg, string height) {
-	app {
-		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
-	}
+  app {
+    //SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+    SVG2PNG @filename(svg) "-o" @filename(png) "-h" height "-w" height;
+  }
 }
 
 
@@ -106,7 +107,7 @@ freqOut = FrequencyMultiple(singleChannelOut, freq_binType, freq_binValue, freq_
 
 File svg <"plot.svg">;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
-	freqOut);
+  freqOut);
 
 File png <single_file_mapper;file=@arg("plot_outfile_image")>;
 

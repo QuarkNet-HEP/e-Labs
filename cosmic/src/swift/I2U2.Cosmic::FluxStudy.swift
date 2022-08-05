@@ -1,79 +1,80 @@
 type File {}
 
 type AxisParams {
-	string low;
-	string high;
-	string label;
+  string low;
+  string high;
+  string label;
 }
 
 //undocumented magic in @filename - it will make an absolute path relative
 //in other words it answers the question: if the parameter was a file,
 //what would have its path been on the remote site?
 (File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile) {
-	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
-	}
+  app {
+    WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+  }
 }
 
 (File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
-	foreach td, i in thresholdData {
-		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
-	}
+  foreach td, i in thresholdData {
+    wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
+  }
 }
 
 (File combined) Combine(File data[]) {
-	app {
-		Combine @filenames(data) @filename(combined);
-	}
+  app {
+    Combine @filenames(data) @filename(combined);
+  }
 }
 
 //"in" doesn't quite work as an identifier
 (File out) SingleChannel(File inf, string channel) {
-	app {
-		SingleChannel @filename(inf) @filename(out) channel;
-	}
+  app {
+    SingleChannel @filename(inf) @filename(out) channel;
+  }
 }
 
 (File out) Sort(File inf, string key1, string key2) {
-	app {
-		Sort @filename(inf) @filename(out) key1 key2;
-	}
+  app {
+    Sort @filename(inf) @filename(out) key1 key2;
+  }
 }
 
 (File out) Flux(File inf, string binWidth, string geoDir, File geoFiles[]) {
-	app {
-		Flux @filename(inf) @filename(out) binWidth @filename(geoDir);
-	}
+  app {
+    Flux @filename(inf) @filename(out) binWidth @filename(geoDir);
+  }
 }
 
 (File png) SVG2PNG(File svg, string height) {
-	app {
-		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
-	}
+  app {
+    //SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+    SVG2PNG @filename(svg) "-o" @filename(png) "-h" height "-w" height;
+  }
 }
 
 //nor does "type"
 (File image, File outfile_param) Plot(string ptype, string caption, AxisParams x, AxisParams y, 
-	AxisParams z, string title, File infile) {
-	
-	app {
-		Plot 
-			"-file" @filename(infile)
-			"-param" @filename(outfile_param)
-			"-svg" @filename(image)
-			"-type" ptype
-			"-title" title
-			"-xlabel" x.label
-			"-ylabel" y.label
-			"-zlabel" z.label
-			"-caption" caption
-			"-lowx" x.low
-			"-highx" x.high
-			"-lowy" y.low
-			"-highy" y.high
-			"-lowz" z.low
-			"-highz" z.high;
-	}
+  AxisParams z, string title, File infile) {
+  
+  app {
+    Plot 
+      "-file" @filename(infile)
+      "-param" @filename(outfile_param)
+      "-svg" @filename(image)
+      "-type" ptype
+      "-title" title
+      "-xlabel" x.label
+      "-ylabel" y.label
+      "-zlabel" z.label
+      "-caption" caption
+      "-lowx" x.low
+      "-highx" x.high
+      "-lowy" y.low
+      "-highy" y.high
+      "-lowz" z.low
+      "-highz" z.high;
+  }
 }
 
 File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
@@ -136,7 +137,7 @@ fluxOut = Flux(sortOut, binWidth, geoDir, geoFiles);
 File svg <"plot.svg">;
 
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
-	fluxOut);
+  fluxOut);
 
 File png <single_file_mapper;file=@arg("plot_outfile_image")>;
 
