@@ -42,10 +42,12 @@
 						<h1>Welcome: Join an international collaboration of high school students to study cosmic rays.</h1>
 						<table border="0" id="main">
 							<tr>
-					 	 		<td>
+					 	 		<td><!-- 
 									<div id="left-animation">
-							 	    	<%@ include file="../home/splash-home.html" %>
+							 	    	--<--%@-- include file="../home/splash-home.html" %> added slashes to be able to comment it out
+							 	    	animation does not work
 							 		</div>
+							 		 -->
 					 			</td>
 						 		<td>
 									<div id="right">
