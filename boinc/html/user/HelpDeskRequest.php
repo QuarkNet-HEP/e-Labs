@@ -39,12 +39,12 @@ set_debug_level(-1);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "e-labs-help@fnal.gov"; /*hategan@mcs.anl.gov, myers@fnal.gov"; */
-
+$Email_List = "e-labs-help@fnal.gov";
 
 // Return address for e-mail sent from this form:
+// CRC requires this to be '@nd.edu' address
 //
-$Email_From = "e-labs-help@fnal.gov";
+$Email_From = "jgriffi8@nd.edu";
 
 
 /********
