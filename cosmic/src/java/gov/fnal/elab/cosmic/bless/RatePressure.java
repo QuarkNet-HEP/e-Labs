@@ -34,6 +34,9 @@ import com.google.gson.stream.JsonReader;
 
 public class RatePressure {
 	private ArrayList<Long> seconds;
+	private ArrayList<Long> seconds1;
+	private ArrayList<String> blessSeconds;
+	private ArrayList<String> blessDate;
 	private ArrayList<Double> trigger, correctedTrigger, triggerGap;
 	private ArrayList<Double> pressure, pressureDistinct;
 	private ArrayList<Double> validTrigger, validTriggerGap;
@@ -60,10 +63,14 @@ public class RatePressure {
 	private Double maxError = -1.0;
 	//set development to true for debugging file
 	private boolean development = false;
+	private String filedate;
 	
 	//EPeronja: calculate Rate vs Pressure from Flux Study and bless files
 	public RatePressure(Elab elab, File[] file, Double bV, String[] filenames, String outputDir) throws Exception {
 		seconds = new ArrayList<Long>();
+		seconds1 = new ArrayList<Long>();
+		blessSeconds = new ArrayList<String>();
+		blessDate = new ArrayList<String>();
 		trigger = new ArrayList<Double>();
 		correctedTrigger = new ArrayList<Double>();
 		triggerGap = new ArrayList<Double>();
@@ -99,22 +106,24 @@ public class RatePressure {
 					BufferedReader br = new BufferedReader(new FileReader(file[i]));
 					String line;
 					String[] split; 
-					Long ts; 
+					Long ts, ts1; 
 					//get startdate from filename
 					Timestamp startDate;
 					Long secs = 0L;
+					Long secs1 = 0L;
 					try {
 						//EPeronja: this code will figure out the date of these files so 
 						//we can add the seconds from the bless files - needed for potting
 						//several bless files concatenated
 						String[] nameParts = filenames[i].split("\\.");
-						String filedate = nameParts[1]+nameParts[2];
+						filedate = nameParts[1]+nameParts[2];
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 						Date date = sdf.parse(filedate);
-						//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-						//String dateUTC = sdf.format(date);
-						//newDate = sdf.parse(dateUTC);
-						secs = date.getTime();
+						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+						String dateUTC = sdf.format(date);
+						Date newDate = sdf.parse(dateUTC);
+						//secs = date.getTime();
+						secs = newDate.getTime();
 					} catch (Exception e) {	
 						String message = e.toString();
 					}
@@ -134,8 +143,15 @@ public class RatePressure {
 							correctedTrigger.add(parseToDouble(split[9]));
 							pressure.add(parseToDouble(split[11]));
 							validPressure.add(parseToDouble(split[11]));
+							blessSeconds.add(split[0]);
+							SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+							SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");
+							String ds2 = sdf2.format(sdf1.parse(filedate));
+							blessDate.add(ds2);
 							ts = secs + (parseToLong(split[0]) * 1000);
 							seconds.add(ts);
+							//ts1 = secs1 + (parseToLong(split[0]) * 1000);
+							//seconds1.add(ts1);
 							Long newminx = ts;
 							if (minXL == 0L) {
 								minXL = newminx;
@@ -690,11 +706,13 @@ public class RatePressure {
 	
 	public void saveRatePressureValues(BufferedWriter bw) throws ElabException {
 		try {
-			bw.write("#Seconds\tTrigger\tValid Trigger\tTimeGap\tValid Time Gap\tPressure\tValid Pressure\tCorrected Trigger\n");
+			bw.write("#Epoch Time\tTrigger\tValid Trigger\tTimeGap\tValid Time Gap\tPressure\tValid Pressure\tCorrected Trigger\tDate\tSeconds\n");
 			for (int i = 0; i < trigger.size(); i++) {
 				if (seconds.get(i) > 0L) {
 					bw.write(seconds.get(i).toString());
 					bw.write("\t");
+					//bw.write(seconds1.get(i).toString());
+					//bw.write("\t");
 					bw.write(trigger.get(i).toString());
 					bw.write("\t");
 					bw.write(validTrigger.get(i).toString());
@@ -708,6 +726,10 @@ public class RatePressure {
 					bw.write(validPressure.get(i).toString());
 					bw.write("\t");
 					bw.write(correctedTrigger.get(i).toString());
+					bw.write("\t");
+					bw.write(blessDate.get(i).toString());
+					bw.write("\t");
+					bw.write(blessSeconds.get(i).toString());					
 					bw.write("\n");
 				}
 			}
