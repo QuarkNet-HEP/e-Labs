@@ -185,10 +185,10 @@ deploy-all-clean:
 	<target name="clean-web">
 		<delete quiet="true">
 			<fileset dir="${container.home}/${webapps}/elab"
-				includes="**/*.jsp, **/*.jspf, **/*.html, **/*.htm"/>
+				includes="**/*.jsp, **/*.jspf, **/*.html, **/*.htm, **/*.js"/>
 		</delete>
 	</target>
-		
+	
 	<target name="do-deploy-common" depends="build-common, clean-jars">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
         <mkdir dir="${container.home}/${webapps}/elab/capture" />
