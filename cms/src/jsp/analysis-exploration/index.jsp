@@ -17,9 +17,9 @@
   <link rel="stylesheet" type="text/css" href="../css/dc-2.0.2.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
-  <script type="text/javascript" src="../include/d3-3.5.17.min.js"></script>
   <script type="text/javascript" src="../include/crossfilter-1.5.4.js"></script>
-  <script type="text/javascript" src="../include/dc-2.0.2.min.js"></script>
+  <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script>
+  <script type="text/javascript" src="../include/dc-4.0.0.min.js"></script>
   <script type="text/javascript" src="../include/html2canvas-1.0.0-alpha.12.js"></script>
 
    <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
@@ -407,11 +407,11 @@
 
     //console.log('minx, maxx', minx, maxx);
 
-    var histogram = d3.layout.histogram();
-    histogram.bins(nbins);
+    var histogram = d3.histogram();
+    histogram.thresholds(nbins);
     data = histogram(data);
 
-    var output = [];
+		var output = [];
     for ( var i = 0; i < data.length; i++ ) {
       output.push([data[i].x, data[i].y]);
       output.push([data[i].x + data[i].dx, data[i].y]);
@@ -505,8 +505,8 @@
       var chart = dc.barChart('#'+parId+'-chart')
         .width(768)
         .height(480)
-        .x(d3.scale.linear().domain([xmin,xmax]))
-        .brushOn(true)
+        .x(d3.scaleLinear().domain([xmin,xmax]))
+				.brushOn(true)
         .centerBar(false)
         .xAxisLabel(title)
         .yAxisLabel('Number of events')
@@ -644,19 +644,19 @@
     }
   });
 
+	
   function loadFile(input) {
-    d3.csv(input.file,
-      function(data) {
-        original_data = data;
+    d3.csv(input.file).then(function(data) {
+				original_data = data;
         current_data = original_data;
         cfdata = crossfilter(data);
         all = cfdata.groupAll();
-      }
-    );
-  }
+      });
+   }
 
-  function datasetSelected() {
-    $('#parameters').hide();
+
+		function datasetSelected() {
+					 $('#parameters').hide();
     $('#parameter-table').empty();
     $('#plot-container').empty();
     $('#chart-container').empty();
