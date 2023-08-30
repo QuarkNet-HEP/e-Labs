@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<script src="../include/elab.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/328/328073.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="scripts/style.css" />
+
+  
+    <title>Our Search for Hidden Chambers in Kulkukan’s Pyramid at Chichen Itza</title>
+    <script>
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        let order = document.querySelector("#order");
+
+        order.addEventListener("change", function() {
+          let events = document.querySelectorAll(".list-group-item.list-group-item-action.flex-column.align-items-start");
+
+          let sorted_events = Array.from(events).sort((a,b) => {
+            const idA = parseInt(a.id.split('-')[1]);
+            const idB = parseInt(b.id.split('-')[1]);
+            return order.value == "Earliest First" ? idB - idA : idA - idB;
+          });
+
+          const timeline = document.querySelector("#timeline");
+          events.forEach(event => timeline.removeChild(event));
+          sorted_events.forEach(event => timeline.appendChild(event));
+        });
+        
+      });
+      
+    </script>
+</head>
+
+<body>
+  
+  <ul>
+  
+  <li><a href="analysis.html">Data Analysis</a></li>
+     <li><a  href="2D.html">2D Visualization</a></li>
+  <li><a href="3D.html">3D Visualization</a></li>
+  <li><a class="active" href="progress.html">Progress</a></li>
+  <li><a href="index.html">Home</a></li>
+  <p class = "nav">Non-intrusive Archaeometry Using Cosmic Ray Muons</p>
+
+</ul>
+
+    <!-- Timeline -->
+    <h1 class="title">Timeline</h1>
+    <div class="mb-3">
+      <select autofocus class="form-select mx-auto w-auto" id="order">
+        <option selected>Latest First</option>
+        <option>Earliest First</option>
+      </select> 
+    </div>     
+    <div class="list-group" id="timeline">
+      <!-- E1 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-1">
+        <div class="d-flex w-100 justify-content-between" id="event-1">
+          <ul style="all: revert">
+            <li style="all: revert">
+              <h6>
+                QuarkNet Interns building event displays and monitoring histogram.
+              </h6>  
+            </li>
+          </ul>        
+        </div>
+      </div>
+      <!-- E2 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-2">
+        <div class="d-flex w-100 justify-content-between" id="event-2">
+          <ul style="all: revert">
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Quad modules under construction at UVA - 4, scintillator strips mechanically packaged; photo detectors and some electronics installed.                
+              </h6>
+            </li>
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Quads assembled into planes. Also, extruded strips cut to the correct size.               
+              </h6>
+            </li>
+            <li style="all: revert">
+              <h6 class="mb-1">
+                <i>No turning back.</i>               
+              </h6>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--E3 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-3">
+        <div class="d-flex w-100 justify-content-between" id="event-3">
+          <ul style="all: revert">
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Boxes to hold detector plates designed.
+              </h6> 
+            </li>
+          </ul>       
+        </div>
+      </div>
+      <!--E4 (dated, edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-4">
+       <div style="float: left;"><span class="badge badge-primary">Chichen Itza April 2023</span></div>
+        <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbspElectricity to the north tunnel installed.<br />
+            <a href="images/NAUM_April23_electrical_infrastructure_203645746.jpg"><img src="images/NAUM_April23_electrical_infrastructure_203645746.jpg"
+	            alt="" title="Electrical infrastructure" class="thumb-img"/></a>
+           <a href="images/NAUM_April23_electrical_team_at_pyramid_113742978.jpg"><img src="images/NAUM_April23_electrical_team_at_pyramid_113742978.jpg"
+	            alt="" title="Electrical team" class="thumb-img"/></a>
+           <a href="images/NAUM_April23_lights_restored_195347220.jpg"><img src="images/NAUM_April23_lights_restored_195347220.jpg"
+	            alt="" title="Lights restored" class="thumb-img"/></a>
+ 
+          </h6>
+          
+        </div>
+      </div>
+      <!--E5 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-5">
+        <div class="d-flex w-100 justify-content-between" id="event-5">
+          <ul style="all: revert">
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Design and construction of a frame to hold the 3 detector planes inside the tunnel finished.
+              </h6>
+            </li>
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Able to rotate and fold up to allow archaeologists to pass through the detector, since it will fill up the tunnel.
+              </h6>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--E6 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-6">
+        <div class="d-flex w-100 justify-content-between" id="event-6">
+          <ul style="all: revert">
+            <li style="all: revert">
+              <h6 class="mb-1">
+                Additional cosmic ray data collected using a few prototype channels of the final detector.
+              </h6>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--E7 (dated, edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-7">
+        <div style="float: left;"><span class="badge badge-primary">Chichen Itza August 2022</span></div>
+        <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbspMockup of the detector and frame used to verify that everything fits and functions in the tunnels.
+            <i>Not quite!</i> Had to modify size of detector.<br />
+               <a href="images/NAUM_Aug22_CR_prototypr_at_base_camp_254.JPG"><img src="images/NAUM_Aug22_CR_prototypr_at_base_camp_254.JPG"
+	            alt="" title="CR prototype" class="thumb-img"/></a>
+               <a href="images/NAUM_Aug22_inspecting_electrical_conduit_173958.jpg"><img src="images/NAUM_Aug22_inspecting_electrical_conduit_173958.jpg"
+	            alt="" title="Inspecting electrical conduit" class="thumb-img"/></a>
+               <a href="images/NAUM_Aug22_mockup_box_at_pyramid_112310377.jpg"><img src="images/NAUM_Aug22_mockup_box_at_pyramid_112310377.jpg"
+	            alt="" title="Mockup box" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_carry_laser_mapper_hardware.jpg"><img src="images/NAUM_Mar22_carry_laser_mapper_hardware.jpg"
+	            alt="" title="Carry laser mapper hardware" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_assessing_electricity_0111.JPG"><img src="images/NAUM_Mar22_assessing_electricity_0111.JPG"
+	            alt="" title="Assessing electricity" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_demostrating_Laser_map_for_archeaologists.jpg"><img src="images/NAUM_Mar22_demostrating_Laser_map_for_archeaologists.jpg"
+	            alt="" title="Demostrating laser map" class="thumb-img"/></a>        
+               <a href="images/NAUM_Mar22_lasermap_upper_chamber_0742.JPG"><img src="images/NAUM_Mar22_lasermap_upper_chamber_0742.JPG"
+	            alt="" title="Lasermap upper chamber" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_Lasermapping_0374.JPG"><img src="images/NAUM_Mar22_Lasermapping_0374.JPG"
+	            alt="" title="Lasermapping" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_QNCR_ouside_entrance.jpg"><img src="images/NAUM_Mar22_QNCR_ouside_entrance.jpg"
+	            alt="" title="Outside entrance" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_recording_CRData_tunnel_0997.JPG"><img src="images/NAUM_Mar22_recording_CRData_tunnel_0997.JPG"
+	            alt="" title="Recording CRData tunnel" class="thumb-img"/></a>
+               <a href="images/NAUM_Mar22_team_near_pyramid.JPG"><img src="images/NAUM_Mar22_team_near_pyramid.JPG"
+	            alt="" title="Team near pyramid" class="thumb-img"/></a>
+                <a href="images/pyramid_Mar22_gathered_around_CRtelescope.png"><img src="images/pyramid_Mar22_gathered_around_CRtelescope.png"
+	            alt="" title="CR telescope" class="thumb-img"/></a>
+            
+          </h6>
+              
+        </div>
+      </div>
+      <!--E8 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-8">
+        <div class="d-flex w-100 justify-content-between" id="event-8">
+         <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbsp
+                Cosmic ray data collected using QuarkNet detectors inside and outside the pyramid.
+                <br />
+                <a href="images/pyramid_vertical_muons_vs_burden.png"><img src="images/pyramid_vertical_muons_vs_burden.png"
+	            alt="" title="Vertical muons vs burden" class="thumb-img"/></a>
+               <a href="images/pyramid_Mar22_CR_locations.png"><img src="images/pyramid_Mar22_CR_locations.png"
+	            alt="" title="CR locations" class="thumb-img"/></a>
+                <br />
+            <b>•</b>&nbsp&nbsp
+                Rates agreed with expectations based on the amount of material above the detector. 
+              <br />
+            <b>•</b>&nbsp&nbsp
+                Crudely imaged the pyramid steps above us.
+              </h6>
+              <br />
+           </div>
+        </div>
+      </div>
+      <!--E9 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-9">
+        <div class="d-flex w-100 justify-content-between" id="event-9"> 
+          <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbsp
+                Laser mapped the inside of the pyramid tunnels and chambers.
+	            <br />
+              <b>•</b>&nbsp&nbsp
+                Drone mapped the outside in order to have a complete model of the pyramid.
+              </h6>
+           </div>
+        </div>
+      </div>
+      <!--E10 (dated, edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-10">
+       <div style="float: left;"><span class="badge badge-primary">Chichen Itza March 2022</span></div>
+        <div class="d-flex w-100 justify-content-between" id="event-10">
+          <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbspMet archaeologists.
+          </h6>
+          </div>
+        </div>
+      </div>
+      <!--E11-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-11">
+        <div class="d-flex w-100 justify-content-between" id="event-11">
+          <div class="d-flex w-100 justify-content-between dated">
+           <h6 class="mb-1">
+            <b>•</b>&nbsp&nbsp
+                Scinitillator extruded at Fermilab Lab 6; moved to CSU.             
+              </h6>
+          </div>
+        </div>
+      </div>
+      <!--E12 (edited)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-12">
+        <div class="d-flex w-100 justify-content-between" id="event-12">
+          <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbsp
+                Decided to use extruded triangular scintillator strips hence reducing the number of channels and
+                allowing ourselves to build two detectors. Simplified some electronic boards from the readout 
+                designed by the Mu2e Collaboration at Fermilab. Joined efforts with Fermilab-UC-UVA group hoping to build a detector for use at Egyptian pyramids:
+                designed electronics and mold for extrusions.
+              </h6>
+		 </div>
+        </div>
+      </div>
+      <!--E13 (dated)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-13">
+        <div style="float: left;"><span class="badge badge-primary">2020</span></div>
+        <div class="d-flex w-100 justify-content-between" id="event-13">
+          <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbspNSF approval.
+          </h6>     
+          </div>
+        </div>
+      </div>
+      <!--E14-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-14">
+        <div class="d-flex w-100 justify-content-between" id="event-14">
+          <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbsp
+                Additional simulation studies and cosmic ray background studies.
+              </h6>
+          </div>
+        </div>
+      </div>
+      <!--E15 (dated)-->
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-15">
+        <div style="float: left;"><span class="badge badge-primary">2019</span></div>
+        <div class="d-flex w-100 justify-content-between" id="event-15">
+         <div class="d-flex w-100 justify-content-between dated">
+          <h6 class="mb-1">
+            <b>•</b>&nbsp&nbspNSF proposal.
+          </h6>   
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="references">
+    <h1 class="title">References</h1>
+    <p><a href="references/project.description.NSF.v2.pdf" style="float: left;">NSF proposal project description</a></p><br />
+    <p><a href="" style="float: left;">Pyramid Lecture Gracia-Solis</a></p><br />
+    <p><a href="references/Pyramid_FermiPublicLecture_July29_v2.zip" style="float: left;">Pyramid Public Lecture Adams</a></p><br />
+    <p><a href="references/Final_Fermilab_Test_Beam_Data_Analysis.pdf" style="float: left;">Preliminary Triangular Quad-Counter Data analysis from the Fermilab Test Beam</a></p><br />
+    <p><a href="references/AlvarezPyramids.pdf" style="float: left;">Egyptian Pyramid Muography, Alvarez, 1970</a></p><br />
+    <p><a href="references/Tomographic_Bross_article-1470-1-10-20220306.pdf" style="float: left;">Tomographic Proposal for Egyptian Pyramids, Bross</a></p><br />
+    <br />
+    <br />
+    </div>
+  </body>
+</html>
