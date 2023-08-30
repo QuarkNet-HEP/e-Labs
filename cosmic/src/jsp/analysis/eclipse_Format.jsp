@@ -31,6 +31,7 @@
 		//Create variables src and dst
 		String sF = request.getParameter("srcF");//sF = source Filename
 		String sD = request.getParameter("srcD");//sD = source Directory
+		String writeAllEvents = request.getParameter("writeAllEvents").trim();
 			GregorianCalendar gc = new GregorianCalendar();
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 			String date = sdf.format(gc.getTime());
@@ -71,7 +72,7 @@
 				     
     		try{
         		br = new BufferedReader(new FileReader(src2));
-        		bw = new BufferedWriter(new FileWriter(dst2));
+	         	bw = new BufferedWriter(new FileWriter(dst2));
         		bw2 = new BufferedWriter(new FileWriter(dst2b));
  		       	TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
  		       	 		       	
@@ -483,17 +484,22 @@
 							}//else
 							
 							String outHeading = heading.toString();
-							bw.write(outHeading); bw.newLine();
+							if (writeAllEvents.equals("yes")) {
+								bw.write(outHeading); bw.newLine();
+							}
 						}//if
-						
-				        bw.write(outline); 
+						if (writeAllEvents.equals("yes")) {
+					        bw.write(outline); 
+						}
 				        //out.println(outline); out.println("<br>"); 
 				        lastJD = jd;
 						   			        
 				}//if 
 				//The first 2 lines (i = 1, 2) from eventCandidates file fall into 'else' - they start with '#'.
 				else if (i < 3)  {
-					bw.write(line);bw.newLine();
+					if (writeAllEvents.equals("yes")) {
+						bw.write(line);bw.newLine();
+					}
 					listRate.add(line);  
 					for (int k = 0; k < 14; k++){
 						listRate.add("*"); 
@@ -544,7 +550,7 @@
 				//request.setAttribute("dst2", dst2);	
 				//request.setAttribute("dst2b", dst2b);	
 	        	br.close();
-	        	bw.close();
+		        bw.close();
 	        	bw2.close();
         		
         	//******Phase III:  Create link to download file eclipseFormat******
@@ -579,6 +585,7 @@
                 
 				request.setAttribute("dst2v2", dst2v2);					
 				request.setAttribute("dst2bv2", dst2bv2);	
+				request.setAttribute("writeAllEvents", writeAllEvents);
 				
 				
     		}//try
@@ -590,7 +597,9 @@
     		out.println("eventCandidates file did not copy over to plots/ from scratch/!");
     	}//else
 	%>
-			<a href = "${dst2v2}">Download eclipseFormat!</a>
+			<c:if test="${writeAllEvents=='yes'}">
+				<a href = "${dst2v2}">Download eclipseFormat!</a>
+			</c:if>
 			<a href = "${dst2bv2}">Download eclipseRate!</a>
 			<%--Server host name is: <b><%=request.getServerName() %></b>--%>
 	
