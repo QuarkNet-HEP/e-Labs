@@ -14,7 +14,8 @@
   <link rel="stylesheet" type="text/css" href="../css/data.css"/>
   <link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
   <link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
-  <link rel="stylesheet" type="text/css" href="../css/dc-2.0.2.min.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="../css/dc-2.0.2.min.css"/>-->
+  <link rel="stylesheet" type="text/css" href="../css/dc-3.0.3.min.css"/>
 
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/crossfilter-1.5.4.js"></script>
