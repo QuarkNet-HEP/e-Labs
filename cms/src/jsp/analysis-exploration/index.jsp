@@ -402,20 +402,20 @@
   }
 
   function buildHistogram(data, bw) {
-    var minx = Math.floor(d3.min(data)),
+    let minx = Math.floor(d3.min(data)),
     maxx = Math.ceil(d3.max(data)),
     nbins = Math.floor((maxx-minx) / bw);
 
     //console.log('minx, maxx', minx, maxx);
 
-    var histogram = d3.histogram();
+    let histogram = d3.histogram();
     histogram.thresholds(nbins);
     data = histogram(data);
 
-		var output = [];
-    for ( var i = 0; i < data.length; i++ ) {
-      output.push([data[i].x, data[i].y]);
-      output.push([data[i].x + data[i].dx, data[i].y]);
+    let output = [];
+      for ( let i = 0; i < data.length; i++ ) {
+        output.push([data[i].x0, data[i].length]);
+        output.push([data[i].x1, data[i].length]);
     }
     return output;
   }
