@@ -19,11 +19,15 @@
 
   <script type="text/javascript" src="../include/elab.js"></script>
   <script type="text/javascript" src="../include/crossfilter-1.5.4.js"></script>
-  <script type="text/javascript" src="../include/d3-5.4.0.min.js"></script>
+  <!--<script type="text/javascript" src="../include/d3-5.4.0.min.js"></script>-->
+  <script type="text/javascript" src="../include/d3-5.16.0.min.js"></script>
+	<!--<script type="text/javascript" src="../include/d3-6.7.0.min.js"></script>-->
+  <!--<script type="text/javascript" src="../include/d3-7.8.5.min.js"></script>-->
   <script type="text/javascript" src="../include/dc-4.0.0.min.js"></script>
   <script type="text/javascript" src="../include/html2canvas-1.0.0-alpha.12.js"></script>
+  <script type="text/javascript" src="../include/chart-4.4.0.umd.js"></script>
 
-   <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
+  <link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 
   <style>
   .parameter.active {
@@ -124,9 +128,15 @@
     </div>
   </div>
   <script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
-  <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.js"></script>
+	<script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.js"></script>
   <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.selection.js"></script>
   <script language="javascript" type="text/javascript" src="../include/jquery.flot-0.8.3.crosshair.js"></script>
+	<!--<script language="javascript" type="text/javascript" src="../include/jquery.flot-4.2.6.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-4.2.6.selection.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-4.2.6.crosshair.js"></script>-->
+	<!--<script language="javascript" type="text/javascript" src="../include/jquery.flot-2.3.2.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-2.3.2.selection.js"></script>
+  <script language="javascript" type="text/javascript" src="../include/jquery.flot-2.3.2.crosshair.js"></script>-->
   <div id="content">
     <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
     <h1>Dataset Selection - Exploration Studies</h1>
@@ -154,10 +164,10 @@
 
     <div id="parameters">
       <p>Choose one or more parameters:</p>
-    <table id="parameter-table">
-      <tr></tr>
-    </table>
-  </div>
+      <table id="parameter-table">
+        <tr></tr>
+      </table>
+    </div>
 
     <ul class="tab">
       <li><a href="#" class="tablinks plot active">Histograms</a></li>
@@ -406,16 +416,35 @@
     maxx = Math.ceil(d3.max(data)),
     nbins = Math.floor((maxx-minx) / bw);
 
-    //console.log('minx, maxx', minx, maxx);
+			 //console.log('minx, maxx', minx, maxx);
 
-    let histogram = d3.histogram();
-    histogram.thresholds(nbins);
-    data = histogram(data);
+			 // D3.js 3.5.5
+			 // let histogram = d3.layout.histogram();	 
+			 // histogram.bins(nbins);
 
-    let output = [];
-      for ( let i = 0; i < data.length; i++ ) {
-        output.push([data[i].x0, data[i].length]);
-        output.push([data[i].x1, data[i].length]);
+			 // D3.js 4.0
+			 //let histogram = d3.histogram();
+			 //let histogram = d3.bin();
+
+			 // D3.js 5.4.0
+			 let histogram = d3.histogram();
+			 histogram.thresholds(nbins);
+			 data = histogram(data);
+
+			 // D3.js 6
+			 //let histogram = d3.bin();
+			 //histogram.thresholds(nbins);
+			 //data = histogram(data);
+
+			 let output = [];
+       for ( let i = 0; i < data.length; i++ ) {
+					 // D3.js 3.5.5
+					 //output.push([data[i].x, data[i].y]);
+					 //output.push([data[i].x + data[i].dx, data[i].y]);
+
+					 // D3.js 4
+					 output.push([data[i].x0, data[i].length]);
+					 output.push([data[i].x1, data[i].length]);
     }
     return output;
   }
@@ -440,8 +469,23 @@
     } else {
       $(this).addClass('active');
 
+			// Flot.js 0.8.3
+      //var options = {
+      //    lines: { show: true, fill: false, lineWidth: 1.2 },
+      //    grid: { hoverable: true, autoHighlight: false },
+      //    points: { show: false },
+      //    legend: { noColumns: 1 },
+      //    xaxis: { tickDecimals: 0 },
+      //    yaxis: { autoscaleMargin: 0.1 },
+      //    crosshair: { mode: "xy" },
+      //    selection: { mode: "x", color: "yellow" }
+      //};
+
+      // Flot.js 2.3.2 (attempted)
       var options = {
-          lines: { show: true, fill: false, lineWidth: 1.2 },
+          series: {
+              lines: { show: true, fill: false, lineWidth: 1.2 },
+					},
           grid: { hoverable: true, autoHighlight: false },
           points: { show: false },
           legend: { noColumns: 1 },
@@ -451,7 +495,8 @@
           selection: { mode: "x", color: "yellow" }
       };
 
-      var dimension = cfdata.dimension(function(d) {return +d[parameter];});
+
+			var dimension = cfdata.dimension(function(d) {return +d[parameter];});
 
       var xmin = dimension.bottom(1)[0][parameter];
       var xmax = dimension.top(1)[0][parameter];
