@@ -31,6 +31,20 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>					
+		<script>
+		$(document).ready(function(){
+			$("#writeAll").bind("change", function() {
+				var $req = $(this);
+				if ($req.prop("checked")) {
+					document.getElementById("writeAllEvents").value = "yes";
+				} else {
+					document.getElementById("writeAllEvents").value = "no";
+				}
+			});
+		});			
+		
+		</script>
 	</head>
 
 	<body id="analysis-files" class="data">
@@ -47,9 +61,11 @@
 				
 				<c:if test="${file.name == 'eventCandidates'}"> 
 					<form action="eclipse_Format.jsp" method="GET">
+					    <input type="checkbox" name="writeAll" id="writeAll">Write all events</input>
+						<input type="hidden" name="writeAllEvents" id="writeAllEvents" value="no"/>
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>
 						<input type="hidden" name="srcF" value="${file.name}"/>
-          					<input type="submit" value="eclipseFormat"/> 
+          				<br /><input type="submit" value="eclipseFormat"/> 
 					</form>
 					<form action="delta-t.jsp" method="GET">
 						<input type="hidden" name="srcD" value="${results.outputDirURL}"/>

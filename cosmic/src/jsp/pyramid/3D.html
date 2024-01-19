@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<script src="../include/elab.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/328/328073.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="scripts/style.css" />
+  
+  
+    <title>Our Search for Hidden Chambers in Kulkukan’s Pyramid at Chichen Itza</title>
+  
+    <style>    
+      #canvas-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      #gui-container {
+        position: absolute;
+        top: 0px; /* Adjust the top position to your desired value */
+        right: 0px; /* Adjust the left position to your desired value */
+        z-index: 1;
+        
+      }
+      
+      #gui-container li {
+        float: none;
+      }
+      
+      #gui-container .title {
+        color: inherit;
+        font-weight: inherit;
+      }
+
+      #error {
+        padding:0px;
+        margin:0px;
+      }
+      .stats {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        opacity: 0.9;
+        z-index: 10000;
+      }
+      #fps-container {
+        position: absolute;
+        top: 0px; /* Adjust the vertical position */
+        left: 0px; /* Adjust the horizontal position */
+        z-index: 100; /* Make sure it's above the rendered scene */
+      }
+   </style>
+    
+</head>
+
+<body>
+  
+<ul>
+  <li><a href="analysis.html">Data Analysis</a></li>
+  <li><a  href="2D.html">2D Visualization</a></li>
+  <li><a class="active" href="3D.html">3D Visualization</a></li>
+  <li><a  href="progress.html">Progress</a></li>
+  <li><a href="index.html">Home</a></li>
+  <p class = "nav">Non-intrusive Archaeometry Using Cosmic Ray Muons</p>
+</ul>
+
+
+<p id="error"></p>
+<div id="canvas-container"> <div id="gui-container" ></div> <div id="fps-container" ></div> </div>
+
+<!-- Three JS imports -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.154.0/three.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/controls/OrbitControls.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/loaders/STLLoader.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/shaders/CopyShader.js" defer ></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/shaders/LuminosityHighPassShader.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/EffectComposer.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/RenderPass.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/ShaderPass.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/UnrealBloomPass.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js" defer></script>
+  
+<script>
+  let error = document.getElementById("error")
+  window.addEventListener('error', function(e) {
+    let display = "";
+    display = e.message+"\n"+e.filename+"\n"+e.lineno+"\n"+e.colno+"\n"+e.error;
+    error.innerHTML= display;
+  })
+</script>
+
+<script src="scripts/drawStuffX3.js" defer></script>
+<script src="scripts/finalDataRead.js" defer></script>
+<script src="scripts/muonVector.js" defer></script>
+<script src="scripts/main.js" defer></script>
+       
+</body>
+
+</html>

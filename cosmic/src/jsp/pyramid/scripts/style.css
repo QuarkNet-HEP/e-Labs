@@ -1,0 +1,138 @@
+
+/* Our default values set as CSS variables */
+:root {
+  --color-bg: #69F7BE;
+  --color-text-main: #000000;
+  --color-primary: #FFFF00;
+  --wrapper-height: 87vh;
+  --image-max-width: 300px;
+  --image-margin: 3rem;
+  --font-family: "HK Grotesk";
+  --font-family-header: "HK Grotesk";
+}
+
+/* Basic page style resets */
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+
+/* Import fonts */
+@font-face {
+  font-family: HK Grotesk;
+  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Regular.otf?v=1603136326027")
+    format("opentype");
+}
+@font-face {
+  font-family: HK Grotesk;
+  font-weight: bold;
+  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Bold.otf?v=1603136323437")
+    format("opentype");
+}
+
+body {margin:0;}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+  top: 0;
+  width: 100%;
+  font-family: Sans-Serif;
+  padding: 0px 100px;
+}
+
+li {
+  float: right; 
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 35px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111111;
+  color: white;
+}
+
+.active {
+  background-color: #0096FF;
+}
+
+p.nav {
+  font-family: Sans-Serif;
+  color: white;
+  font-weight: bold;
+  padding: 0px 0px;
+  margin: 10px 0px;
+}
+
+p {
+  font-family: Sans-Serif;
+  padding: 0px 0px;
+  margin: 10px 50px;
+}
+
+.collaborators {
+  font-family: Sans-Serif;
+  padding: 0px 0px;
+  margin: 10px 50px;
+  font-size: 10pt;
+}
+
+.title {
+  font-family: Sans-Serif;
+  color: navy;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 40px;
+}
+
+.image-front {
+    width : 400px;
+    height: auto; /*to preserve the aspect ratio of the image*/
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  margin-top: 20px;
+}
+
+div {
+
+  text-align: center;
+}
+
+h5, h6 {
+  text-align: left;
+}
+
+[id^="event"] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.dated {
+  padding-left: 2.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.thumb-img{
+   object-fit: cover;
+   overflow: hidden;
+   height: 150px; 
+   width : 150px;
+}     
+
