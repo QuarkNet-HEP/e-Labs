@@ -1,18 +1,3 @@
-ispy.obj_files = 
-    [
-     //'./geometry/EB.obj',
-     './geometry/EEminus.obj',
-     './geometry/EEplus.obj',
-     './geometry/ESminus.obj',
-     './geometry/ESplus.obj',
-     './geometry/muon-barrel.obj',
-     './geometry/muon-endcap-minus.obj',
-     './geometry/muon-endcap-plus.obj',
-     './geometry/muon-rphi-minus.obj',
-     './geometry/muon-rphi-plus.obj',
-     './geometry/hf.obj'
-     ];
-
 ispy.ig_data = null;
 ispy.ievent = 0;
 ispy.isGeometry = false;
@@ -113,17 +98,15 @@ ispy.loadEvent = function() {
     $("#event-loaded").html("");
     $("#loading").modal("show");
 
-    // Clear for new event
     ispy.selected_objects.clear();
 
     // Hide Detector stuff in tree view if already shown
     if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {
-
+	
 	ispy.toggleCollapse('Detector');
-
     }
     
-    var event;
+    let event;
 
     try {
 	
@@ -148,7 +131,7 @@ ispy.loadEvent = function() {
 	ispy.addEvent(event);
 	ispy.enableNextPrev();
 	
-	var ievent = +ispy.event_index + 1; // JavaScript!
+	let ievent = +ispy.event_index + 1; // JavaScript!
 
 	$("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 	
@@ -156,6 +139,8 @@ ispy.loadEvent = function() {
 	console.log(ispy.current_event.Collections.Products_V1);
 	
     }
+
+    //ispy.initGUI();
 
 };
 
@@ -282,19 +267,19 @@ ispy.loadDroppedFile = function(file) {
 
 	$.each(zip.files, function(index, zipEntry) {
 
-		if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+	    if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
 
-		    if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
+		if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
 			
-			ispy.isGeometry = true;
+		    ispy.isGeometry = true;
 			
-		    }
-		    
-		    event_list.push(zipEntry.name);
-
 		}
+		    
+		event_list.push(zipEntry.name);
 
-	    });
+	    }
+
+	});
 
 	ispy.event_list = event_list;
 	ispy.event_index = 0;
@@ -367,13 +352,13 @@ ispy.selectFile = function(filename) {
 	    
 	    $.each(zip.files, function(index, zipEntry) {
 		    
-		    if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+		if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
           
-			event_list.push(zipEntry.name);
+		    event_list.push(zipEntry.name);
         
-		    }
+		}
       
-		});
+	    });
 
 	    ispy.event_list = event_list;
 	    ispy.event_index = 0;
@@ -461,18 +446,29 @@ ispy.showWebDirs = function() {
 
 };
 
-
 /*
 ispy.loadWebFiles = function() {
+
+    const web_files = [
+	"./data/Hto4l_120-130GeV.ig",
+	"./data/BJetPlusX_Run2012C_0.ig",
+	"./data/DoubleMuParked_Run2012C_0.ig",
+	"./data/MET_Run2012C_0.ig",
+	"./data/TauParked_Run2012C_0.ig",
+	"./data/DoubleElectron_Run2012C_0.ig",
+	"./data/DoublePhoton_Run2012B_0.ig",
+	"./data/JetHT_Run2012C_0.ig",
+	"./data/MinimumBias_Run2012C_0.ig"
+    ];
 
     $('#selected-event').html("Selected event");
     $('#load-event').addClass('disabled');
 
     var tbl = document.getElementById("browser-files");
 
-    for ( var i = 0; i < ispy.web_files.length; i++ ) {
+    for ( var i = 0; i < web_files.length; i++ ) {
 	
-	var e = ispy.web_files[i];
+	var e = web_files[i];
 	var name = e.split("/")[2];
 	var row = tbl.insertRow(tbl.rows.length);
 	var cell = row.insertCell(0);
@@ -482,7 +478,6 @@ ispy.loadWebFiles = function() {
     }
 
 };
-
 
 ispy.showWebFiles = function() {
 
@@ -519,25 +514,80 @@ ispy.cleanupData = function(d) {
 
 };
 
-// This pattern is starting to appear in several places.
-// I should consolidate them into something more elegant than below.
+ispy.loadGLTFFiles = function() {
+    
+    const gltf_files = [
+	'./geometry/gltf/EB.glb',
+	'./geometry/gltf/EEminus.glb',
+	'./geometry/gltf/EEplus.glb',
+	'./geometry/gltf/ESminus.glb',
+	'./geometry/gltf/ESplus.glb',
+	'./geometry/gltf/muon-barrel.glb',
+	'./geometry/gltf/muon-endcap-minus.glb',
+	'./geometry/gltf/muon-endcap-plus.glb',
+	'./geometry/gltf/muon-rphi-minus.glb',
+	'./geometry/gltf/muon-rphi-plus.glb',
+	'./geometry/gltf/muon-0.glb',
+	'./geometry/gltf/muon-1.glb',
+	'./geometry/gltf/muon-2.glb',
+	'./geometry/gltf/muon-3.glb',
+	'./geometry/gltf/HF.glb'
+    ];
+    
+    ispy.clearTable('obj-files');
+    
+    $('#selected-obj').html("Selected geometry");
+    $('#load-obj').addClass('disabled');
+
+    const tbl = document.getElementById('obj-files');
+    
+    for ( let i = 0; i < gltf_files.length; i++ ) {
+	
+	let e = gltf_files[i];
+	let name = e.split('/')[3];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectGLTF(\'' + name + '\');">' + name + '</a>';
+  
+    }
+
+};
 
 ispy.loadObjFiles = function() {
+
+    const obj_files = [
+	'./geometry/obj/EB.obj',
+	'./geometry/obj/EEminus.obj',
+	'./geometry/obj/EEplus.obj',
+	'./geometry/obj/ESminus.obj',
+	'./geometry/obj/ESplus.obj',
+	'./geometry/obj/muon-barrel.obj',
+	'./geometry/obj/muon-endcap-minus.obj',
+	'./geometry/obj/muon-endcap-plus.obj',
+	'./geometry/obj/muon-rphi-minus.obj',
+	'./geometry/obj/muon-rphi-plus.obj',
+	'./geometry/obj/muon-0.obj',
+	'./geometry/obj/muon-1.obj',
+	'./geometry/obj/muon-2.obj',
+	'./geometry/obj/muon-3.obj',
+	'./geometry/obj/HF.obj'
+     ];
 
     ispy.clearTable('obj-files');
 
     $('#selected-obj').html("Selected geometry");
     $('#load-obj').addClass('disabled');
 
-    var tbl = document.getElementById('obj-files');
+    const tbl = document.getElementById('obj-files');
     
-    for ( var i = 0; i < ispy.obj_files.length; i++ ) {
+    for ( let i = 0; i < obj_files.length; i++ ) {
 	
-	var e = ispy.obj_files[i];
-	var name = e.split('/')[2];
-	var row = tbl.insertRow(tbl.rows.length);
-	var cell = row.insertCell(0);
-	var cls = "file";
+	let e = obj_files[i];
+	let name = e.split('/')[3];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + name + '\');">' + name + '</a>';
   
     }
@@ -561,7 +611,6 @@ ispy.readOBJ = function(file, cb) {
   
     };
 
-  
     reader.readAsText(file);
 
 };
@@ -579,7 +628,7 @@ ispy.loadOBJ = function(contents, name) {
 	});
 
     ispy.scene.getObjectByName("Imported").add(object);
-    ispy.addSelectionRow("Imported", object.name, object.name, true);
+    ispy.addSelectionRow("Imported", object.name, object.name, [], true);
 
 };
 
@@ -601,7 +650,7 @@ ispy.readOBJMTL = function(file, mtl_file, cb) {
 
     reader.readAsText(file);
 
-}
+};
 
 ispy.loadOBJMTL = function(obj, mtl_file, name) {
  
@@ -640,7 +689,7 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 	ispy.disabled[name] = false;
 
 	ispy.scene.getObjectByName("Imported").add(object);
-	ispy.addSelectionRow("Imported", name, name, true);
+	ispy.addSelectionRow("Imported", name, name, [], true);
   
     };
 
@@ -719,6 +768,42 @@ ispy.importModel = function() {
 
 };
 
+ispy.selectGLTF = function(gltf_file) {
+    
+    $('#selected-obj').html(gltf_file);
+    $('#load-obj').removeClass('disabled');
+    ispy.selected_gltf = gltf_file;
+    
+};
+
+ispy.loadSelectedGLTF = function() {
+
+    let name = ispy.selected_gltf.split('.')[0];
+    let gltf_file = './geometry/gltf/'+ispy.selected_gltf;
+    
+    const gltf_loader = new THREE.GLTFLoader();
+
+    gltf_loader.load(
+	gltf_file,
+	function(gltf) {
+	    
+	    let object = gltf.scene.children[0];
+
+	    object.children.forEach(function(c) {
+
+		c.material.clippingPlanes = ispy.local_planes;
+			
+	    });
+
+	    ispy.scene.getObjectByName('Imported').add(object);
+	    ispy.addSelectionRow('Imported', name, name, [], true);
+	    
+	}
+    );
+
+};
+
+
 ispy.selectObj = function(obj_file) {
 
     $('#selected-obj').html(obj_file);
@@ -727,88 +812,13 @@ ispy.selectObj = function(obj_file) {
 
 };
 
-ispy.parseOBJMTL = function(obj_file, mtl_file, name) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", obj_file, true);
-
-    xhr.onload = function() {
-    
-	if ( this.status === 200 ) {
-	    
-	    var object = new THREE.OBJLoader().parse(xhr.responseText);
-	    ispy.parseMTL(object, mtl_file, name);
-	
-	}
-  
-    };
-
-    xhr.send();
-
-};
-
-ispy.parseMTL = function(object, mtl_file, name) {
-    
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", mtl_file, true);
-    
-    xhr.onload = function() {
-	
-	if ( this.status === 200 ) {
-
-	    var materials = new THREE.MTLLoader().parse(xhr.responseText);
-	    materials.preload();
-
-	    object.traverse(function (o) {
-
-		    if ( o instanceof THREE.Mesh || o instanceof THREE.Line ) {
-
-			if ( o.material.name ) {
-
-			    var material = materials.create(o.material.name);
-
-			    if ( material ) {
-				
-				o.material = material;
-				o.material.transparent = true;
-				o.material.opacity = ispy.importTransparency;
-
-			    }
-          
-			}
-        
-		    }
-
-		});
-
-	    $('#loading').modal('hide');
-	    object.name = name;
-	    object.visible = true;
-	    ispy.disabled[name] = false;
-	    
-	    ispy.scene.getObjectByName("Imported").add(object);
-	    ispy.addSelectionRow("Imported", name, name, true);
-	    
-	}
-    };
-
-    xhr.send();
-
-};
-
 ispy.loadSelectedObj = function() {
 
     var name = ispy.selected_obj.split('.')[0];
-    var obj_file = './geometry/'+ispy.selected_obj;
-    var mtl_file = './geometry/'+name+'.mtl';
-    
-    ispy.parseOBJMTL(obj_file, mtl_file, name);
+    var obj_file = './geometry/obj/'+ispy.selected_obj;
+    var mtl_file = './geometry/obj/'+name+'.mtl';
 
-    // tpmccauley: In-principle this one-line function call should replace
-    // all of this function as well as the two above it. However, for some
-    // obj+mtl pairs one has to parse both the obj and mtl files first
-    // before both can be handled without errors. Ack!
-    //ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, true);
+    ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, 'Imported', true);
     
 };
 
@@ -818,30 +828,31 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
     mtl_loader.load(mtl_file, function(materials) {
 
-	    materials.preload();
+	materials.preload();
 
-	    var obj_loader = new THREE.OBJLoader();
-	    obj_loader.setMaterials(materials);
+	var obj_loader = new THREE.OBJLoader();
+	obj_loader.setMaterials(materials);
 
-	    obj_loader.load(obj_file, function(object) {
+	obj_loader.load(obj_file, function(object) {
 
-		    object.name = id;
-		    object.visible = show;
-		    ispy.disabled[object.name] = false;
-		    
-		    object.children.forEach(function(c) {
+	    object.name = id;
+	    object.visible = show;
+	    ispy.disabled[object.name] = false;
+	    
+	    object.children.forEach(function(c) {
         
-			    c.material.transparent = true;
-			    c.material.opacity = ispy.importTransparency;
+		c.material.transparent = true;
+		c.material.opacity = ispy.importTransparency;
+		c.material.clippingPlanes = ispy.local_planes;
       
-			});
+	    });
 
-		    ispy.scene.getObjectByName(group).add(object);
-		    ispy.addSelectionRow(group, object.name, name, show);
-
-		});
+	    ispy.scene.getObjectByName(group).add(object);
+	    ispy.addSelectionRow(group, object.name, name, [], show);
 
 	});
+
+    });
 
     return;
 
@@ -849,6 +860,292 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
 ispy.importBeampipe = function() {
 
-    ispy.loadOBJMTL_new('./geometry/beampipe.obj', './geometry/beampipe.mtl', 'BeamPipe', 'Beam Pipe', 'Imported', true);
+    ispy.loadOBJMTL_new(
+	'./geometry/obj/beampipe.obj',
+	'./geometry/obj/beampipe.mtl',
+	'BeamPipe',
+	'Beam Pipe',
+	'Imported',
+	true
+    );
 
+};
+
+ispy.importDetector = function() {
+
+    const gltf_loader = new THREE.GLTFLoader();
+    
+    const gltf_objs = [
+	{
+	    id: 'PixelBarrel3D_V1',
+	    name: 'Pixel Barrel',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/PixelBarrel3D_V2.glb' // V2 for pixels corresponds to phase 1 upgrade
+	},
+	{
+	    id: 'PixelEndcapPlus3D_V1',
+	    name: 'Pixel Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/PixelEndcapPlus3D_V2.glb'
+	},
+	{
+	    id: 'PixelEndcapMinus3D_V1',
+	    name: 'Pixel Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/PixelEndcapMinus3D_V2.glb'
+	},
+	{
+	    id: 'SiStripTIB3D_V1',
+	    name: 'Tracker Inner Barrel',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTIB3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTOB3D_V1',
+	    name: 'Tracker Outer Barrel',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTOB3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTIDPlus3D_V1',
+	    name: 'Tracker Inner Detector (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTIDPlus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTIDMinus3D_V1',
+	    name: 'Tracker Inner Detector (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTIDMinus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTECPlus3D_V1',
+	    name: 'Tracker Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTECPlus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTECMinus3D_V1',
+	    name: 'Tracker Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/SiStripTECMinus3D_V1.glb'
+	},
+	{
+	    id: 'EcalBarrel3D_V1',
+	    name: 'ECAL Barrel',
+	    group: 'Detector',
+	    show: true,
+	    view: '3D',
+	    file: './geometry/gltf/EcalBarrel3D_V2.glb'
+	},
+	{
+	    id: 'EcalEndcapPlus3D_V1',
+	    name: 'ECAL Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/EcalEndcapPlus3D_V1.glb'
+	},
+	{
+	    id: 'EcalEndcapMinus3D_V1',
+	    name: 'ECAL Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/EcalEndcapMinus3D_V1.glb'
+	},
+	{
+	    id: 'HcalBarrel3D_V1',
+	    name: 'HCAL Barrel',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalBarrel3D_V1.glb',
+	},
+	{
+	    id: 'HcalOuter3D_V1',
+	    name: 'HCAL Outer',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalOuter3D_V1.glb'
+	},
+	{
+	    id: 'HcalEndcapPlus3D_V1',
+	    name: 'HCAL Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalEndcapPlus3D_V1.glb'
+	},
+	{
+	    id: 'HcalEndcapMinus3D_V1',
+	    name: 'HCAL Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalEndcapMinus3D_V1.glb'
+	},
+	{
+	    id: 'HcalForwardPlus3D_V1',
+	    name: 'HCAL Forward (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalForwardPlus3D_V1.glb'
+	},
+	{
+	    id: 'HcalForwardMinus3D_V1',
+	    name: 'HCAL Forward (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/HcalForwardMinus3D_V1.glb'
+	},
+	{
+	    id: 'GEMPlus3D_V1',
+	    name: 'Gas Electron Multipliers (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/GEMPlus3D_V1.glb'
+	},
+	{
+	    id: 'GEMMinus3D_V1',
+	    name: 'Gas Electron Multipliers (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/GEMMinus3D_V1.glb'
+	},
+	{
+	    id: 'CSC3D_V1',
+	    name: 'Cathode Strip Chambers',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/CSC3D_V1.glb'
+	},
+	{
+	    id: 'DTs3D_V1',
+	    name: 'Drift Tubes',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/DTs3D_V1.glb'
+	},
+	{
+	    id: 'RPCBarrel3D_V1',
+	    name: 'Resistive Plate Chambers (barrel)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/RPCBarrel3D_V1.glb'
+	},
+	{
+	    id: 'RPCPlusEndcap3D_V1',
+	    name: 'Resistive Plate Chambers (+)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/RPCPlusEndcap3D_V1.glb'
+	},
+	{
+	    id: 'RPCMinusEndcap3D_V1',
+	    name: 'Resistive Plate Chambers (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/RPCMinusEndcap3D_V1.glb'
+	},
+	{
+	    id: 'RhoZ',
+	    name: 'RhoZ',
+	    group: 'Detector',
+	    show: true,
+	    view: 'RhoZ',
+	    file: './geometry/gltf/RhoZ.glb'
+	},
+	{
+	    id: 'RPhi',
+	    name: 'RPhi',
+	    group: 'Detector',
+	    show: true,
+	    view: 'RPhi',
+	    file: './geometry/gltf/RPhi.glb'
+	}
+
+    ];
+    
+    $('#loading').modal('show');
+
+    function loadGLTFs() {
+
+	gltf_objs.map(g => {
+	    
+	    gltf_loader.load(
+
+		g.file,
+
+		function(gltf) {
+		    
+		    let object = gltf.scene.children[0];
+		    
+		    object.name = g.id;
+		    object.visible = g.show;
+		    object.view = g.view;
+		    
+		    // Set render order for geometries
+		    // Otherwise they won't appear "in-front" of Imported geometries
+		    object.children.forEach(function(c) {
+
+			c.renderOrder = 1;
+
+			if ( c.material ) {
+			    
+			    c.material.clippingPlanes = ispy.local_planes;
+
+			}
+			
+		    });
+		    
+		    ispy.disabled[object.name] = ! g.show;		    
+		    ispy.scenes[object.view].getObjectByName(g.group).add(object);
+
+		    // For now do not add RPhi and RhoZ selection options to
+		    // the controls GUI
+
+		    if ( ! (object.name === 'RPhi' || object.name === 'RhoZ') )
+			ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
+		
+		}
+		
+	    );
+
+	});
+
+	$('#loading').modal('hide');
+
+    }
+    
+    loadGLTFs();
+    
 };
