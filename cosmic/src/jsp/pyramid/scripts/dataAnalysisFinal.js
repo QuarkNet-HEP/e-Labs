@@ -5,9 +5,9 @@ var geometry = [];
 var subtractPedX; // Declare in the global scope
 var subtractPedY;
 var inputElement = document.getElementById("quantity");
-var url1 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/Pyramid_FakeTracker_XY-views_Run4_non-ZeroSup.txt';
-var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/Pedastalv2.txt';
-var geometryURL = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/GEOMETRY%20HEADER.txt';
+var url1 = 'data/Pyramid_FakeTracker_XY-views_Run4_non-ZeroSup.txt';
+var url2 = 'geometry/pedastalv2.txt';
+var geometryURL = 'geometry/geometry_header.txt';
 var inputElement = document.getElementById("quantity");
 
 // Function to process the data from the URL using fetch
