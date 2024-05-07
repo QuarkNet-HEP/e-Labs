@@ -119,7 +119,7 @@ public class RatePressure {
 						filedate = nameParts[1]+nameParts[2];
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 						Date date = sdf.parse(filedate);
-						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+						//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 						String dateUTC = sdf.format(date);
 						Date newDate = sdf.parse(dateUTC);
 						//secs = date.getTime();
