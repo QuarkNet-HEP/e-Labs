@@ -145,13 +145,13 @@
 						<h2>Tutorials</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/geometry-collider-detector" target="website" width="850" height="600">Geometry</e:popup> - Collider Detector.
+								<e:popup href="http://quarknet.org/page/geometry-collider-detector" target="website" width="850" height="600">Geometry</e:popup> - Collider Detector.
 							</li>
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/using-kaufmann-and-bucherers-data-relate-e-p-m" target="website" width="850" height="600">Relate E, p, and m</e:popup> - Using Kaufmann and Bucherer's Data.
+								<e:popup href="http://quarknet.org/page/using-kaufmann-and-bucherers-data-relate-e-p-m" target="website" width="850" height="600">Relate E, p, and m</e:popup> - Using Kaufmann and Bucherer's Data.
 							</li>
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/energy-momentum-and-mass" target="website" width="850" height="600">Energy, Momentum, and Mass</e:popup>.
+								<e:popup href="http://quarknet.org/page/energy-momentum-and-mass" target="website" width="850" height="600">Energy, Momentum, and Mass</e:popup>.
 							</li>
 						</ul>
 					</div>

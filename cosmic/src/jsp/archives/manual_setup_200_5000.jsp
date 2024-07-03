@@ -72,8 +72,8 @@
 	
 	<p><b>Want more information?</b></p>
 	<p><a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a></p>
-    	<p>User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_det-user-200-5000-small.pdf">Series "200" &amp; "5000"</a></p>
-	<p>Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a></p>
+    	<p>User Manuals: <a href="http://quarknet.org/sites/default/files/cf_det-user-200-5000-small.pdf">Series "200" &amp; "5000"</a></p>
+	<p>Assembly Instructions: <a href="http://quarknet.org/sites/default/files/cf_crmdassemblyinstructionsv1.3-small.pdf">Series "5000"</a></p>
     </td>
 </tr>
 </table>

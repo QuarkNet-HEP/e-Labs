@@ -113,20 +113,20 @@
 						
 						<li>
 							Advanced details on how to use the CRMD:<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
+							<a href="http://quarknet.org/sites/default/files/cf_6000crmdusermanual-small.pdf">
 							Series "6000" CRMD Users Manual </a>
 						</li>
 						<li>
 							Learn how to assemble the CRMD:<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
+							<a href="http://quarknet.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">
 							Series "6000" CRMD Assembly Instructions </a>
 						</li>
 						<li>
 							Series "6000" CRMD Plateauing Instructions:<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
+							<a href="http://quarknet.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">
 							"6000" HOWTO PowerPoint </a>
 							<br />
-							<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
+							<a href="http://quarknet.org/sites/default/files/quarknet/cf_6000plateau_template.xls">
 							"6000" SpreadSheet Form</a>
 						</li>
 					</ul>
@@ -141,7 +141,7 @@
 							"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
 						</li>
 						<li>
-							<a href="http://quarknet.i2u2.org/page/equip-raspberry-pi">EQUIP on Raspberry Pi </a>
+							<a href="http://quarknet.org/page/equip-raspberry-pi">EQUIP on Raspberry Pi </a>
 						</li>
 						<li>
 							<a href="https://quarknet.org/sites/default/files/HowtouseEQUIP-PDF-19Aug2016.pdf">How to use EQUIP</a>
