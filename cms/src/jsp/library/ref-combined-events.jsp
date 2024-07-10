@@ -47,7 +47,7 @@ document.getElementById("glossary").innerHTML=txt;
 					<p>Try the exercise "Finding the Mass of Particle Parents" (<a href="javascript:showRefLink('../games/event-id-new/cms_game_daddy-bars.html',850,750)">Safari/Firefox</a> - <a href="javascript:showRefLink('../games/event-id-new/cms_game_daddy-newgame.html',850,750)">Internet Explorer</a>) 
 						to practice associating the invariant mass of individual dimuon events with the histogram.</p>
 					
-					<p>Try the <a href="http://quarknet.org/data-portfolio/activity/cms-data-express">CMS Data Express</a> activity to practice putting invariant masses into a histogram.</p>
+					<p>Try the <a href="https://quarknet.org/data-portfolio/activity/cms-data-express">CMS Data Express</a> activity to practice putting invariant masses into a histogram.</p>
 					
 					<p>Histograms reveal statistical properties that cannot be considered on an event by event basis. <a href="ref-combined-events-stats.html">Learn more.</a>
 					
