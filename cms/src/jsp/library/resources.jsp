@@ -145,13 +145,13 @@
 						<h2>Tutorials</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/geometry-collider-detector" target="website" width="850" height="600">Geometry</e:popup> - Collider Detector.
+								<e:popup href="https://quarknet.org/page/geometry-collider-detector" target="website" width="850" height="600">Geometry</e:popup> - Collider Detector.
 							</li>
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/using-kaufmann-and-bucherers-data-relate-e-p-m" target="website" width="850" height="600">Relate E, p, and m</e:popup> - Using Kaufmann and Bucherer's Data.
+								<e:popup href="https://quarknet.org/page/using-kaufmann-and-bucherers-data-relate-e-p-m" target="website" width="850" height="600">Relate E, p, and m</e:popup> - Using Kaufmann and Bucherer's Data.
 							</li>
 							<li>
-								<e:popup href="http://quarknet.i2u2.org/page/energy-momentum-and-mass" target="website" width="850" height="600">Energy, Momentum, and Mass</e:popup>.
+								<e:popup href="https://quarknet.org/page/energy-momentum-and-mass" target="website" width="850" height="600">Energy, Momentum, and Mass</e:popup>.
 							</li>
 						</ul>
 					</div>
@@ -165,7 +165,7 @@
 								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube.
 							</li>
 							<li>
-								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel.
+								In Search of Giants <e:popup href="https://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="https://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel.
 							</li>
 							<li>
 								<e:popup href="http://www.phdcomics.com/comics/archive.php?comicid=1489" target="video" width="800" height="800">The Higgs Boson Explained</e:popup> - Animated Comic from PhDComics.
@@ -177,7 +177,7 @@
 								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - CERN Multimedia Productions.
 							</li>
 							<li>
-								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube.
+								<e:popup href="https://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube.
 							</li>
 						</ul>
 					</div>

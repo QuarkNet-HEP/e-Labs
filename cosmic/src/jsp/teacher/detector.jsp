@@ -73,12 +73,12 @@ such as counting rates, auxiliary GPS data, and environmental sensor data (tempe
     <p>
 	<a href="../jsp/data.jsp" class="external text" rel="nofollow">Explanation of the Data</a></p>
     <p>
-	User Manuals: <a href="http://quarknet.i2u2.org/sites/default/files/cf_6000crmdusermanual-small.pdf">Series "6000"</a> </p>
+				User Manuals: <a href="https://quarknet.org/sites/default/files/cf_6000crmdusermanual-small.pdf" target="_blank" rel="noopener noreferrer">Series "6000"</a> </p>
     <p>
-	Assembly Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf">Series "6000"</a></p>
+				Assembly Instructions: <a href="https://quarknet.org/sites/default/files/cf_crmdassemblyinstructions-small.pdf" target="_blank" rel="noopener noreferrer">Series "6000"</a></p>
     <p>
-	Series "6000" CRMD Plateauing Instructions: <a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt">PowerPoint HOWTO</a> - 
-	<a href="http://quarknet.i2u2.org/sites/default/files/quarknet/cf_6000plateau_template.xls">Spreadsheet</a></p>
+				Series "6000" CRMD Plateauing Instructions: <a href="https://quarknet.org/sites/default/files/quarknet/cf_6000crmd_how_to_plateau.ppt" target="_blank" rel="noopener noreferrer">PowerPoint HOWTO</a> - 
+				<a href="https://quarknet.org/sites/default/files/quarknet/cf_6000plateau_template.xls" target="_blank" rel="noopener noreferrer">Spreadsheet</a></p>
     <p>
 	"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a></p>
 </td></tr>
