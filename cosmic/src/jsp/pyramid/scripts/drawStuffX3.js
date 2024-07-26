@@ -1,12 +1,11 @@
 x = [];
 y = [];
 var geometry = [];
-var subtractPedX; // Declare in the global scope
-var subtractPedY;
-
-
+//var subtractPedX; // Declare in the global scope
+//var subtractPedY;
 
 // Function to process the data from the URL using fetch
+/*
 function processData2(url) {
   return fetch(url)
     .then(function(response) {
@@ -29,12 +28,11 @@ function processData2(url) {
       return [];
     });
 }
-
-
+*/
 //------------------------------
-
 // Function to process the data from the URL using fetch
-url1 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/1eb1981bb0acd91618cf99790c6656e1ced6db2c/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
+/*
+url1 = 'data/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
 function processData(url1, overallArr) {
   return fetch(url1)
     .then(function(response) {
@@ -155,79 +153,61 @@ function processData(url1, overallArr) {
     subtractPedX = x;
     subtractPedY = y;
 
-for (var x1 = 0; x1 < x.length; x1++) {
-    for (var y1 = 0; y1 < x[0].length; y1++) {
-        for (var z1 = 0; z1 < x[0][0].length; z1++) {
-            subtractPedX[x1][y1][z1] = subtractPedX[x1][y1][z1] - parseInt(overallArr[x1][y1 * 2 + 1][z1]);
-            if (subtractPedX[x1][y1][z1] < minPed) {
-                subtractPedX[x1][y1][z1] = 0;
-            }
-        }
-    }
-}
-    //console.log("subtractPedX", subtractPedX);
-    //console.log("subtractPedY", subtractPedY);
-    // GEOMETRY FILE READINGGGGGGGGGGGGGG
-var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/GEOMETRY%20HEADER.txt';
-
-var up;
-// Fetch the content of the URL using the fetch API
-fetch(url2)
-  .then(function(response) {
-    return response.text();
-  })
-  .then(function(data) {
-    //console.log('Fetched data:', data); // Debug: Output the fetched data to the console
-
-    // Process the data as needed
-    var lines = data.split(/\r?\n/); // Use regex to handle different line endings
-    //console.log(lines);
-    
-    var i = 11;
-    while (i < lines.length && (lines[i].substring(0, 3) === 'ATH' || lines[i].substring(5, 10) === 'Layer')) {
-      geometry.push(lines[i].split(/\s+/)); 
-      //console.log('Parsed Geometry:', geometry); 
-      i++;
-    }
-    globalThis.g = geometry;
-    //processGeometryData(geometry, 1);
-
-    // Use the geometry data as needed
-    // Debug: Output the parsed geometry to the console
-    // You can process the geometry data further or perform other operations here.
-  })
-  .catch(function(error) {
-    console.error('Error fetching data:', error);
-  });
-
-    })
-    .catch(function(error) {
-      console.error('Error fetching data:', error);
-      return [];
-    });
-  
+	for (var x1 = 0; x1 < x.length; x1++) {
+	    for (var y1 = 0; y1 < x[0].length; y1++) {
+	        for (var z1 = 0; z1 < x[0][0].length; z1++) {
+	            subtractPedX[x1][y1][z1] = subtractPedX[x1][y1][z1] - parseInt(overallArr[x1][y1 * 2 + 1][z1]);
+	            if (subtractPedX[x1][y1][z1] < minPed) {
+	                subtractPedX[x1][y1][z1] = 0;
+	            }
+	        }
+	    }
+	}
+	    //console.log("subtractPedX", subtractPedX);
+	    //console.log("subtractPedY", subtractPedY);
+	    // GEOMETRY FILE READINGGGGGGGGGGGGGG
+	var url2 = 'geometry/geometry_header.txt';	
+	var up;
+	// Fetch the content of the URL using the fetch API
+	fetch(url2)
+	  .then(function(response) {
+	    return response.text();
+	  })
+	  .then(function(data) {
+	    //console.log('Fetched data:', data); // Debug: Output the fetched data to the console
+	
+	    // Process the data as needed
+	    var lines = data.split(/\r?\n/); // Use regex to handle different line endings
+	    //console.log(lines);
+	    
+	    var i = 11;
+	    while (i < lines.length && (lines[i].substring(0, 3) === 'ATH' || lines[i].substring(5, 10) === 'Layer')) {
+	      geometry.push(lines[i].split(/\s+/)); 
+	      //console.log('Parsed Geometry:', geometry); 
+	      i++;
+	    }
+	    globalThis.g = geometry;
+	    //processGeometryData(geometry, 1);
+	
+	    // Use the geometry data as needed
+	    // Debug: Output the parsed geometry to the console
+	    // You can process the geometry data further or perform other operations here.
+	  })
+	  .catch(function(error) {
+	    console.error('Error fetching data:', error);
+	  });
+	
+	    })
+	    .catch(function(error) {
+	      console.error('Error fetching data:', error);
+	      return [];
+	    });
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //-----------------------
 
-
-
-var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/Pedastalv2.txt';
-
+var url2 = 'geometry/pedastalv2.txt';
 fetch(url2)
   .then(function(response) {
     if (!response.ok) {
@@ -259,20 +239,17 @@ fetch(url2)
     }
     overallArr.push(ped);
     //console.log(overallArr); // Overall array with processed data from the file
-    processData(url1, overallArr);
-  
-    
+    processData(url1, overallArr);  
   })
   .catch(function(error) {
     console.error('Error fetching data:', error);
   });
+*/
 
-
+//called by main.js
 globalThis.retrieveGeometry = function () {
   return new Promise((resolve, reject) => {
-    //console.log('rg');
-    var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/GEOMETRY%20HEADER.txt';
-
+    var url2 = 'geometry/geometry_header.txt';
     var up;
     // Fetch the content of the URL using the fetch API
     fetch(url2)
@@ -280,12 +257,9 @@ globalThis.retrieveGeometry = function () {
         return response.text();
       })
       .then(function(data) {
-        //console.log('Fetched data:', data); // Debug: Output the fetched data to the console
-
         // Process the data as needed
         var lines = data.split(/\r?\n/); // Use regex to handle different line endings
         //console.log(lines);
-
         var i = 11;
         while (i < lines.length && (lines[i].substring(0, 3) === 'ATH' || lines[i].substring(5, 10) === 'Layer')) {
           geometry.push(lines[i].split(/\s+/)); 
@@ -295,8 +269,6 @@ globalThis.retrieveGeometry = function () {
         //console.log(geometry);
         globalThis.g = geometry;
         resolve();
-        //processGeometryData(geometry, 1);
-
         // Use the geometry data as needed
         // Debug: Output the parsed geometry to the console
         // You can process the geometry data further or perform other operations here.
@@ -307,55 +279,3 @@ globalThis.retrieveGeometry = function () {
       });
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-

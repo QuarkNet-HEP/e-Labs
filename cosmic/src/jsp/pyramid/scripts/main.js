@@ -5,18 +5,92 @@
 const { THREE } = window;
 const { dat } = window;
 //const { Stats } = window;
-
+/*
+So any new object will also use this convention. Using the previous answer, 
+I struggled in the editor on on all the implications around the controls, 
+saving the objects etc...
+Please note that if you use a grid you still have to rotate it so 
+that it covers XY plane instead of XZ
+*/
+//THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
+//const object3D = new THREE.Object3D();
+//object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
+//object3D.DefaultUp.set(0,0,1);
+//console.log(object3D);
 const max_lg = 1200;
-
+const axis_length = 400;
 var x;
 var y;
 var g;
 
+// display errors
 function print(string) { throw new Error(string); }
 
 // Create a scene
 const scene = new THREE.Scene();
+
 var camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.01, 10000000);
+
+// add axes to help with positioning and rotation - this is all to help, visibility off to start with
+const axesHelper = new THREE.AxesHelper(axis_length)
+axesHelper.visible = false;
+scene.add(axesHelper)
+var arrowPos = new THREE.Vector3( 0,0,0 );
+const xArrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 1,0,0 ), arrowPos, axis_length, 0xFF0000, 100, 30 );
+const yArrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 0,1,0 ), arrowPos, axis_length, 0x00FF00, 100, 30 );
+const zArrowHelper = new THREE.ArrowHelper( new THREE.Vector3( 0,0,1 ), arrowPos, axis_length, 0x0000FF, 100, 30 );
+xArrowHelper.visible = false;
+yArrowHelper.visible = false;
+zArrowHelper.visible = false;
+scene.add(xArrowHelper);
+scene.add(yArrowHelper);
+scene.add(zArrowHelper)
+// to display the coordinate names
+var fontLoader = new THREE.FontLoader();
+fontLoader.load("fonts/helvetiker_bold.typeface.json",function(newFont){ 
+    var  textX = new THREE.TextGeometry('X', {
+            size: 25,
+            height: 10,
+            curveSegments: 6,
+            font: newFont,
+    });
+    var  colorX = new THREE.Color();
+    colorX.setRGB(255, 0, 0);
+    var  textMaterialX = new THREE.MeshBasicMaterial({ color: colorX });
+    var textMeshX = new THREE.Mesh(textX , textMaterialX);
+    textMeshX.position.set(axis_length,0,0);
+    textMeshX.name = 'X';
+    textMeshX.visible = false;
+    scene.add(textMeshX);
+    var  textY = new THREE.TextGeometry('Y', {
+            size: 25,
+            height: 10,
+            curveSegments: 6,
+            font: newFont,
+    });
+    var  colorY = new THREE.Color();
+    colorY.setRGB(0, 255, 0);
+    var  textMaterialY = new THREE.MeshBasicMaterial({ color: colorY });
+    var textMeshY = new THREE.Mesh(textY , textMaterialY);
+    textMeshY.position.set(0,axis_length,0);
+    textMeshY.name = 'Y';
+    textMeshY.visible = false;
+    scene.add(textMeshY);
+    var  textZ = new THREE.TextGeometry('Z', {
+            size: 25,
+            height: 10,
+            curveSegments: 6,
+            font: newFont,
+    });
+    var  colorZ = new THREE.Color();
+    colorZ.setRGB(0, 0, 255);
+    var  textMaterialZ = new THREE.MeshBasicMaterial({ color: colorZ });
+    var textMeshZ = new THREE.Mesh(textZ , textMaterialZ);
+    textMeshZ.position.set(0,0,axis_length);
+    textMeshZ.name = 'Z';
+    textMeshZ.visible = false;
+    scene.add(textMeshZ);
+})
 
 // Create a renderer
 var renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -24,9 +98,9 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const canvasContainer = document.getElementById('canvas-container');
 canvasContainer.appendChild(renderer.domElement);
 
+// For post-processing to apply one of more graphical effects
 const renderPass = new THREE.RenderPass(scene, camera);
 const bloomPass = new THREE.UnrealBloomPass();
-
 const composer = new THREE.EffectComposer(renderer);
 composer.addPass(renderPass);
 composer.addPass(bloomPass);
@@ -36,28 +110,30 @@ const stats = new Stats();
 const fpsContainer = document.getElementById('fps-container');
 fpsContainer.appendChild(stats.domElement);
 
-
-
-const url1 = "https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/simple%20(1).stl";
-
+//const url1 = "https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/simple%20(1).stl";
+// Load STL image of the pyramid
+//const url1 = "images/pyramid.stl";
+const pyramidUrl = "images/pyramid.stl";
 var files = {};
-
+var dataFiles = ['Pyramid_FrakeTracker_XY-views_Run3_non-ZeroSup.txt',
+				 'Pyramid_FrakeTracker_XY-views_Run4_non-ZeroSup.txt']
 var model;
+
+// this code loads the image of the pyramid
 const loader = new THREE.STLLoader();
-  loader.load(url1, function (geometry) {
+  loader.load(pyramidUrl, function (geometry) {
     var center = new THREE.Vector3();
     geometry.computeBoundingBox();
+	//console.log(geometry);
     center.x = (geometry.boundingBox.min.x + geometry.boundingBox.max.x) / 2;
     center.y = (geometry.boundingBox.min.y + geometry.boundingBox.max.y) / 2;
     center.z = (geometry.boundingBox.min.z + geometry.boundingBox.max.z) / 2;
-
     // Translate the model to center it
-    geometry.translate(-center.x, -center.y, -center.z);
-    
-    
+    geometry.translate(-center.x, -center.y, -center.z);    
     const verticesAttribute = geometry.getAttribute('position');
     const vertices = verticesAttribute.array;
 
+	
     // Find the maximum Y (top) and minimum Y (bottom) coordinates
     let maxY = Number.NEGATIVE_INFINITY;
     let minY = Number.POSITIVE_INFINITY;
@@ -75,24 +151,20 @@ const loader = new THREE.STLLoader();
     const height = (maxY - minY)/2;
     const target = 13*30; //12 is 1 meter. The pyramid is 24m
     const ratio = target/height;
-
+	
     // Calculate the height
-    
-    
     const material = new THREE.MeshStandardMaterial();
     material.color.set(0xC2985E);
     material.wireframe = false;
-    
-    
+      
     model = new THREE.Mesh(geometry, material);
-    
-    
+        
     var rotationAngle = THREE.MathUtils.degToRad(270); // Convert degrees to radians
     var axis = new THREE.Vector3(1, 0, 0); // X-axis
     model.rotateOnWorldAxis(axis, rotationAngle);
     
     rotationAngle = THREE.MathUtils.degToRad(180); // Convert degrees to radians
-    axis = new THREE.Vector3(0, 1, 0); // X-axis
+    axis = new THREE.Vector3(0, 1, 0); // Y-axis
     model.rotateOnWorldAxis(axis, rotationAngle);
     
     model.scale.x *= ratio;
@@ -101,7 +173,9 @@ const loader = new THREE.STLLoader();
     
     model.position.set(-6.25, 205, -250);
     model.castShadow = true;
+    model.name = 'pyramid';
     scene.add(model);
+    //console.log(scene);
 });
 
 
@@ -174,8 +248,7 @@ class triShaft {
     
     const indices1 = [0, 1, 2, 3, 5, 4, 0, 3, 1, 1, 3, 4, 1, 4, 2, 2, 4, 5, 2, 5, 0, 0, 5, 3];
     
-    //render prism using vertices
-    
+    //render prism using vertices    
     const geometry = new THREE.BufferGeometry();
     geometry.setIndex( indices1 );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
@@ -348,9 +421,6 @@ class sensor {
     this.group.rotation.x = this.xrot;
     this.group.rotation.y = this.yrot;
     this.group.rotation.z = this.zrot;
-    
- 
-    
     scene.add(this.group);   
     
   }
@@ -358,8 +428,7 @@ class sensor {
 
 function acceptanceRange(s,range) {
   //clear previous acceptance mesh
-  for (i in acceptGroup) { s.group.remove(acceptGroup[i]); }
-  
+  for (i in acceptGroup) { s.group.remove(acceptGroup[i]); } 
   const plane1 = s.shafts[0]['y'];
   const high1 = plane1[0];
   const high2 = plane1[plane1.length-1];
@@ -576,15 +645,22 @@ function loadEvent(eventIndex,x,y,s) {
     const line = new THREE.Line(geometry, material);
     muonVectors.push(line);
     s.group.add(line);
-    
-  }
-  
+  }  
 }
 
 function loadAngle(s,x,y,z) {
+  console.log(x);
+  console.log(y);
+  console.log(z);
   s.group.rotation.x = x;
   s.group.rotation.y = y;
   s.group.rotation.z = z;
+  const pyramidx = scene.getObjectByName('pyramid').position.x;
+  const pyramidy = scene.getObjectByName('pyramid').position.y;
+  const pyramidz = scene.getObjectByName('pyramid').position.z;
+  console.log('pyramid x: ' + pyramidx);
+  console.log('pyramid y: ' + pyramidy);
+  console.log('pyramid z: ' + pyramidz);
 }
 
 function smoothCameraZoom(s,camera, targetPosition, duration) {
@@ -681,30 +757,27 @@ const keys = {
   d: false,
 };
 
+
 function GUIinit() {
   // controls
   controls = new THREE.OrbitControls(camera, renderer.domElement);
-  
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  
+  // Remove these two to take out the effect of keep moving after dragging with the mouse
+  //controls.enableDamping = true;
+  //controls.dampingFactor = 0.05;
   document.addEventListener("keydown", (event) => {
     if (event.key in keys) {
       keys[event.key] = true;
     }
   });
-
   document.addEventListener("keyup", (event) => {
     if (event.key in keys) {
       keys[event.key] = false;
     }
   });
-  
   //dat gui
   const guiContainer = document.getElementById('gui-container');
   const gui = new dat.GUI({ autoPlace: false });
   guiContainer.appendChild(gui.domElement);
-  
   parameters.shaders = false;
   parameters.eventIndex = 1;
   parameters.acceptRange = 200;
@@ -712,56 +785,57 @@ function GUIinit() {
   parameters.showSkybox = true;
   parameters.showGround = true;
   parameters.keepVectors = true;
+  parameters.showAxes = false;
   parameters.xrot = 0;
   parameters.yrot = 0;
   parameters.zrot = 0;
-  parameters.xpos = 0;
-  parameters.ypos = 0;
+  parameters.xpos = 0; 
+  parameters.ypos = 50; //sensor initialized at 50 for y
   parameters.zpos = 0;
-  parameters.fileName = "";
-  parameters.loadFile = function(type, purpose) {
-    return function() {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = type;
-      input.style.visibility = 'hidden';
-      input.addEventListener('change', function(event) {
-        const file = event.target.files[0];
+  parameters.filename="";
+  //parameters.loadFile = function(type, purpose) {
+  //  return function() {
+  //    const input = document.createElement('input');
+  //    input.type = 'file';
+  //    input.accept = type;
+  //    input.style.visibility = 'hidden';
+  //    input.addEventListener('change', function(event) {
+  //      const file = event.target.files[0];
 
-        useFile(file, updateGUI, type, purpose);
-      });
-      input.click();
-    };
-  };
-  
+  //      useFile(file, updateGUI, type, purpose);
+  //    });
+  //    input.click();
+  //  };
+  //};
+  parameters.loadDataFile = "";
   //File loading software
   const dataGUI = gui.addFolder("Data");
-  dataGUI.add(parameters, 'loadFile').name('Load Text File Example').onFinishChange(parameters.loadFile('.txt', 'events'));
-  
-  
+  //dataGUI.add(parameters, 'loadFile').name('Load Text File Example').onFinishChange(parameters.loadFile('.txt', 'events'));
+  dataGUI.add(parameters, "loadDataFile", dataFiles).name('Load File').listen().onChange((value)=>{useNewFile(value)});
+  function useNewFile(value) { 
+  	useFile(value, updateGUI, 'file', 'events')
+  }  
   // Function to handle the file loading logic
-  function useFile(file, callback, type, purpose) {
-    
-    const filePath = file.name;
+  function useFile(file, callback, type, purpose) { 
+    const filePath = 'data/'+file;
     files[filePath] = file;
     parameters[filePath]=filePath;
-    callback(filePath);
+    callback(file);
   }
-
-  // Callback function to update the GUI with the loaded file path or name
+    // Callback function to update the GUI with the loaded file path or name
   function updateGUI(filePath) {
-    var newFile = fileGUI.add(parameters, filePath).name('Loaded File').listen().setValue(filePath);
-    newFile.onChange(function(value) {
+    fileGUI.add(parameters, 'filename', filePath).name('Loaded File').listen().setValue(filePath).onChange(function(value) {
       parameters[filePath] = filePath; // Restore the original value
-      gui.updateDisplay(); // Update the GUI to reflect the original value
+      fileGUI.updateDisplay(); // Update the GUI to reflect the original value
     });
   }
   
+  function loadFile(newFile) {
+	console.log("should load "+newFile);	  
+  }
   
   dataGUI.open();
-  
   const sceneGUI = gui.addFolder("Scene"); 
-  
   const params1 = {
   zoomToSensor: function() {
     // Call the smoothCameraZoom function here with the desired target position and duration
@@ -774,54 +848,71 @@ function GUIinit() {
   const params2 = { clearVectors: function() { for (i in muonVectors) { s.group.remove(muonVectors[i]); } } };
 
   // Add the button to the GUI
-  sceneGUI.add(params1, 'zoomToSensor').name('Zoom to Sensor');
-  
-  sceneGUI.add(params2, 'clearVectors').name('Clear Muon Vectors');
-  
+  sceneGUI.add(params1, 'zoomToSensor').name('Zoom to Sensor');  
+  sceneGUI.add(params2, 'clearVectors').name('Clear Muon Vectors');  
   sceneGUI.add(parameters, 'acceptRange', 0, 20000).step(1).name("Acceptance Range").onChange(onAcceptanceRangeChange); 
   function onAcceptanceRangeChange() { acceptanceRange(s,parameters.acceptRange) }
-  
-  sceneGUI.add(parameters, 'shaders').name("Turn On Shaders")
-  
+  sceneGUI.add(parameters, 'shaders').name("Turn On Shaders") 
   sceneGUI.add(parameters, 'showModel').name("Show Pyramid").onChange(onModelVisibilityChange);
-  function onModelVisibilityChange() { model.visible = parameters.showModel; }
-  
+  function onModelVisibilityChange() { model.visible = parameters.showModel; }  
   sceneGUI.add(parameters, 'showSkybox').name("Show Skybox").onChange(onSkyboxVisibilityChange);
-  function onSkyboxVisibilityChange() { skyboxMesh.visible = parameters.showSkybox; }
-  
+  function onSkyboxVisibilityChange() { skyboxMesh.visible = parameters.showSkybox; }  
   sceneGUI.add(parameters, 'showGround').name("Show Ground").onChange(onGroundVisibilityChange);
   function onGroundVisibilityChange() { ground.visible = parameters.showGround; }
+  sceneGUI.add(parameters, 'showAxes').name("Show Axes").onChange(onAxesVisibilityChange);
+  function onAxesVisibilityChange() { 
+  	axesHelper.visible = parameters.showAxes; 
+    xArrowHelper.visible = parameters.showAxes;	
+    yArrowHelper.visible = parameters.showAxes;	
+    zArrowHelper.visible = parameters.showAxes;	
+    const textMeshX = scene.getObjectByName('X');
+	const textMeshY = scene.getObjectByName('Y');
+	const textMeshZ = scene.getObjectByName('Z');
+    textMeshX.visible = parameters.showAxes;	
+    textMeshY.visible = parameters.showAxes;	
+    textMeshZ.visible = parameters.showAxes;	
+  }
 
-  sceneGUI.open(); 
-  
+  sceneGUI.open();   
   const sensorGUI = gui.addFolder("Sensor"); 
-  
   sensorGUI.add(parameters, 'eventIndex', 1, x.length).step(1).name("Event").onChange(onEventIndexChange); 
   function onEventIndexChange() { loadEvent(parameters.eventIndex, x,y,s)}
   
-  sensorGUI.add(parameters, 'xrot', 0, 3.14159265).step(0.00872664625).name("X Rotation").onChange(onXRotChange); 
-  function onXRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
+  //sensorGUI.add(parameters, 'xrot', 0, 3.14159265).step(0.00872664625).name("X Rotation").onChange(onXRotChange); 
+  //function onXRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
   
-  sensorGUI.add(parameters, 'yrot', 0, 3.14159265).step(0.00872664625).name("Y Rotation").onChange(onZRotChange); 
-  function onZRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
+  //sensorGUI.add(parameters, 'yrot', 0, 3.14159265).step(0.00872664625).name("Y Rotation").onChange(onZRotChange); 
+  //function onZRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
   
-  sensorGUI.add(parameters, 'zrot', -3.14159265, 3.14159265).step(0.00872664625).name("Z Rotation").onChange(onYRotChange); 
-  function onYRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
+  //sensorGUI.add(parameters, 'zrot', -3.14159265, 3.14159265).step(0.00872664625).name("Z Rotation").onChange(onYRotChange); 
+  //function onYRotChange() { loadAngle(s,parameters.xrot, parameters.yrot, parameters.zrot); }
+
+  sensorGUI.add(parameters, 'xrot', -90, 90).step(1).name("X Rotation").onChange(onXRotChange); 
+  function onXRotChange() { loadAngle(s,THREE.MathUtils.degToRad(parameters.xrot), 
+  										THREE.MathUtils.degToRad(parameters.yrot), 
+  										THREE.MathUtils.degToRad(parameters.zrot)); }
+
+  sensorGUI.add(parameters, 'yrot', -90, 90).step(1).name("Y Rotation").onChange(onYRotChange); 
+  function onYRotChange() { loadAngle(s, THREE.MathUtils.degToRad(parameters.xrot), 
+  										 THREE.MathUtils.degToRad(parameters.yrot), 
+  										 THREE.MathUtils.degToRad(parameters.zrot)); }
   
-  
-  
+  sensorGUI.add(parameters, 'zrot', -90, 90).step(1).name("Z Rotation").onChange(onZRotChange); 
+  function onZRotChange() { loadAngle(s,THREE.MathUtils.degToRad(parameters.xrot), 
+  										THREE.MathUtils.degToRad(parameters.yrot), 
+  										THREE.MathUtils.degToRad(parameters.zrot)); }
   sensorGUI.add(parameters, 'xpos',-100,100).name("X Position").onChange(onXposChange);
   function onXposChange() { s.group.position.x = parameters.xpos; s.centerx = parameters.xpos; };
-  
   sensorGUI.add(parameters, 'ypos',-100,100).name("Y Position").onChange(onYposChange);
-  function onYposChange() { s.group.position.y = parameters.ypos; s.centery = parameters.ypos; };
-  
+  function onYposChange() {s.group.position.y = parameters.ypos; s.centery = parameters.ypos; };
   sensorGUI.add(parameters, 'zpos',-100,100).name("Z Position").onChange(onZposChange);
-  function onZposChange() { s.group.position.z = parameters.zpos; s.centerz = parameters.zpos; };
-  
+  function onZposChange() {s.group.position.z = parameters.zpos; s.centerz = parameters.zpos; };
   sensorGUI.open();
   
   const fileGUI = gui.addFolder("Files")
+  fileGUI.add(parameters, 'filename', dataFiles[0]).name("Loaded Files");
+  fileGUI.open();
+  
 }
 
 function init(x,y,g) {
@@ -834,12 +925,12 @@ function init(x,y,g) {
   s.xstart = 'down';
   s.ystart = 'down';
   s.render();
+  console.log(s);
   
   //no coordinate system yet
   //waiting for data
-
-  
   //camera.position.set(-200,2000,2000);
+  /*
   camera.position.set(-200,500,500);
   camera.lookAt(s.centerx, s.centery, s.centerz);  
   
@@ -868,7 +959,7 @@ function init(x,y,g) {
   
   //scene.background = new THREE.Color(0x87CEEB);
   let textureLoader = new THREE.TextureLoader();
-  let texture = textureLoader.load('https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/sky_water_landscape.jpg');
+  let texture = textureLoader.load('images/sky_water_landscape.jpg');
 
   let radius = 10000; // Adjust the radius as needed
   let widthSegments = 256; // Adjust the number of segments as needed
@@ -900,7 +991,7 @@ function init(x,y,g) {
   
   
   loadEvent(1,x,y,s);
-
+  */
 }
 
 function animate() {
@@ -932,6 +1023,7 @@ function animate() {
       ambientLight.intensity = 1;
     }
   }
+
 
 function wait(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
@@ -969,38 +1061,28 @@ function waitUntilCondition() {
         .then(([data, geometry]) => {
           if (globalThis.x != undefined && globalThis.x.length > 0) { x = globalThis.x; }
           if (globalThis.y != undefined && globalThis.y.length > 0) { y = globalThis.y; }
-          if (globalThis.g != undefined && globalThis.g.length > 0) { g = globalThis.g; }
-          
-
-          
+          if (globalThis.g != undefined && globalThis.g.length > 0) { g = globalThis.g; }            
           if (x != undefined && y != undefined && g != undefined) {
             if (x.length > 0 && y.length > 0 && g.length > 0) {
               clearInterval(checkInterval);
               resolve();
             }
           }
-
           // Place your code here that relies on both data and geometry
         })
         .catch(error => {
           console.log("Waiting for data load");
         });
-      
-      
     }, 10); // Poll every 0.01 seconds
   });
 }
 
 async function execute() {
   await waitUntilCondition();
-  
   //Execute everything until the global variables have transferred
-  GUIinit();
+  //GUIinit();
   init(x,y,g);
-  animate();  
+  //animate();  
 }
 
 execute();
-
-
-

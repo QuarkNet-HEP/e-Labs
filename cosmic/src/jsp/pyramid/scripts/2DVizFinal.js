@@ -62,7 +62,6 @@ function processData(url1, overallArr) {
     .then(function(content) {
       var lines = content.trim().split('\n').slice(11); // Skip first 8 rows
       var header = lines[0].trim().split(/\s+/); // Assuming the first line is the header
-
       var data = lines.slice(1).filter(function(line) { return line.trim() !== ''; }).map(function(line) {
         var values = line.trim().split(/\s+/);
         

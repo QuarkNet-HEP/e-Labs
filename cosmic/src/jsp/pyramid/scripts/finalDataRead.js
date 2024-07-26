@@ -3,6 +3,7 @@ y = [];
 
 
 // Function to process the data from the URL using fetch
+/*
 function processData2(url) {
   return fetch(url)
     .then(function(response) {
@@ -25,12 +26,11 @@ function processData2(url) {
       return [];
     });
 }
-
-
+*/
 //------------------------------
-
 // Function to process the data from the URL using fetch
-var url1 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/1eb1981bb0acd91618cf99790c6656e1ced6db2c/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
+/*
+var url1 = 'data/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
 function processData(url1, overallArr) {
   return fetch(url1)
     .then(function(response) {
@@ -170,29 +170,10 @@ function processData(url1, overallArr) {
       console.error('Error fetching data:', error);
       return [];
     });
-  
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //-----------------------
-
-
-
-var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/Pedastalv2.txt';
-
+var url2 = 'geometry/pedastalv2.txt';
 fetch(url2)
   .then(function(response) {
     if (!response.ok) {
@@ -231,14 +212,13 @@ fetch(url2)
   .catch(function(error) {
     console.error('Error fetching data:', error);
   });
-
+*/
 globalThis.retrieveData = function () {
   return new Promise((resolve, reject) => {
     x = [];
     y = [];
-
-
     // Function to process the data from the URL using fetch
+    /*
     function processData2(url) {
       return fetch(url)
         .then(function(response) {
@@ -261,12 +241,12 @@ globalThis.retrieveData = function () {
           return [];
         });
     }
-
+   */
 
     //------------------------------
 
     // Function to process the data from the URL using fetch
-    var url1 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/1eb1981bb0acd91618cf99790c6656e1ced6db2c/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
+    var url1 = 'data/Pyramid_FakeTracker_XY-views_Run3_non-ZeroSup.txt'
     function processData(url1, overallArr) {
       return fetch(url1)
         .then(function(response) {
@@ -411,24 +391,9 @@ globalThis.retrieveData = function () {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //-----------------------
 
-
-
-    var url2 = 'https://raw.githubusercontent.com/QuarkNet-HEP/pyramid/main/Pedastalv2.txt';
+    var url2 = 'geometry/pedastalv2.txt';
 
     fetch(url2)
       .then(function(response) {
@@ -468,6 +433,7 @@ globalThis.retrieveData = function () {
       .catch(function(error) {
         reject();
       });
-  });
+  });  
+  
 }
 
