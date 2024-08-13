@@ -19,6 +19,7 @@ function print(string) { throw new Error(string); }
 let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
 				 'Pyramid_Run2_non-ZeroSup.txt',
+				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run3_non-ZeroSup.txt']
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -145,6 +146,11 @@ function GUIupdate(what) {
 	if (what != "remove") {
 		dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 		
   		function onEventIndexChange() { loadIndex(parameters.eventIndex); }
+  		//dataGUI.__controllers[1].domElement.style = 'height:150px';
+  		controller = dataGUI.__controllers[1];
+  		//controller.style ='height:150px';
+  		//dataGUI.__controllers[1].setAttribute( "style", "height: 150px" );
+  		//dataGUI.__controllers[1].style.height = "150px";
   		dataGUI.__controllers[1].updateDisplay();
   	}
 }
