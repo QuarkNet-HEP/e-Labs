@@ -478,6 +478,7 @@ function loadEvent(eventIndex,x,y,s) {
 } //end of loadEvent
 
 function loadAngle(s,x,y,z) {
+  s.group.rotation.order = 'YXZ';	
   s.group.rotation.x = x;
   s.group.rotation.y = y;
   s.group.rotation.z = z;
@@ -649,11 +650,11 @@ function loadPyramid(visibility, wire) {
 	    pyramid.scale.y *= ratio;
 	    pyramid.scale.z *= ratio;
 	    //default position for detector placed at 0,0,0
-	    if (scene.getObjectByName("sensor") != undefined) {	
-			pyramid.position.set(-6+s.centerx, 255+s.centery, -400+s.centerz);
-	    } else {
+	    //if (scene.getObjectByName("sensor") != undefined) {	
+		//	pyramid.position.set(-6+s.centerx, 255+s.centery, -400+s.centerz);
+	    //} else {
 		    pyramid.position.set(-6, 255, -400);	
-		}
+		//}
 	    pyramid.castShadow = true;
 	    pyramid.name = 'pyramid';
     	if (debug3D === true) {	    
@@ -691,7 +692,7 @@ function removeObject3D(object3D) {
 function resetPyramidPosition() {
 	if (scene.getObjectByName("pyramid") != undefined) {	
     	pyramid.position.set(-6, 255, -400);
-		pyramid.position.set(-6+s.centerx, 255+s.centery, -400+s.centerz);
+		//pyramid.position.set(-6+s.centerx, 255+s.centery, -400+s.centerz);
 	}
 }//end of resetPyramidPosition
 

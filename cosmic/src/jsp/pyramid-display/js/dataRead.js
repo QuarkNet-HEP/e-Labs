@@ -39,7 +39,7 @@ function startsWithNumber(str) {
 	return /^\d+\b/.test(str);
 }
 
-let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+//let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
 	let day = d.substring(0,2);
 	let month = d.substring(2,5);
