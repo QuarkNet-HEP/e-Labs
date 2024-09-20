@@ -17,6 +17,7 @@ let debugMain = false;
 function print(string) { throw new Error(string); }
 // Load STL image of the pyramid
 let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
+				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
 				 'Pyramid_Run2_non-ZeroSup.txt',
 				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
@@ -73,6 +74,7 @@ function getSingleGeometry() {
 			}
 		} 
 	}
+	//console.log(singleGeometry);
 }// end of getGeometry
 
 function loadDataFile() {
