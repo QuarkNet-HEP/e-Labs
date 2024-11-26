@@ -15,7 +15,7 @@ globalThis.geometryFile = "";
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
 globalThis.midPed = 0;
-let debugRead = false;
+let debugRead = true;
 
 // helper function to clean the headers
 function cleanFile(arr, type) {
@@ -70,7 +70,6 @@ function retrieveTimedData(fileName, completeArr, type) {
 						done = true;
 					}			
 				}
-
 				//if (completeArr[i][0][0][1] === detector[2]) {
 				//	if (detector[3] > completeArr[i][0][0][2] && !done) {
 				//		console.log(completeArr[i][0][0][2]);

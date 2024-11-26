@@ -19,9 +19,7 @@ function print(string) { throw new Error(string); }
 let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
-				 'Pyramid_Run2_non-ZeroSup.txt',
-				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
-				 'Pyramid_Run3_non-ZeroSup.txt']
+				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt']
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
@@ -59,7 +57,7 @@ function getSingleGeometry() {
 				if (localGeometry[i][x][0].startsWith("P")) {
 					let layerDetail = [];
 					done = false;
-					for (let n = 2; n < localGeometry[i][x].length; n++) {
+					for (let n = 3; n < localGeometry[i][x].length; n++) {
 						if (localGeometry[i][x][n] === "OFF") {
 							layers.push(layerDetail);
 							layerDetail = []

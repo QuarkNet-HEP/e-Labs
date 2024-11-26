@@ -1,74 +1,40 @@
 GEOMETRY
 
+Add two new words for each plane: z position (cm) and distance between cells within Quads
+Note- direction of x or y position (Lto right or R to L) defined by positions of first two Quads
+
 Define the location of every triangular cell in the pyramid tracker detectors
 
 Detector Name (ATHAA, ATHAB)
 Date DDMMMYYYYY
 Time HR:MIN:SEC
-Plane Name; start triangle (Pyramid, Tree); location of first fiber in every module in detector coordinate system, followed by Angular offset for each plane DTheta (degrees)
+Plane Name; start triangle (Pyramid, Tree); location of first fiber in every module in detector coordinate system, followed by the plane’s Z position (cm), average intercell spacing within Quads (cm), and finally the Angular offset for each plane DTheta (degrees)
 
 Example data:
 
 ATHAA 01JUL2023 11:59:30
-P0_X-Layer_1 Tree 27.0 19.0 11.0 3.0 -5.0 -13.0 -21.0 OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
+P0_X-Layer_1 Tree REVERSED -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -54. 1.95 OFF 0.0
+P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -46.0 1.95 OFF 0.0
+P2_X-Layer_2 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -4.0 1.95 OFF 0.0
+P3_Y-Layer_2 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
+P4_X-Layer_3 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 46. 1.95 OFF 0.0
+P5_Y-Layer_3 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 54. 1.95 OFF 0.0
 
-ATHAA 01JUL2023 09:59:30
-P0_X-Layer_1 Tree 27.0 19.0 11.0 3.0 -5.0 -13.0 -21.0 OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
+ATHAA 01JUL2023 09:59:30.     FLIP PLANE 1 to x is on top of y
+P0_X-Layer_1 Pyramid REVERSED -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -54. 1.95 OFF 0.0
+P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -54.0 1.95 OFF 0.0
+P2_X-Layer_2 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -4.0 1.95 OFF 0.0
+P3_Y-Layer_2 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
+P4_X-Layer_3 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 46. 1.95 OFF 0.0
+P5_Y-Layer_3 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 54. 1.95 OFF 0.0
 
-ATHAA 01JUL2023 09:00:30
-P0_X-Layer_1 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P1_Y-Layer_1 Pyramid -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Pyramid -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
+ATHAA 01JUL2023 09:00:30   Y1 Quads surveyed to be greatly squeezed spacing = 1.5cm
+P0_X-Layer_1 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -54 1.95 OFF 0.0
+P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -46.0 1.5 OFF 0.0
+P2_X-Layer_2 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -4.0 1.95 OFF 0.0
+P3_Y-Layer_2 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
+P4_X-Layer_3 Tree NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 46. 1.95 OFF 0.0
+P5_Y-Layer_3 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 54. 1.95 OFF 0.0
 
 ATHAA 01JUL2023 08:00:30
-P0_X-Layer_1 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-
-ATHAA 11OCT2023 09:00:00 
-P0_X-Layer_1 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 53.0 90. OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 46. 50. OFF 0.0
-P2_X-Layer_2 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 3.5 90. OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -3.5 50. OFF 0.0
-P4_X-Layer_3 Tree -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -46. 90. OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -53.0 50. OFF 0.0
-
-ATHAB 01DEC2023 11:00:30
-P0_X-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-
-ATHAB 01JUL2023 09:00:30
-P0_X-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P1_Y-Layer_1 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P2_X-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P3_Y-Layer_2 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P4_X-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-P5_Y-Layer_3 Tree -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 OFF 0.0
-
-Printout looks the same except for header
-
-Detector        Date         Time
-ATHAA 01JUL2023 09:00:30
-Plane        First Cell.  M1    M2     M3   M4   M5  M6  M7  Angular offset
-P0_X-Layer_1 Tree -27.0 -19.0 -11.0  -3.0   5.0 13.0 21.0 OFF 0.0
-etc
+etc...
