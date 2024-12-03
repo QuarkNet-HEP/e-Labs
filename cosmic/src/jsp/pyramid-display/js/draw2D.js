@@ -9,20 +9,18 @@ var subtractPedX = [];
 var subtractPedY = [];
 var xCoord = [];
 var yCoord = [];
-let lineRouteXTop = 88;
-let lineRouteXBottom = 350;
-let lineRouteYTop = 470;
-let lineRouteYBottom = 730;
 let quadPosOffset = 60;
-let debug2D = true;
-let debug2DPoint = true;
+let debug2D = false;
+let debug2DPoint = false;
 let debug2DLine = true;
+let debug2DTriangle = false;
+let debug2DQuad = false;
 
 var inputValue = inputElement.value;
 function updateInputValue() {
   inputValue = inputElement.value;
   draw(inputValue-1); 
-}
+}//end of updateInputValue
 
 function drawLine(x1, y1, x2, y2, extensionLength) {
   // 80 for extensionLength 
@@ -45,249 +43,225 @@ function drawLine(x1, y1, x2, y2, extensionLength) {
   ctx.stroke();
 }//end of drawLine
 		
-function drawPoint(x, y, pointSize) {
+function drawPoint(x, y, pointSize, color) {
   ctx.beginPath();
   ctx.arc(x, y, pointSize / 2, 0, 2 * Math.PI);
-  ctx.fillStyle = 'black'; // Color of the point (you can use any valid CSS color)
+  ctx.fillStyle = color; // Color of the point (you can use any valid CSS color)
   ctx.globalAlpha = 1;
   ctx.fill();
 }//end of drawPoint
 
-function calculatePoint(x, la, lq, ndx, layerQuadSize) {
-  var oriXa = [];
-  var oriXb = [];
-  var intXa = [];
-  var intXb = [];
-  var weightedX = [];
-  if (debug2DPoint === true) {
-	  console.log("In calculatePoint, line value:", x);
-  }
-  for (var n = 0; n < x.length; n++) {
-	var xValue = x[n];
-	for (var i = 1; i < la[ndx].length; i++) {
-		if (debug2DPoint === true) {
-			console.log("In loop: ", la[ndx], lq[ndx]);
-		}
-		if (i > 0 && lq[ndx][i][0] == lq[ndx][i-1][0]) {
-			sizeFactor = layerQuadSize[ndx][0][0] / 2.0; //they are in the same Quad
-		} else {
-			sizeFactor = (layerQuadSize[ndx][0][0] / 2) + layerQuadSize[ndx][0][1];; // the are in different Quads
-		}
-		if (debug2DPoint === true) {
-			console.log("sizeFactor: ", sizeFactor);
-		}
-		//test for sizeFactor distance, then we calculate weighted point
-		if (la[ndx][i][0] - la[ndx][i-1][0] <= sizeFactor) { 
-			if (debug2DPoint === true) {
-				console.log("we should be calculating weighted point", sizeFactor,la[ndx][i][0],la[ndx][i-1][0], la[ndx][i][0] - la[ndx][i-1][0]);
-			}			
-			if (xValue > la[ndx][i][0] && i == la[ndx].length-1) {
-				oriXa.push(la[ndx][i-1][0]);
-				oriXb.push(la[ndx][i][0]);
-				intXa.push(la[ndx][i-1][1]);		
-				intXb.push(la[ndx][i][1]);	
-			}
-			if (xValue < la[ndx][i][0]) {
-				oriXa.push(la[ndx][i-1][0]);
-				oriXb.push(la[ndx][i][0]);
-				intXa.push(la[ndx][i-1][1]);		
-				intXb.push(la[ndx][i][1]);	
-			}
-		} else {
-			//there is only one point to draw, no need to weigh
-			if (debug2DPoint === true) {
-				console.log("nothing to weigh", xValue);
-			}				
-		   weightedX.push(xValue);
-		}
+function calculatePointByPercentage(x1, y1, x2, y2, percentage, yProjected) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  const x = x1 + (dx * percentage/100);
+  const y = y1 + (dy * percentage/100);
+  return { x, y, yProjected };
+}//end of calculatePointByPercentage
+
+function getSingleSidePoint(layerTriangle, layer) {
+	var sidePoint = [];
+	var x1 = layerTriangle[layer][0][2][0];
+	var y1 = layerTriangle[layer][0][2][1];
+	var x2 = layerTriangle[layer][0][3][0];
+	var y2 = layerTriangle[layer][0][3][1];
+	var x3 = layerTriangle[layer][0][4][0];
+	var y3 = layerTriangle[layer][0][4][1];
+	var x = (x1 + x2 + x3)/3;
+	var y = (y1 + y2 + y3)/3;
+	yProjected = y;
+	sidePoint = {x, y, yProjected};	
+	return sidePoint; 
+}//end of getSingleSidePoint
+
+function calculateSidePoint(layerTriangle, layer) {
+	var sidePoint = [];
+	var yProjected = 0;
+	if (debug2DPoint === true) {
+		console.log("layer triangle: ", layerTriangle);
 	}
-  }	
-  for (var i = 0; i < x.length; i++) {
-	  if (debug2DPoint === true) {
-		  console.log("oriXa: ",oriXa[i],"oriXb:",oriXb[i]);
-		  console.log("intXa: ",intXa[i],"intXb:",intXb[i]);
+	if (layerTriangle[layer].length > 0) {
+	  if (layerTriangle[layer].length == 1) {
+		//the point falls in the middle of the triangle
+		sidePoint = getSingleSidePoint(layerTriangle, layer);
+	  }	else {
+		//first we have to check for neighbors
+        var quadFirstCell = layerTriangle[layer][0][6];
+        var quadSecondCell = layerTriangle[layer][1][6];
+        //these are not neighbors
+        if ((quadSecondCell-quadFirstCell) > 1) {
+			sidePoint = getSingleSidePoint(layerTriangle, layer);
+		} else {					
+			//we have to calculate between neighbors... I will assume it is the first two neigbors for now
+			var up = layerTriangle[layer][0][0];
+			//the last line of the first triangle and the first line of the second triangle are a match
+			//use the first values
+			var x1 = layerTriangle[layer][0][3][0];
+			var y1 = layerTriangle[layer][0][3][1];
+			var x2 = layerTriangle[layer][0][4][0];
+			var y2 = layerTriangle[layer][0][4][1];
+			yProjected = layerTriangle[layer][0][5];	
+			var point1Intensity = layerTriangle[layer][0][1];
+			var point2Intensity = 0;
+			if (layerTriangle[layer].length > 1) {
+				point2Intensity = layerTriangle[layer][1][1];
+			}
+			var pointPercent = 0;
+		    var pointPercentSum = point1Intensity + point2Intensity;
+			if (up) {
+			   if (point1Intensity > point2Intensity) {
+				 //first triangle is pyramid with higher intensity
+				 pointPercent = point1Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+			   } else {
+				 //first triangle is pyramid with lower intensity			 
+				 pointPercent = point2Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+			   }			
+			} else {
+				if (point1Intensity > point2Intensity) {
+				 //first triangle is down with higher intensity
+				 pointPercent = point1Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+				} else {
+			     //sthe first triangle is down with lower intensity
+				 pointPercent = point2Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+				}
+			}
+		}//end of neighbor calculation
 	  }
-	  if (oriXb[i] - oriXa[i] == sizeFactor) {
-		  let half =((oriXb[i] - oriXa[i]) / 2) + oriXa[i];
-		  if (debug2DPoint === true) {
-			  console.log("half value of ((oriXb[i] - oriXa[i]) / 2) + oriXa[i]: ",half);
-		  }
-		  var intXsum = Math.floor(intXa[i])+Math.floor(intXb[i]);
-		  var pixelAvg = sizeFactor/intXsum;
-		  if (debug2DPoint === true) {
-			  console.log("sum of intX Math.floor(intXa[i])+Math.floor(intXb[i]):", intXsum);
-			  console.log("pixel average: sizeFactor/intXsum", pixelAvg);
-		  }
-		  var xapixels = pixelAvg * intXa[i];
-		  var xbpixels = pixelAvg * intXb[i];
-		  let apointpercent = xapixels / sizeFactor;
-		  let bpointpercent = xbpixels / sizeFactor;
-	 	  if (debug2DPoint === true) {	
-			console.log("xapixels: pixelAvg * intXa[i]",xapixels);
-	        console.log("xbpixels: pixelAvg * intXb[i]", xbpixels);	  
-		  	console.log("abpointpercent: xapixels / sizeFactor",apointpercent);
-		  	console.log("bpointpercent: xbpixels / sizeFactor",bpointpercent);
-		  }
-		  var xapix = 0;
-		  xapix = oriXb[i] - (sizeFactor * apointpercent);
-		  if (debug2DPoint === true) {		  
-		  	console.log("xapix: oriXb[i] - (sizeFactor * apointpercent)",xapix);	
-		  }	
-		  weightedX.push(xapix); 
-	} else {
-		weightedX.push(Math.floor(oriXb[i]));
-	}
-  }
-  
-  if (la[ndx].length == 1) {
-	  weightedX = x;
-  }  
-  if (debug2DPoint === true) {
-	  console.log("weightedX: ", weightedX);
-  }
-  return weightedX;
-}// end of calculatePoint	
-	
-function lineRoute(layerAct, layerQuad, layerQuadSize, lTop, lBot){
-  //350, 88 for lTop, lBot and size is 35 or less depending of intercell spacing
-  //470, 730 for lTop, lBot
-  if (debug2DLine === true) {
-	  console.log("Layer act: ", layerAct);
-	  console.log("Layer quad: ", layerQuad);
-	  console.log("layerQuadSize: ", layerQuadSize);
-  }
-  var x1 = [];
+	} 
+    if (debug2DPoint === true) {
+		console.log("intensity:", point1Intensity, point2Intensity);
+		console.log("point percent: ", pointPercent);
+		console.log("side point coords: ", x1,y1,x2,y2);
+		console.log("side point: ", sidePoint);
+	}							
+	return sidePoint;
+}//end of calculateSidePoint
+
+function getLineCoordinates(layerAct, ndx, layerQuad, layerQuadSize) {
+  var x = [];
   var totalN = 0;
   var totalD = 0;
   if (debug2DLine === true) {
-  	console.log("Loop through layerAct[0] to calculate x1");
-  	console.log(layerAct[0]);
-  	console.log(layerQuadSize[0]);
+  	console.log("Loop through layerAct to calculate x");
+  	console.log(layerAct[ndx]);
+  	console.log(layerQuadSize[ndx]);
   }
-  for(var i = 0; i < layerAct[0].length; i++){
-	if (i > 0 && layerQuad[0][i][0] == layerQuad[0][i-1][0]) {
-		sizeFactor = layerQuadSize[0][0][0] / 2.0; //they are in the same Quad
+  for(var i = 0; i < layerAct[ndx].length; i++){
+	if (i > 0 && layerQuad[ndx][i][0] == layerQuad[ndx][i-1][0]) {
+		sizeFactor = layerQuadSize[ndx][0][0] / 2.0; //they are in the same Quad
 	} else {
-		sizeFactor = (layerQuadSize[0][0][0] / 2.0) + layerQuadSize[0][0][1]; // the are in different Quads
+		sizeFactor = (layerQuadSize[ndx][0][0] / 2.0) + layerQuadSize[ndx][0][1]; // the are in different Quads
 	}
 	if (debug2DLine === true) {
 		console.log("sizeFactor: ", sizeFactor);
 	}
 	// sizeFactor is the difference between the x coordinates: 500, 517.5, 535, 552,5 etc.
 	// this indicates that we have multiple x1 values
-    if(i > 0 && Math.abs(layerAct[0][i][0]-layerAct[0][i-1][0]) != sizeFactor){
+    if(i > 0 && Math.abs(layerAct[ndx][i][0]-layerAct[ndx][i-1][0]) != sizeFactor){
       if (debug2DLine === true) {
   	  	console.log("We get here if i > 0 and layeri - layeri-1 is not equal to half the cell size");
-  	  	console.log(layerAct[0][i][0], layerAct[0][i-1][0], layerAct[0][i][0]-layerAct[0][i-1][0]);
+  	  	console.log(layerAct[ndx][i][0], layerAct[ndx][i-1][0], layerAct[ndx][i][0]-layerAct[ndx][i-1][0]);
   	  }  
 	  if (totalD != 0) {
-	      x1.push(Math.round(totalN/totalD));
+	      x.push(Math.round(totalN/totalD));
 	      if (debug2DLine === true) {
-      	  	console.log("We push totalN/totalD to the x1 list: ",Math.round(totalN/totalD) );
-      	  	console.log("Reason: ",Math.abs(layerAct[0][i][0]-layerAct[0][i-1][0]));  
+      	  	console.log("We push totalN/totalD to the x list: ",Math.round(totalN/totalD) );
+      	  	console.log("Reason: ",Math.abs(layerAct[ndx][i][0]-layerAct[ndx][i-1][0]));  
       	  }  
       	  totalN = 0;
       	  totalD = 0;
       }
     }
-    totalN += layerAct[0][i][0] * layerAct[0][i][1];
-    totalD += layerAct[0][i][1];
+    totalN += layerAct[ndx][i][0] * layerAct[ndx][i][1];
+    totalD += layerAct[ndx][i][1];
     if (debug2DLine === true) {
-	   console.log(layerAct[0][i][0], layerAct[0][i][1], layerAct[0][i][0] * layerAct[0][i][1]);
-	   console.log(layerAct[0][i][1]);
+	   console.log(layerAct[ndx][i][0], layerAct[ndx][i][1], layerAct[ndx][i][0] * layerAct[ndx][i][1]);
+	   console.log(layerAct[ndx][i][1]);
 	   console.log("totalN: ", totalN);
 	   console.log("totalD: ", totalD);	
 	}
   }
   if(totalN != 0 && totalD != 0){
-    x1.push(Math.round(totalN/totalD));
+    x.push(Math.round(totalN/totalD));
 	if (debug2DLine === true) {
-	  	console.log("x1 = Math.round(totalN/totalD):", x1);
+	  	console.log("x = Math.round(totalN/totalD):", x);
 	}
-  }
-  var weightedX1 = calculatePoint(x1, layerAct, layerQuad, 0, layerQuadSize); 
+  }	
+  return x;
+}//end of getCoordinates
+
+function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot){
+  var sidePointX1 = calculateSidePoint(layerTriangle, 0);
   if (debug2DLine === true) {
-	  console.log("weightedX1=calculatePoint with x1: ",weightedX1);
+	  console.log("side point pixels: ", sidePointX1);
   }
-  var x2 = [];
-  totalN = 0;
-  totalD = 0;
+  var sidePointX2 = calculateSidePoint(layerTriangle, 1);
   if (debug2DLine === true) {
-  	console.log("Loop through layerAct[2] to calculate x2");
-  	console.log(layerAct[2]);
-  	console.log(layerQuadSize[2]);
-  }
-  for(var i = 0; i < layerAct[2].length; i++){
-	if (i > 0 && layerQuad[2][i][0] == layerQuad[2][i-1][0]) {
-		sizeFactor = layerQuadSize[2][0][0] / 2.0; //they are in the same Quad
-	} else {
-		sizeFactor = (layerQuadSize[2][0][0]  / 2.0) + layerQuadSize[2][0][1]; // the are in different Quads
-	}
-	if (debug2DLine === true) {
-		console.log("sizeFactor: ", sizeFactor);
-	}
- 	//sizeFactor is the difference between the x coordinates: 500, 517.5, 535, 552,5 etc.
-	// this indicates that we have multiple x2 values
-    if(i > 0 && Math.abs(layerAct[2][i][0]-layerAct[2][i-1][0]) != sizeFactor){
-      if (debug2DLine === true) {
-  	  	console.log("We get here if i > 0 and layeri - layeri-1 is not equal to half the cell size");
-  	  	console.log(layerAct[2][i][0], layerAct[2][i-1][0], layerAct[2][i][0]-layerAct[2][i-1][0]);
-  	  }  
-	  if (totalD != 0) {
-	      x2.push(Math.round(totalN/totalD));
-	      if (debug2DLine === true) {
-      	  	console.log("We push totalN/totalD to the x2 list: ",Math.round(totalN/totalD) );
-      	  	console.log("Reason: ",Math.abs(layerAct[2][i][0]-layerAct[2][i-1][0]));  
-      	  }  
-	      totalN = 0;
-	      totalD = 0;
-	   }
-    }
-    totalN += layerAct[2][i][0] * layerAct[2][i][1];
-    totalD += layerAct[2][i][1];
-    if (debug2DLine === true) {
-	   console.log(layerAct[2][i][0], layerAct[2][i][1], layerAct[2][i][0] * layerAct[2][i][1]);
-	   console.log(layerAct[2][i][1]);
-	   console.log("totalN: ", totalN);
-	   console.log("totalD: ", totalD);	
-	}    
-  }
-  if(totalN != 0 && totalD != 0){
-    x2.push(Math.round(totalN/totalD));
-	if (debug2DLine === true) {
-	  	console.log("x2 = Math.round(totalN/totalD):", x2);
-	}
-  }
-  var weightedX2 = calculatePoint(x2, layerAct, layerQuad, 2, layerQuadSize);
+	  console.log("side point pixels: ", sidePointX2);
+  }  
+  var sidePointX3 = calculateSidePoint(layerTriangle, 2);
   if (debug2DLine === true) {
-	  console.log("weightedX2=calculatePoint with x2: ",weightedX2);
-  }
+	  console.log("side point pixels: ", sidePointX3);
+  } 
+  drawPoint(sidePointX1.x, sidePointX1.y, 8, 'yellow');
+  drawPoint(sidePointX1.x, sidePointX1.yProjected, 8, 'cyan');
+  drawPoint(sidePointX2.x, sidePointX2.y, 8, 'yellow');
+  drawPoint(sidePointX2.x, sidePointX2.yProjected, 8, 'cyan');
+  drawPoint(sidePointX3.x, sidePointX3.y, 8, 'yellow');
+  drawPoint(sidePointX3.x, sidePointX3.yProjected, 8, 'cyan');
+  var x1 = getLineCoordinates(layerAct, 0, layerQuad, layerQuadSize); 
+  var x2 = getLineCoordinates(layerAct, 0, layerQuad, layerQuadSize); 
   for(var a = 0; a < x1.length; a++){
     for(var b = 0; b < x2.length; b++){
-    drawPoint(weightedX1[a]+(layerQuadSize[0][0][0] / 2.0), lBot-3, 10);
-    drawPoint(weightedX2[b]+(layerQuadSize[2][0][0] / 2.0), lTop-3, 10);
     // Draw the canvas coord for x1 + 17.5, bottom value, coord in x2 + 17.5, top value, 80 for the extension
     drawLine(x1[a]+(layerQuadSize[0][0][0] / 2.0), lBot, x2[b]+(layerQuadSize[2][0][0] / 2.0), lTop, 80);
   	}
   }
-}//end of lineRoute
+}//end of calculateTrack
 
-function drawTriangle(dir, xpos, y, size, channel, inten) {
+function drawTriangle(dir, xpos, y, size, channel, inten, quadMember) {
+	  var triangleCoords = [];
+	  triangleCoords.push(dir,inten);
       if(isNaN(inten)){
         inten = 0;
       }
       ctx.beginPath();
       ctx.moveTo(xpos, y);
+      triangleCoords.push([xpos, y]);
+      if (debug2DTriangle == true) {
+	      console.log("drawing triangle");
+    	  console.log("x: ",xpos, "y: ", y, "dir: ", dir);
+      }
       ctx.setTransform(1, 0, 0, 1, xpos, y);
       ctx.rotate(dir ? 0 : Math.PI / 3);
       ctx.fillStyle = 'rgba(255, 50, 100,' + inten + ')';
       ctx.lineWidth = 1;
       ctx.moveTo(0, 0);
       ctx.lineTo(size, 0);
+      triangleCoords.push([xpos+size, y]);
       ctx.lineTo(size / 2, -Math.sqrt(3) * size / 2);
+      var y3 = 0;
+      var height = 0;
+      if (dir) {
+		  y3 = y-(Math.sqrt(3) * size / 2);
+		  height = y-((Math.sqrt(3) * size / 2)/2.0);
+		  triangleCoords.push([xpos+(size/2), y3]);
+	  } else { 
+		  y3 = y+(Math.sqrt(3) * size / 2);
+		  height = y+((Math.sqrt(3) * size / 2)/2.0);
+	      triangleCoords.push([xpos+(size/2), y3]);
+	  }
       ctx.closePath();
       if(inten == 0){
         ctx.fillStyle = 'rgba(255, 255, 255, 1 )';
+	    if (debug2DTriangle == true) {
+	    	console.log("intensity == 0");
+	    	triangleCoords = [];
+	    }
       } else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.font = '15px Arial';
@@ -295,12 +269,17 @@ function drawTriangle(dir, xpos, y, size, channel, inten) {
         ctx.fillText(Math.round(inten*300), xpos + size/2, dir ? y + size / 2: y - size / 3);
         ctx.fillStyle = 'rgba(255, 50, 100,' + inten + ')';
         ctx.setTransform(1, 0, 0, 1, xpos, y);
+	    if (debug2DTriangle == true) {
+	    	console.log("intensity > 0");
+	    	console.log(triangleCoords);
+	    }
       }   
       ctx.fill();
       ctx.strokeStyle = 'black'; // Set the border color to black
       ctx.stroke();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.moveTo(xpos, y);
+      //add the channel to the cell
       ctx.font = '9px Arial';
       ctx.fillStyle = 'rgba(0, 0, 0, 1)';
       if (channel < 10) {
@@ -308,6 +287,8 @@ function drawTriangle(dir, xpos, y, size, channel, inten) {
 	  } else {
 		ctx.fillText(channel,xpos+(size/2)-3, dir ? y-9 : y+(size/2));
 	  }
+	  triangleCoords.push(height, quadMember);
+	return triangleCoords;
 }//end of drawTriangle
 
 function drawQuadPos(up, size, xpos, ypos, value) {
@@ -329,45 +310,50 @@ function drawZPosition(xpos, ypos, value, reversed) {
 	  ctx.fillText(reversed, xpos, ypos+20);  
 }//end of drawZPosition
 
-function drawQuad(event,layer,up,size,xp,yp,channel,layerAct,reversed,numQuads,coordArray,ped,layerQuad,quadMember,layerQuadSize,cellSize,quadGap) {
+function drawQuad(event,layer,up,size,xp,yp,channel,layerAct,reversed,numQuads,coordArray,ped,layerQuad,quadMember,layerQuadSize,cellSize,quadGap,layerTriangle) {
     var adcChannel;
+    var triangleCoords = [];
     if(up){
 		if (reversed) {
 			//need to reverse the channels
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];	
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][adcChannel - 1]/300);
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][adcChannel - 1]/300, quadMember);
 	        if(ped[event][layer][adcChannel - 1] > 10){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][adcChannel - 1]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][adcChannel - 1]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][channel]/300);
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][channel]/300, quadMember);
 	        if(ped[event][layer][channel] > 10){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }		
 		}
 	    channel++;	
 		if (reversed) {
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][adcChannel-1]/300);
+	        triangleCoords = drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][adcChannel-1]/300, quadMember);
 	        if(ped[event][layer][adcChannel - 1] > 10){
 	          	layerAct[layer].push([xp , ped[event][layer][adcChannel - 1]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][adcChannel - 1]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][channel]/300);
+	        triangleCoords = drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][channel]/300, quadMember);
 	        if(ped[event][layer][channel] > 10){
 	          	layerAct[layer].push([xp , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		}
 	    channel++;	
@@ -375,65 +361,70 @@ function drawQuad(event,layer,up,size,xp,yp,channel,layerAct,reversed,numQuads,c
 		if (reversed) {
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][adcChannel-1]/300);
+	        triangleCoords = drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][adcChannel-1]/300, quadMember);
 	        if(ped[event][layer][adcChannel-1] > 10){
 	          	layerAct[layer].push([xp , ped[event][layer][adcChannel-1]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][adcChannel - 1]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][channel]/300);
+	        triangleCoords = drawTriangle(false, xp+1, yp, size, adcChannel, ped[event][layer][channel]/300, quadMember);
 	        if(ped[event][layer][channel] > 10){
 	          	layerAct[layer].push([xp , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		}
 	    channel++;	
 		if (reversed) {
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][adcChannel-1]/300);
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][adcChannel-1]/300, quadMember);
 	        if(ped[event][layer][adcChannel-1] > 10){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][adcChannel-1]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][adcChannel - 1]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][channel]/300);
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, ped[event][layer][channel]/300, quadMember);
 	        if(ped[event][layer][channel] > 10){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
-	          	layerQuadSize[layer].push([cellSize,quadGap])
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
 	        }
 		}
-	    channel++;	
+	    channel++;
+
     }// end if inside for loop
 	return channel;
 }//end of drawQuad
-
-// Draw event on x grid			
-function drawX(event, size){
+	
+function drawLayer(whichLayer, event, size, startNdx, startX, startY, lineRouteBottom, lineRouteTop) {
     var channel = 0;
     var layer = 0;
-    var ndx = 1;
+    var ndx = startNdx;
     var up = false;
     var reversed = false;
     var quadSize = 0.0;
     var cellSize = 0.0;
     var quadGap = 0.0;    
-    var numQuads = (layers[0].length-2);
-    var startPoint = 255;
-	if (layers[0].length-2 === 12) {
+    var numQuads = (layers[ndx-1].length-2);
+    var startPoint = startX;
+	if (layers[ndx-1].length-2 === 12) {
 		startPoint = 80;
 	}
 	var zPos = startPoint - 20;
 	// Read the value of the input
     var layerAct = [[],[],[]];
     var layerQuad = [[],[],[]];
-    var layerQuadSize = [[],[],[]];    
+    var layerQuadSize = [[],[],[]];
+    var layerTriangle = [[],[],[]];    
     var end = parseFloat(geometry[1][geometry[1].length-4]);
     var middle = parseFloat(geometry[3][geometry[3].length-4]);
     var start = parseFloat(geometry[5][geometry[5].length-4]);
@@ -446,7 +437,7 @@ function drawX(event, size){
     if (debug2D === true) {
 		console.log("start, middle, end:",start, middle, end);
 	}
-    var firstLayer = 70; //starts drawing at this position in the canvas
+    var firstLayer = startY; //starts drawing at this position in the canvas
 	var secondLayer = (start - middle) * cm;	
     var thirdLayer = 260;
     //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
@@ -480,6 +471,7 @@ function drawX(event, size){
 	  var posQuadSize = geometry[ndx].length-3;
 	  quadSize = geometry[ndx][posQuadSize];
 	  cellSize = quadSize * 35 / 2.0;
+	  triangleHeight = Math.sqrt(3) * cellSize / 2;
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
@@ -503,7 +495,7 @@ function drawX(event, size){
 					 drawQuadPos(up, cellSize, xp, yp, layers[ndx-1][quadNo]);
 					 quadNo++;
 				  }
-				  channel = drawQuad(event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap);
+				  channel = drawQuad(event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
 				  xp += cellSize;
 			  }
 		  }
@@ -514,116 +506,16 @@ function drawX(event, size){
    }//end outer for loop  
 
    if (debug2DLine === true) {
-	   console.log("lineRoute for X: ", layerAct, layerQuadSize);
+	   console.log("lineRoute for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
    }
-   lineRoute(layerAct, layerQuad, layerQuadSize, lineRouteXBottom, lineRouteXTop);
-}//end if drawX
+   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop);	
+}//end of drawLayer
 
-// Draw event on y grid			
-function drawY(event, size){
-    var channel = 0;
-    var layer = 0;
-    var ndx = 2;
-    var up = false;
-    var flipped = false;
-    var quadSize = 0.0;
-    var cellSize = 0.0;
-    var quadGap = 0.0;    
-    var numQuads = (layers[1].length-2);
-    var startPoint = 80;
-	var zPos = startPoint - 20;   
-    // Read the value of the input
-    var layerAct = [[],[],[]];
-    var layerQuad = [[],[],[]];
-    var layerQuadSize = [[],[],[]];
-    var end = parseFloat(geometry[2][geometry[2].length-4]);
-    var middle = parseFloat(geometry[4][geometry[4].length-4]);
-    var start = parseFloat(geometry[6][geometry[6].length-4]);
-    if (debug2D === true) {
-      console.log("layers: ", layers);
-	  console.log("startPoint", startPoint, "numQuads:", numQuads);
-	}
-    var cm = 260 / 100.0;
-    if (debug2D === true) {
-		console.log("start, middle, end:",start, middle, end);
-	}
-    var firstLayer = 450; //starts drawing at this position in the canvas
-	var secondLayer = (start - middle) * cm;	
-    var thirdLayer = 260;    //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
-    if (debug2D === true) {
-		console.log("first, second and third layer: ", firstLayer, secondLayer, thirdLayer);
-	}
-    //for (var yp = 450; yp <= 710; yp += 130) {
-	for (var i = 0; i < 3; i++) {
-	  var yp = firstLayer;
-	  var zvalue = start;
-	  if (i == 1) {
-		  yp += secondLayer;
-	  	  zvalue = middle;
-	  }
-	  if (i == 2) {
-		  yp += thirdLayer;
-		  zvalue = end;
-	  }
-	  //check if we need to start with a three or a pyramid for each layer
-	  if (geometry[ndx][1] === "Tree") {
-     	up = false;
-	  } else {
-		up = true;
-	  }
-	  //check if channels are reversed
-	  if (geometry[ndx][2] === "REVERSED") {
-    	reversed = true;
-	  } else {
-		reversed = false;
-	  }	  
-	  var posQuadSize = geometry[ndx].length-3;
-	  quadSize = geometry[ndx][posQuadSize];
-	  cellSize = quadSize * 35 / 2.0;
-	  quadGap =  size - cellSize; 
-	  // Calculate the real estate for the triangles based on the geometry
-	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
-	  if (debug2D === true) {
-		  console.log("yp: ", yp);
-		  console.log("up: ", up);
-		  console.log("posQuadSize: ", posQuadSize);
-		  console.log("quadSize: ", quadSize);
-		  console.log("cellSize: ", cellSize);
-		  console.log("quadGap: ", quadGap);
-		  console.log("xpSize:", xpSize);
-	  }
-	  drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2]);
-	  //loop and draw quads taking into account the intercell spacing and flipping
-	  var quadNo = 0;
-	  //loop and draw quads taking into account the intercell spacing and flipping
-	  for (var xp = 80; xp < xpSize; xp += quadGap) {
-		  //have to pass the correct arguments per quad!!!!! need some calculations!!!!
-		  if (quadNo <= numQuads) {
-			  for (var quadMember = 0; quadMember < 2; quadMember++) {
-				  if (quadMember == 0) {
-					 drawQuadPos(up, cellSize, xp, yp, layers[ndx-1][quadNo]);
-					 quadNo++;
-				  }
-				  channel = drawQuad(event,layer,up,cellSize,xp,yp,channel,layerAct,flipped,numQuads,yCoord,subtractPedY,layerQuad, quadNo, layerQuadSize,cellSize,quadGap);
-				  xp += cellSize;
-			  }
-		  }
-	  }//end inner for loop	
-      channel = 0;
-      layer++;
-      ndx += 2;
-   }//end outer for loop
-      if (debug2DLine === true) {
-	   console.log("lineRoute for Y: ", layerAct, layerQuadSize);
-   }
-   lineRoute(layerAct, layerQuad, layerQuadSize, lineRouteYBottom, lineRouteYTop);
-}//end of drawY
-	
 function draw(event){
   var size = 35; //this represents 1cm and the side of the triangle
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawX(event, size);
-  drawY(event, size);
+  drawLayer('X', event, size, 1, 255, 70, 350, 88); //whichLayer, event, size, startNdx, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('Y', event, size, 2, 80, 450, 730, 470); //whichLayer, event, size, startNdx, startX, startY, lineRouteBottom, lineRouteTop
   ctx.font = 'italic 25px Arial';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(0, 0, 0, 1 )'
