@@ -1,4 +1,4 @@
-let debugData = false;
+let debugAnalysis = false;
 //Analysis code
 function addArrays(arr1, arr2) {
   var result = [];
@@ -9,7 +9,6 @@ function addArrays(arr1, arr2) {
       result.push(arr1[i])
   	}
   }
-  //console.log("Value: ", result);
   return result;
 }
 
@@ -24,10 +23,10 @@ function popXADR(layer) {
       		}
     	}
   	}
-  	//console.log("XADR "+layer);
-  	//for (i = 0; i < vals.length; i++) {
-	//	console.log(vals[i]);
-	//}
+	if (debugAnalysis === true) {
+  		console.log("XADR "+layer);
+  		console.log("values:", vals);
+  	}
   	return vals;
 }
 
@@ -42,10 +41,10 @@ function popYADR(layer) {
       		}
     	}
   	}
-  	//console.log("YADR "+layer);
-  	//for (i = 0; i < vals.length; i++) {
-	//	console.log(vals[i]);
-	//}
+	if (debugAnalysis === true) {
+  		console.log("YADR "+layer);
+  		console.log("values:", vals);
+  	}
   	return vals;
 }
 
@@ -58,6 +57,10 @@ function populateY(letter, layer){
   		});
     	vals = addArrays(vals, modPed)
   	}
+	if (debugAnalysis === true) {
+  		console.log("Y Pedestal "+layer+letter);
+  		console.log("values:", vals);
+  	}  	
   	return vals;
 }
 
@@ -72,7 +75,10 @@ function populateX(letter, layer){
   		//console.log(modPed);
     	vals = addArrays(vals, modPed);
   	}
-  	//console.log("populate X:"+vals);
+	if (debugAnalysis === true) {
+  		console.log("X Pedestal "+layer+letter);
+  		console.log("values:", vals);
+  	}  	
   	return vals;
 }
 

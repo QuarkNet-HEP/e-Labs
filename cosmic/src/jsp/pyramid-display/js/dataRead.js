@@ -231,7 +231,7 @@ globalThis.retrieveData = function () {
          df.data[i][1] = df.at(i - 1, 'TrgID');
          }
       }
-      //console.log(df);
+      console.log(df);
 	  // retrieve the correct adcmap by checking the name and timestamp
 	  var adcmap = retrieveTimedData(detectorName, globalThis.adcmapArr, 'ADCMAP');
 	  if (debugRead === true) {
@@ -244,6 +244,9 @@ globalThis.retrieveData = function () {
 		  console.log("correct pedestal");
 		  console.log(pedestal);
 	 }
+      //id needs to get the first event in the file which it was first assumed as zero
+      //we need to read the first event number instead
+      //var id = 0;
       var id = 0;
       var i = 0;
       var dn = detectorName.split(" ");
@@ -304,12 +307,13 @@ globalThis.retrieveData = function () {
 		}
         id++;
       }
+      
 	  if (debugRead === true) {	      
 	      console.log("data is ready");
 	      console.log(x);
 	      console.log(y);  
 	      console.log(subtractPedX);
-	      console.log(subtractPedY);   
+	      console.log(subtractPedY);  
 	  }        
       globalThis.xCoord = x;
       globalThis.yCoord = y;
@@ -324,7 +328,6 @@ globalThis.retrieveData = function () {
       });
     });
 }// end of retrieveData    
-
 
 // Read the pedestal file
 globalThis.retrievePedestal = function () {

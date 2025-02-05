@@ -19,7 +19,9 @@ function print(string) { throw new Error(string); }
 let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
-				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt']
+				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
+				 'Pyramid_Tracker_XY_1jan25_Run21_ZeroSup.txt',
+				 'Pyramid_Tracker_XY_1jan25_Run22_ZeroSup.txt',]
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
