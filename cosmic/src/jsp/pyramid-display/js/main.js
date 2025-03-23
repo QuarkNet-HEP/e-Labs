@@ -11,12 +11,13 @@ var yCoord;
 var eventTotal = [1];
 var parameters = {};
 var dataGUI;
-let debugMain = false;
+let debugMain = true;
 
 // Display errors
 function print(string) { throw new Error(string); }
 // Load STL image of the pyramid
-let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
+let dataFiles = ['Run109_list.txt',
+				 'Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
 				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
@@ -121,8 +122,8 @@ function loadDataFile() {
           detector = document.getElementById("detector-name").value.trim().split(' ');
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
-          draw3DSettings(detector, singleGeometry, layers, x, y);
-          drawAnalysis();  
+          draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
+          drawAnalysis(layers);  
           if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }

@@ -1,4 +1,7 @@
-let debugAnalysis = false;
+let debugAnalysis = true;
+var xLayerLength = 0;
+var yLayerLength = 0;
+
 //Analysis code
 function addArrays(arr1, arr2) {
   var result = [];
@@ -49,10 +52,10 @@ function popYADR(layer) {
 }
 
 function populateY(letter, layer){
-  	var vals = Array(48).fill(0);
+  	var vals = Array(yLayerLength).fill(0);
   	var pedestal =  subtractPedY;
   	for(var a = 0; a < pedestal.length; a++){
-  		var modPed = pedestal[a][layer].slice(0, 48).map(function(value) {
+  		var modPed = pedestal[a][layer].slice(0, yLayerLength).map(function(value) {
     	return value > 0 ? 1 : value;
   		});
     	vals = addArrays(vals, modPed)
@@ -65,11 +68,11 @@ function populateY(letter, layer){
 }
 
 function populateX(letter, layer){
-  	var vals = Array(28).fill(0);
+  	var vals = Array(xLayerLength).fill(0);
   	var pedestal = subtractPedX;
   	for(var a = 0; a < pedestal.length; a++) {
 	    //console.log("pedestal:"+pedestal[a][layer]);
-  		var modPed = pedestal[a][layer].slice(0, 28).map(function(value) {
+  		var modPed = pedestal[a][layer].slice(0, xLayerLength).map(function(value) {
     	return value > 0 ? 1 : value;
   		});
   		//console.log(modPed);
@@ -93,7 +96,7 @@ function removeCharts() {
 	
 }
 
-function drawAnalysis() {	
+function drawAnalysis(l) {	
 	removeCharts();
 	var ctx1 = document.getElementById('X1').getContext('2d');
 	var ctx2 = document.getElementById('X2').getContext('2d');
@@ -108,22 +111,31 @@ function drawAnalysis() {
 	var Y2ADC = document.getElementById('Y2ADC').getContext('2d');
 	var Y3ADC = document.getElementById('Y3ADC').getContext('2d');
 
+	xLayerLength = (l[4].length - 2) * 4;
+	yLayerLength = (l[5].length - 2) * 4;
+	if (xLayerLength == null) {
+		xLayerLength = 28;
+	}
+	if (yLayerLength == null) {
+		yLayerLength = 48;
+	}
+
 	var xLabels = [];
-	for(var i = 0; i < 28; i++){
+	for(var i = 0; i < xLayerLength; i++){
 	  xLabels.push('Channel ' + i.toString());
 	}
 	var xADRLabels = [];
-	for(var i = 1; i <= 28; i++){
+	for(var i = 1; i <= xLayerLength; i++){
 	    xADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
 	}
 	  
 	var yADRLabels = [];
-	for(var i = 1; i <= 48; i++){
+	for(var i = 1; i <= yLayerLength; i++){
 	    yADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
 	}
 	  
 	var yLabels = [];
-	for(var i = 0; i < 48; i++){
+	for(var i = 0; i < yLayerLength; i++){
 	  yLabels.push('Channel ' + i.toString());
 	}
 	var options = {
@@ -291,7 +303,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 28,
+              max: xLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {
@@ -323,7 +335,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 28,
+              max: xLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {
@@ -355,7 +367,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 28,
+              max: xLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {
@@ -387,7 +399,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 48,
+              max: yLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {
@@ -419,7 +431,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 48,
+              max: yLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {
@@ -451,7 +463,7 @@ function drawAnalysis() {
               type: 'linear', // Use linear scale for the x-axis
               position: 'bottom',
               suggestedMin: 0, // Set the minimum value to 0
-              max: 48,
+              max: yLayerLength,
               ticks: {
 	            stepSize: 1, // Display ticks at every 1 unit interval
 	            callback: function(value, index) {

@@ -13,12 +13,12 @@ Plane Name; start triangle (Pyramid, Tree); location of first fiber in every mod
 Example data:
 
 ATHAA 31DEC2024 11:59:30.  Y planes all REVERSED
-P0_X-Layer_1 Tree REVERSED -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -46. 1.95 OFF 0.0
-P1_Y-Layer_1 Tree REVERSED -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -54.0 1.95 OFF 0.0
-P2_X-Layer_2 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -4.0 1.95 OFF 0.0
-P3_Y-Layer_2 Tree REVERSED -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
-P4_X-Layer_3 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 46. 1.95 OFF 0.0
-P5_Y-Layer_3 Tree REVERSED -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 54. 1.95 OFF 0.0
+P0_X-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -46. 1.95 OFF 0.0
+P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -54.0 1.95 OFF 0.0
+P2_X-Layer_2 Pyramid NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -4.0 1.95 OFF 0.0
+P3_Y-Layer_2 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
+P4_X-Layer_3 Pyramid NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 46. 1.95 OFF 0.0
+P5_Y-Layer_3 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 54. 1.95 OFF 0.0
 
 ATHAA 01JUL2023 11:59:30
 P0_X-Layer_1 Tree REVERSED -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -54. 1.95 OFF 0.0
