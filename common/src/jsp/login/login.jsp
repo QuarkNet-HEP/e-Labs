@@ -20,9 +20,9 @@
 	if (userMaxLogins == null || userMaxLogins.equals("")) {
 		userMaxLogins = "5";
 	}
-	String guessMaxLogins = elab.getProperty("guest_maxlogins");
-	if (guessMaxLogins == null || guessMaxLogins.equals("")) {
-		guessMaxLogins = "10";
+	String guestMaxLogins = elab.getProperty("guest_maxlogins");
+	if (guestMaxLogins == null || guestMaxLogins.equals("")) {
+		guestMaxLogins = "10";
 	}
 
 	if (message == null) {
@@ -40,8 +40,8 @@
 		message = "Username "+username+" is logged for a maximum of "+userMaxLogins+" times.";
 		maxLoginsReached = true;
 	}
-	if (loginCountPerUser > Integer.parseInt(guessMaxLogins) && username.equals("guest")) {
-		message = "Username "+username+" is logged in "+guessMaxLogins+" times.<br />" +
+	if (loginCountPerUser > Integer.parseInt(guestMaxLogins) && username.equals("guest")) {
+		message = "Username "+username+" is logged in "+guestMaxLogins+" times.<br />" +
 				  "If you have an e-Lab account please use it. If you do not, please request one.";
 		maxLoginsReached = true;
 	}
