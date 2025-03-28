@@ -11,15 +11,18 @@ var yCoord;
 var eventTotal = [1];
 var parameters = {};
 var dataGUI;
-let debugMain = false;
+let debugMain = true;
 
 // Display errors
 function print(string) { throw new Error(string); }
 // Load STL image of the pyramid
-let dataFiles = ['Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
+let dataFiles = ['Run109_list.txt',
+				 'Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
+				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
-				 'Pyramid_Run2_non-ZeroSup.txt',
-				 'Pyramid_Run3_non-ZeroSup.txt']
+				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
+				 'Pyramid_Tracker_XY_1jan25_Run21_ZeroSup.txt',
+				 'Pyramid_Tracker_XY_1jan25_Run22_ZeroSup.txt',]
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
@@ -57,7 +60,7 @@ function getSingleGeometry() {
 				if (localGeometry[i][x][0].startsWith("P")) {
 					let layerDetail = [];
 					done = false;
-					for (let n = 2; n < localGeometry[i][x].length; n++) {
+					for (let n = 3; n < localGeometry[i][x].length; n++) {
 						if (localGeometry[i][x][n] === "OFF") {
 							layers.push(layerDetail);
 							layerDetail = []
@@ -72,6 +75,7 @@ function getSingleGeometry() {
 			}
 		} 
 	}
+	//console.log(singleGeometry);
 }// end of getGeometry
 
 function loadDataFile() {
@@ -118,8 +122,8 @@ function loadDataFile() {
           detector = document.getElementById("detector-name").value.trim().split(' ');
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
-          draw3DSettings(detector, singleGeometry, layers, x, y);
-          drawAnalysis();  
+          draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
+          drawAnalysis(layers);  
           if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
@@ -145,6 +149,11 @@ function GUIupdate(what) {
 	if (what != "remove") {
 		dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 		
   		function onEventIndexChange() { loadIndex(parameters.eventIndex); }
+  		//dataGUI.__controllers[1].domElement.style = 'height:150px';
+  		controller = dataGUI.__controllers[1];
+  		//controller.style ='height:150px';
+  		//dataGUI.__controllers[1].setAttribute( "style", "height: 150px" );
+  		//dataGUI.__controllers[1].style.height = "150px";
   		dataGUI.__controllers[1].updateDisplay();
   	}
 }
