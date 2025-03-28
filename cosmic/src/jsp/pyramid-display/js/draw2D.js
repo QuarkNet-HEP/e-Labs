@@ -9,18 +9,34 @@ var subtractPedX = [];
 var subtractPedY = [];
 var xCoord = [];
 var yCoord = [];
+let quadPosOffset = 60;
+let pedThreshold = 10;
+let size = 35;
+let startNdxX = 5; //we start drawing the top layer in Z first (for X)
+let startNdxY = 6; //we start drawing the top layer in Z first (for Y)
+let totalIntensity = 300;
+let zOffset = 20;
+let lineExtension = 80;
+let pointSize = 8;
 let debug2D = false;
+let debug2DLayer = false;
+let debug2DEvent = false;
+let debug2DPoint = false;
+let debug2DLine = false;
+let debug2DTrack = false;
+let debug2DTriangle = false;
+let debug2DQuad = false;
 
 var inputValue = inputElement.value;
 function updateInputValue() {
   inputValue = inputElement.value;
   draw(inputValue-1); 
-}
+}//end of updateInputValue
 
 function drawLine(x1, y1, x2, y2, extensionLength) {
   // 80 for extensionLength 
   // Calculate the length and angle of the original line
-  var originalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  //var originalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   //console.log("length",originalLength);
   var angle = Math.atan2(y2 - y1, x2 - x1);
   //console.log("angle",angle);
@@ -36,358 +52,458 @@ function drawLine(x1, y1, x2, y2, extensionLength) {
   ctx.lineTo(newX2, newY2);
   ctx.lineWidth = 2;
   ctx.stroke();
-}
+}//end of drawLine
 		
-function drawPoint(x, y, pointSize) {
+function drawPoint(x, y, color) {
   ctx.beginPath();
   ctx.arc(x, y, pointSize / 2, 0, 2 * Math.PI);
-  ctx.fillStyle = 'black'; // Color of the point (you can use any valid CSS color)
+  ctx.fillStyle = color; // Color of the point (you can use any valid CSS color)
   ctx.globalAlpha = 1;
   ctx.fill();
-}
+}//end of drawPoint
 
-function calculatePoint(x, la, ndx, size) {
-  var oriXa = [];
-  var oriXb = [];
-  var intXa = [];
-  var intXb = [];
-  var weightedX = [];
-  for (var n = 0; n < x.length; n++) {
-	var xValue = x[n];
-	for (var i = 1; i < la[ndx].length; i++) {
-		if (xValue > la[ndx][i][0] && i == la[ndx].length-1) {
-			oriXa.push(la[ndx][i-1][0]);
-			oriXb.push(la[ndx][i][0]);
-			intXa.push(la[ndx][i-1][1]);		
-			intXb.push(la[ndx][i][1]);	
-		}
-		if (xValue < la[ndx][i][0]) {
-			oriXa.push(la[ndx][i-1][0]);
-			oriXb.push(la[ndx][i][0]);
-			intXa.push(la[ndx][i-1][1]);		
-			intXb.push(la[ndx][i][1]);	
-		}
+function calculatePointByPercentage(x1, y1, x2, y2, percentage, yProjected) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  const x = x1 + (dx * percentage/100);
+  const y = y1 + (dy * percentage/100);
+  return { x, y, yProjected };
+}//end of calculatePointByPercentage
+
+function getSingleSidePoint(layerTriangle, layer) {
+	var sidePoint = [];
+	var x1 = layerTriangle[layer][0][2][0];
+	var y1 = layerTriangle[layer][0][2][1];
+	var x2 = layerTriangle[layer][0][3][0];
+	var y2 = layerTriangle[layer][0][3][1];
+	var x3 = layerTriangle[layer][0][4][0];
+	var y3 = layerTriangle[layer][0][4][1];
+	var x = (x1 + x2 + x3)/3;
+	var y = (y1 + y2 + y3)/3;
+	yProjected = y;
+	sidePoint = {x, y, yProjected};	
+	return sidePoint; 
+}//end of getSingleSidePoint
+
+function calculateSidePoint(layerTriangle, layer) {
+	var sidePoint = [];
+	var yProjected = 0;
+	if (debug2DPoint === true) {
+		console.log("layer triangle: ", layerTriangle);
 	}
-  }	
-  //Xweight = Xleft + (Xright - Xleft) * (ADCleft)/(ADCleft + ADCright).
-  for (var i = 0; i < x.length; i++) {
-	  if (debug2D === true) {
-		  console.log(oriXa[i],oriXb[i]);
-		  console.log(intXa[i],intXb[i]);
+	if (layerTriangle[layer].length > 0) {
+	  if (layerTriangle[layer].length == 1) {
+		//the point falls in the middle of the triangle
+		sidePoint = getSingleSidePoint(layerTriangle, layer);
+	  }	else {
+		//first we have to check for neighbors
+        var quadFirstCell = layerTriangle[layer][0][6];
+        var quadSecondCell = layerTriangle[layer][1][6];
+        //these are not neighbors
+        if ((quadSecondCell-quadFirstCell) > 1) {
+			sidePoint = getSingleSidePoint(layerTriangle, layer);
+		} else {					
+			//we have to calculate between neighbors... I will assume it is the first two neigbors for now
+			var up = layerTriangle[layer][0][0];
+			//the last line of the first triangle and the first line of the second triangle are a match
+			//use the first values
+			var x1 = layerTriangle[layer][0][3][0];
+			var y1 = layerTriangle[layer][0][3][1];
+			var x2 = layerTriangle[layer][0][4][0];
+			var y2 = layerTriangle[layer][0][4][1];
+			yProjected = layerTriangle[layer][0][5];	
+			var point1Intensity = layerTriangle[layer][0][1];
+			var point2Intensity = 0;
+			if (layerTriangle[layer].length > 1) {
+				point2Intensity = layerTriangle[layer][1][1];
+			}
+			var pointPercent = 0;
+		    var pointPercentSum = point1Intensity + point2Intensity;
+			if (up) {
+			   if (point1Intensity > point2Intensity) {
+				 //first triangle is pyramid with higher intensity
+				 pointPercent = point1Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+			   } else {
+				 //first triangle is pyramid with lower intensity			 
+				 pointPercent = point2Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+			   }			
+			} else {
+				if (point1Intensity > point2Intensity) {
+				 //first triangle is down with higher intensity
+				 pointPercent = point1Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+				} else {
+			     //sthe first triangle is down with lower intensity
+				 pointPercent = point2Intensity * 100 / pointPercentSum;
+				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+				}
+			}
+		}//end of neighbor calculation
 	  }
-	  if (oriXb[i] - oriXa[i] == 17.5) {
-		  let half =((oriXb[i] - oriXa[i]) / 2) + oriXa[i];
-		  if (debug2D === true) {
-			  console.log(half);
-		  }
-		  var intXsum = Math.floor(intXa[i])+Math.floor(intXb[i]);
-		  var pixelAvg = 17.5/intXsum;
-		  if (debug2D === true) {
-			  console.log(intXsum);
-			  console.log(pixelAvg);
-		  }
-		  var xapixels = pixelAvg * intXa[i];
-		  var xbpixels = pixelAvg * intXb[i];
-		  let apointpercent = xapixels / 17.5;
-		  let bpointpercent = xbpixels / 17.5;
-	 	  if (debug2D === true) {		  
-		  	console.log(apointpercent,bpointpercent);
-		  }
-		  var xapix = 0;
-		  //the point is heavy to the left
-		  //if (apointpercent > 0.5) {
-		  //xapix = oriXb[i] - (17.5 * apointpercent);
-		  //}
-		  //the point goes in the middle
-		  //if (apointpercent === 0.5) {
-		  //	xapix = oriXa[i] + (size/4);
-		  //}
-		  //the point is heavy to the right
-		  //if (apointpercent < 0.5) {
-			//xapix = oriXa[i] + (size/4);			
-		  //}
-		  xapix = oriXb[i] - (17.5 * apointpercent);
-		  if (debug2D === true) {		  
-		  	console.log(xapix);	
-		  }	
-		  weightedX.push(xapix); 
-		  /* 
-		  if (intXa[i] > intXb[i]) {
-			  weightedX.push(Math.floor(oriXa[i])+xapixels);
-		  }	  
-		  if (intXa[i] === intXb[i]) {
-			  weightedX.push(Math.floor(oriXa[i])+(size/4));
-		  }	  
-		  if (intXa[i] < intXb[i]) {
-			  weightedX.push(Math.floor(oriXb[i])-xapix);
-		  }	  
-		  */
-	} else {
-		weightedX.push(Math.floor(oriXb[i]));
-	}
+	} 
+    if (debug2DPoint === true) {
+		console.log("intensity:", point1Intensity, point2Intensity);
+		console.log("point percent: ", pointPercent);
+		console.log("side point coords: ", x1,y1,x2,y2);
+		console.log("side point: ", sidePoint);
+	}							
+	return sidePoint;
+}//end of calculateSidePoint
+
+function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot){
+  var sidePointX1 = calculateSidePoint(layerTriangle, 0);
+  if (debug2DTrack === true) {
+	  console.log("side point pixels 1: ", sidePointX1);
   }
-  if (la[ndx].length == 1) {
-	  weightedX = x;
+  var sidePointX2 = calculateSidePoint(layerTriangle, 1);
+  if (debug2DTrack === true) {
+	  console.log("side point pixels 2: ", sidePointX2);
   }  
-  return weightedX;
-}// end of calculatePoint	
-	
-function lineRoute(layerAct, size, lTop, lBot){
-  //350, 88 for lTop, lBot and size is 35
-  //470, 730 for lTop, lBot
-  if (debug2D === true) {
-	  console.log("Layer act: ", layerAct);
-  }
-  var x1 = [];
-  var totalN = 0;
-  var totalD = 0;
-  for(var i = 0; i < layerAct[0].length; i++){
-	// 17.5 is the difference between the x coordinates: 500, 517.5, 535, 552,5 etc.
-	// this indicates that we have multiple x1 values
-    if(i > 0 && Math.abs(layerAct[0][i][0]-layerAct[0][i-1][0]) != 17.5){
-	  if (totalD != 0) {
-	      x1.push(Math.round(totalN/totalD));
-      	  //console.log("Value: ",Math.round(totalN/totalD) );
-      	  //console.log("Reason: ",Math.abs(layerAct[0][i][0]-layerAct[0][i-1][0]));    
-      	  totalN = 0;
-      	  totalD = 0;
-      }
-    }
-    totalN += layerAct[0][i][0] * layerAct[0][i][1];
-    totalD += layerAct[0][i][1];
-  }
-  if(totalN != 0 && totalD != 0){
-    x1.push(Math.round(totalN/totalD));
-  }
-  if (debug2D === true) {
-  	console.log("x1:", x1);
-  }
-  var weightedX1 = calculatePoint(x1, layerAct, 0, size); 
-  if (debug2D === true) {
-	  console.log("wx1",weightedX1);
-  }
-  var x2 = [];
-  totalN = 0;
-  totalD = 0;
-  for(var i = 0; i < layerAct[2].length; i++){
-	// 17.5 is the difference between the x coordinates: 500, 517.5, 535, 552,5 etc.
-	// this indicates that we have multiple x2 values
-    if(i > 0 && Math.abs(layerAct[2][i][0]-layerAct[2][i-1][0])!=17.5){
-	  if (totalD != 0) {
-	      x2.push(Math.round(totalN/totalD));
-	      //console.log("Reason: ",Math.abs(layerAct[2][i][0]-layerAct[2][i-1][0]));    
-	      totalN = 0;
-	      totalD = 0;
-	   }
-    }
-    totalN += layerAct[2][i][0] * layerAct[2][i][1];
-    totalD += layerAct[2][i][1];
-  }
-  if(totalN != 0 && totalD != 0){
-    x2.push(Math.round(totalN/totalD));
-  }
-  if (debug2D === true) {  
-  	console.log("x2:", x2);
-  }
-  var weightedX2 = calculatePoint(x2, layerAct, 2, size);
-  if (debug2D === true) {
-    console.log("wx2",weightedX2);
-  }
-  for(var a = 0; a < x1.length; a++){
-    for(var b = 0; b < x2.length; b++){
-    //drawPoint(x1[a]+(size/2), lBot, 5);
-    //drawPoint(x2[b]+(size/2), lTop, 5);
-    drawPoint(weightedX1[a]+(size/2), lBot-3, 10);
-    drawPoint(weightedX2[b]+(size/2), lTop-3, 10);
-    // Draw the canvas coord for x1 + 17.5, bottom value, coord in x2 + 17.5, top value, 80 for the extension
-    drawLine(x1[a]+(size/2), lBot, x2[b]+(size/2), lTop, 80);
-  	}
-  }
-}
-		
-function drawTriangle(dir, xpos, y, size, channel, inten) {
-	  //console.log(dir,xpos,y,size,channel,inten);
+  var sidePointX3 = calculateSidePoint(layerTriangle, 2);
+  if (debug2DTrack === true) {
+	  console.log("side point pixels 3: ", sidePointX3);
+  } 
+  drawPoint(sidePointX1.x, sidePointX1.y, 'yellow');
+  drawPoint(sidePointX1.x, sidePointX1.yProjected, 'cyan');
+  drawPoint(sidePointX2.x, sidePointX2.y, 'yellow');
+  drawPoint(sidePointX2.x, sidePointX2.yProjected, 'cyan');
+  drawPoint(sidePointX3.x, sidePointX3.y, 'yellow');
+  drawPoint(sidePointX3.x, sidePointX3.yProjected, 'cyan');
+  drawLine(sidePointX3.x, sidePointX3.yProjected, sidePointX1.x, sidePointX1.yProjected, lineExtension);
+}//end of calculateTrack
+
+function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
+	  var triangleCoords = [];
+	  triangleCoords.push(dir,inten);
       if(isNaN(inten)){
         inten = 0;
       }
       ctx.beginPath();
       ctx.moveTo(xpos, y);
+      triangleCoords.push([xpos, y]);
+      if (debug2DTriangle == true) {
+	      console.log("drawing triangle");
+    	  console.log("x: ",xpos, "y: ", y, "dir: ", dir);
+      }
       ctx.setTransform(1, 0, 0, 1, xpos, y);
       ctx.rotate(dir ? 0 : Math.PI / 3);
       ctx.fillStyle = 'rgba(255, 50, 100,' + inten + ')';
       ctx.lineWidth = 1;
       ctx.moveTo(0, 0);
       ctx.lineTo(size, 0);
+      triangleCoords.push([xpos+size, y]);
       ctx.lineTo(size / 2, -Math.sqrt(3) * size / 2);
+      var y3 = 0;
+      var height = 0;
+      if (dir) {
+		  y3 = y-(Math.sqrt(3) * size / 2);
+		  height = y-((Math.sqrt(3) * size / 2)/2.0);
+		  triangleCoords.push([xpos+(size/2), y3]);
+	  } else { 
+		  y3 = y+(Math.sqrt(3) * size / 2);
+		  height = y+((Math.sqrt(3) * size / 2)/2.0);
+	      triangleCoords.push([xpos+(size/2), y3]);
+	  }
       ctx.closePath();
       if(inten == 0){
         ctx.fillStyle = 'rgba(255, 255, 255, 1 )';
+	    if (debug2DTriangle == true) {
+	    	console.log("intensity == 0");
+	    	triangleCoords = [];
+	    }
       } else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.font = '15px Arial';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-        ctx.fillText(Math.round(inten*300), xpos + size/2, dir ? y + size / 2: y - size / 3);
+        ctx.fillText(Math.round(inten*totalIntensity), xpos + size/2, dir ? y + size / 2: y - size / 3);
         ctx.fillStyle = 'rgba(255, 50, 100,' + inten + ')';
         ctx.setTransform(1, 0, 0, 1, xpos, y);
+	    if (debug2DTriangle == true) {
+	    	console.log("intensity > 0");
+	    	console.log(triangleCoords);
+	    }
       }   
       ctx.fill();
       ctx.strokeStyle = 'black'; // Set the border color to black
-      //ctx.globalAlpha = 0.5;
       ctx.stroke();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.moveTo(xpos, y);
+      //add the channel to the cell
       ctx.font = '9px Arial';
       ctx.fillStyle = 'rgba(0, 0, 0, 1)';
       if (channel < 10) {
-		ctx.fillText(channel,xpos+17, dir ? y-9 : y+17);  
+		ctx.fillText(channel,xpos+(size/2), dir ? y-9 : y+(size/2));  
 	  } else {
-		ctx.fillText(channel,xpos+14, dir ? y-9 : y+17);
+		ctx.fillText(channel,xpos+(size/2)-3, dir ? y-9 : y+(size/2));
 	  }
-}
-// Draw event on x grid			
-function drawX(event, size){
-	// Size is 35: width of the triangles in pixels
-    var layer = 0;
+	  triangleCoords.push(height, quadMember);
+	return triangleCoords;
+}//end of drawTriangle
+
+function drawQuadPos(up, cellSize, xpos, ypos, value) {
+    ctx.beginPath();
+    ctx.moveTo(xpos, ypos + quadPosOffset);
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+    ctx.font = '9px Arial';
+    ctx.fillText(value, up ? xpos - (cellSize/2)+1 : xpos+(cellSize/2)+1, ypos + quadPosOffset);  
+}//end of drawQuadPos
+
+function drawZPosition(xpos, ypos, value, reversed) {
+      ctx.beginPath();
+      ctx.moveTo(xpos, ypos);
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+      ctx.font = '9px Arial';
+	  ctx.fillText(value, xpos, ypos);  
+	  ctx.moveTo(xpos, ypos+zOffset);
+	  ctx.fillText(reversed, xpos, ypos+zOffset);  
+}//end of drawZPosition
+
+function drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordArray,ped,layerQuad,quadMember,layerQuadSize,cellSize,quadGap,layerTriangle) {
+    var adcChannel;
+    var pedPosition;
+    var triangleCoords = [];
+    if(up){
+		if (reversed) {
+			//need to reverse the channels
+			channelPosition = (numQuads * 4) - channel - 1;
+			adcChannel = coordArray[event][layer][channelPosition][0];
+			pedPosition = (numQuads * 4) - channelPosition;
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			if (debug2DEvent === true) {
+				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
+			}
+	        if(ped[event][layer][channelPosition] > pedThreshold){
+	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		} else {
+			adcChannel = coordArray[event][layer][channel][0];
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        if(ped[event][layer][channel] > pedThreshold){
+	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }		
+		}
+	    channel++;	
+		if (reversed) {
+			channelPosition = (numQuads * 4) - channel - 1;
+			adcChannel = coordArray[event][layer][channelPosition][0];
+			pedPosition = (numQuads * 4) - channelPosition;
+	        triangleCoords = drawTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			if (debug2DEvent === true) {
+				console.log(numQuads, reversed, up, channelPosition, adcChannel,  pedPosition, ped[event][layer]);
+			}
+	        if(ped[event][layer][channelPosition] > pedThreshold){
+	          	layerAct[layer].push([xp , ped[event][layer][channelPosition]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		} else {
+			adcChannel = coordArray[event][layer][channel][0];
+	        triangleCoords = drawTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        if(ped[event][layer][channel] > pedThreshold){
+	          	layerAct[layer].push([xp , ped[event][layer][channel]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		}
+	    channel++;	
+    } else {
+		if (reversed) {
+			channelPosition = (numQuads * 4) - channel - 1;
+			adcChannel = coordArray[event][layer][channelPosition][0];
+			pedPosition = (numQuads * 4) - channelPosition;
+	        triangleCoords = drawTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			if (debug2DEvent === true) {
+				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
+			}
+	        if(ped[event][layer][channelPosition] > pedThreshold){
+	          	layerAct[layer].push([xp , ped[event][layer][channelPosition]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		} else {
+			adcChannel = coordArray[event][layer][channel][0];
+	        triangleCoords = drawTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        if(ped[event][layer][channel] > pedThreshold){
+	          	layerAct[layer].push([xp , ped[event][layer][channel]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		}
+	    channel++;	
+		if (reversed) {
+			channelPosition = (numQuads * 4) - channel - 1;
+			adcChannel = coordArray[event][layer][channelPosition][0];
+			pedPosition = (numQuads * 4) - channelPosition;
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			if (debug2DEvent === true) {
+				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
+			}
+	        if(ped[event][layer][channelPosition] > pedThreshold){
+	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		} else {
+			adcChannel = coordArray[event][layer][channel][0];
+	        triangleCoords = drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        if(ped[event][layer][channel] > pedThreshold){
+	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
+	          	layerQuadSize[layer].push([cellSize,quadGap]);
+				layerTriangle[layer].push(triangleCoords); 
+	        }
+		}
+	    channel++;
+
+    }// end if inside for loop
+	return channel;
+}//end of drawQuad
+	
+function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop) {
     var channel = 0;
-    var ndx = 1;
+    var layer = 2; // we start with the top layer data in Z for both X and Y --> array goes 0,1,2
+    var ndx = startNdx; //also the start in Z for either X or Y
     var up = false;
-    var startPoint = 255;
-	if (layers[0].length === 12) {
+    var reversed = false;
+    var quadSize = 0.0;
+    var cellSize = 0.0;
+    var quadGap = 0.0;    
+    var numQuads = (layers[ndx-1].length-2);
+    var startPoint = startX;
+    //need to check the pixel we start drawing based on the # of cells
+	if (layers[ndx-1].length-2 === 12) {
 		startPoint = 80;
 	}
-	//console.log((layers[0].length * 2));
-    // Calculate the number of triangles based on the geometry
-    var xpSize = ((layers[0].length * 2) * size) + startPoint;
+	var zPos = startPoint - 20;
 	// Read the value of the input
     var layerAct = [[],[],[]];
-    // Outer loop is to draw 3 panels
-    for (var yp = 70; yp <= 360; yp += 130) {
-	  // Inner loop is to draw two rows of triangles starting either up or down
+    var layerQuad = [[],[],[]];
+    var layerQuadSize = [[],[],[]];
+    var layerTriangle = [[],[],[]];   
+    var end, middle, start;
+    if (whichLayer === 'X') { 
+    	end = parseFloat(geometry[1][geometry[1].length-4]);
+    	middle = parseFloat(geometry[3][geometry[3].length-4]);
+    	start = parseFloat(geometry[5][geometry[5].length-4]);
+    } else {
+    	end = parseFloat(geometry[2][geometry[2].length-4]);
+    	middle = parseFloat(geometry[4][geometry[4].length-4]);
+    	start = parseFloat(geometry[6][geometry[6].length-4]);
+		
+	}
+    if (debug2DLayer === true) {
+      console.log("canvas:", ctx);
+      console.log("layers: ", layers);
+	  console.log("startPoint", startPoint, "numQuads:", numQuads);
+	}
+    var cm = 260 / 100.0;
+    if (debug2DLayer === true) {
+		console.log("start, middle, end:",start, middle, end);
+	}
+    var firstLayer = startY; //starts drawing at this position in the canvas
+	var secondLayer = (start - middle) * cm;	
+    var thirdLayer = 260;
+    //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
+    if (debug2DLayer === true) {
+		console.log("first, second and third layer: ", firstLayer, secondLayer, thirdLayer);
+	}
+	//draw the 3 layers for either X or Y
+	for (var i = 0; i < 3; i++) {
+	  var yp = firstLayer;
+	  var zvalue = start;
+	  if (i == 1) {
+		  yp += secondLayer;
+		  zvalue = middle;
+	  }
+	  if (i == 2) {
+		  yp += thirdLayer;
+		  zvalue = end;
+	  }
+	  //check if we need to start with a three or a pyramid for each layer
 	  if (geometry[ndx][1] === "Tree") {
-	  	up = false;
+    	up = false;
 	  } else {
 		up = true;
-	  } 
-	  //console.log(up);
-	  //console.log(geometry[ndx][1]);
-      for (var xp = startPoint; xp < xpSize; xp += size) {
-			// Decide whether we start up or down
-        	if(up){
-				//console.log("UP")
-		        //console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedX[event][layer][channel]);
-				var adcChannel = xCoord[event][layer][channel][0];
-		        //drawTriangle(true, up ? xp - (size/2) : xp+(size/2), yp+size +3, size, adcChannel, subtractPedX[event][layer][channel]/300);
-		        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, subtractPedX[event][layer][channel]/300);
-        		if(subtractPedX[event][layer][channel] > 10){
-			        layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , subtractPedX[event][layer][channel]]);  
-			    }
-        	    channel++;
-        		//console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedX[event][layer][channel]);
-				var adcChannel = xCoord[event][layer][channel][0];
-        		drawTriangle(false, xp+1, yp, size, adcChannel, subtractPedX[event][layer][channel]/300);
-        		if(subtractPedX[event][layer][channel] > 10){
- 	          		layerAct[layer] .push([xp , subtractPedX[event][layer][channel]]);
- 	          	}
-        		channel++;
-        	} else {
-	          	//console.log("X-Event triangle down: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedX[event][layer][channel]);
-				var adcChannel = xCoord[event][layer][channel][0];
-	          	drawTriangle(false, xp+1, yp, size, adcChannel, subtractPedX[event][layer][channel]/300);
-        		if(subtractPedX[event][layer][channel] > 10){
-		          	layerAct[layer].push([xp , subtractPedX[event][layer][channel]]);
-				}
-         		channel++;
-          		//console.log("X-Event triangle up: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedX[event][layer][channel]);
-				var adcChannel = xCoord[event][layer][channel][0];
-				//drawTriangle(true, up ? xp - (size/2) : xp+(size/2), yp+size +3, size, adcChannel, subtractPedX[event][layer][channel]/300);
-				drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, subtractPedX[event][layer][channel]/300);
-         		if(subtractPedX[event][layer][channel] > 10){
-          			layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , subtractPedX[event][layer][channel]]);
-          		}
-          	    channel++;
-        	}// end if inside for loop
-      	} //end inner for loop
-      	channel = 0;
-      	layer++;
-	    ndx += 2;
-	}// end outer for loop
-	lineRoute(layerAct, size, 350, 88);
-}
-// Draw event on y grid			
-function drawY(event, size){
-    var layer = 0;
-    var channel = 0;
-    var ndx = 2;
-    var up = false;
-    // Calculate the number of triangles based on the geometry
-    var xpSize = ((layers[1].length * 2) * size) + 80;
-    // Read the value of the input
-    var layerAct = [[],[],[]];
-    for (var yp = 450; yp <= 710; yp += 130) {
-	  if (geometry[ndx][1] === "Tree") {
-	  	up = false;
+	  }
+	  //check if channels are reversed
+	  if (geometry[ndx][2] === "REVERSED") {
+    	reversed = true;
 	  } else {
-		up = true;
-	  } 
-	  ///console.log(up);
-	  //console.log(geometry[ndx][1]);
-      for (var xp = 80; xp < xpSize; xp += size) {
-		//console.log(yp + ' '+ xp);
-        if(up){
-	        //console.log("UPPPPPP");
-	        //console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedY[event][layer][channel]);
-			var adcChannel = yCoord[event][layer][channel][0];
-	        //drawTriangle(true, up ? xp - (size/2) : xp+(size/2), yp+size + 3, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        if(subtractPedY[event][layer][channel] > 10){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , subtractPedY[event][layer][channel]]);
-	        }
-	        channel++;
-	        //console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedY[event][layer][channel]);
-			var adcChannel = yCoord[event][layer][channel][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        if(subtractPedY[event][layer][channel] > 10){
-	          	layerAct[layer] .push([xp , subtractPedY[event][layer][channel]]);
-	        }
-	        //channel++;
-        } else {
-	        //console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedY[event][layer][channel]);
-			var adcChannel = yCoord[event][layer][channel][0];
-	        drawTriangle(false, xp+1, yp, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        if(subtractPedY[event][layer][channel] > 10){
-	          	layerAct[layer].push([xp , subtractPedY[event][layer][channel]]);
-	        }
-	        channel++;
-	        //console.log("Event: ", event, " Layer: ", layer, " Channel: ", channel, " Intensity: ", subtractPedY[event][layer][channel]);
-			var adcChannel = yCoord[event][layer][channel][0];
-	        //drawTriangle(true, up ? xp - (size/2) : xp+(size/2), yp+size +3, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        drawTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, size, adcChannel, subtractPedY[event][layer][channel]/300);
-	        if(subtractPedY[event][layer][channel] > 10){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , subtractPedY[event][layer][channel]]);
-	        }
-          	channel++;
-        }// end if inside for loop
-      }//end inner for loop
+		reversed = false;
+	  }	  
+	  var posQuadSize = geometry[ndx].length-3; //get the quad size from the geometry
+	  quadSize = geometry[ndx][posQuadSize];
+	  cellSize = quadSize * size / 2.0;
+	  triangleHeight = Math.sqrt(3) * cellSize / 2;
+	  quadGap =  size - cellSize; 
+	  // Calculate the real estate for the triangles based on the geometry
+	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
+	  if (debug2DLayer === true) {
+		  console.log("yp: ", yp);
+		  console.log("up: ", up);
+		  console.log("posQuadSize: ", posQuadSize);
+		  console.log("quadSize: ", quadSize);
+		  console.log("cellSize: ", cellSize);
+		  console.log("quadGap: ", quadGap);
+		  console.log("xpSize:", xpSize);
+	  }
+	  drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2]);
+	  //loop and draw quads taking into account the intercell spacing and flipping
+	  var quadNo = 0;
+	  for (var xp = startPoint; xp < xpSize; xp += quadGap) {
+		  //have to pass the correct arguments per quad!!!!! need some calculations!!!!
+		  if (quadNo <= numQuads) {
+			  for (var quadMember = 0; quadMember < 2; quadMember++) {
+				  if (quadMember == 0) {
+					 drawQuadPos(up, cellSize, xp, yp, layers[ndx-1][quadNo]);
+					 quadNo++;
+				  }
+				  if (debug2DLayer === true) {
+				  	console.log(whichLayer,event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
+    			  }
+    			  if (whichLayer === 'X') { 				  
+				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
+				  } else {
+				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,yCoord,subtractPedY,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);					  
+				  }
+				  xp += cellSize;
+			  }
+		  }
+	  }//end inner for loop	
       channel = 0;
-      layer++;
-      ndx += 2;
-   }//end outer for loop
-   lineRoute(layerAct, size, 730, 470);
-}
-	
+      layer-= 1;
+      ndx -= 2;
+   }//end outer for loop  
+
+   if (debug2DLine === true) {
+	   console.log("calculateTrack for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
+   }
+   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop);	
+}//end of drawLayer
+
 function draw(event){
-  //var up = !geometry[1][1] === "Tree";
-  var size = 35;
-  //console.log("canvas width and height: ",canvas.width, canvas.height);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawY(event, size);
-  drawX(event, size);
+  drawLayer('X', event, startNdxX, 255, 70, 350, 88); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('Y', event, startNdxY, 80, 450, 730, 470); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
   ctx.font = 'italic 25px Arial';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(0, 0, 0, 1 )'
   ctx.fillText('X-view display - find muon track with 3 planes', canvas.width / 2, 30);
   ctx.fillText('Y-view display - find muon track with 3 planes', canvas.width / 2, 420);
-}
+}//end of draw
 
 function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	subtractPedX = sX;
@@ -399,9 +515,15 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	if (debug2D === true) {		
 		console.clear();
 		console.log("2D drawings");
+		console.log("geometry:",g);
+		console.log("layers:",l);
+		console.log("subPedX:",sX);
+		console.log("subPedY:",sY);
+		console.log("xCoord:",cX);
+		console.log("yCoord:",cY);
 	}
 	document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;
 	inputElement.max = subtractPedX.length;
-	draw(0);
+	draw(event);
 }

@@ -15,7 +15,7 @@ globalThis.geometryFile = "";
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
 globalThis.midPed = 0;
-let debugRead = false;
+let debugRead = true;
 
 // helper function to clean the headers
 function cleanFile(arr, type) {
@@ -39,7 +39,7 @@ function startsWithNumber(str) {
 	return /^\d+\b/.test(str);
 }
 
-let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+//let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
 	let day = d.substring(0,2);
 	let month = d.substring(2,5);
@@ -70,7 +70,6 @@ function retrieveTimedData(fileName, completeArr, type) {
 						done = true;
 					}			
 				}
-
 				//if (completeArr[i][0][0][1] === detector[2]) {
 				//	if (detector[3] > completeArr[i][0][0][2] && !done) {
 				//		console.log(completeArr[i][0][0][2]);
@@ -232,7 +231,7 @@ globalThis.retrieveData = function () {
          df.data[i][1] = df.at(i - 1, 'TrgID');
          }
       }
-      //console.log(df);
+      console.log(df);
 	  // retrieve the correct adcmap by checking the name and timestamp
 	  var adcmap = retrieveTimedData(detectorName, globalThis.adcmapArr, 'ADCMAP');
 	  if (debugRead === true) {
@@ -245,6 +244,9 @@ globalThis.retrieveData = function () {
 		  console.log("correct pedestal");
 		  console.log(pedestal);
 	 }
+      //id needs to get the first event in the file which it was first assumed as zero
+      //we need to read the first event number instead
+      //var id = 0;
       var id = 0;
       var i = 0;
       var dn = detectorName.split(" ");
@@ -305,12 +307,13 @@ globalThis.retrieveData = function () {
 		}
         id++;
       }
+      
 	  if (debugRead === true) {	      
 	      console.log("data is ready");
 	      console.log(x);
 	      console.log(y);  
 	      console.log(subtractPedX);
-	      console.log(subtractPedY);   
+	      console.log(subtractPedY);  
 	  }        
       globalThis.xCoord = x;
       globalThis.yCoord = y;
@@ -325,7 +328,6 @@ globalThis.retrieveData = function () {
       });
     });
 }// end of retrieveData    
-
 
 // Read the pedestal file
 globalThis.retrievePedestal = function () {
