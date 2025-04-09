@@ -11,9 +11,9 @@ package gov.fnal.elab.tags;
 
 import gov.fnal.elab.analysis.ElabAnalysis;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 public class IfAnalysisIsOk extends TagSupport {
     public static final String ATTR_ANALYSIS_IS_OK = "elab:analysisIsOk";

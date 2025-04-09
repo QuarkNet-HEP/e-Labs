@@ -14,8 +14,8 @@ import gov.fnal.elab.util.ElabUtil;
 import java.io.IOException;
 import java.util.Collection;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
 
 public class TRSelect extends TRControl {
     private Collection valueList, labelList;

@@ -7,7 +7,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.io.*,java.util.*,javax.mail.*"%>
 <%@ page import="javax.mail.internet.*,javax.activation.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<%@ page import="jakarta.servlet.http.*,jakarta.servlet.*" %>
 <%
 	String username = request.getParameter("username");
 	request.setAttribute("username", username);

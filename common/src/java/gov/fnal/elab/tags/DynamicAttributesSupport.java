@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 public class DynamicAttributesSupport {
     

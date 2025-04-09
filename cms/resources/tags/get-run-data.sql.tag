@@ -1,5 +1,5 @@
 <%@ tag import="gov.fnal.elab.*" %>
-<%@ tag language="java" import="java.sql.*" import="javax.servlet.*" import="java.util.*"%>
+<%@ tag language="java" import="java.sql.*" import="jakarta.servlet.*" import="java.util.*"%>
 
 <%
 	Elab elab = (Elab) request.getAttribute("elab");

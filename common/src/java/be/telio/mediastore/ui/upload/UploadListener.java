@@ -9,7 +9,7 @@
 */
 package be.telio.mediastore.ui.upload;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Created by IntelliJ IDEA.

@@ -3,7 +3,7 @@
  */
 package gov.fnal.elab;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 

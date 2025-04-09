@@ -1,7 +1,7 @@
 package gov.fnal.elab.filters;
 import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 public class Filter8084 implements Filter {
 

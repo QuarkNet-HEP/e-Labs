@@ -33,7 +33,7 @@ long pageStartTime = System.currentTimeMillis();
 
 ServletContext context = getServletContext();
 String home = context.getRealPath("").replace('\\', '/');
-String tempdir = context.getAttribute("javax.servlet.context.tempdir").toString();
+String tempdir = context.getAttribute("jakarta.servlet.context.tempdir").toString();
 
 //Useful directory variables
 String dataDir = elab.getProperty("data.dir");

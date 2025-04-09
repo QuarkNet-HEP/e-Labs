@@ -6,8 +6,8 @@ package gov.fnal.elab.tags;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 public class ParamAlias extends TagSupport {
     public static final String ATTR_ALIASES = "elab:paramaliases";

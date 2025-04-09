@@ -44,8 +44,8 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.*;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProviderHandled {

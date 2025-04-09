@@ -9,7 +9,7 @@ import gov.fnal.elab.ElabProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 public class Datasets {
     public static final String DATASETS = "cms.datasets";

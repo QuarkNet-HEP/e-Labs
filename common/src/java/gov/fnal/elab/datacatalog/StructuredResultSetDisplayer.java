@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeMap;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 public class StructuredResultSetDisplayer {
     public static final int PAGE_SIZE = 10;

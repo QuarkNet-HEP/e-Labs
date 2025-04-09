@@ -11,9 +11,9 @@ package gov.fnal.elab.tags;
 
 import gov.fnal.elab.Elab;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 public class QuickSearch extends TagSupport {
     private String key, value, label;

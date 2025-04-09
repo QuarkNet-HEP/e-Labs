@@ -11,7 +11,7 @@ package be.telio.mediastore.ui.upload;
 
 import uk.ltd.getahead.dwr.WebContextFactory;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Created by IntelliJ IDEA.

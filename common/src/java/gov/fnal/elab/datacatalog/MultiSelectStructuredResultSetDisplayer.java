@@ -9,7 +9,7 @@ import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 public class MultiSelectStructuredResultSetDisplayer extends
         StructuredResultSetDisplayer {

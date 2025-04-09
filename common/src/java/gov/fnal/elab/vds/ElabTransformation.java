@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 import org.griphyn.common.util.Separator;
 import org.griphyn.vdl.classes.Declare;
@@ -681,7 +681,7 @@ public class ElabTransformation{
      *
      * @return true if there were no errors in the whole job, false otherwise
      */
-    public boolean run(javax.servlet.jsp.JspWriter out) throws ElabException{
+    public boolean run(jakarta.servlet.jsp.JspWriter out) throws ElabException{
         //check if dv has been created
         if(dv == null){
             throw new ElabException("You must first create a new Derivation before running this job.");

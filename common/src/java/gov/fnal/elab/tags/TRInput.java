@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
 
 public class TRInput extends TRControl {
     public int doEndTag() throws JspException {

@@ -6,7 +6,7 @@
 <%@ page import="gov.fnal.elab.Pair" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="java.util.regex.*" %>
 <%@ page import="java.util.*"%>
 <%@ page import="org.apache.regexp.*" %>
