@@ -9,7 +9,7 @@
 */
 package be.telio.mediastore.ui.upload;
 
-import uk.ltd.getahead.dwr.WebContextFactory;
+import org.directwebremoting.WebContextFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 
