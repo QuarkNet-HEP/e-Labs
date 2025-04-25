@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.directwebremoting.util.Logger
+import org.directwebremoting.util.Logger;
 
 public class RecentCuts {
     public static final Logger logger = Logger.getLogger(RecentCuts.class);
