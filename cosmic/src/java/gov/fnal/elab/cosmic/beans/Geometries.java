@@ -30,7 +30,7 @@ public class Geometries implements Serializable {
     public Geometries(int groupID, String dataDirectory, Connection c)
             throws ElabException {
         this.reset();
-        PreparedStatement ps = null; 
+        PreparedStatement ps = null;
         try {
             ps = c.prepareStatement(
             		"SELECT detectorid FROM research_group_detectorid " +
@@ -62,8 +62,7 @@ public class Geometries implements Serializable {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
-            conn = DatabaseConnectionManager
-                .getConnection(elab.getProperties());
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement(
             		"SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ? " +
                     "ORDER BY detectorid");
@@ -171,7 +170,7 @@ public class Geometries implements Serializable {
         for (Geometry g : geometries.values()) {
         	sb.append("detectorID: ");
         	sb.append(g.getDetectorID());
-        	sb.append("<br>"); 
+        	sb.append("<br>");
         }
         return sb.toString();
     }

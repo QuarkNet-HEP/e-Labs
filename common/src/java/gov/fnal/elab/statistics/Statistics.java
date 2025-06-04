@@ -103,9 +103,9 @@ public class Statistics {
 
     public String getGroupCount() throws SQLException {
         Connection con = null;
-        PreparedStatement ps = null; 
+        PreparedStatement ps = null;
         try {
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             // get number of research groups with the given role as long as they are
             // in the
             // specified interval and they are associated with this project
@@ -114,7 +114,7 @@ public class Statistics {
                     "WHERE project_id = ?) AND name NOT IN " + getGroupFilter());
             ps.setString(1, role);
             ps.setInt(2, elab.getId());
-    
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
@@ -157,18 +157,16 @@ public class Statistics {
         PreparedStatement ps = null;
         try {
             // get number of research groups with the given role as long as they are
-            // in the
-            // specified interval and they are associated with this project
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con
-                    .prepareStatement("select count(id) from usage "
+            // in the specified interval and they are associated with this project
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = con.prepareStatement("select count(id) from usage "
                             + "where date_entered between now() - ?::interval and now() "
                             + "and research_group_id in (select research_group_id from research_group_project"
                             + "         where project_id = ?) "
                             + "and research_group_id not in (select id from research_group where name in " + getGroupFilter() + ")");
             ps.setString(1, span + " days");
             ps.setInt(2, elab.getId());
-    
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
@@ -196,12 +194,10 @@ public class Statistics {
         PreparedStatement ps = null, gs = null;
         try {
             // get number of research groups with the given role as long as they
-            // are
-            // in the
-            // specified interval and they are associated with this project
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con
-                    .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
+            // are in the specified interval and they are associated with this
+            // project
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = con.prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
                             + "and research_group_id in "
                             + "   (select research_group_id from research_group_project "
@@ -212,8 +208,7 @@ public class Statistics {
             ps.setString(1, start);
             ps.setString(2, end);
             ps.setInt(3, elab.getId());
-            gs = con
-                    .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
+            gs = con.prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
                             + "and research_group_id in "
                             + "   (select research_group_id from research_group_project "
@@ -273,9 +268,8 @@ public class Statistics {
         PreparedStatement ps = null;
         Connection con = null;
         try {
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con
-                    .prepareStatement("select "
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = con.prepareStatement("select "
                             + " (select name from research_group where id = research_group_id), "
                             + "     count(research_group_id) from usage "
                             + "         where date_entered between ?::timestamp and ?::timestamp "
@@ -289,9 +283,9 @@ public class Statistics {
             ps.setString(1, start);
             ps.setString(2, end);
             ps.setInt(3, elab.getId());
-    
+
             ResultSet rs = ps.executeQuery();
-    
+
             int maxCount = 1;
             List l = new ArrayList();
             while (rs.next()) {
@@ -318,9 +312,8 @@ public class Statistics {
         try {
             // get number of schools as long as there is at least one teacher
             // for this project at that school
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con
-                    .prepareStatement("select count(*) from school "
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = con.prepareStatement("select count(*) from school "
                             + "where id in (select school_id from teacher "
                             + "     where id in (select teacher_id from research_group "
                             + "         where id in (select research_group_id from research_group_project "
@@ -340,12 +333,11 @@ public class Statistics {
     }
 
     public String getTestsTaken() throws SQLException {
-        Connection con = null; 
+        Connection con = null;
         PreparedStatement ps = null;
         try {
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con
-                    .prepareStatement("select count(*) from survey "
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = con.prepareStatement("select count(*) from survey "
                             + "where project_id = ? " + "and " + type
                             + "survey = true");
             ps.setInt(1, elab.getId());

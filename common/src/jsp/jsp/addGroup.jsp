@@ -700,7 +700,7 @@ String submit =  request.getParameter("submit");
                                                             "'" + newUserArea + "', " + 
                                                             "'" + ay + "', " +
                                                             "true, " +
-                                                            "'" + survey + "'" +
+                                                            "'" + survey + "' " +
                                                             "FROM teacher WHERE teacher.id ='" + teacherId + "' RETURNING research_group.id;";
                                     try{
                                         rs = s.executeQuery(SQLstatement);

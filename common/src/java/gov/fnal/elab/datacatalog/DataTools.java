@@ -1122,15 +1122,15 @@ public class DataTools {
             con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
             ps = con.prepareStatement(
                     " SELECT teacher.id, teacher.name, teacher.email, state.abbreviation, city.name, school.name, research_group.name " +
-                    " FROM teacher "+
+                    " FROM teacher " +
                     " INNER JOIN research_group " +
-                    "    ON research_group.teacher_id = teacher.id "+
+                    "    ON research_group.teacher_id = teacher.id " +
                     " INNER JOIN school " +
-                    "    ON teacher.school_id = school.id "+
+                    "    ON teacher.school_id = school.id " +
                     " INNER JOIN city " +
-                    "    ON school.city_id = city.id "+
+                    "    ON school.city_id = city.id " +
                     " INNER JOIN state " +
-                    "    ON city.state_id = state.id "+
+                    "    ON city.state_id = state.id " +
                     " WHERE research_group.role = 'teacher' " +
                     " ORDER by state.abbreviation, city.name, school.name;");
 
@@ -1166,18 +1166,18 @@ public class DataTools {
         String name = "";
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     "SELECT name " +
                     "  FROM teacher " +
                     " WHERE id = ? ;");
             ps.setInt(1, id);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
         	if (rs != null) {
         		while (rs.next()) {
         			name = rs.getString(1);
         		}
-        	}            
+        	}
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getTeacherId(): " + e.getMessage());
@@ -1195,17 +1195,17 @@ public class DataTools {
         int recordId = 0;
         if (teacher != null && !teacher.equals("") && schoolId > 0 ) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
-	                    " INSERT INTO teacher (name, email, school_id, cosmic_all_data_access) " + 
-	            		" VALUES (?, ?, ?, true) RETURNING id;"); 
+	                    " INSERT INTO teacher (name, email, school_id, cosmic_all_data_access) " +
+	            		" VALUES (?, ?, ?, true) RETURNING id;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setString(1, teacher);
 		            ps.setString(2, email);
 		            ps.setInt(3, schoolId);
-		            java.sql.ResultSet rs = ps.executeQuery(); 
+		            java.sql.ResultSet rs = ps.executeQuery();
 		            if (rs != null) {
 		        		while (rs.next()) {
 		        			recordId = rs.getInt(1);
@@ -1224,10 +1224,10 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     	return recordId;
-    }//end of insertTeacher    
+    }//end of insertTeacher
 
     //EPeronja-06/16/2015: delete teacher 
     public static void deleteTeacher(Elab elab, int id) throws ElabException {
@@ -1235,11 +1235,11 @@ public class DataTools {
         PreparedStatement ps = null;
         if (id > 0) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
 	                    " DELETE FROM teacher "+
-	            		" WHERE id = ?;"); 
+	            		" WHERE id = ?;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setInt(1, id);
@@ -1257,7 +1257,7 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     }//end of deleteTeacher
     
@@ -1269,12 +1269,12 @@ public class DataTools {
     	TreeMap<Integer, ArrayList> groups = new TreeMap<Integer, ArrayList>();
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     " SELECT id, name, teacher_id, userarea, ay " +
                     " FROM research_group ;");
 
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
         	if (rs != null) {
         		while (rs.next()) {
         			ArrayList singleGroup = new ArrayList();
@@ -1282,14 +1282,14 @@ public class DataTools {
         			singleGroup.add(rs.getString(2));
         			groups.put(rs.getInt(1), singleGroup);
         		}
-        	}   
+        	}
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getGroups(): " + e.getMessage());
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
     	return groups;
     }//end of getGroups
 
@@ -1301,7 +1301,7 @@ public class DataTools {
         PreparedStatement ps = null;
         if (group != null && !group.equals("") && teacherId > 0 ) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
                 String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, active, survey) SELECT " +
                         "'" + group + "', " +
@@ -1335,10 +1335,10 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     	return recordId;
-    }//end of insertGroup    
+    }//end of insertGroup
 
     //EPeronja-06/16/2015: delete group 
     public static void deleteGroup(Elab elab, int id) throws ElabException {
@@ -1346,11 +1346,11 @@ public class DataTools {
         PreparedStatement ps = null;
         if (id > 0) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
 	                    " DELETE FROM research_group "+
-	            		" WHERE id = ?;"); 
+	            		" WHERE id = ?;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setInt(1, id);
@@ -1368,7 +1368,7 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     }//end of deleteGroup
     
@@ -1379,11 +1379,11 @@ public class DataTools {
         int recordId = 0;
         if (projectId > 0 && researchGroupId > 0 ) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
 	                    " INSERT INTO research_group_project (research_group_id, project_id) " +
-                        " VALUES (?, ?) ;"); 
+                        " VALUES (?, ?) ;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setInt(1, researchGroupId);
@@ -1402,7 +1402,7 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     	return recordId;
     }//end of insertGroupProject
@@ -1413,11 +1413,11 @@ public class DataTools {
         PreparedStatement ps = null;
         if (research_group_id > 0 && project_id > 0) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
 	                    " DELETE FROM research_group_project "+
-	            		" WHERE research_group_id = ? and project_id = ?;"); 
+	            		" WHERE research_group_id = ? and project_id = ?;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setInt(1, research_group_id);
@@ -1436,7 +1436,7 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
     }//end of deleteGroupProject
     
@@ -1447,12 +1447,12 @@ public class DataTools {
         int recordId = 0;
         if (detectorIds != null  && researchGroupId > 0 ) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            for (int i = 0; i < detectorIds.length; i++) {
 	            	ps = conn.prepareStatement(
 	            			" INSERT INTO research_group_detectorid (research_group_id, detectorid) " +
-	            		    " VALUES (?,?);"); 
+	            		    " VALUES (?,?);");
 	            	try {
 	            		conn.setAutoCommit(false);
 	            		ps.setInt(1, researchGroupId);
@@ -1475,7 +1475,7 @@ public class DataTools {
 	         }
         }
     	return recordId;
-    }//end of insertGroupDetector    
+    }//end of insertGroupDetector
 
     //EPeronja-06/16/2015: delete research group/detector
     public static void deleteGroupDetector(Elab elab, int group, int detector) throws ElabException {
@@ -1483,11 +1483,11 @@ public class DataTools {
         PreparedStatement ps = null;
         if (group > 0 && detector > 0) {
 	        try {
-	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	            boolean ac = conn.getAutoCommit();
 	            ps = conn.prepareStatement(
 	                    " DELETE FROM research_group_detectorid "+
-	            		" WHERE research_group_id = ? and detectorid = ?;"); 
+	            		" WHERE research_group_id = ? and detectorid = ?;");
 	            try {
 		            conn.setAutoCommit(false);
 		            ps.setInt(1, group);
@@ -1506,9 +1506,9 @@ public class DataTools {
 		        if (conn != null) {
 		            DatabaseConnectionManager.close(conn, ps);
 		        }
-		    }    	
+		    }
         }
-    }//end of deleteGroupDetector    
+    }//end of deleteGroupDetector
     
     //EPeronja-06/16/2015: get all groups
     public static TreeMap<Integer, String> getProjects(Elab elab) throws ElabException{
@@ -1518,26 +1518,26 @@ public class DataTools {
         TreeMap<Integer, String> projects = new TreeMap<Integer, String>();
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             /* `project_active` accounts for projects becoming inactive */
             ps = con.prepareStatement(
                     " SELECT project.id, project.name " +
                     " FROM project " +
                     " INNER JOIN project_active " +
                     " ON (project.id = project_active.project_id);");
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
         	if (rs != null) {
         		while (rs.next()) {
         			projects.put(rs.getInt(1), rs.getString(2));
         		}
-        	}   
+        	}
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getProjects(): " + e.getMessage());
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
     	return projects;
     }//end of getProjects
 
@@ -1548,7 +1548,7 @@ public class DataTools {
         PreparedStatement ps = null;
         //check state
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     "SELECT abbreviation " +
                     "  FROM state " +
@@ -1557,7 +1557,7 @@ public class DataTools {
                     " LIMIT 1;");
             ps.setString(1, userInput.toLowerCase());
             ps.setString(2, userInput.toLowerCase());
-            java.sql.ResultSet rs = ps.executeQuery(); 
+            java.sql.ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 abbreviation = rs.getString(1);
             }
@@ -1567,7 +1567,7 @@ public class DataTools {
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
 
     	return abbreviation;
     }//end of checkStateSearch
@@ -1593,7 +1593,6 @@ public class DataTools {
         StringBuffer data = new StringBuffer();
         Set<Object> detectors = new HashSet<Object>();
         
-
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
         data.append("Data: ");
         int dataCount = 0;
@@ -1656,7 +1655,7 @@ public class DataTools {
         PreparedStatement ps = null;
         TreeMap<String,String> daqUploadDetails = new TreeMap<String,String>();
         try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            con = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = con.prepareStatement(
                     " SELECT detectorid, " +
                     "        latest_upload_date, " +
@@ -1668,7 +1667,7 @@ public class DataTools {
                     "		 stacked " +
                     " FROM detector_upload_details;");
 
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             if (rs != null) {
            	 while (rs.next()) {
                   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
@@ -1676,18 +1675,18 @@ public class DataTools {
            		  String details = rs.getString(5) + "," + rs.getString(6) + "," + rs.getString(7) + "," + Boolean.toString(rs.getBoolean(8)) + "," + rs.getString(4) + "," + upload_date + "," + String.valueOf(rs.getString(3));
            		  daqUploadDetails.put(rs.getString(1), details);
            	 }
-            }            
+            }
         }
         catch (SQLException e) {
             throw new ElabException("In DataTools.getDAQLatestUploadData(): " + e.getMessage());
         }
         finally {
             DatabaseConnectionManager.close(con, ps);
-        }        
+        }
     	return daqUploadDetails;
      }//end of getDAQLatestUploadData
     
-    public static void updateDAQLatestUploadData(Elab elab, String detectorid, String latest_upload_date, String count, 
+    public static void updateDAQLatestUploadData(Elab elab, String detectorid, String latest_upload_date, String count,
     			String teacher, String school, String city, String state, String stacked) throws Exception{
         Connection conn = null;
         PreparedStatement ps = null;
@@ -1696,7 +1695,7 @@ public class DataTools {
         Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
         int recordId = 0;
 	    try {
-	    	conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	    	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 	        boolean ac = conn.getAutoCommit();
 	        //update or insert
 	        ps = conn.prepareStatement(
@@ -1704,7 +1703,7 @@ public class DataTools {
 	                " FROM detector_upload_details" +
 	                " WHERE detectorid = ?;");
 	        ps.setString(1, detectorid);
-	        java.sql.ResultSet rs = ps.executeQuery(); 
+	        java.sql.ResultSet rs = ps.executeQuery();
 	        int uploadCount = 0;
 	        if (rs.next()) {
 	        	uploadCount = rs.getInt(1);
@@ -1714,7 +1713,7 @@ public class DataTools {
 	        	//insert
             	ps = conn.prepareStatement(
             			" INSERT INTO detector_upload_details (detectorid, latest_upload_date, total_uploads, teacher, school, city, state, stacked) " +
-            		    " VALUES (?,?,?,?,?,?,?,?);"); 
+            		    " VALUES (?,?,?,?,?,?,?,?);");
             	try {
             		conn.setAutoCommit(false);
             		ps.setString(1, detectorid);
@@ -1740,7 +1739,7 @@ public class DataTools {
 	        	ps = conn.prepareStatement(
             			" UPDATE detector_upload_details "+ 
             		    "    SET latest_upload_date = ?, total_uploads = ?, teacher = ?, school = ?, city = ?, state = ?, stacked = ? " +
-            		    " WHERE detectorid = ?;"); 
+            		    " WHERE detectorid = ?;");
             	try {
             		conn.setAutoCommit(false);
             		ps.setTimestamp(1, timestamp);
@@ -1759,7 +1758,7 @@ public class DataTools {
             	} finally {
             		conn.setAutoCommit(ac);
             	}
-	        }	       
+	        }
 	      } catch (SQLException e) {
 	        	 throw new ElabException(e);
 	      } finally {
@@ -1781,7 +1780,7 @@ public class DataTools {
 			rs = elab.getDataCatalogProvider().runQuery(and);
 			if (rs != null && !rs.isEmpty()) {
             	if (project.equals("ligo")) {
-    				rs.sort("title", false);            		
+    				rs.sort("title", false);
             	} else {
     				rs.sort("name", false);
             	}
@@ -1810,9 +1809,9 @@ public class DataTools {
 			}
 			and.add(new Equals("type", type));
 			if (type.equals("poster")) {
-				and.add(new Between("date", startDate, endDate));					
+				and.add(new Between("date", startDate, endDate));
 			} else {
-				and.add(new Between("creationdate", startDate, endDate));	
+				and.add(new Between("creationdate", startDate, endDate));
 			}
 			rs = elab.getDataCatalogProvider().runQuery(and);
 			Integer i = 0;
@@ -1969,9 +1968,9 @@ public class DataTools {
             	tuples.put(name, coerce(type, value, name));
             }
             catch(IllegalArgumentException iae) {
-            	// empty non-string values get ignored, all others get thrown (VDS cannot handle empty non-string metadata) 
+            	// empty non-string values get ignored, all others get thrown (VDS cannot handle empty non-string metadata)
             	if (!"string".equals(type) && StringUtils.isNotBlank(value)) {
-            		throw iae; 
+            		throw iae;
             	}
             }
         }

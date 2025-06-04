@@ -49,7 +49,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 					"FROM \"newSurvey\".questions AS q " +
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON r.question_id = q.id " +
 					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
-					"WHERE q.id = ? AND m.test_id = ?" +
+					"WHERE q.id = ? AND m.test_id = ? " +
 					"ORDER BY r.response_no ASC;");
 			queryQuestion.setInt(1, questionId);
 			queryQuestion.setInt(2, surveyId);

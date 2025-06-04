@@ -911,7 +911,7 @@ public class DatabaseUserManagementProvider implements
     	PreparedStatement ps = null;
     	try {
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-    		
+                
     		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
     		
     		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ? WHERE id = ?;");
@@ -943,7 +943,7 @@ public class DatabaseUserManagementProvider implements
 	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
 	            }
-	            sql += "WHERE id = ?;";
+	            sql += " WHERE id = ?;";
 	            ps = conn.prepareStatement(sql);
 	            ps.setString(1, group.getYear());
 	            ps.setString(2, group.getRole());
@@ -963,11 +963,11 @@ public class DatabaseUserManagementProvider implements
 	            
 	            if (group.isNewSurvey()) {
 	            	ps2 = conn.prepareStatement(
-	        			"INSERT INTO research_group_test (research_group_id, test_id) " + 
-						"SELECT ?, ? WHERE NOT EXISTS " +
-							"(SELECT research_group_id, test_id FROM research_group_test " + 
-							"WHERE research_group_id = ? AND test_id = ?)" + 
-						";");
+                            "INSERT INTO research_group_test (research_group_id, test_id) " + 
+                            "SELECT ?, ? WHERE NOT EXISTS " +
+                            "(SELECT research_group_id, test_id FROM research_group_test " + 
+                            "WHERE research_group_id = ? AND test_id = ?)" + 
+                        ";");
 	            	ps2.setInt(1, group.getId());
 	            	ps2.setInt(2, group.getNewSurveyId());
 	            	ps2.setInt(3, group.getId());
@@ -1242,9 +1242,10 @@ public class DatabaseUserManagementProvider implements
     		ps = conn.prepareStatement("UPDATE research_group " +
 					  "SET active = true " );
     		ps.executeUpdate(); 
-    		ps = conn.prepareStatement("UPDATE research_group " +
-    									  "SET active = false " +
-    									"WHERE teacher_id not in ("+sb.toString()+") ");
+    		ps = conn.prepareStatement(
+                    "UPDATE research_group " +
+                    "SET active = false " +
+                    "WHERE teacher_id not in ("+sb.toString()+") ");
     		ps.executeUpdate(); 
 			conn.commit();
     	}
