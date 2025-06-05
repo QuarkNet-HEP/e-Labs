@@ -9,7 +9,7 @@
 */
 package be.telio.mediastore.ui.upload;
 
-import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import java.io.File;
 import java.io.OutputStream;

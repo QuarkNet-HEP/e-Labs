@@ -9,8 +9,8 @@
  */
 package be.telio.mediastore.ui.upload;
 
-import org.apache.commons.fileupload2.core.FileItem;
-import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 import java.io.File;
 
