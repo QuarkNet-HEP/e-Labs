@@ -13,7 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+//import org.apache.commons.fileupload2.core.DiskFileItem;
 
 import be.telio.mediastore.ui.upload.MonitoredOutputStream;
 import be.telio.mediastore.ui.upload.OutputStreamListener;
