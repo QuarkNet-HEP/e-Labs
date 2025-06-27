@@ -31,9 +31,9 @@ const axis_length = 750;
 const max_lg = 1200;
 let debug3D = false;
 let debug3Dsensor = false;
-let debug3Devent = true;
-let debug3Dreverse = true;
-let debug3Dline = true;
+let debug3Devent = false;
+let debug3Dreverse = false;
+let debug3Dline = false;
 
 class triShaft {
   constructor() {

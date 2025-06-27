@@ -11,12 +11,16 @@ var yCoord;
 var eventTotal = [1];
 var parameters = {};
 var dataGUI;
-let debugMain = true;
+let debugMain = false;
 
 // Display errors
 function print(string) { throw new Error(string); }
 // Load STL image of the pyramid
-let dataFiles = ['Run109_list.txt',
+let dataFiles = ['Run10_list_Stacked_BunchTrgPass.txt',
+				 'Run11_list_Stacked_T0TrgPass.txt',
+				 'Run4_listTrgTest.txt',
+				 'Run5_list_ZeroSurpStackedDet.txt',
+				 'Run109_list.txt',
 				 'Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
 				 'Pyramid_Run0_non-ZeroSup.txt',
 				 'Pyramid_Run1_non-ZeroSup.txt',
@@ -77,6 +81,7 @@ function getSingleGeometry() {
 	}
 	//console.log(singleGeometry);
 }// end of getGeometry
+const loadingMessage = document.getElementById("loading-message");
 
 function loadDataFile() {
   return new Promise((resolve) => {
@@ -93,6 +98,7 @@ function loadDataFile() {
         });		
 	  }     
       // Usage of Promise.all() to wait for functions to finish
+	  loadingMessage.style.display = "block";
       Promise.all([retrieveData()])
         .then(([data]) => {
           if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
@@ -127,6 +133,7 @@ function loadDataFile() {
           if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
+		  loadingMessage.style.display = "none";
         })
         .catch(error => {
 	      console.log(error);
