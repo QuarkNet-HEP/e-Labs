@@ -12,14 +12,13 @@ var yCoord = [];
 let quadPosOffset = 60;
 let pedThreshold = 10;
 let size = 35;
-let startNdxX = 5; //we start drawing the top layer in Z first (for X)
-let startNdxY = 6; //we start drawing the top layer in Z first (for Y)
 let totalIntensity = 300;
 let zOffset = 20;
 let lineExtension = 80;
 let pointSize = 8;
-let debug2D = true;
+let debug2D = false;
 let debug2DLayer = false;
+let debug2DLayerMore = false;
 let debug2DEvent = false;
 let debug2DPoint = false;
 let debug2DLine = false;
@@ -372,10 +371,9 @@ function drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordA
 	return channel;
 }//end of drawQuad
 	
-function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop) {
+function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop) {
     var channel = 0;
     var layer = 2; // we start with the top layer data in Z for both X and Y --> array goes 0,1,2
-    var ndx = startNdx; //also the start in Z for either X or Y
     var up = false;
     var reversed = false;
     var quadSize = 0.0;
@@ -394,28 +392,44 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
     var layerQuadSize = [[],[],[]];
     var layerTriangle = [[],[],[]];   
     var end, middle, start;
+	var layerOrder = [];
     if (whichLayer === 'X') { 
-    	end = parseFloat(geometry[1][geometry[1].length-4]);
-    	middle = parseFloat(geometry[3][geometry[3].length-4]);
-    	start = parseFloat(geometry[5][geometry[5].length-4]);
+		layerOrder.append(parseFloat(geometry[1][geometry[1].length-4]),5);
+		layerOrder.append(parseFloat(geometry[3][geometry[3].length-4]),3);
+		layerOrder.append(parseFloat(geometry[5][geometry[5].length-4]),1);
+		//end = parseFloat(geometry[1][geometry[1].length-4]);
+    	//middle = parseFloat(geometry[3][geometry[3].length-4]);
+    	//start = parseFloat(geometry[5][geometry[5].length-4]);
     } else {
-    	end = parseFloat(geometry[2][geometry[2].length-4]);
-    	middle = parseFloat(geometry[4][geometry[4].length-4]);
-    	start = parseFloat(geometry[6][geometry[6].length-4]);
-		
+		layerOrder.append(parseFloat(geometry[2][geometry[2].length-4]),4);
+		layerOrder.append(parseFloat(geometry[4][geometry[4].length-4]),2);
+		layerOrder.append(parseFloat(geometry[6][geometry[6].length-4]),0);
+    	//end = parseFloat(geometry[2][geometry[2].length-4]);
+    	//middle = parseFloat(geometry[4][geometry[4].length-4]);
+    	//start = parseFloat(geometry[6][geometry[6].length-4]);		
 	}
-    if (debug2DLayer === true) {
+
+	layerOrder.srot();
+	end = layerOrder[0][0];
+	middle = layerOrder[1][0];
+	start = layerOrder[2][0];
+
+	var ndx = layerOrder[0][1];
+	var layerNdx = 0;
+	
+    if (debug2DLayerMore === true) {
+	  console.log("layer order:", layerOrder);
       console.log("canvas:", ctx);
       console.log("layers: ", layers);
 	  console.log("startPoint", startPoint, "numQuads:", numQuads);
 	}
-    var cm = 260 / 100.0;
+	var units = 260.0 / (start - end);
     if (debug2DLayer === true) {
-		console.log("start, middle, end:",start, middle, end);
+		console.log("start, middle, end, cm:",start, middle, end, cm);
 	}
-    var firstLayer = startY; //starts drawing at this position in the canvas
-	var secondLayer = (start - middle) * cm;	
-    var thirdLayer = 260;
+    var firstLayer = startY; //starts drawing at this position in the canvas (70 and 450)
+	var secondLayer = (start - middle) * units;	
+    var thirdLayer = (start - end) * units;
     //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
     if (debug2DLayer === true) {
 		console.log("first, second and third layer: ", firstLayer, secondLayer, thirdLayer);
@@ -451,7 +465,7 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
-	  if (debug2DLayer === true) {
+	  if (debug2DLayerMore === true) {
 		  console.log("yp: ", yp);
 		  console.log("up: ", up);
 		  console.log("posQuadSize: ", posQuadSize);
@@ -485,7 +499,9 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 	  }//end inner for loop	
       channel = 0;
       layer-= 1;
-      ndx -= 2;
+      //ndx -= 2;
+	  layerNdx += 1;
+	  ndx = layerOrder[layerNdx][1];
    }//end outer for loop  
 
    if (debug2DLine === true) {
@@ -496,8 +512,8 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 
 function draw(event){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawLayer('X', event, startNdxX, 255, 70, 350, 88); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
-  drawLayer('Y', event, startNdxY, 80, 450, 730, 470); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('X', event, 255, 70, 350, 88); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('Y', event, 80, 450, 730, 470); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
   ctx.font = 'italic 25px Arial';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(0, 0, 0, 1 )'

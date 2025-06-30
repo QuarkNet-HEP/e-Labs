@@ -16,7 +16,10 @@ let debugMain = false;
 // Display errors
 function print(string) { throw new Error(string); }
 // Load STL image of the pyramid
-let dataFiles = ['Run10_list_Stacked_BunchTrgPass.txt',
+let dataFiles = ['Run17_list_MXStacked_Brd2AND4HoldDelay25ns.txt',
+			     'Run18_listMXStacked_HoldDelayBrd2_25ns_Brd4_0ns.txt',
+				 'Run19_listMXStacked_HoldDelayBrd2_25ns_Brd4_0ns_Brd4LGShape87.5.txt',
+				 'Run10_list_Stacked_BunchTrgPass.txt',
 				 'Run11_list_Stacked_T0TrgPass.txt',
 				 'Run4_listTrgTest.txt',
 				 'Run5_list_ZeroSurpStackedDet.txt',

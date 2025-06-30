@@ -1,4 +1,4 @@
-let debugAnalysis = true;
+let debugAnalysis = false;
 var xLayerLength = 0;
 var yLayerLength = 0;
 
