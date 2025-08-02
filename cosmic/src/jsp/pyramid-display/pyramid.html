@@ -121,30 +121,116 @@
 
         <div class="tab-pane fade" id="tabs-3" role="tabpanel" aria-labelledby="faible-tab">           
         <div class="tab-pane fade show active" style="background-color: #ffffff;" id="faible" role="tabpanel" aria-labelledby="faible-tab">
-		 	<h1 class="title">X Layer 1</h1>
+		 	<h1 class="title">X CAEN 0</h1>
 		 	<div style="width: 75%; margin: auto;"><canvas id="X1"></canvas></div>
-		  	<h1 class="title">X Layer 2</h1>
+		 	<button id="downloadXCAEN0">X CAEN 0</button>
+		  	<h1 class="title">X CAEN 2</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X2"></canvas></div>
-			<h1 class="title">X Layer 3</h1>
+		 	<button id="downloadXCAEN2">X CAEN 2</button>
+			<h1 class="title">X CAEN 4</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X3"></canvas></div>
-		  	<h1 class="title">Y Layer 1</h1>
+		 	<button id="downloadXCAEN4">X CAEN 4</button>
+		  	<h1 class="title">Y CAEN 1</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y1"></canvas></div>
-		  	<h1 class="title">Y Layer 2</h1>
+		 	<button id="downloadXCAEN1">X CAEN 1</button>
+		  	<h1 class="title">Y CAEN 3</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y2"></canvas></div>
-		  	<h1 class="title">Y Layer 3</h1>
+		 	<button id="downloadXCAEN3">X CAEN 3</button>
+		  	<h1 class="title">Y CAEN 5</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y3"></canvas></div>
-		    <h1 class="title">X Layer 1 ADC</h1>
+		 	<button id="downloadXCAEN5">X CAEN 5</button>
+
+            <h1 class="title">DX-DY</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DXDY"></canvas></div>
+		 	<button id="downloadDXDY">DX-DY</button>
+		 	<button id="downloadDXDYTOPMIDDLE">DX-DY T-M</button>
+		 	<button id="downloadDXDYBOTTOMMIDDLE">DX-DY B-M</button>
+            <h1 class="title">DX 1D FREQUENCY</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DX1D"></canvas></div>
+		 	<button id="downloadDX1D">DX 1D FREQUENCY</button>
+		 	<button id="downloadDX1DTOPMIDDLE">DX T-M 1D FREQUENCY</button>
+		 	<button id="downloadDX1DBOTTOMMIDDLE">DX B-M 1D FREQUENCY</button>
+            <h1 class="title">DY 1D FREQUENCY</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DY1D"></canvas></div>
+		 	<button id="downloadDY1D">DY 1D FREQUENCY</button>
+		 	<button id="downloadDY1DTOPMIDDLE">DY T-M 1D FREQUENCY</button>
+		 	<button id="downloadDY1DBOTTOMMIDDLE">DY B-M 1D FREQUENCY</button>
+
+            <h1 class="title">DX 1D TOP LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DXT1D"></canvas></div>
+		 	<button id="downloadDXT1D">DX 1D TOP LAYER</button>
+		 	<button id="downloadDXTM1D">DX 1D TOP T-M LAYER</button>
+            <h1 class="title">DX 1D MIDDLE LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DXM1D"></canvas></div>
+		 	<button id="downloadDXM1D">DX 1D MIDDLE LAYER</button>
+		 	<button id="downloadDXM1DT">DX 1D MIDDLE T-M LAYER</button>
+		 	<button id="downloadDXM1DB">DX 1D MIDDLE T-B LAYER</button>
+            <h1 class="title">DX 1D BOTTOM LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DXB1D"></canvas></div>
+		 	<button id="downloadDXB1D">DX 1D BOTTOM LAYER</button>
+		 	<button id="downloadDXBM1D">DX 1D BOTTOM B-M LAYER</button>
+            <h1 class="title">DY 1D TOP LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DYT1D"></canvas></div>
+		 	<button id="downloadDYT1D">DY 1D TOP LAYER</button>
+		 	<button id="downloadDYTM1D">DY 1D TOP T-M LAYER</button>
+            <h1 class="title">DY 1D MIDDLE LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DYM1D"></canvas></div>
+		 	<button id="downloadDYM1D">DY 1D MIDDLE LAYER</button>
+		 	<button id="downloadDYM1DT">DY 1D MIDDLE T-M LAYER</button>
+		 	<button id="downloadDYM1DB">DY 1D MIDDLE B-M LAYER</button>
+            <h1 class="title">DY 1D BOTTOM LAYER</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DYB1D"></canvas></div>
+		 	<button id="downloadDYB1D">DY 1D BOTTOM LAYER</button>
+		 	<button id="downloadDYBM1D">DY 1D BOTTOM B-M LAYER</button>
+
+            <h1 class="title">DELTA T</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="DT"></canvas></div>
+		 	<button id="downloadDT1-0">CAEN1-0</button>
+		 	<button id="downloadDT2-0">CAEN2-0</button>
+		 	<button id="downloadDT3-0">CAEN3-0</button>
+		 	<button id="downloadDT4-0">CAEN4-0</button>
+		 	<button id="downloadDT5-0">CAEN5-0</button>
+
+            <h1 class="title"># OF TRACKS PER MINUTE</h1>
+            <div style="width: 75%; margin: auto;"><canvas id="#TRACKS"></canvas></div>
+		 	<button id="downloadTRACKS"># OF TRACKS PER MINUTE</button>
+                    
+		    <h1 class="title">X CAEN 0 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X1ADC"></canvas></div>
-		    <h1 class="title">X Layer 2 ADC</h1>
+		 	<button id="downloadXCAEN0ADC">X CAEN 0 ADC</button>
+		    <h1 class="title">X CAEN 0 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="X1ADCAverage"></canvas></div>
+		 	<button id="downloadXCAEN0ADCAverage">X CAEN 0 ADC-Average</button>
+		    <h1 class="title">X CAEN 2 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X2ADC"></canvas></div>
-		    <h1 class="title">X Layer 3 ADC</h1>
+		 	<button id="downloadXCAEN2ADC">X CAEN 2 ADC</button>
+		    <h1 class="title">X CAEN 2 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="X2ADCAverage"></canvas></div>
+		 	<button id="downloadXCAEN2ADCAverage">X CAEN 2 ADC-Average</button>
+		    <h1 class="title">X CAEN 4 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X3ADC"></canvas></div>
-		    <h1 class="title">Y Layer 1 ADC</h1>
+		 	<button id="downloadXCAEN4ADC">X CAEN 4 ADC</button>
+		    <h1 class="title">X CAEN 4 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="X3ADCAverage"></canvas></div>
+		 	<button id="downloadXCAEN4ADCAverage">X CAEN 4 ADC-Average</button>
+		    <h1 class="title">Y CAEN 1 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y1ADC"></canvas></div>
-		    <h1 class="title">Y Layer 2 ADC</h1>
+		 	<button id="downloadYCAEN1ADC">X CAEN 1 ADC</button>
+		    <h1 class="title">Y CAEN 1 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="Y1ADCAverage"></canvas></div>
+		 	<button id="downloadYCAEN1ADCAverage">X CAEN 1 ADC-Average</button>
+		    <h1 class="title">Y CAEN 3 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y2ADC"></canvas></div>
-		    <h1 class="title">Y Layer 3 ADC</h1>
+		 	<button id="downloadYCAEN3ADC">X CAEN 3 ADC</button>
+		    <h1 class="title">Y CAEN 3 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="Y2ADCAverage"></canvas></div>
+		 	<button id="downloadYCAEN3ADCAverage">X CAEN 3 ADC-Average</button>
+		    <h1 class="title">Y CAEN 5 ADC</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y3ADC"></canvas></div>
+		 	<button id="downloadYCAEN5ADC">X CAEN 5 ADC</button>
+		    <h1 class="title">Y CAEN 5 ADC-Average</h1>
+		    <div style="width: 75%; margin: auto;"><canvas id="Y3ADCAverage"></canvas></div>
+		 	<button id="downloadYCAEN5ADCAverage">X CAEN 5 ADC-Average</button>
         </div>
         </div>
       </div>      
@@ -160,6 +246,8 @@
 	<script src="js/draw3D.js" defer></script>
 	<script src="js/draw2D.js" defer></script>
 	<script src="js/dataAnalysis.js" defer></script>
+	<script src="js/dataCharts.js" defer></script>
+	<script src="js/dataDownload.js" defer></script>
 	<script src="js/main.js" defer></script>      
 </body>
 </html>

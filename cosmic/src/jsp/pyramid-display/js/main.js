@@ -1,8 +1,11 @@
 var x;
 var y;
+var eventTime;
 var detector = [];
 var localGeometry;
 var singleGeometry = [];
+var layerOrderX = [];
+var layerOrderY = [];
 var layers = [];
 var localADCmap;
 var localPedestal;
@@ -15,21 +18,15 @@ let debugMain = false;
 
 // Display errors
 function print(string) { throw new Error(string); }
-// Load STL image of the pyramid
-let dataFiles = ['Run17_list_MXStacked_Brd2AND4HoldDelay25ns.txt',
-			     'Run18_listMXStacked_HoldDelayBrd2_25ns_Brd4_0ns.txt',
-				 'Run19_listMXStacked_HoldDelayBrd2_25ns_Brd4_0ns_Brd4LGShape87.5.txt',
-				 'Run10_list_Stacked_BunchTrgPass.txt',
-				 'Run11_list_Stacked_T0TrgPass.txt',
-				 'Run4_listTrgTest.txt',
-				 'Run5_list_ZeroSurpStackedDet.txt',
-				 'Run109_list.txt',
-				 'Pyramid_FakeTracker_XY-views_Run14_non-ZeroSup.txt',
-				 'Pyramid_Run0_non-ZeroSup.txt',
-				 'Pyramid_Run1_non-ZeroSup.txt',
-				 'Pyramid_OURFakeTracker_XY-views_Run14_non-ZeroSup.txt',
-				 'Pyramid_Tracker_XY_1jan25_Run21_ZeroSup.txt',
-				 'Pyramid_Tracker_XY_1jan25_Run22_ZeroSup.txt',]
+let dataFiles = [
+				'Run52_list_brd05_shifted_up.txt',
+				'Run52_list_brd05_shifted.txt',
+				'Run52_list_original.txt',
+				'Run52_list_shifted.txt',
+			    'Run21_shifted_list_FanOutTrg.txt', 
+				'Run21_list_FanOutTrg.txt',
+				'Run22_list_FanOutTrg.txt',
+			    ]
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 function parseFileDate(d, t) {
@@ -82,7 +79,21 @@ function getSingleGeometry() {
 			}
 		} 
 	}
-	//console.log(singleGeometry);
+	//get the layer order from the geometry
+	layerOrderX.push([parseFloat(singleGeometry[1][singleGeometry[1].length-4]),5,0]);
+	layerOrderX.push([parseFloat(singleGeometry[3][singleGeometry[3].length-4]),3,1]);
+	layerOrderX.push([parseFloat(singleGeometry[5][singleGeometry[5].length-4]),1,2]);
+	// Sort in descending order by the first element
+	layerOrderX.sort(function(a, b) {
+	  return a[0] - b[0]; 
+	});
+	layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
+	layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
+	layerOrderY.push([parseFloat(singleGeometry[6][singleGeometry[6].length-4]),2,2]);	
+	// Sort in descending order by the first element
+	layerOrderY.sort(function(a, b) {
+	  return a[0] - b[0]; 
+	});	
 }// end of getGeometry
 const loadingMessage = document.getElementById("loading-message");
 
@@ -132,7 +143,7 @@ function loadDataFile() {
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
           draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-          drawAnalysis(layers);  
+          drawAnalysis(layers, singleGeometry);  
           if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
@@ -159,11 +170,7 @@ function GUIupdate(what) {
 	if (what != "remove") {
 		dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 		
   		function onEventIndexChange() { loadIndex(parameters.eventIndex); }
-  		//dataGUI.__controllers[1].domElement.style = 'height:150px';
   		controller = dataGUI.__controllers[1];
-  		//controller.style ='height:150px';
-  		//dataGUI.__controllers[1].setAttribute( "style", "height: 150px" );
-  		//dataGUI.__controllers[1].style.height = "150px";
   		dataGUI.__controllers[1].updateDisplay();
   	}
 }

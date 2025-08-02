@@ -35,10 +35,7 @@ function updateInputValue() {
 function drawLine(x1, y1, x2, y2, extensionLength) {
   // 80 for extensionLength 
   // Calculate the length and angle of the original line
-  //var originalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  //console.log("length",originalLength);
   var angle = Math.atan2(y2 - y1, x2 - x1);
-  //console.log("angle",angle);
   // Calculate the new end points based on the extensionLength and the angle
   var newX2 = x2 + extensionLength * Math.cos(angle);
   var newY2 = y2 + extensionLength * Math.sin(angle);
@@ -134,7 +131,7 @@ function calculateSidePoint(layerTriangle, layer) {
 				 pointPercent = point1Intensity * 100 / pointPercentSum;
 				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
 				} else {
-			     //sthe first triangle is down with lower intensity
+			     //the first triangle is down with lower intensity
 				 pointPercent = point2Intensity * 100 / pointPercentSum;
 				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
 				}
@@ -151,16 +148,16 @@ function calculateSidePoint(layerTriangle, layer) {
 	return sidePoint;
 }//end of calculateSidePoint
 
-function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot){
-  var sidePointX1 = calculateSidePoint(layerTriangle, 0);
+function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot, layerOrder){
+  var sidePointX1 = calculateSidePoint(layerTriangle, layerOrder[0][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 1: ", sidePointX1);
   }
-  var sidePointX2 = calculateSidePoint(layerTriangle, 1);
+  var sidePointX2 = calculateSidePoint(layerTriangle, layerOrder[1][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 2: ", sidePointX2);
   }  
-  var sidePointX3 = calculateSidePoint(layerTriangle, 2);
+  var sidePointX3 = calculateSidePoint(layerTriangle, layerOrder[2][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 3: ", sidePointX3);
   } 
@@ -379,13 +376,7 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
     var quadSize = 0.0;
     var cellSize = 0.0;
     var quadGap = 0.0;    
-    var numQuads = (layers[ndx-1].length-2);
     var startPoint = startX;
-    //need to check the pixel we start drawing based on the # of cells
-	if (layers[ndx-1].length-2 === 12) {
-		startPoint = 80;
-	}
-	var zPos = startPoint - 20;
 	// Read the value of the input
     var layerAct = [[],[],[]];
     var layerQuad = [[],[],[]];
@@ -393,29 +384,31 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
     var layerTriangle = [[],[],[]];   
     var end, middle, start;
 	var layerOrder = [];
+	var startNdx = 0;
     if (whichLayer === 'X') { 
-		layerOrder.append(parseFloat(geometry[1][geometry[1].length-4]),5);
-		layerOrder.append(parseFloat(geometry[3][geometry[3].length-4]),3);
-		layerOrder.append(parseFloat(geometry[5][geometry[5].length-4]),1);
-		//end = parseFloat(geometry[1][geometry[1].length-4]);
-    	//middle = parseFloat(geometry[3][geometry[3].length-4]);
-    	//start = parseFloat(geometry[5][geometry[5].length-4]);
+		layerOrder = layerOrderX;
+		startNdx = 5;
     } else {
-		layerOrder.append(parseFloat(geometry[2][geometry[2].length-4]),4);
-		layerOrder.append(parseFloat(geometry[4][geometry[4].length-4]),2);
-		layerOrder.append(parseFloat(geometry[6][geometry[6].length-4]),0);
-    	//end = parseFloat(geometry[2][geometry[2].length-4]);
-    	//middle = parseFloat(geometry[4][geometry[4].length-4]);
-    	//start = parseFloat(geometry[6][geometry[6].length-4]);		
+		layerOrder = layerOrderY;
+		startNdx = 4;
 	}
-
-	layerOrder.srot();
+	// Sort in descending order by the first element
+	layerOrder.sort(function(a, b) {
+	  return a[0] - b[0]; 
+	});
 	end = layerOrder[0][0];
 	middle = layerOrder[1][0];
 	start = layerOrder[2][0];
-
-	var ndx = layerOrder[0][1];
-	var layerNdx = 0;
+	
+	var ndx = layerOrder[2][1];
+	layer = layerOrder[2][2];
+	var layerNdx = 2;
+	var numQuads = (layers[ndx-1].length-2);
+	//need to check the pixel we start drawing based on the # of cells
+	if (layers[ndx-1].length-2 === 12) {
+		startPoint = 80;
+	}
+	var zPos = startPoint - 20;
 	
     if (debug2DLayerMore === true) {
 	  console.log("layer order:", layerOrder);
@@ -425,7 +418,7 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 	}
 	var units = 260.0 / (start - end);
     if (debug2DLayer === true) {
-		console.log("start, middle, end, cm:",start, middle, end, cm);
+		console.log("start, middle, end, cm:",start, middle, end, units);
 	}
     var firstLayer = startY; //starts drawing at this position in the canvas (70 and 450)
 	var secondLayer = (start - middle) * units;	
@@ -498,16 +491,17 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 		  }
 	  }//end inner for loop	
       channel = 0;
-      layer-= 1;
-      //ndx -= 2;
-	  layerNdx += 1;
-	  ndx = layerOrder[layerNdx][1];
+	  layerNdx -= 1;
+	  if (layerNdx >= 0) {
+	  	layer = layerOrder[layerNdx][2];
+	  	ndx = layerOrder[layerNdx][1];
+	  }
    }//end outer for loop  
 
    if (debug2DLine === true) {
 	   console.log("calculateTrack for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
    }
-   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop);	
+   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop, layerOrder);	
 }//end of drawLayer
 
 function draw(event){
