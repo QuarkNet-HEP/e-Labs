@@ -207,8 +207,8 @@ function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
         ctx.fillStyle = 'rgba(255, 255, 255, 1 )';
 	    if (debug2DTriangle == true) {
 	    	console.log("intensity == 0");
-	    	triangleCoords = [];
 	    }
+		triangleCoords = [];
       } else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.font = '15px Arial';
@@ -515,6 +515,7 @@ function draw(event){
   ctx.fillText('Y-view display - find muon track with 3 planes', canvas.width / 2, 420);
 }//end of draw
 
+//function draw2DSettings(event, g, l) {
 function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	subtractPedX = sX;
 	subtractPedY = sY;
@@ -527,10 +528,6 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 		console.log("2D drawings");
 		console.log("geometry:",g);
 		console.log("layers:",l);
-		console.log("subPedX:",sX);
-		console.log("subPedY:",sY);
-		console.log("xCoord:",cX);
-		console.log("yCoord:",cY);
 	}
 	document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;

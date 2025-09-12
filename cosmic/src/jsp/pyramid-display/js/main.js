@@ -19,13 +19,14 @@ let debugMain = false;
 // Display errors
 function print(string) { throw new Error(string); }
 let dataFiles = [
-				'Run52_list_brd05_shifted_up.txt',
-				'Run52_list_brd05_shifted.txt',
-				'Run52_list_original.txt',
-				'Run52_list_shifted.txt',
-			    'Run21_shifted_list_FanOutTrg.txt', 
-				'Run21_list_FanOutTrg.txt',
-				'Run22_list_FanOutTrg.txt',
+				'Run68_list_no_shift.txt',
+	            'Run69_list_00_01_shifted.txt',
+				'Run69_list_no_shift.txt',
+				'Run70_list_no_shift.txt',
+				'Run50_list_no_shift.txt',
+				'Run49_list_brd5_shifted.txt',
+				'Run48_shifted.txt',
+				'Run103_list_brd00_shifted.txt',
 			    ]
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -80,6 +81,7 @@ function getSingleGeometry() {
 		} 
 	}
 	//get the layer order from the geometry
+	layerOrderX = [];
 	layerOrderX.push([parseFloat(singleGeometry[1][singleGeometry[1].length-4]),5,0]);
 	layerOrderX.push([parseFloat(singleGeometry[3][singleGeometry[3].length-4]),3,1]);
 	layerOrderX.push([parseFloat(singleGeometry[5][singleGeometry[5].length-4]),1,2]);
@@ -87,6 +89,7 @@ function getSingleGeometry() {
 	layerOrderX.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
+	layerOrderY = [];
 	layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
 	layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
 	layerOrderY.push([parseFloat(singleGeometry[6][singleGeometry[6].length-4]),2,2]);	
@@ -168,7 +171,7 @@ function GUIupdate(what) {
 		}
     }
 	if (what != "remove") {
-		dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 		
+		dataGUI.add(parameters, 'eventIndex', 1,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 		
   		function onEventIndexChange() { loadIndex(parameters.eventIndex); }
   		controller = dataGUI.__controllers[1];
   		dataGUI.__controllers[1].updateDisplay();
@@ -190,7 +193,7 @@ function GUIinit() {
   //File loading software
   dataGUI = gui.addFolder("Data");
   dataGUI.add(parameters, "loadDataFile", dataFiles).name('Load File').listen().onChange((value)=>{useNewFile(value)});
-  dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 
+  dataGUI.add(parameters, 'eventIndex',0,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 
   function onEventIndexChange() {loadIndex(parameters.eventIndex);}
   function useNewFile(value) { 
 	console.clear();   

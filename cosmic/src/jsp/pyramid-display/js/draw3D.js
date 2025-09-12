@@ -799,6 +799,7 @@ function resetPyramidPosition() {
 }//end of resetPyramidPosition
 
 function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
+//function draw3DSettings(detector, g, l) {
     if (debug3D === true) {		
 		console.log("3D drawings");
 	}
@@ -828,6 +829,7 @@ function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
 	clearMuons();  
 	muonVectors = [];
 	loadEvent(1,x,y,s);
+	//loadEvent(1, s);
 	loadAngle(s,THREE.MathUtils.degToRad(-sensorTheta),THREE.MathUtils.degToRad(sensorPhi),0);	
     const targetPosition = new THREE.Vector3(s.centerx-10,s.centery+15,s.centerz+10); // Specify the target position
     const duration = 1000; // Specify the duration in milliseconds

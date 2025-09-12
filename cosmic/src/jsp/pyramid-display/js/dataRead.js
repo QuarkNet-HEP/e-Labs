@@ -6,7 +6,7 @@ var adcmap = [];
 var geometry = [];
 var pedestal = [];
 var detectorName = "";
-var layerMaxSize = 48;
+var layerMaxSize = 64;
 globalThis.adcmapArr = [];
 globalThis.pedestalArr = [];
 globalThis.geometryArr = [];
@@ -220,7 +220,11 @@ globalThis.retrieveData = function () {
 	  if (debugRead === true) {
 		  console.log("correct pedestal");
 		  console.log(pedestal);
-	 }
+	  }
+	  if (debugRead === true) {
+	   console.log("data read");
+	   console.log(df);
+	  }
       //id needs to get the first event in the file which it was first assumed as zero
       //we need to read the first event number instead
       var id = 0;
@@ -231,7 +235,7 @@ globalThis.retrieveData = function () {
 
       while (id <= parseInt(df.at(df.index[df.shape[0] - 1], 'TrgID'))) {
 		//initialize to zeros
-		eventTime.push(Array.from({ length: 6 }, function() { return [0]; }));
+		eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
         x.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         y.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         subtractPedX.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return 0; });}));
@@ -278,6 +282,7 @@ globalThis.retrieveData = function () {
 			}
           // else it goes to Y
           } else {
+			//console.log('y', id, brd, ch);
 			newLg = lg - y[id][Math.floor((brd - 1) / 2)][ch][2];
 			if (newLg < minPed) {
 				newLg = 0;

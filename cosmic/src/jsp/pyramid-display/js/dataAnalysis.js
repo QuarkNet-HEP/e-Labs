@@ -172,6 +172,9 @@ function getDxyBothLayers() {
 			}
 		}
 	}
+	//no need to keep these in memory
+	dx = [];
+	dy = [];
 }
 
 function getDxyTopMiddleBothLayers() {
@@ -184,6 +187,9 @@ function getDxyTopMiddleBothLayers() {
 			}
 		}
 	}
+	//no need to keep these in memory
+	dxtopmiddle = [];
+	dytopmiddle = [];
 }
 
 function getDxyBottomMiddleBothLayers() {
@@ -196,6 +202,9 @@ function getDxyBottomMiddleBothLayers() {
 			}
 		}
 	}
+	//no need to keep these in memory
+	dxbottommiddle = [];
+	dybottommiddle = [];
 }
 
 function getChannelData(whichLayer, arr1, upperLimit, events) {
@@ -246,8 +255,50 @@ function getFrequency(arr1) {
 	return vals;
 }
 
-function calculateDeltaXDeltaYFrequency(arr, events) {
-  	var deltaValues = [];
+function calculateDeltaXDeltaYFrequency(arr, events, binWidth) {
+	var deltaValues = [];
+	var totalEvents = arr.length;
+	if (events > 0 && events <= arr.length) {
+		totalEvents = events;
+	}
+	for (let i = 1; i < totalEvents; i++) {
+		deltaValues.push(arr[i][4]);
+	}	
+	// Find min and max values to determine the range
+	var minVal = Math.min(...deltaValues);
+	var maxVal = Math.max(...deltaValues);
+
+	// Calculate bin boundaries
+	var binBoundaries = [];
+	for (let i = minVal; i <= maxVal + binWidth; i += binWidth) {
+	    binBoundaries.push(i);
+	}	
+	
+	// Initialize bins
+	var bins = [];
+	if (binBoundaries.length > 0) {
+		bins = Array(binBoundaries.length - 1).fill(0);
+	}
+	// Populate bins
+	deltaValues.forEach(value => {
+	  for (let i = 0; i < binBoundaries.length - 1; i++) {
+	    if (value >= binBoundaries[i] && value < binBoundaries[i + 1]) {
+	      bins[i]++;
+	      break;
+	    }
+	  }
+	});
+
+	var lineChartData = [];
+	if (bins.length > 0) {
+		for (let i = 0; i < bins.length; i++) {
+		  var binCenter = (binBoundaries[i] + binBoundaries[i + 1]) / 2;
+		  lineChartData.push({ x: binCenter, y: bins[i] }); 
+		}		
+	}
+	return lineChartData;
+	/*
+	var deltaValues = [];
 	var totalEvents = arr.length;
 	if (events > 0 && events <= arr.length) {
 		totalEvents = events;
@@ -260,6 +311,7 @@ function calculateDeltaXDeltaYFrequency(arr, events) {
     	frequencyDistribution[delta] = (frequencyDistribution[delta] || 0) + 1; // Increment count or initialize to 1
   	}
   	return frequencyDistribution;
+	*/
 }
 
 function getDxDy(events) {
@@ -270,6 +322,21 @@ function getDxDy(events) {
 	}
 	for (var i = 0; i < totalEvents; i++) {
 		vals.push({x:dxbothlayers[i][4], y:dybothlayers[i][4]});
+	}
+	return vals;
+}
+
+function getDxDz(events) {
+	var vals = [];
+	var totalEvents = dxbothlayers.length;
+	if (events > 0 && events <= dxbothlayers.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) { 
+		//if (i < 5) {
+		//	console.log(dxbothlayers[i],dybothlayers[i], dxbothlayers[i][4]/dxbothlayers[i][5],dybothlayers[i][4]/dybothlayers[i][5] );
+		//}
+		vals.push({x:dxbothlayers[i][4]/dxbothlayers[i][5], y:dybothlayers[i][4]/dybothlayers[i][5]});
 	}
 	return vals;
 }
@@ -289,59 +356,166 @@ function getDxDyMiddle(arrX, arrY, events) {
 	return vals;
 }
 
-function getEventsWithTracksPerMinute() {
+function getDxyDzMiddle(arrX, arrY, events) {
+	var vals = [];
+	var totalEvents = arrX.length;
+	if (events > 0 && events <= arrX.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) {
+		//vals.push({x:arr[i][4], y:arr[i][5]});
+		vals.push({x:arrX[i][4]/arrX[i][5], y:arrY[i][4]/arrY[i][5]});
+	}
+	//console.log(vals);
+	return vals;
+}
+
+function getEventsWithTracksPerMinute(layerCount, option) {
 	var vals = [];
 	var xtop = layerOrderX[0][2]*2;
+	var xmiddle = layerOrderX[1][2]*2;
 	var xbottom = layerOrderX[2][2]*2;
 	var ytop = (layerOrderY[0][2]*2)+1;
+	var ymiddle = (layerOrderY[1][2]*2)+1;
 	var ybottom = (layerOrderY[2][2]*2)+1;
 	var startTime = 0;
 	var minuteTime = microMinute+eventTime[0][0];
 	var trackCounter = 0;
 	for (var i = 0; i < eventTime.length; i++) {
-		//check if there is a track
-		if (eventTime[i][xtop] > 0 &&
-			eventTime[i][xbottom] > 0 &&
-			eventTime[i][ytop] > 0 &&
-			eventTime[i][ybottom] > 0) {
-			//check if it belongs within each minute
-			if (eventTime[i][0] <= minuteTime) {
-				//console.log(startTime, minuteTime);
-				trackCounter += 1;
-			} else {
-				//save and move up a minute
-				vals.push({x:startTime+1,y:trackCounter})
-				startTime += 1;
-				trackCounter = 0;
-				minuteTime = microMinute+eventTime[i][0];
+		//check for top and bottom in both layers
+		if (layerCount == 4) {
+			if (option == 'TM') {
+				if (eventTime[i][xtop] > 0 &&
+					eventTime[i][xmiddle] > 0 &&
+					eventTime[i][xbottom] <= 0 &&
+					eventTime[i][ytop] > 0 &&
+					eventTime[i][ymiddle] > 0 &&
+					eventTime[i][ybottom] <= 0) {
+					//check if it belongs within each minute
+					if (eventTime[i][0] <= minuteTime) {
+						//if (trackCounter < 5) {
+						//	console.log(layerCount, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						//}
+						trackCounter += 1;
+					} else {
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}				
+			} else { //it is 'MB'
+				if (eventTime[i][xtop] <= 0 &&
+					eventTime[i][xmiddle] > 0 &&
+					eventTime[i][xbottom] > 0 &&
+					eventTime[i][ytop] <= 0 &&
+					eventTime[i][ymiddle] > 0 &&
+					eventTime[i][ybottom] > 0) {
+					//check if it belongs within each minute
+					if (eventTime[i][0] <= minuteTime) {
+						//if (trackCounter < 5) {
+						//	console.log(layerCount, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						//}
+						trackCounter += 1;
+					} else {
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}				
 			}
 		}
+		//check for top, middle and bottom but not in both layers
+		if (layerCount == 5) {
+			//middle missing
+			if (option == 'M') {
+				if ((eventTime[i][xtop] > 0 &&
+					eventTime[i][xbottom] > 0 &&
+					eventTime[i][ytop] > 0 &&
+					eventTime[i][ybottom] > 0) &&
+					((eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] <= 0)
+				    || (eventTime[i][xmiddle] <= 0 && eventTime[i][ymiddle] > 0))) {					
+					//check if it belongs within each minute
+					var count = eventTime[i].filter(num => num > 0).length;
+					if (eventTime[i][0] <= minuteTime && count == layerCount) {
+						//if (trackCounter < 5) {
+						//	console.log(layerCount, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						//}
+						trackCounter += 1;
+					} else {
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}
+			} else { //it is TB, either top or bottom missing
+				var count = eventTime[i].filter(num => num > 0).length;
+				if (eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] > 0 && count == layerCount) {
+					if (eventTime[i][0] <= minuteTime) {
+						trackCounter += 1;
+					} else {
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}					
+				}
+			}
+		}		
+		//check for top, middle and bottom in both layers
+		if (layerCount == 6) {
+			if (eventTime[i][xtop] > 0 &&
+				eventTime[i][xmiddle] > 0 &&
+				eventTime[i][xbottom] > 0 &&
+				eventTime[i][ytop] > 0 &&
+				eventTime[i][ymiddle] > 0 &&
+				eventTime[i][ybottom] > 0) {
+				//check if it belongs within each minute
+				if (eventTime[i][0] <= minuteTime) {
+					//if (trackCounter < 5) {
+					//	console.log(layerCount, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+					//}
+					trackCounter += 1;
+				} else {
+					//save and move up a minute
+					vals.push({x:startTime+1,y:trackCounter})
+					startTime += 1;
+					trackCounter = 0;
+					minuteTime = microMinute+eventTime[i][0];
+				}
+			}
+		}
+		
 	}
 	vals.push({x:startTime+1,y:trackCounter})
+	//console.log(layerCount,option,vals);
 	return vals;
 }
 
 //attempt to calculate delta
-function calculateDeltaPointByPercentage(event, x1, y1, x2, y2, percentage, yProjected,eventChannels, layer) {
+function calculateDeltaPointByPercentage(event, x1, y1, x2, y2, percentage, yProjected,eventChannels, layer, zValue) {
 	var dx = x2 - x1;
 	var dy = y2 - y1;
 	const x = ((x1 + (dx * percentage/100))/(size/2.0))+1;
-	const y = ((y1 + (dy * percentage/100))/(size/2.0))+1;
+	var y = zValue;
 	var channel1 = eventChannels[layer][0];
 	var channel2 = eventChannels[layer][1];
   	return { x, y, yProjected, channel1, channel2};
 }//end of calculatePointByPercentage
 
-function getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer) {
+function getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer, zValue) {
 	var sidePoint = [];
 	var x1 = layerTriangle[layer][0][2][0];
-	var y1 = layerTriangle[layer][0][2][1];
 	var x2 = layerTriangle[layer][0][3][0];
-	var y2 = layerTriangle[layer][0][3][1];
 	var x3 = layerTriangle[layer][0][4][0];
-	var y3 = layerTriangle[layer][0][4][1];
 	var x = (((x1 + x2 + x3)/3) /(size/2.0))+1;
-	var y = (((y1 + y2 + y3)/3) /(size/2.0))+1;
+	var y = zValue;
 	yProjected = (y /(size/2.0))+1;
 	var channel1 = -1; 
 	if (eventChannels[layer].length === 0) {
@@ -354,29 +528,32 @@ function getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer) {
 	return sidePoint; 
 }//end of getSingleSidePoint
 
-function calculateDeltaSidePoint(event, layerTriangle,eventChannels, layer) {
+function calculateDeltaSidePoint(event, layerTriangle,eventChannels, layer, zValue) {
 	var sidePoint = [];
 	var yProjected = 0;
+	//if (event == 0) {
+	//	console.log(layer, zValue);
+	//}
 	if (layerTriangle[layer].length > 0) {
 	  if (layerTriangle[layer].length == 1) {
 		//the point falls in the middle of the triangle
-		sidePoint = getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer);
+		sidePoint = getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer, zValue);
 	  }	else {
 		//first we have to check for neighbors
         var quadFirstCell = layerTriangle[layer][0][6];
         var quadSecondCell = layerTriangle[layer][1][6];
         //these are not neighbors
         if ((quadSecondCell-quadFirstCell) > 1) {
-			sidePoint = getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer);
+			sidePoint = getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer, zValue);
 		} else {					
 			//we have to calculate between neighbors... I will assume it is the first two neigbors for now
 			var up = layerTriangle[layer][0][0];
 			//the last line of the first triangle and the first line of the second triangle are a match
 			//use the first values
 			var x1 = layerTriangle[layer][0][3][0];
-			var y1 = layerTriangle[layer][0][3][1];
+			var y1 = zValue;
 			var x2 = layerTriangle[layer][0][4][0];
-			var y2 = layerTriangle[layer][0][4][1];
+			var y2 = zValue;
 			yProjected = (layerTriangle[layer][0][5]/(size/2.0))+1;	
 			var point1Intensity = layerTriangle[layer][0][1];
 			var point2Intensity = 0;
@@ -389,21 +566,21 @@ function calculateDeltaSidePoint(event, layerTriangle,eventChannels, layer) {
 			   if (point1Intensity > point2Intensity) {
 				 //first triangle is pyramid with higher intensity
 				 pointPercent = point1Intensity * 100 / pointPercentSum;
-				 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer);
+				 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue);
 			   } else {
 				 //first triangle is pyramid with lower intensity			 
 				 pointPercent = point2Intensity * 100 / pointPercentSum;
-				 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer);
+				 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue);
 			   }			
 			} else {
 				if (point1Intensity > point2Intensity) {
 				 //first triangle is down with higher intensity
 				 pointPercent = point1Intensity * 100 / pointPercentSum;
-				 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer);
+				 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue);
 				} else {
 			     //sthe first triangle is down with lower intensity
 				 pointPercent = point2Intensity * 100 / pointPercentSum;
-				 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer);
+				 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue);
 				}
 			}
 		}//end of neighbor calculation
@@ -413,32 +590,35 @@ function calculateDeltaSidePoint(event, layerTriangle,eventChannels, layer) {
 }//end of calculateSidePoint
 
 function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSize, layerTriangle, layerOrder,eventChannels){
-  var sidePointX1 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[0][2]);
-  var sidePointX2 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[1][2]);
-  var sidePointX3 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[2][2]);
+  var sidePointX1 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[0][2], layerOrder[0][0]);
+  var sidePointX2 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[1][2], layerOrder[1][0]);
+  var sidePointX3 = calculateDeltaSidePoint(event, layerTriangle,eventChannels, layerOrder[2][2], layerOrder[2][0]);
   if (sidePointX1.x > 0 && sidePointX3.x > 0) {
 	var deltax = (sidePointX3.x - sidePointX1.x);
+	var deltaz = (sidePointX3.y - sidePointX1.y);
 	if (whichLayer == 'X') {
-		dx.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+		dx.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 	} else {
-		dy.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+		dy.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 	}
   } else {
 	//test middle layer
 	if (sidePointX1.x > 0 && sidePointX2.x > 0) {
 		var deltax = (sidePointX2.x - sidePointX1.x);
+		var deltaz = (sidePointX2.y - sidePointX1.y);
 		if (whichLayer == 'X') {
-			dxbottommiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+			dxbottommiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 		} else {
-			dybottommiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+			dybottommiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 		}		
 	} else {
 		if (sidePointX2.x > 0 && sidePointX3.x > 0) {
 			var deltax = (sidePointX3.x - sidePointX2.x);
+			var deltaz = (sidePointX3.y - sidePointX2.y);
 			if (whichLayer == 'X') {
-				dxtopmiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+				dxtopmiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 			} else {
-				dytopmiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax]);
+				dytopmiddle.push([event, sidePointX1, sidePointX2, sidePointX3, deltax, deltaz]);
 			}					
 		}
 	}
@@ -452,10 +632,6 @@ function drawDeltaTriangle(dir, xpos, y, channel, inten, quadMember) {
 	    inten = 0;
 	  }
 	  triangleCoords.push([xpos, y]);
-	  if (debug2DTriangle == true) {
-	      console.log("drawing triangle");
-		  console.log("x: ",xpos, "y: ", y, "dir: ", dir);
-	  }
 	  triangleCoords.push([xpos+size, y]);
 	  var y3 = 0;
 	  var height = 0;
@@ -469,15 +645,9 @@ function drawDeltaTriangle(dir, xpos, y, channel, inten, quadMember) {
 	      triangleCoords.push([xpos+(size/2), y3]);
 	  }
 	  if(inten == 0){
-	    if (debug2DTriangle == true) {
-	    	console.log("intensity == 0");
-	    	triangleCoords = [];
-	    }
+		triangleCoords = [];
 	  } else {
-	    if (debug2DTriangle == true) {
-	    	console.log("intensity > 0");
-	    	console.log(triangleCoords);
-	    }
+		//do nothing
 	  }   
 	  triangleCoords.push(height, quadMember);
 	return triangleCoords;
@@ -494,9 +664,6 @@ function drawDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,c
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
 	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
-			if (debug2DEvent === true) {
-				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
-			}
 	        if(ped[event][layer][channelPosition] > pedThreshold){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
@@ -521,9 +688,6 @@ function drawDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,c
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
 	        triangleCoords = drawDeltaTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
-			if (debug2DEvent === true) {
-				console.log(numQuads, reversed, up, channelPosition, adcChannel,  pedPosition, ped[event][layer]);
-			}
 	        if(ped[event][layer][channelPosition] > pedThreshold){
 	          	layerAct[layer].push([xp , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
@@ -549,9 +713,6 @@ function drawDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,c
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
 	        triangleCoords = drawDeltaTriangle(false, xp+1, yp, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
-			if (debug2DEvent === true) {
-				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
-			}
 	        if(ped[event][layer][channelPosition] > pedThreshold){
 	          	layerAct[layer].push([xp , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
@@ -576,9 +737,6 @@ function drawDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,c
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
 	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
-			if (debug2DEvent === true) {
-				console.log(numQuads, reversed, up, channelPosition, adcChannel, pedPosition, ped[event][layer]);
-			}
 	        if(ped[event][layer][channelPosition] > pedThreshold){
 	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
@@ -652,16 +810,7 @@ function calculateLayer(whichLayer, event) {
 	var layerNdx = 2;
 	var numQuads = (layers[ndx-1].length-2);
 
-	 if (debug2DLayerMore === true) {
-	   console.log("layer order:", layerOrder);
-	   console.log("canvas:", ctx);
-	   console.log("layers: ", layers);
-	   console.log("startPoint", startPoint, "numQuads:", numQuads);
-	}
 	var units = 260.0 / (start - end);
-	 if (debug2DLayer === true) {
-		console.log("start, middle, end, cm:",start, middle, end, units);
-	}
 	var firstLayer = start; //starts at the top position of the layer in the geometry
 	var secondLayer = middle;	
 	var thirdLayer = end;
@@ -669,14 +818,14 @@ function calculateLayer(whichLayer, event) {
 
 	//loop through the three layers
 	for (var i = 0; i < 3; i++) {
-	  var yp = firstLayer;
+	  var yp = start;
 	  var zvalue = start;
 	  if (i == 1) {
-		  yp = secondLayer;
+		  yp = middle;
 		  zvalue = middle;
 	  }
 	  if (i == 2) {
-		  yp = thirdLayer;
+		  yp = end;
 		  zvalue = end;
 	  }
 	  //check if we need to start with a three or a pyramid for each layer
@@ -698,15 +847,6 @@ function calculateLayer(whichLayer, event) {
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
-	  if (debug2DLayerMore === true) {
-		  console.log("yp: ", yp);
-		  console.log("up: ", up);
-		  console.log("posQuadSize: ", posQuadSize);
-		  console.log("quadSize: ", quadSize);
-		  console.log("cellSize: ", cellSize);
-		  console.log("quadGap: ", quadGap);
-		  console.log("xpSize:", xpSize);
-	  }
 	  //loop and draw quads taking into account the intercell spacing and flipping
 	  var quadNo = 0;
 	  for (var xp = startPoint; xp < xpSize; xp += quadGap) {
@@ -716,9 +856,6 @@ function calculateLayer(whichLayer, event) {
 				  if (quadMember == 0) {
 					 quadNo++;
 				  }
-				  if (debug2DLayer === true) {
-				  	console.log(whichLayer,event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
-	 			  }
 	 			  if (whichLayer === 'X') { 
 				  	channel = drawDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle,eventChannels);
 				  } else {
@@ -735,10 +872,6 @@ function calculateLayer(whichLayer, event) {
 	  	ndx = layerOrder[layerNdx][1];
 	  }
 	}//end outer for loop  
-
-	if (debug2DLine === true) {
-	   console.log("calculateTrack for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
-	}
 	calculateDeltaTrack(whichLayer, event,layerAct, layerQuad, layerQuadSize, layerTriangle, layerOrder,eventChannels);		
 }//end of calculateLayer
 

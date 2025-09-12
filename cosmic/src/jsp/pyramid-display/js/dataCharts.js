@@ -1,7 +1,8 @@
 function removeCharts() {
 	canvasIDs = ['X1','X2','X3','Y1','Y2','Y3','DXDY','DX1D','DY1D',
-		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D',
-		'DT','#TRACKS','X1ADC','X2ADC','X3ADC','Y1ADC','Y2ADC','Y3ADC',
+		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D','DXDZDYDZ','DXDZDYDZTM','DXDZDYDZMB',
+		'DT','DT10','DT20','DT30','DT40','DT50','#TRACKS4TM','#TRACKS4MB','#TRACKS5M','#TRACKS5TB','#TRACKS6',
+		'X1ADC','X2ADC','X3ADC','Y1ADC','Y2ADC','Y3ADC',
 		'X1ADCAverage','X2ADCAverage','X3ADCAverage','Y1ADCAverage','Y2ADCAverage','Y3ADCAverage'
 	];
 	for (var i = 0; i < canvasIDs.length; i++) {
@@ -29,8 +30,20 @@ function drawAnalysis(l,g) {
 	var dyT1d = document.getElementById('DYT1D').getContext('2d');
 	var dyM1d = document.getElementById('DYM1D').getContext('2d');
 	var dyB1d = document.getElementById('DYB1D').getContext('2d');
-	var tracks = document.getElementById('#TRACKS').getContext('2d');
+	var dxdzdydz = document.getElementById('DXDZDYDZ').getContext('2d');
+	var dxdzdydzTM = document.getElementById('DXDZDYDZTM').getContext('2d');
+	var dxdzdydzMB = document.getElementById('DXDZDYDZMB').getContext('2d');
+	var tracks4TM = document.getElementById('#TRACKS4TM').getContext('2d');
+	var tracks4MB = document.getElementById('#TRACKS4MB').getContext('2d');
+	var tracks5M = document.getElementById('#TRACKS5M').getContext('2d');
+	var tracks5TB = document.getElementById('#TRACKS5TB').getContext('2d');
+	var tracks6 = document.getElementById('#TRACKS6').getContext('2d');
 	var deltaT = document.getElementById('DT').getContext('2d');
+	var deltaT10 = document.getElementById('DT10').getContext('2d');
+	var deltaT20 = document.getElementById('DT20').getContext('2d');
+	var deltaT30 = document.getElementById('DT30').getContext('2d');
+	var deltaT40 = document.getElementById('DT40').getContext('2d');
+	var deltaT50 = document.getElementById('DT50').getContext('2d');
 	var X1ADC = document.getElementById('X1ADC').getContext('2d');
 	var X2ADC = document.getElementById('X2ADC').getContext('2d');
 	var X3ADC = document.getElementById('X3ADC').getContext('2d');
@@ -59,12 +72,6 @@ function drawAnalysis(l,g) {
 	getDxyBothLayers();	
 	getDxyTopMiddleBothLayers();
 	getDxyBottomMiddleBothLayers();
-	console.log(dxbothlayers);
-	console.log(dybothlayers);
-	console.log(dxtopmiddlebothlayers);
-	console.log(dytopmiddlebothlayers);
-	console.log(dxbottommiddlebothlayers);
-	console.log(dybottommiddlebothlayers);
 		  
 	var xLabels = [];
 	for(var i = 0; i < xLayerLength; i++){
@@ -326,43 +333,52 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDXDYBOTTOMMIDDLE').addEventListener('click', () => {
 	    downloadXYdata(getDxDyMiddle(dxbottommiddlebothlayers, dybottommiddlebothlayers, 0), 'DXDYBOTTOMMIDDLEdata.csv');
 	});
-
+	//var bothlayersfrequency = calculateDeltaXDeltaYFrequency(dxbothlayers,0,2);
 	var deltaXFrequency = {
 	  labels: [],
 	  datasets: [
 	     {
 	       label: 'DX Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 	       backgroundColor: 'blue', // Color or array of colors for the bars
-	       data: calculateDeltaXDeltaYFrequency(dxbothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
+	       data: calculateDeltaXDeltaYFrequency(dxbothlayers,0,2), 
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
 	  	 },
 		 {
 		   label: 'DX Top/Middle Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 		   backgroundColor: 'yellow', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
+		   data: calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0,2), // Array of numerical values for the bars
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
 		 },		 
 		 {
 		   label: 'DX Middle/Bottom Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 		   backgroundColor: 'pink', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
-		 },
+		   data: calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0,2), // Array of numerical values for the bars
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
+		 },		
 	 ],
 	};		
 	var scatterDX1DChart = new Chart(dx1d, {
-		    type: 'scatter',
-			labels: [],
+		    type: 'line',
+			labels: deltaXFrequency.datasets[0].data.map(item => item.x),
 		    data: deltaXFrequency,
 		    options: {
 		      scales: {
 		        x: {
 		          type: 'linear', // Use linear scale for the x-axis
 		          position: 'bottom',
-		          suggestedMin: 0, // Set the minimum value to 0
+		    //      suggestedMin: 0, // Set the minimum value to 0
 		        },
 		        y: {
 		          type: 'linear', // Use linear scale for the y-axis
@@ -374,13 +390,13 @@ function drawAnalysis(l,g) {
 	);	
 
 	document.getElementById('downloadDX1D').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dxbothlayers,0), 'DX1Ddata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dxbothlayers,0,2), 'DX1Ddata.csv');
 	});	
 	document.getElementById('downloadDX1DTOPMIDDLE').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0), 'DX1DTOPMIDDLEdata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0,2), 'DX1DTOPMIDDLEdata.csv');
 	});	
 	document.getElementById('downloadDX1DBOTTOMMIDDLE').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0), 'DX1DBOTTOMMIDDLEdata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0,2), 'DX1DBOTTOMMIDDLEdata.csv');
 	});	
 	
 	var deltaYFrequency = {
@@ -388,38 +404,47 @@ function drawAnalysis(l,g) {
 	  datasets: [
 	     {
 	       label: 'DY Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 	       backgroundColor: 'magenta', // Color or array of colors for the bars
-	       data: calculateDeltaXDeltaYFrequency(dybothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
+	       data: calculateDeltaXDeltaYFrequency(dybothlayers,0,2), // Array of numerical values for the bars
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
 	  	 },
 		 {
 		   label: 'DY Top/Middle Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 		   backgroundColor: 'green', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
+		   data: calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0,2), // Array of numerical values for the bars
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
 		 },		 
 		 {
 		   label: 'DY Middle/Bottom Frequency Distribution', // Label for the dataset
-		   borderColor: 'gray',
+		   //borderColor: 'gray',
 		   backgroundColor: 'lightpink', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0), // Array of numerical values for the bars
-		   pointRadius: 5,
+		   data: calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0,2), // Array of numerical values for the bars
+		   pointRadius: 3,
+		   borderWidth: 1,
+		   lineTension: 0.5,
+		   fill: false		   
 		 },
 	 ],
 	};		
 	
 	var scatterDY1DChart = new Chart(dy1d, {
-		    type: 'scatter',
-			labels: [],
+		    type: 'line',
+			labels: deltaYFrequency.datasets[0].data.map(item => item.x),
 		    data: deltaYFrequency,
 		    options: {
 		      scales: {
 		        x: {
 		          type: 'linear', // Use linear scale for the x-axis
 		          position: 'bottom',
-		          suggestedMin: 0, // Set the minimum value to 0
+		          //suggestedMin: 0, // Set the minimum value to 0
 		        },
 		        y: {
 		          type: 'linear', // Use linear scale for the y-axis
@@ -431,13 +456,13 @@ function drawAnalysis(l,g) {
 	);	
 
 	document.getElementById('downloadDY1D').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dybothlayers,0), 'DY1Ddata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dybothlayers,0,2), 'DY1Ddata.csv');
 	});	
 	document.getElementById('downloadDY1DTOPMIDDLE').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0), 'DY1DTOPMIDDLEdata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0,2), 'DY1DTOPMIDDLEdata.csv');
 	});	
 	document.getElementById('downloadDY1DBOTTOMMIDDLE').addEventListener('click', () => {
-	    downloadArray(calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0), 'DY1DBOTTOMMIDDLEdata.csv');
+	    downloadArray(calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0,2), 'DY1DBOTTOMMIDDLEdata.csv');
 	});	
 
 	var dxtopChannelfrequency = getChannelData('top',dxbothlayers, xLayerLength, 0);	
@@ -753,7 +778,114 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDYBM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dybottomMiddleChannelfrequency), 'DYBM1Ddata.csv');
 	});
+
+	var DXDZDYDZdatasets = {
+	  labels: [],
+	  datasets: [
+	     {
+	       label: 'DX/DZ - DY/DZ', // Label for the dataset
+		   borderColor: 'gray',
+	       backgroundColor: 'cyan', // Color or array of colors for the bars
+	       data: getDxDz(0), // Array of numerical values for the bars
+		   pointRadius: 5,
+	  	 }
+	 ],
+	};				
+	var scatterDXDZDYDZChart = new Chart(dxdzdydz, {
+		    type: 'scatter',
+		    data: DXDZDYDZdatasets,
+		    options: {
+		      scales: {
+		        x: {
+		          type: 'linear', // Use linear scale for the x-axis
+		          position: 'bottom',
+		          suggestedMin: 0, // Set the minimum value to 0
+		        },
+		        y: {
+		          type: 'linear', // Use linear scale for the y-axis
+		          position: 'left'
+		        }
+		      }
+		    }
+		}		
+	);
+
+	document.getElementById('downloadDXDZDYDZ').addEventListener('click', () => {
+	    downloadXYdata(getDxDz(0), 'DXDZDYDZdata.csv');
+	});
+
+	var DXDZDYDZTMdatasets = {
+	  labels: [],
+	  datasets: [
+	     {
+	       label: 'DX/DZ - DY/DZ (TOP-MIDDLE)', // Label for the dataset
+		   borderColor: 'gray',
+	       backgroundColor: 'yellow', // Color or array of colors for the bars
+	       data: getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0), // Array of numerical values for the bars
+		   pointRadius: 5,
+	  	 }
+	 ],
+	};
+					
+	var scatterDXDZDYDZTMChart = new Chart(dxdzdydzTM, {
+		    type: 'scatter',
+		    data: DXDZDYDZTMdatasets,
+		    options: {
+		      scales: {
+		        x: {
+		          type: 'linear', // Use linear scale for the x-axis
+		          position: 'bottom',
+		          suggestedMin: 0, // Set the minimum value to 0
+		        },
+		        y: {
+		          type: 'linear', // Use linear scale for the y-axis
+		          position: 'left'
+		        }
+		      }
+		    }
+		}		
+	);
+
+	document.getElementById('downloadDXDZDYDZTM').addEventListener('click', () => {
+	    downloadXYdata(getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0), 'DXDZDYDZTMdata.csv');
+	});
+
+	var DXDZDYDZMBdatasets = {
+	  labels: [],
+	  datasets: [
+	     {
+	       label: 'DX/DZ - DY/DZ (MIDDLE-BOTTOM)', // Label for the dataset
+		   borderColor: 'gray',
+	       backgroundColor: 'orange', // Color or array of colors for the bars
+	       data: getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0), // Array of numerical values for the bars
+		   pointRadius: 5,
+	  	 }
+	 ],
+	};
 	
+	var scatterDXDZDYDZMBChart = new Chart(dxdzdydzMB, {
+		    type: 'scatter',
+		    data: DXDZDYDZMBdatasets,
+		    options: {
+		      scales: {
+		        x: {
+		          type: 'linear', // Use linear scale for the x-axis
+		          position: 'bottom',
+		          suggestedMin: 0, // Set the minimum value to 0
+		        },
+		        y: {
+		          type: 'linear', // Use linear scale for the y-axis
+		          position: 'left'
+		        }
+		      }
+		    }
+		}		
+	);
+
+	document.getElementById('downloadDXDZDYDZMB').addEventListener('click', () => {
+	    downloadXYdata(getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0), 'DXDZDYDZMBdata.csv');
+	});
+			
 	var deltaTdatasets = {
 	  labels: [],
 	  datasets: [
@@ -794,8 +926,7 @@ function drawAnalysis(l,g) {
 		 },
 	 ],
 	};	
-	
-	var scatterDeltaT01Chart = new Chart(deltaT, {
+	var scatterDeltaTChart = new Chart(deltaT, {
 		type: 'scatter',
 			data: deltaTdatasets,
 			options: {
@@ -803,7 +934,7 @@ function drawAnalysis(l,g) {
 				  x: {
 				    type: 'linear', // Use linear scale for the x-axis
 				    position: 'bottom',
-				    suggestedMin: 0, // Set the minimum value to 0
+				    //suggestedMin: 0, // Set the minimum value to 0
 				    }
 				  },
 				  y: {
@@ -828,25 +959,174 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDT5-0').addEventListener('click', () => {	
 		downloadArray(getDeltaT(0,5), 'DTCAEN5-0data.csv');
 	});
-	var eventWithTracksCount = getEventsWithTracksPerMinute();
-	var labels = Object.keys(eventWithTracksCount);
-	var values = Object.values(eventWithTracksCount);
-	var numberTracks = {
-	  labels: labels, // Array of labels for each bar on the x-axis
+
+	var dT10 = {
+	  labels: [],
+	  datasets: [
+	    {
+	      label: 'Delta T CAEN 1 - CAEN 0', // Label for the dataset
+		  borderColor: 'orange',
+	      backgroundColor: 'orange', // Color or array of colors for the bars
+	      data: getDeltaT(0,1), // Array of numerical values for the bars
+		  pointRadius: 5,
+	  	 },
+	 ],
+	};	
+	var scatterDeltaT10Chart = new Chart(deltaT10, {
+		type: 'scatter',
+			data: dT10,
+			options: {
+				scales: {
+				  x: {
+				    type: 'linear', // Use linear scale for the x-axis
+				    position: 'bottom',
+				    //suggestedMin: 0, // Set the minimum value to 0
+				    }
+				  },
+				  y: {
+				    type: 'linear', // Use linear scale for the y-axis
+				    position: 'left'
+				  }
+				},
+	});	
+	
+	var dT20 = {
+	  labels: [],
+	  datasets: [
+	    {
+	      label: 'Delta T CAEN 2 - CAEN 0', // Label for the dataset
+		  borderColor: 'purple',
+	      backgroundColor: 'purple', // Color or array of colors for the bars
+	      data: getDeltaT(0,2), // Array of numerical values for the bars
+		  pointRadius: 5,
+	  	 },
+	 ],
+	};	
+	var scatterDeltaT20Chart = new Chart(deltaT20, {
+		type: 'scatter',
+			data: dT20,
+			options: {
+				scales: {
+				  x: {
+				    type: 'linear', // Use linear scale for the x-axis
+				    position: 'bottom',
+				    //suggestedMin: 0, // Set the minimum value to 0
+				    }
+				  },
+				  y: {
+				    type: 'linear', // Use linear scale for the y-axis
+				    position: 'left'
+				  }
+				},
+	});	
+	
+	var dT30 = {
+	  labels: [],
+	  datasets: [
+	    {
+	      label: 'Delta T CAEN 3 - CAEN 0', // Label for the dataset
+		  borderColor: 'yellow',
+	      backgroundColor: 'yellow', // Color or array of colors for the bars
+	      data: getDeltaT(0,3), // Array of numerical values for the bars
+		  pointRadius: 5,
+	  	 },
+	 ],
+	};	
+	var scatterDeltaT30Chart = new Chart(deltaT30, {
+		type: 'scatter',
+			data: dT30,
+			options: {
+				scales: {
+				  x: {
+				    type: 'linear', // Use linear scale for the x-axis
+				    position: 'bottom',
+				    //suggestedMin: 0, // Set the minimum value to 0
+				    }
+				  },
+				  y: {
+				    type: 'linear', // Use linear scale for the y-axis
+				    position: 'left'
+				  }
+				},
+	});	
+
+	var dT40 = {
+	  labels: [],
+	  datasets: [
+	    {
+	      label: 'Delta T CAEN 4 - CAEN 0', // Label for the dataset
+		  borderColor: 'lightgreen',
+	      backgroundColor: 'lightgreen', // Color or array of colors for the bars
+	      data: getDeltaT(0,4), // Array of numerical values for the bars
+		  pointRadius: 5,
+	  	 },
+	 ],
+	};	
+	var scatterDeltaT40Chart = new Chart(deltaT40, {
+		type: 'scatter',
+			data: dT40,
+			options: {
+				scales: {
+				  x: {
+				    type: 'linear', // Use linear scale for the x-axis
+				    position: 'bottom',
+				    //suggestedMin: 0, // Set the minimum value to 0
+				    }
+				  },
+				  y: {
+				    type: 'linear', // Use linear scale for the y-axis
+				    position: 'left'
+				  }
+				},
+	});	
+
+	var dT50 = {
+	  labels: [],
+	  datasets: [
+	    {
+	      label: 'Delta T CAEN 5 - CAEN 0', // Label for the dataset
+		  borderColor: 'pink',
+	      backgroundColor: 'pink', // Color or array of colors for the bars
+	      data: getDeltaT(0,5), // Array of numerical values for the bars
+		  pointRadius: 5,
+	  	 },
+	 ],
+	};	
+	var scatterDeltaT50Chart = new Chart(deltaT50, {
+		type: 'scatter',
+			data: dT50,
+			options: {
+				scales: {
+				  x: {
+				    type: 'linear', // Use linear scale for the x-axis
+				    position: 'bottom',
+				    //suggestedMin: 0, // Set the minimum value to 0
+				    }
+				  },
+				  y: {
+				    type: 'linear', // Use linear scale for the y-axis
+				    position: 'left'
+				  }
+				},
+	});	
+		
+	var eventWithTracksCount4TM = getEventsWithTracksPerMinute(4,'TM');
+	var labels4TM = Object.keys(eventWithTracksCount4TM);
+	var values4TM = Object.values(eventWithTracksCount4TM);
+	var numberTracks4TM = {
+	  labels: labels4TM, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events with tracks (per minute)',
+	       label: '# of events (4) top-middle with tracks (per minute)',
 	       backgroundColor: 'purple',
-	       data: values,
-	       //options: options,
- 		   //pointRadius: 5,
+	       data: values4TM,
 	     },
 	  ],
 	};	
 		
-	var scatterChartTracks = new Chart(tracks, {
+	var scatterChartTracks4TM = new Chart(tracks4TM, {
 	    type: 'bar',
-	    data: numberTracks,
+	    data: numberTracks4TM,
 	    options: {
 	      scales: {
 	        y: {
@@ -858,10 +1138,140 @@ function drawAnalysis(l,g) {
 	    },
 	});
 
-	document.getElementById('downloadTRACKS').addEventListener('click', () => {
-	    downloadXYdata(getEventsWithTracksPerMinute(), 'EVENTSTRACKSMINUTEdata.csv');
+	document.getElementById('downloadTRACKS4TM').addEventListener('click', () => {
+	    downloadXYdata(getEventsWithTracksPerMinute(4,'TM'), 'EVENTSTRACKS4TMMINUTEdata.csv');
 	});
-						
+
+	var eventWithTracksCount4MB = getEventsWithTracksPerMinute(4,'MB');
+	var labels4MB = Object.keys(eventWithTracksCount4MB);
+	var values4MB = Object.values(eventWithTracksCount4MB);
+	var numberTracks4MB = {
+	  labels: labels4MB, // Array of labels for each bar on the x-axis
+	  datasets: [
+	        {
+	       label: '# of events (4) middle-bottom with tracks (per minute)',
+	       backgroundColor: 'green',
+	       data: values4MB,
+	     },
+	  ],
+	};	
+		
+	var scatterChartTracks4MB = new Chart(tracks4MB, {
+	    type: 'bar',
+	    data: numberTracks4MB,
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true,
+	          stepSize: 1,
+	          precision: 0,// Set the step size to 1 to show only whole numbers
+	        },
+	      },
+	    },
+	});
+
+	document.getElementById('downloadTRACKS4MB').addEventListener('click', () => {
+	    downloadXYdata(getEventsWithTracksPerMinute(4,'MB'), 'EVENTSTRACKS4MBMINUTEdata.csv');
+	});		
+	
+	var eventWithTracksCount5M = getEventsWithTracksPerMinute(5,'M');
+	var labels5M = Object.keys(eventWithTracksCount5M);
+	var values5M = Object.values(eventWithTracksCount5M);
+	var numberTracks5M = {
+	  labels: labels5M, // Array of labels for each bar on the x-axis
+	  datasets: [
+	        {
+	       label: '# of events (5) with tracks (per minute-MIDDLE missing)',
+	       backgroundColor: 'pink',
+	       data: values5M,
+	     },
+	  ],
+	};	
+		
+	var scatterChartTracks5M = new Chart(tracks5M, {
+	    type: 'bar',
+	    data: numberTracks5M,
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true,
+	          stepSize: 1,
+	          precision: 0,// Set the step size to 1 to show only whole numbers
+	        },
+	      },
+	    },
+	});
+
+	document.getElementById('downloadTRACKS5M').addEventListener('click', () => {
+	    downloadXYdata(getEventsWithTracksPerMinute(5,'M'), 'EVENTSTRACKS5MINUTEdataM.csv');
+	});
+
+	var eventWithTracksCount5TB = getEventsWithTracksPerMinute(5,'TB');
+	var labels5TB = Object.keys(eventWithTracksCount5TB);
+	var values5TB = Object.values(eventWithTracksCount5TB);
+	var numberTracks5TB = {
+	  labels: labels5TB, // Array of labels for each bar on the x-axis
+	  datasets: [
+	        {
+	       label: '# of events (5) with tracks (per minute-TOP or BOTTOM missing)',
+	       backgroundColor: 'lightblue',
+	       data: values5TB,
+	     },
+	  ],
+	};	
+		
+	var scatterChartTracks5TB = new Chart(tracks5TB, {
+	    type: 'bar',
+	    data: numberTracks5TB,
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true,
+	          stepSize: 1,
+	          precision: 0,// Set the step size to 1 to show only whole numbers
+	        },
+	      },
+	    },
+	});
+
+	document.getElementById('downloadTRACKS5TB').addEventListener('click', () => {
+	    downloadXYdata(getEventsWithTracksPerMinute(5,'TB'), 'EVENTSTRACKS5MINUTEdataTB.csv');
+	});
+				
+	var eventWithTracksCount6 = getEventsWithTracksPerMinute(6,'');
+	var labels6 = Object.keys(eventWithTracksCount6);
+	var values6 = Object.values(eventWithTracksCount6);
+	var numberTracks6 = {
+	  labels: labels6, // Array of labels for each bar on the x-axis
+	  datasets: [
+	        {
+	       label: '# of events (6) with tracks (per minute)',
+	       backgroundColor: 'orange',
+	       data: values6,
+	     },
+	  ],
+	};	
+		
+	var scatterChartTracks6 = new Chart(tracks6, {
+	    type: 'bar',
+	    data: numberTracks6,
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true,
+	          stepSize: 1,
+	          precision: 0,// Set the step size to 1 to show only whole numbers
+	        },
+	      },
+	    },
+	});
+
+	document.getElementById('downloadTRACKS6').addEventListener('click', () => {
+	    downloadXYdata(getEventsWithTracksPerMinute(6,''), 'EVENTSTRACKS6MINUTEdata.csv');
+	});
+
+
+								
 	var scatterChartADCX1 = new Chart(X1ADC, {
         type: 'scatter',
         data: {
