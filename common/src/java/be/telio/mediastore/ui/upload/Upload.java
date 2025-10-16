@@ -1,12 +1,19 @@
 package be.telio.mediastore.ui.upload;
 
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.io.*;
 import java.text.*;
-import org.apache.commons.fileupload.*;
-import org.apache.commons.fileupload.disk.*;
-import org.apache.commons.fileupload.servlet.*;
+//import org.apache.commons.fileupload.*;
+//import org.apache.commons.fileupload.disk.*;
+//import org.apache.commons.fileupload.servlet.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.lang.*;
 import org.apache.commons.io.*;
 import gov.fnal.elab.Elab;
@@ -22,7 +29,10 @@ import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
 
-public class Upload
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+		maxFileSize = 1024 * 1024 * 10,      // 10MB
+		maxRequestSize = 1024 * 1024 * 50)
+public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
     private long delay = 0;
@@ -57,15 +67,23 @@ public class Upload
 		    UploadListener listener = new UploadListener(request, 0);
 	
 		    // Create a factory for disk-based file items
-		    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-		    		sizeThreshold, tempRepo, listener); 
+		    //FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
+		    //		sizeThreshold, tempRepo, listener); 
 	
 	    	// Create a new file upload handler
-		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    //ServletFileUpload upload = new ServletFileUpload(factory);
 	    	
-			List<DiskFileItem> fileItems = upload.parseRequest(request); 
-	    	
-	    	for (DiskFileItem fi : fileItems) { 
+			//List<DiskFileItem> fileItems = upload.parseRequest(request); 
+		    Part filePart = request.getPart("ds"); // "file" is the name of the input field in the form
+		     // Get the filename from the Part
+	        String fileName = filePart.getSubmittedFileName().getFileName().toString();
+	    	System.out.println(fileName);
+		    //for (Part part : request.getParts()) {
+		    //	String partName = getPartName(part);
+		    //	System.out.println(partName);
+		    //}
+		    	/*
+		    	for (DiskFileItem fi : fileItems) { 
 	    		if (fi.isFormField()) {
 	    			String name = fi.getFieldName();
 	    			String content = fi.getString();
@@ -129,6 +147,7 @@ public class Upload
 	
 				} //'twas a file
 			} //while through the file
+			*/
 		} catch (Exception e) {
 			System.out.println("A problem occurred while uploading your file." + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
