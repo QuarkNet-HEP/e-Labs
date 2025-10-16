@@ -29,9 +29,7 @@ import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
 
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-		maxFileSize = 1024 * 1024 * 10,      // 10MB
-		maxRequestSize = 1024 * 1024 * 50)
+@MultipartConfig
 public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
@@ -45,7 +43,8 @@ public class Upload extends HttpServlet
     private String uploadComments = "";
     private String uploadBenchmark = "";
     private String time = "";
-
+    
+    @Override
     public Upload(HttpServletRequest request, Elab elab)
     {
 		long lStartTime = new Date().getTime();

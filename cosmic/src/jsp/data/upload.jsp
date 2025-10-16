@@ -67,7 +67,7 @@ int channels[] = new int[4];
 List splits = new ArrayList();  //for both the split name and the channel validity information
 String exceptionMessage = "";
 		
-if (request.getContentType().toLowerCase().startsWith("multipart/form-data")) {
+if (request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/form-data")) {
 	System.out.println("upload0");
 	Upload up = new Upload(request, elab);
 	String in = up.getIn();
