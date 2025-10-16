@@ -44,7 +44,6 @@ public class Upload extends HttpServlet
     private String uploadBenchmark = "";
     private String time = "";
     
-    @Override
     public Upload(HttpServletRequest request, Elab elab)
     {
 		long lStartTime = new Date().getTime();
