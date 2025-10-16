@@ -74,14 +74,10 @@ public class Upload extends HttpServlet
 		    //ServletFileUpload upload = new ServletFileUpload(factory);
 	    	
 			//List<DiskFileItem> fileItems = upload.parseRequest(request); 
-		    javax.mail.Part filePart = request.getPart("ds"); // "file" is the name of the input field in the form
-		     // Get the filename from the Part
-	        String fileName = filePart.getFileName();
-	    	System.out.println(fileName);
-		    //for (Part part : request.getParts()) {
-		    //	String partName = getPartName(part);
-		    //	System.out.println(partName);
-		    //}
+		    for (Part part : request.getParts()) {
+		    	String partName = part.getName();
+		    	System.out.println(partName);
+		    }
 		    	/*
 		    	for (DiskFileItem fi : fileItems) { 
 	    		if (fi.isFormField()) {
