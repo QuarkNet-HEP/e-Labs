@@ -29,7 +29,16 @@ import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
 
-@MultipartConfig
+@WebServlet("/upload")
+@MultipartConfig(
+    //fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    //maxFileSize = 1024 * 1024 * 10,      // 10MB
+    //maxRequestSize = 1024 * 1024 * 50    // 50MB
+		  location = "/tmp", // Temporary directory to store large files
+		  fileSizeThreshold = 0, // Write files to disk immediately
+		  maxFileSize = -1L, // Unlimited file size
+		  maxRequestSize = -1L // Unlimited request size
+)
 public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
