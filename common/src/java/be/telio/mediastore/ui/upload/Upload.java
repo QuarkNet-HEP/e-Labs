@@ -31,9 +31,9 @@ import gov.fnal.elab.usermanagement.impl.*;
 
 @WebServlet("/upload")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 50, // 5MB
-    maxFileSize = 1024 * 1024 * 100,      // 100MB
-    maxRequestSize = 1024 * 1024 * 500    // 500MB
+    fileSizeThreshold = 1024 * 1024 * 500, // 500MB
+    maxFileSize = 1024 * 1024 * 1000,      // 1000MB
+    maxRequestSize = 1024 * 1024 * 5000    // 5000MB
 )
 public class Upload extends HttpServlet
 {
