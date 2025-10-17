@@ -75,8 +75,6 @@ public class Upload extends HttpServlet
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
                 	System.out.print(fileName);
-                    String fieldValue = request.getParameter(fileName);
-                   	System.out.print(fieldValue);
 					if (StringUtils.isBlank(fileName)) {
 	                	System.out.println("Missing file.");
 	    	        }
@@ -87,24 +85,15 @@ public class Upload extends HttpServlet
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
 	                String fnow = df.format(now);
 					//even newer algorithm: use File.createTempFile!
-					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
-					        new File(dataDir));
+					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
 	               	String rawName = f.getName();
-	               	InputStream is = part.getInputStream(); 
-	                //FileOutputStream os = new FileOutputStream(f);
-
-	                //byte[] buffer = new byte[4096];
-	                //int bytesRead;
-	                //while ((bytesRead = is.read(buffer)) != -1) {
-	                //   os.write(buffer, 0, bytesRead);
-	                //}
-	                //os.close();
+	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
 	               	System.out.println(f.toPath());
+	               	System.out.println(f.getAbsolutePath());
+	               	InputStream is = part.getInputStream(); 
 	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
-	               	System.out.println(f.getAbsolutePath());
-	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
