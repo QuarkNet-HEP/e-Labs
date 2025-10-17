@@ -29,8 +29,6 @@ import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
-import java.io.InputStream;
-import java.nio.file.Files;
 
 @WebServlet("/upload")
 @MultipartConfig(
@@ -70,7 +68,7 @@ public class Upload extends HttpServlet
 		try {
 			request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
-		    for (Part part : request.getParts()) {
+		    for (javax.mail.Part part : request.getParts()) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
                 	String fieldValue = request.getParameter(fileName);
@@ -87,10 +85,18 @@ public class Upload extends HttpServlet
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
 					        new File(dataDir));
 	               	String rawName = f.getName();
-	               	try (InputStream is = part.getInputStream()) {
-	               		Files.copy(is, f);
-	               	}
-	       	        System.out.println("<!-- " + rawName + " added to Catalog -->");					
+	               	InputStream is = part.getInputStream(); 
+	                FileOutputStream os = new FileOutputStream(f);
+
+	                byte[] buffer = new byte[4096];
+	                int bytesRead;
+	                while ((bytesRead = is.read(buffer)) != -1) {
+	                    os.write(buffer, 0, bytesRead);
+	                }
+	                os.close();
+	                is.close();
+	                setIn(f.getAbsolutePath());
+	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
