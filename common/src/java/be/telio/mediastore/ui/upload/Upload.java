@@ -4,6 +4,7 @@ package be.telio.mediastore.ui.upload;
 import java.util.*;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.*;
 import java.text.*;
 import java.util.Collection;
 //import org.apache.commons.fileupload.*;
@@ -88,14 +89,15 @@ public class Upload extends HttpServlet
 					        new File(dataDir));
 	               	String rawName = f.getName();
 	               	InputStream is = part.getInputStream(); 
-	                FileOutputStream os = new FileOutputStream(f);
+	                //FileOutputStream os = new FileOutputStream(f);
 
-	                byte[] buffer = new byte[4096];
-	                int bytesRead;
-	                while ((bytesRead = is.read(buffer)) != -1) {
-	                    os.write(buffer, 0, bytesRead);
-	                }
-	                os.close();
+	                //byte[] buffer = new byte[4096];
+	                //int bytesRead;
+	                //while ((bytesRead = is.read(buffer)) != -1) {
+	                //   os.write(buffer, 0, bytesRead);
+	                //}
+	                //os.close();
+	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
 	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
