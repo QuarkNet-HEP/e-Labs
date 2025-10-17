@@ -3,6 +3,7 @@ package be.telio.mediastore.ui.upload;
 //import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.io.*;
+import java.nio.file.Files;
 import java.text.*;
 //import org.apache.commons.fileupload.*;
 //import org.apache.commons.fileupload.disk.*;
@@ -28,6 +29,8 @@ import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 @WebServlet("/upload")
 @MultipartConfig(
@@ -65,57 +68,15 @@ public class Upload extends HttpServlet
 		int channels[] = new int[4];
 		
 		try {
-			request.setAttribute("datadir", dataDir);
-			
+			request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
-	
-		    // Create a factory for disk-based file items
-		    //FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-		    //		sizeThreshold, tempRepo, listener); 
-	
-	    	// Create a new file upload handler
-		    //ServletFileUpload upload = new ServletFileUpload(factory);
-	    	
-			//List<DiskFileItem> fileItems = upload.parseRequest(request); 
 		    for (Part part : request.getParts()) {
-		    	String partName = part.getName();
-		    	System.out.println(partName);
-		    }
-		    	/*
-		    	for (DiskFileItem fi : fileItems) { 
-	    		if (fi.isFormField()) {
-	    			String name = fi.getFieldName();
-	    			String content = fi.getString();
-	    			if ("detector".equals(name)) {
-	    				if (StringUtils.isBlank(content)) {
-	    					System.out.println("You must enter a detector number for this data.");
-	    				}
-	    				else {
-	    					detectorId = content;
-	    				}
-	    			}
-	    			else if (("benchmark_"+detectorId).equals(name)) {
-	    				benchmark = content;
-	    			}
-	    			else if ("comments".equals(name)) {
-	    				if (StringUtils.isNotBlank(content)) {
-	    					comments = content; 
-	    				}
-	    			}
-	    		}
-	    	}
-			
-			for (DiskFileItem fi : fileItems) {
-				if (!fi.isFormField()) {
-					lfn = fi.getName();
-					if (StringUtils.isBlank(lfn)) {
+                String fileName = part.getSubmittedFileName();
+                if (fileName != null) { // It's a file part
+                	String fieldValue = request.getParameter(fileName);
+					if (StringUtils.isBlank(fileName)) {
 	                	System.out.println("Missing file.");
 	    	        }
-		            //fn is the filename without slashes (which lfn has)    	       
-		            fn = FilenameUtils.getName(lfn);
-					if (fi.getSize() == 0) {
-					    System.out.println("Your file is zero-length. You must upload a file which has some data.");
-					}
 	                //new algorithm for filenaming:
 	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
 	       	        //index starts at 0 and increments when there are collisions with other filenames
@@ -126,27 +87,35 @@ public class Upload extends HttpServlet
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
 					        new File(dataDir));
 	               	String rawName = f.getName();
-	
-	               	// write the file from memory or relocate it on disk.
-	               	if (fi.isInMemory()) {
-	               		fi.write(f);
+	               	try (InputStream is = part.getInputStream()) {
+	               		Files.copy(is, f);
 	               	}
-	               	else {
-	               		fi.getStoreLocation().renameTo(f);
-	               	}
-					comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
-	       	        System.out.println("<!-- " + rawName + " added to Catalog -->");
-	       	        setIn(f.getAbsolutePath());
-	       	        setDetectorId(detectorId);
-	       	        setComments(comments);
-	       	        setBenchmark(benchmark);
-	      			long lEndTime = new Date().getTime();
-	      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
-	      			setTime(uploadtime);
-	
-				} //'twas a file
-			} //while through the file
-			*/
+	       	        System.out.println("<!-- " + rawName + " added to Catalog -->");					
+                } else {		    
+			    	String partName = part.getName();
+			    	String fieldValue = request.getParameter(partName);
+			    	if ("detector".equals(partName)) {
+			    		if (StringUtils.isBlank(fieldValue)) {
+	    					System.out.println("You must enter a detector number for this data.");		    			
+			    		} else {
+			    			detectorId = fieldValue;
+			    		}} 
+			    		else if (("benchmark_"+detectorId).equals(partName)) {
+		    				benchmark = fieldValue;
+		    			} else if ("comments".equals(partName)) {
+		    				if (StringUtils.isNotBlank(fieldValue)) {
+		    					comments = fieldValue; 
+		    				}
+		    			}
+						comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
+		       	        setDetectorId(detectorId);
+		       	        setComments(comments);
+		       	        setBenchmark(benchmark);
+		      			long lEndTime = new Date().getTime();
+		      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
+		      			setTime(uploadtime);		       	        
+			    	}
+                }
 		} catch (Exception e) {
 			System.out.println("A problem occurred while uploading your file." + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
