@@ -87,7 +87,7 @@ public class Upload extends HttpServlet
 	                String fnow = df.format(now);
 					//even newer algorithm: use File.createTempFile!
 	                System.out.println(dataDir);
-					//File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
+					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
 	               	//String rawName = f.getName();
 	               	//System.out.println("<!-- " + rawName + " added to Catalog -->");					
 	               	//System.out.println(f.toPath());
