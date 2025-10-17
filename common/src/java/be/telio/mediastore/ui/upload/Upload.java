@@ -55,7 +55,8 @@ public class Upload extends HttpServlet
     public Upload(HttpServletRequest request, Elab elab)
     {
 		long lStartTime = new Date().getTime();
-		String dataDir = elab.getProperties().getDataDir();
+		//String dataDir = elab.getProperties().getDataDir();
+		String dataDir = "/scratch/tmp";
 		File tempRepo = new File(dataDir + "/temp"); 
 		int sizeThreshold = 0; 		
 		String lfn="";              //lfn on the USERS home computer
@@ -74,7 +75,7 @@ public class Upload extends HttpServlet
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
-                	System.out.print(fileName);
+                	System.out.println(fileName);
 					if (StringUtils.isBlank(fileName)) {
 	                	System.out.println("Missing file.");
 	    	        }
