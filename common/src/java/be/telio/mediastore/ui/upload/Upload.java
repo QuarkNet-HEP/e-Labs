@@ -97,9 +97,11 @@ public class Upload extends HttpServlet
 	                //   os.write(buffer, 0, bytesRead);
 	                //}
 	                //os.close();
+	               	System.out.println(f.toPath());
 	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
+	               	System.out.println(f.getAbsolutePath());
 	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
                 } else {		    
 			    	String partName = part.getName();
