@@ -91,7 +91,8 @@ public class Upload extends HttpServlet
 	               	System.out.println(f.toPath());
 	               	System.out.println(f.getAbsolutePath());
 	               	InputStream is = part.getInputStream(); 
-	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	               	System.out.println(is.toString());
+	               	//Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
                 } else {		    
