@@ -74,7 +74,9 @@ public class Upload extends HttpServlet
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
-                	String fieldValue = request.getParameter(fileName);
+                	System.out.print(fileName);
+                    String fieldValue = request.getParameter(fileName);
+                   	System.out.print(fieldValue);
 					if (StringUtils.isBlank(fileName)) {
 	                	System.out.println("Missing file.");
 	    	        }
