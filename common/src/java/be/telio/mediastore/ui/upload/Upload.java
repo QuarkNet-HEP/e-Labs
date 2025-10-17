@@ -88,15 +88,15 @@ public class Upload extends HttpServlet
 					//even newer algorithm: use File.createTempFile!
 	                System.out.println(dataDir);
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
-	               	//String rawName = f.getName();
-	               	//System.out.println("<!-- " + rawName + " added to Catalog -->");					
-	               	//System.out.println(f.toPath());
-	               	//System.out.println(f.getAbsolutePath());
+	               	String rawName = f.getName();
+	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
+	               	System.out.println(f.toPath());
+	               	System.out.println(f.getAbsolutePath());
 	               	InputStream is = part.getInputStream(); 
 	               	System.out.println(is.toString());
-	               	//Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
-	                //setIn(f.getAbsolutePath());
+	                setIn(f.getAbsolutePath());
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
