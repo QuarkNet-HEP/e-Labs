@@ -69,7 +69,7 @@ public class Upload extends HttpServlet
 		try {
 			request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
-		    Collection<Parts> parts = request.getParts();
+		    Collection<Part> parts = request.getParts();
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
