@@ -68,7 +68,7 @@ public class Upload extends HttpServlet
 		int channels[] = new int[4];
 		
 		try {
-			request.setAttribute("datadir", dataDir);			
+			//request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
 		    for (Part part : parts) {
@@ -85,16 +85,17 @@ public class Upload extends HttpServlet
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
 	                String fnow = df.format(now);
 					//even newer algorithm: use File.createTempFile!
-					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
-	               	String rawName = f.getName();
-	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
-	               	System.out.println(f.toPath());
-	               	System.out.println(f.getAbsolutePath());
+	                System.out.println(dataDir);
+					//File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
+	               	//String rawName = f.getName();
+	               	//System.out.println("<!-- " + rawName + " added to Catalog -->");					
+	               	//System.out.println(f.toPath());
+	               	//System.out.println(f.getAbsolutePath());
 	               	InputStream is = part.getInputStream(); 
 	               	System.out.println(is.toString());
 	               	//Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
-	                setIn(f.getAbsolutePath());
+	                //setIn(f.getAbsolutePath());
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
