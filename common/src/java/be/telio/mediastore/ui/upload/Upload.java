@@ -31,13 +31,9 @@ import gov.fnal.elab.usermanagement.impl.*;
 
 @WebServlet("/upload")
 @MultipartConfig(
-    //fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    //maxFileSize = 1024 * 1024 * 10,      // 10MB
-    //maxRequestSize = 1024 * 1024 * 50    // 50MB
-		  location = "/tmp", // Temporary directory to store large files
-		  fileSizeThreshold = 0, // Write files to disk immediately
-		  maxFileSize = -1L, // Unlimited file size
-		  maxRequestSize = -1L // Unlimited request size
+    fileSizeThreshold = 1024 * 1024 * 50, // 5MB
+    maxFileSize = 1024 * 1024 * 100,      // 100MB
+    maxRequestSize = 1024 * 1024 * 500    // 500MB
 )
 public class Upload extends HttpServlet
 {
