@@ -1,15 +1,11 @@
 package be.telio.mediastore.ui.upload;
-
-//import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.*;
 import java.text.*;
 import java.util.Collection;
-//import org.apache.commons.fileupload.*;
-//import org.apache.commons.fileupload.disk.*;
-//import org.apache.commons.fileupload.servlet.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -41,59 +37,47 @@ import gov.fnal.elab.usermanagement.impl.*;
 public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
-    private long delay = 0;
-    private long startTime = 0;
-    private long totalToRead = 0;
-    private long totalBytesRead = 0;
-    private int totalFiles = -1;
     private String in = "";
     private String daqId = "";
     private String uploadComments = "";
     private String uploadBenchmark = "";
     private String time = "";
     
-    public Upload(HttpServletRequest request, Elab elab)
+    public Upload(HttpServletRequest request, Elab elab) throws Exception
     {
 		long lStartTime = new Date().getTime();
-		//String dataDir = elab.getProperties().getDataDir();
-		String dataDir = "/scratch/tmp";
-		File tempRepo = new File(dataDir + "/temp"); 
-		int sizeThreshold = 0; 		
-		String lfn="";              //lfn on the USERS home computer
-		String fn = "";             //filename without slashes
-		String ds = "";
-		String detectorId = "";             //detector id
+		String dataDir = elab.getProperties().getDataDir();
+		//String dataDir = "/scratch/tmp";
+		String detectorId = "";     //detector id
 		String comments = "";       //optional comments on raw data file
 		String benchmark = "";
 		String usebenchmark = "";
-		int channels[] = new int[4];
 		
 		try {
 			//request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
-		    for (Part part : parts) {
+		    for (javax.mail.Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
                 	System.out.println(fileName);
 					if (StringUtils.isBlank(fileName)) {
-	                	System.out.println("Missing file.");
+	                	throw new Exception("Missing file.");
 	    	        }
+					if (part.getSize() == 0) {
+						throw new Exception("Your file is zero-length. You must upload a file which has some data.");
+					}
 	                //new algorithm for filenaming:
 	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
 	       	        //index starts at 0 and increments when there are collisions with other filenames
 	                Date now = new Date();
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
 	                String fnow = df.format(now);
-					//even newer algorithm: use File.createTempFile!
 	                System.out.println(dataDir);
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", new File(dataDir));
 	               	String rawName = f.getName();
 	               	System.out.println("<!-- " + rawName + " added to Catalog -->");					
-	               	System.out.println(f.toPath());
-	               	System.out.println(f.getAbsolutePath());
 	               	InputStream is = part.getInputStream(); 
-	               	System.out.println(is.toString());
 	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
@@ -123,7 +107,7 @@ public class Upload extends HttpServlet
 			    	}
                 }
 		} catch (Exception e) {
-			System.out.println("A problem occurred while uploading your file." + 
+			throw new Exception("A problem occurred while uploading your file." + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
 								e.toString());
 		}
