@@ -57,7 +57,7 @@ public class Upload extends HttpServlet
 			//request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
-		    for (javax.mail.Part part : parts) {
+		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
                 	System.out.println(fileName);
