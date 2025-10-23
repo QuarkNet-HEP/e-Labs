@@ -13,9 +13,6 @@
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
-<%@ page import="org.apache.commons.fileupload.*" %>
-<%@ page import="org.apache.commons.fileupload.disk.*" %>
-<%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.io.*" %>
 <%@ page import="be.telio.mediastore.ui.upload.*" %>
@@ -23,21 +20,6 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
-<%--
-Re: the upload progress stuff
-
-/* Licence:
-*   Use this however/wherever you like, just don't blame me if it breaks anything.
-*
-* Credit:
-*   If you're nice, you'll leave this bit:
-*
-*   Class by Pierre-Alexandre Losson -- http://www.telio.be/blog
-*   email : plosson@users.sourceforge.net
-*/
---%>
-
 <%
 ElabUserManagementProvider p = elab.getUserManagementProvider();
 CosmicElabUserManagementProvider cp = null;
@@ -45,60 +27,59 @@ if (p instanceof CosmicElabUserManagementProvider) {
 	cp = (CosmicElabUserManagementProvider) p;
 }
 else {
-	//throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
-	//	"Either this e-Lab does not use DAQs or it was improperly configured.");
+	throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+		"Either this e-Lab does not use DAQs or it was improperly configured.");
 }    
+
 Collection ids = cp.getDetectorIds(user);
 if(ids == null || ids.size() == 0) {
-    //throw new ElabJspException("Your group does not have any detector IDs associated with it. "
-     //       + "This is done when your group is first created.");
+    throw new ElabJspException("Your group does not have any detector IDs associated with it. "
+            + "This is done when your group is first created.");
 }
+
 request.setAttribute("detectorIDs", ids);
-String lfn="";              //lfn on the USERS home computer
-String fn = "";             //filename without slashes
-String ds = "";
-String detectorId = "";             //detector id
+String detectorId = "";
 String dataDir = elab.getProperties().getDataDir();
 request.setAttribute("datadir", dataDir);
 String benchmark = "";
 String usebenchmark = "";
 int channels[] = new int[4];
-
 List splits = new ArrayList();  //for both the split name and the channel validity information
 String exceptionMessage = "";
 		
-if (request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/form-data")) {
-	System.out.println("upload0");
-	Upload up = new Upload(request, elab);
-	String in = up.getIn();
-	detectorId = up.getDetectorId();
-	String comments = up.getComments();
-	benchmark = up.getBenchmark();
-	String uploadTime = up.getTime();
-	System.out.println(in);
-	System.out.println(detectorId);
-	System.out.println(comments);
-	System.out.println(benchmark);
-	System.out.println(uploadTime);
-	request.setAttribute("in", in);
-   	request.setAttribute("detectorid", detectorId);
-   	request.setAttribute("comments", comments);
-  	request.setAttribute("benchmark", benchmark);
-  	request.setAttribute("uploadtime", uploadTime);
-	%>
-		<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
-			<e:trdefault name="in" value="${in}"/>
-			<e:trdefault name="datadir" value="${datadir}"/>
-			<e:trdefault name="detectorid" value="${detectorid}"/>
-			<e:trdefault name="comments" value="${comments}"/>
-			<e:trdefault name="benchmark" value="${benchmark}"/>	
-			<e:trdefault name="uploadtime" value="${uploadtime}"/>	
-								
-			<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
-				<jsp:param name="provider" value="shell"/>
-			</jsp:include>
-		</e:analysis>
-	<%
+//EPeronja-10/22/2025: new upload code		
+if (request.getContentType() != null) {
+	if (request.getContentType().toLowerCase().startsWith("multipart/form-data") {
+		Upload up = new Upload(request, elab);
+		String in = up.getIn();
+		detectorId = up.getDetectorId();
+		String comments = up.getComments();
+		benchmark = up.getBenchmark();
+		String uploadTime = up.getTime();
+		System.out.println(in);
+		System.out.println(detectorId);
+		System.out.println(comments);
+		System.out.println(benchmark);
+		System.out.println(uploadTime);
+		request.setAttribute("in", in);
+	   	request.setAttribute("detectorid", detectorId);
+	   	request.setAttribute("comments", comments);
+	  	request.setAttribute("benchmark", benchmark);
+	  	request.setAttribute("uploadtime", uploadTime);
+		%>
+			<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+				<e:trdefault name="in" value="${in}"/>
+				<e:trdefault name="datadir" value="${datadir}"/>
+				<e:trdefault name="detectorid" value="${detectorid}"/>
+				<e:trdefault name="comments" value="${comments}"/>
+				<e:trdefault name="benchmark" value="${benchmark}"/>	
+				<e:trdefault name="uploadtime" value="${uploadtime}"/>									
+				<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
+					<jsp:param name="provider" value="shell"/>
+				</jsp:include>
+			</e:analysis>
+		<%
+	}
 } //end "if form has a file to upload"
 else {
 	//EPeronja-05/22/2013: get benchmark files
@@ -126,8 +107,6 @@ else {
 	request.setAttribute("detectorBenchmark", detectorBenchmark);
 	request.setAttribute("benchmarkTuples", benchmarkTuples);
 	request.setAttribute("exceptionMessage", exceptionMessage);
-
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -299,10 +278,9 @@ else {
 	</div>
 </form>
 
-	<%
+<%
 	}
 %>
-
 			</div>
 			<!-- end content -->	
 		

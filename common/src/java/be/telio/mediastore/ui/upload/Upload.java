@@ -28,11 +28,15 @@ import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.usermanagement.*;
 import gov.fnal.elab.usermanagement.impl.*;
 
+/**
+ * //EPeronja-10/22/2025: new upload code
+ */
+
 @WebServlet("/upload")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 500, // 500MB
-    maxFileSize = 1024 * 1024 * 1000,      // 1000MB
-    maxRequestSize = 1024 * 1024 * 5000    // 5000MB
+    fileSizeThreshold = 1024 * 1024 * 500, 
+    maxFileSize = 1024 * 1024 * 1000,      
+    maxRequestSize = 1024 * 1024 * 5000    
 )
 public class Upload extends HttpServlet
 {
@@ -47,14 +51,12 @@ public class Upload extends HttpServlet
     {
 		long lStartTime = new Date().getTime();
 		String dataDir = elab.getProperties().getDataDir();
-		//String dataDir = "/scratch/tmp";
 		String detectorId = "";     //detector id
 		String comments = "";       //optional comments on raw data file
 		String benchmark = "";
 		String usebenchmark = "";
 		
 		try {
-			//request.setAttribute("datadir", dataDir);			
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
 		    for (Part part : parts) {
