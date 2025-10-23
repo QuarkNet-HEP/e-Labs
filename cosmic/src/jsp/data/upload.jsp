@@ -13,9 +13,6 @@
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
-<%@ page import="org.apache.commons.fileupload2.*" %>
-<%@ page import="org.apache.commons.fileupload2.core.*" %> <%-- DiskFileItem --%>
-<%@ page import="org.apache.commons.fileupload2.jakarta.servlet6.*" %> <%-- JakartaServletFileUpload --%>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.io.*" %>
 <%@ page import="be.telio.mediastore.ui.upload.*" %>
@@ -23,189 +20,94 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
-<%--
-Re: the upload progress stuff
-
-/* Licence:
-*   Use this however/wherever you like, just don't blame me if it breaks anything.
-*
-* Credit:
-*   If you're nice, you'll leave this bit:
-*
-*   Class by Pierre-Alexandre Losson -- http://www.telio.be/blog
-*   email : plosson@users.sourceforge.net
-*/
---%>
-
 <%
 ElabUserManagementProvider p = elab.getUserManagementProvider();
 CosmicElabUserManagementProvider cp = null;
 if (p instanceof CosmicElabUserManagementProvider) {
-		cp = (CosmicElabUserManagementProvider) p;
+	cp = (CosmicElabUserManagementProvider) p;
 }
 else {
-		throw new ElabJspException("The user management provider does not support management of DAQ IDs. " +
-				"Either this e-Lab does not use DAQs or it was improperly configured.");
-}
+	throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+		"Either this e-Lab does not use DAQs or it was improperly configured.");
+}    
+
 Collection ids = cp.getDetectorIds(user);
 if(ids == null || ids.size() == 0) {
     throw new ElabJspException("Your group does not have any detector IDs associated with it. "
-        + "This is done when your group is first created.");
+            + "This is done when your group is first created.");
 }
-request.setAttribute("detectorIDs", ids);
 
-String lfn="";              //lfn on the USERS home computer
-String fn = "";             //filename without slashes
-String ds = "";
-String detectorId = "";             //detector id
-String comments = "";       //optional comments on raw data file
+request.setAttribute("detectorIDs", ids);
+String detectorId = "";
 String dataDir = elab.getProperties().getDataDir();
 request.setAttribute("datadir", dataDir);
 String benchmark = "";
 String usebenchmark = "";
 int channels[] = new int[4];
-
-File tempRepo = new File(dataDir + "/temp");
-int sizeThreshold = 0;
-String exceptionMessage = "";
 List splits = new ArrayList();  //for both the split name and the channel validity information
-//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-//AntiSamy as = new AntiSamy();
-
-if (JakartaServletFileUpload.isMultipartContent(request)) {
-		long lStartTime = new Date().getTime();
-		try {
-		    //BEGIN upload_progress_stuff
-		    UploadListener listener = new UploadListener(request, 0);
-				
-		    // Create a factory for disk-based file items
-		    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-		    		sizeThreshold, tempRepo, listener);
-
-	    	// Create a new file upload handler
-		    JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
-		    //ServletFileUpload upload = new ServletFileUpload();
-	    	//END upload_progress_stuff
-				
-        List<DiskFileItem> fileItems = upload.parseRequest(request);
-	    	
-	    	for (DiskFileItem fi : fileItems) {
-	    			if (fi.isFormField()) {
-	    					String name = fi.getFieldName();
-	    					String content = fi.getString();
-	    					if ("detector".equals(name)) {
-	    							if (StringUtils.isBlank(content)) {
-	    									throw new ElabJspException("You must enter a detector number for this data.");
-	    							}
-	    							else {
-	    									detectorId = content;
-	    							}
-	    					}
-	    					else if (("benchmark_"+detectorId).equals(name)) {
-	    							benchmark = content;
-	    					}
-	    					else if ("comments".equals(name)) {
-	    							if (StringUtils.isNotBlank(content)) {
-	    									comments = content;
-	    							}
-	    					}
-	    			}
-	    	}
-				
-				for (DiskFileItem fi : fileItems) {
-						if (!fi.isFormField()) {
-								lfn = fi.getName();
-								if (StringUtils.isBlank(lfn)) {
-	                	throw new ElabJspException("Missing file.");
-	    	        }
-		            //fn is the filename without slashes (which lfn has)
-		            fn = FilenameUtils.getName(lfn);
-								if (fi.getSize() == 0) {
-										throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
-								}
-	              //new algorithm for filenaming:
-	   	          //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
-	       	      //index starts at 0 and increments when there are collisions with other filenames
-	              Date now = new Date();
-	              DateFormat df = new SimpleDateFormat("yyyy.MMdd");
-	              String fnow = df.format(now);
-								//even newer algorithm: use File.createTempFile!
-								File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw",
-										new File(dataDir));
-	              String rawName = f.getName();
-								
-	              // write the file from memory or relocate it on disk.
-	              if (fi.isInMemory()) {
-	               		fi.write(f);
-	              }
-	              else {
-	               		fi.getStoreLocation().renameTo(f);
-	              }
-								comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
-	       	      out.println("<!-- " + rawName + " added to Catalog -->");
-	       	      request.setAttribute("in", f.getAbsolutePath());
-	       	      request.setAttribute("detectorid", detectorId);
-	       	      request.setAttribute("comments", comments);
-	      	      request.setAttribute("benchmark", benchmark);
-	      				long lEndTime = new Date().getTime();
-	      				String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
-	      	      request.setAttribute("uploadtime", uploadtime);
-
-%>
-						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
-							<e:trdefault name="in" value="${in}"/>
-							<e:trdefault name="datadir" value="${datadir}"/>
-							<e:trdefault name="detectorid" value="${detectorid}"/>
-							<e:trdefault name="comments" value="${comments}"/>
-							<e:trdefault name="benchmark" value="${benchmark}"/>	
-							<e:trdefault name="uploadtime" value="${uploadtime}"/>
-							
-							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
-								<jsp:param name="provider" value="shell"/>
-							</jsp:include>
-						</e:analysis>
-					<%
-	
-				} //'twas a file
-			} //while through the file
-		} catch (Exception e) {
-			exceptionMessage = "A problem occurred while uploading your file.<br />" +
-							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
-								e.toString();
-		}
-
-	} //end "if form has a file to upload"
-		else {
-			
-			//EPeronja-05/22/2013: get benchmark files
-			Iterator iterator = ids.iterator();
-			TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
-			TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
-			ResultSet searchResults = null;
-			
-			//loop through detectors
-			while (iterator.hasNext()) {
-				Integer key = Integer.parseInt((String) iterator.next());
-			  	//retrieve benchmark files from database
-					searchResults = Benchmark.getBenchmarkFileName(elab, key);
-			  	if (searchResults != null) {
-			 		String[] filenames = searchResults.getLfnArray();
-			 		for (int i = 0; i < filenames.length; i++){
-						VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-						if (e != null) {
-							benchmarkTuples.put(filenames[i], e);
-							detectorBenchmark.put(filenames[i], key);
-							}
-					}//end for loop
-			  	}//end check searchResults
-			}//end looping through detectors
-		request.setAttribute("detectorBenchmark", detectorBenchmark);
-		request.setAttribute("benchmarkTuples", benchmarkTuples);
-		request.setAttribute("exceptionMessage", exceptionMessage);
-
-		%>
+String exceptionMessage = "";
 		
+//EPeronja-10/22/2025: new upload code		
+if (request.getContentType() != null) {
+	if (request.getContentType().toLowerCase().startsWith("multipart/form-data") {
+		Upload up = new Upload(request, elab);
+		String in = up.getIn();
+		detectorId = up.getDetectorId();
+		String comments = up.getComments();
+		benchmark = up.getBenchmark();
+		String uploadTime = up.getTime();
+		System.out.println(in);
+		System.out.println(detectorId);
+		System.out.println(comments);
+		System.out.println(benchmark);
+		System.out.println(uploadTime);
+		request.setAttribute("in", in);
+	   	request.setAttribute("detectorid", detectorId);
+	   	request.setAttribute("comments", comments);
+	  	request.setAttribute("benchmark", benchmark);
+	  	request.setAttribute("uploadtime", uploadTime);
+		%>
+			<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+				<e:trdefault name="in" value="${in}"/>
+				<e:trdefault name="datadir" value="${datadir}"/>
+				<e:trdefault name="detectorid" value="${detectorid}"/>
+				<e:trdefault name="comments" value="${comments}"/>
+				<e:trdefault name="benchmark" value="${benchmark}"/>	
+				<e:trdefault name="uploadtime" value="${uploadtime}"/>									
+				<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
+					<jsp:param name="provider" value="shell"/>
+				</jsp:include>
+			</e:analysis>
+		<%
+	}
+} //end "if form has a file to upload"
+else {
+	//EPeronja-05/22/2013: get benchmark files
+	Iterator iterator = ids.iterator();
+	TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+	TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
+	ResultSet searchResults = null;
+	
+	//loop through detectors
+	while (iterator.hasNext()) {
+		Integer key = Integer.parseInt((String) iterator.next());
+	  	//retrieve benchmark files from database
+			searchResults = Benchmark.getBenchmarkFileName(elab, key);
+	  	if (searchResults != null) {
+	 		String[] filenames = searchResults.getLfnArray();
+	 		for (int i = 0; i < filenames.length; i++){
+				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+				if (e != null) {
+					benchmarkTuples.put(filenames[i], e);
+					detectorBenchmark.put(filenames[i], key);				
+					}				
+			}//end for loop
+	  	}//end check searchResults
+	}//end looping through detectors
+	request.setAttribute("detectorBenchmark", detectorBenchmark);
+	request.setAttribute("benchmarkTuples", benchmarkTuples);
+	request.setAttribute("exceptionMessage", exceptionMessage);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -224,8 +126,8 @@ if (JakartaServletFileUpload.isMultipartContent(request)) {
         <script>
     	$(document).ready(function() {
 				$('select').each(function(){
-				    if (!$(this).find('option').length){
-				        $(this).hide();
+				    if (!$(this).find('option').length){ 
+				        $(this).hide(); 
 				    }
 				});
 				$('select option').each(function() {
@@ -233,12 +135,12 @@ if (JakartaServletFileUpload.isMultipartContent(request)) {
 				});
 		});
     	function checkFields() {
-			var goAhead = false;
+			var goAhead = false;	
     		var radios = document.getElementsByTagName('input');
        		for (var i = 0; i < radios.length; i++) {
        		    if (radios[i].type == 'radio' && radios[i].checked) {
        		      goAhead = true;
-       		    }
+       		    } 
        		}
     		if (!goAhead) {
     			var msg = document.getElementById("msg");
@@ -290,7 +192,7 @@ if (JakartaServletFileUpload.isMultipartContent(request)) {
 </ul>
 
 <form name="uploadform" id="upload-form" method="post" enctype="multipart/form-data" onSubmit="startProgress()">
-    <!-- file, detector, and upload table -->
+    <!-- file, detector, and upload table -->	
     <div class="redborder">
 <strong>Please <em>do not</em> upload files larger than 2 GB in size. You'll have to split them up into smaller pieces. Questions? See the <a href="../library/FAQ.jsp">FAQ</a> </strong>
 </div>
@@ -326,10 +228,10 @@ if (JakartaServletFileUpload.isMultipartContent(request)) {
 								    				</c:choose>
 						    				</c:forEach>
 										</c:when>
-									</c:choose>
+									</c:choose>						
 								</c:forEach>
 			    			</select>
-						  </td></tr>
+						  </td></tr>							
 						</table>
 			  		</td>
 			  	</tr>
@@ -376,12 +278,11 @@ if (JakartaServletFileUpload.isMultipartContent(request)) {
 	</div>
 </form>
 
-	<%
+<%
 	}
 %>
-
 			</div>
-			<!-- end content -->
+			<!-- end content -->	
 		
 			<div id="footer">
 			</div>
