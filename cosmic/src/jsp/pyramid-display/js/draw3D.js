@@ -31,9 +31,9 @@ const axis_length = 750;
 const max_lg = 1200;
 let debug3D = false;
 let debug3Dsensor = false;
-let debug3Devent = true;
-let debug3Dreverse = true;
-let debug3Dline = true;
+let debug3Devent = false;
+let debug3Dreverse = false;
+let debug3Dline = false;
 
 class triShaft {
   constructor() {
@@ -414,8 +414,7 @@ function loadEvent(eventIndex,x,y,s) {
   let eventX = x[eventIndex-1];
   let eventY = y[eventIndex-1];
   let reversed = false;
-  let ndxX = 5;
-  let ndxY = 6;
+
   let channelPosition = 0;
   let channelSensor = 0;
   if (debug3Devent === true) {
@@ -434,13 +433,23 @@ function loadEvent(eventIndex,x,y,s) {
   }
   if (eventX == undefined) { eventX = []; }
   if (eventY == undefined) { eventY = []; }
-  
+  let ndxX = 5;
+  let ndxY = 6;
+ 
+  end = layerOrderX[0][0];
+  middle = layerOrderX[1][0];
+  start = layerOrderX[2][0];
+
   //change the order
-  for (let layer = eventX.length-1; layer >= 0; layer--){
+  var ndx = layerOrderX[2][1];
+  layer = layerOrderX[2][2];
+  var layerNdx = 2;
+  //layer X
+  for (let x = eventX.length-1; x >= 0; x--){
     let x_new = {};
     let xp_new = {};
 	//check if channels are reversed
-    if (geometry[ndxX][2] === "REVERSED") {
+    if (geometry[ndx][2] === "REVERSED") {
     	reversed = true;
 	} else {
 		reversed = false;
@@ -492,13 +501,22 @@ function loadEvent(eventIndex,x,y,s) {
 	}
     x_hit[layer] = x_new;
     x_prisms[layer] = xp_new;
-    ndxX -= 2;
+	layerNdx -= 1;
+	if (layerNdx >= 0) {
+		layer = layerOrderX[layerNdx][2];
+		ndx = layerOrderX[layerNdx][1];
+	}
   }
-  for (let layer=eventY.length-1; layer >= 0; layer--){
+
+  var ndx = layerOrderY[2][1];
+  layer = layerOrderY[2][2];
+  var layerNdx = 2;
+  //Y layer
+  for (let x=eventY.length-1; x >= 0; x--){
     let y_new = {};
     let yp_new = {};
 	//check if channels are reversed
-    if (geometry[ndxY][2] === "REVERSED") {
+    if (geometry[ndx][2] === "REVERSED") {
     	reversed = true;
 	} else {
 		reversed = false;
@@ -519,13 +537,15 @@ function loadEvent(eventIndex,x,y,s) {
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
-	      y_new[i] = lg;
-	      yp_new[i] = obj;
-	      if (lg > 0) {
-	        obj.faces.material.color.set(new THREE.Color(`hsl(${((max_lg-lg)/max_lg)*60}, 100%, 50%)`));
-	        obj.faces.material.transparent = false;
-	        obj.faces.material.opacity = 1;
-	      }    
+		  if (obj != undefined) {
+		      y_new[i] = lg;
+		      yp_new[i] = obj;
+		      if (lg > 0) {
+		        obj.faces.material.color.set(new THREE.Color(`hsl(${((max_lg-lg)/max_lg)*60}, 100%, 50%)`));
+		        obj.faces.material.transparent = false;
+		        obj.faces.material.opacity = 1;
+		      }    
+		  }
 	      channelSensor += 1;
 	    }	
 	 } else {
@@ -535,18 +555,24 @@ function loadEvent(eventIndex,x,y,s) {
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
-	      y_new[i] = lg;
-	      yp_new[i] = obj;
-	      if (lg > 0) {
-	        obj.faces.material.color.set(new THREE.Color(`hsl(${((max_lg-lg)/max_lg)*60}, 100%, 50%)`));
-	        obj.faces.material.transparent = false;
-	        obj.faces.material.opacity = 1;
-	      }    
+		  if (obj != undefined) {
+		  	 y_new[i] = lg;
+	      	 yp_new[i] = obj;
+	      	 if (lg > 0) {
+	        	obj.faces.material.color.set(new THREE.Color(`hsl(${((max_lg-lg)/max_lg)*60}, 100%, 50%)`));
+	        	obj.faces.material.transparent = false;
+	        	obj.faces.material.opacity = 1;
+	      	 }
+		  }    
 	    }
 	}
     y_hit[layer] = y_new;
     y_prisms[layer] = yp_new;
-    ndxY -= 2;
+	layerNdx -= 1;
+	if (layerNdx >= 0) {
+		layer = layerOrderY[layerNdx][2];
+		ndx = layerOrderY[layerNdx][1];
+	}
   }
   let vectors = globalThis.calculate(scene,s,x_prisms, y_prisms, x_hit, y_hit);
   if (debug3Dline === true) {
@@ -773,6 +799,7 @@ function resetPyramidPosition() {
 }//end of resetPyramidPosition
 
 function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
+//function draw3DSettings(detector, g, l) {
     if (debug3D === true) {		
 		console.log("3D drawings");
 	}
@@ -802,8 +829,8 @@ function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
 	clearMuons();  
 	muonVectors = [];
 	loadEvent(1,x,y,s);
+	//loadEvent(1, s);
 	loadAngle(s,THREE.MathUtils.degToRad(-sensorTheta),THREE.MathUtils.degToRad(sensorPhi),0);	
-	//const targetPosition = new THREE.Vector3(s.centerx-150,s.centery+25,s.centerz+20); // Specify the target position
     const targetPosition = new THREE.Vector3(s.centerx-10,s.centery+15,s.centerz+10); // Specify the target position
     const duration = 1000; // Specify the duration in milliseconds
     smoothCameraZoom(s, camera, targetPosition, duration, controls);

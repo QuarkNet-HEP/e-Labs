@@ -12,14 +12,13 @@ var yCoord = [];
 let quadPosOffset = 60;
 let pedThreshold = 10;
 let size = 35;
-let startNdxX = 5; //we start drawing the top layer in Z first (for X)
-let startNdxY = 6; //we start drawing the top layer in Z first (for Y)
 let totalIntensity = 300;
 let zOffset = 20;
 let lineExtension = 80;
 let pointSize = 8;
 let debug2D = false;
 let debug2DLayer = false;
+let debug2DLayerMore = false;
 let debug2DEvent = false;
 let debug2DPoint = false;
 let debug2DLine = false;
@@ -36,10 +35,7 @@ function updateInputValue() {
 function drawLine(x1, y1, x2, y2, extensionLength) {
   // 80 for extensionLength 
   // Calculate the length and angle of the original line
-  //var originalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  //console.log("length",originalLength);
   var angle = Math.atan2(y2 - y1, x2 - x1);
-  //console.log("angle",angle);
   // Calculate the new end points based on the extensionLength and the angle
   var newX2 = x2 + extensionLength * Math.cos(angle);
   var newY2 = y2 + extensionLength * Math.sin(angle);
@@ -135,7 +131,7 @@ function calculateSidePoint(layerTriangle, layer) {
 				 pointPercent = point1Intensity * 100 / pointPercentSum;
 				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
 				} else {
-			     //sthe first triangle is down with lower intensity
+			     //the first triangle is down with lower intensity
 				 pointPercent = point2Intensity * 100 / pointPercentSum;
 				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
 				}
@@ -152,16 +148,16 @@ function calculateSidePoint(layerTriangle, layer) {
 	return sidePoint;
 }//end of calculateSidePoint
 
-function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot){
-  var sidePointX1 = calculateSidePoint(layerTriangle, 0);
+function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot, layerOrder){
+  var sidePointX1 = calculateSidePoint(layerTriangle, layerOrder[0][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 1: ", sidePointX1);
   }
-  var sidePointX2 = calculateSidePoint(layerTriangle, 1);
+  var sidePointX2 = calculateSidePoint(layerTriangle, layerOrder[1][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 2: ", sidePointX2);
   }  
-  var sidePointX3 = calculateSidePoint(layerTriangle, 2);
+  var sidePointX3 = calculateSidePoint(layerTriangle, layerOrder[2][2]);
   if (debug2DTrack === true) {
 	  console.log("side point pixels 3: ", sidePointX3);
   } 
@@ -211,8 +207,8 @@ function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
         ctx.fillStyle = 'rgba(255, 255, 255, 1 )';
 	    if (debug2DTriangle == true) {
 	    	console.log("intensity == 0");
-	    	triangleCoords = [];
 	    }
+		triangleCoords = [];
       } else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.font = '15px Arial';
@@ -372,50 +368,61 @@ function drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordA
 	return channel;
 }//end of drawQuad
 	
-function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop) {
+function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop) {
     var channel = 0;
     var layer = 2; // we start with the top layer data in Z for both X and Y --> array goes 0,1,2
-    var ndx = startNdx; //also the start in Z for either X or Y
     var up = false;
     var reversed = false;
     var quadSize = 0.0;
     var cellSize = 0.0;
     var quadGap = 0.0;    
-    var numQuads = (layers[ndx-1].length-2);
     var startPoint = startX;
-    //need to check the pixel we start drawing based on the # of cells
-	if (layers[ndx-1].length-2 === 12) {
-		startPoint = 80;
-	}
-	var zPos = startPoint - 20;
 	// Read the value of the input
     var layerAct = [[],[],[]];
     var layerQuad = [[],[],[]];
     var layerQuadSize = [[],[],[]];
     var layerTriangle = [[],[],[]];   
     var end, middle, start;
+	var layerOrder = [];
+	var startNdx = 0;
     if (whichLayer === 'X') { 
-    	end = parseFloat(geometry[1][geometry[1].length-4]);
-    	middle = parseFloat(geometry[3][geometry[3].length-4]);
-    	start = parseFloat(geometry[5][geometry[5].length-4]);
+		layerOrder = layerOrderX;
+		startNdx = 5;
     } else {
-    	end = parseFloat(geometry[2][geometry[2].length-4]);
-    	middle = parseFloat(geometry[4][geometry[4].length-4]);
-    	start = parseFloat(geometry[6][geometry[6].length-4]);
-		
+		layerOrder = layerOrderY;
+		startNdx = 4;
 	}
-    if (debug2DLayer === true) {
+	// Sort in descending order by the first element
+	layerOrder.sort(function(a, b) {
+	  return a[0] - b[0]; 
+	});
+	end = layerOrder[0][0];
+	middle = layerOrder[1][0];
+	start = layerOrder[2][0];
+	
+	var ndx = layerOrder[2][1];
+	layer = layerOrder[2][2];
+	var layerNdx = 2;
+	var numQuads = (layers[ndx-1].length-2);
+	//need to check the pixel we start drawing based on the # of cells
+	if (layers[ndx-1].length-2 === 12) {
+		startPoint = 80;
+	}
+	var zPos = startPoint - 20;
+	
+    if (debug2DLayerMore === true) {
+	  console.log("layer order:", layerOrder);
       console.log("canvas:", ctx);
       console.log("layers: ", layers);
 	  console.log("startPoint", startPoint, "numQuads:", numQuads);
 	}
-    var cm = 260 / 100.0;
+	var units = 260.0 / (start - end);
     if (debug2DLayer === true) {
-		console.log("start, middle, end:",start, middle, end);
+		console.log("start, middle, end, cm:",start, middle, end, units);
 	}
-    var firstLayer = startY; //starts drawing at this position in the canvas
-	var secondLayer = (start - middle) * cm;	
-    var thirdLayer = 260;
+    var firstLayer = startY; //starts drawing at this position in the canvas (70 and 450)
+	var secondLayer = (start - middle) * units;	
+    var thirdLayer = (start - end) * units;
     //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
     if (debug2DLayer === true) {
 		console.log("first, second and third layer: ", firstLayer, secondLayer, thirdLayer);
@@ -451,7 +458,7 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
-	  if (debug2DLayer === true) {
+	  if (debug2DLayerMore === true) {
 		  console.log("yp: ", yp);
 		  console.log("up: ", up);
 		  console.log("posQuadSize: ", posQuadSize);
@@ -484,20 +491,23 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 		  }
 	  }//end inner for loop	
       channel = 0;
-      layer-= 1;
-      ndx -= 2;
+	  layerNdx -= 1;
+	  if (layerNdx >= 0) {
+	  	layer = layerOrder[layerNdx][2];
+	  	ndx = layerOrder[layerNdx][1];
+	  }
    }//end outer for loop  
 
    if (debug2DLine === true) {
 	   console.log("calculateTrack for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
    }
-   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop);	
+   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop, layerOrder);	
 }//end of drawLayer
 
 function draw(event){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawLayer('X', event, startNdxX, 255, 70, 350, 88); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
-  drawLayer('Y', event, startNdxY, 80, 450, 730, 470); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('X', event, 255, 70, 350, 88); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('Y', event, 80, 450, 730, 470); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
   ctx.font = 'italic 25px Arial';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(0, 0, 0, 1 )'
@@ -505,6 +515,7 @@ function draw(event){
   ctx.fillText('Y-view display - find muon track with 3 planes', canvas.width / 2, 420);
 }//end of draw
 
+//function draw2DSettings(event, g, l) {
 function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	subtractPedX = sX;
 	subtractPedY = sY;
@@ -517,10 +528,6 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 		console.log("2D drawings");
 		console.log("geometry:",g);
 		console.log("layers:",l);
-		console.log("subPedX:",sX);
-		console.log("subPedY:",sY);
-		console.log("xCoord:",cX);
-		console.log("yCoord:",cY);
 	}
 	document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;
