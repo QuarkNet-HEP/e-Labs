@@ -51,6 +51,12 @@ String exceptionMessage = "";
 if (request.getContentType() != null) {
 	if (request.getContentType().startsWith("multipart/form-data")) {
 		Upload up = new Upload(request, elab);
+		String in = up.getIn();
+		detectorId = up.getDetectorId();
+		String comments = up.getComments();
+		benchmark = up.getBenchmark();
+		String uploadTime = up.getTime();
+		
 		System.out.println("we are in business");
 	}
 } //end "if form has a file to upload"

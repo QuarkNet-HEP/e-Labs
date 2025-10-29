@@ -42,7 +42,7 @@ public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
     private String in = "";
-    private String daqId = "";
+    private String detectorId = "";
     private String uploadComments = "";
     private String uploadBenchmark = "";
     private String time = "";
@@ -51,10 +51,6 @@ public class Upload extends HttpServlet
     {
 		long lStartTime = new Date().getTime();
 		String dataDir = elab.getProperties().getDataDir();
-		String detectorId = "";     //detector id
-		String comments = "";       //optional comments on raw data file
-		String benchmark = "";
-		String usebenchmark = "";
 		try {
 			System.out.println("it gets here");
 			/*		
@@ -123,10 +119,10 @@ public class Upload extends HttpServlet
     	return in;
     }
     public void setDetectorId(String value) {
-    	daqId = value;
+    	detectorId = value;
     }
     public String getDetectorId() {
-    	return daqId;
+    	return detectorId;
     }
     public void setComments(String value) {
     	uploadComments = value;
