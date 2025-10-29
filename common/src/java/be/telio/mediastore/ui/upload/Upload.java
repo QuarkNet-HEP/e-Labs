@@ -58,15 +58,9 @@ public class Upload extends HttpServlet
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
-                	System.out.println(fileName);
-					if (StringUtils.isBlank(fileName)) {
+ 					if (StringUtils.isBlank(fileName)) {
 	                	throw new Exception("Missing file.");
 	    	        }
-	    			/*		
-
-					if (part.getSize() == 0) {
-						throw new Exception("Your file is zero-length. You must upload a file which has some data.");
-					}
 	                //new algorithm for filenaming:
 	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
 	       	        //index starts at 0 and increments when there are collisions with other filenames
@@ -81,7 +75,6 @@ public class Upload extends HttpServlet
 	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
-	                */
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
