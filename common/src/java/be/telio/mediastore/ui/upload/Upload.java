@@ -57,13 +57,13 @@ public class Upload extends HttpServlet
 
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
-    			System.out.println(fileName);
-    			/*		
                 if (fileName != null) { // It's a file part
                 	System.out.println(fileName);
 					if (StringUtils.isBlank(fileName)) {
 	                	throw new Exception("Missing file.");
 	    	        }
+	    			/*		
+
 					if (part.getSize() == 0) {
 						throw new Exception("Your file is zero-length. You must upload a file which has some data.");
 					}
@@ -81,6 +81,7 @@ public class Upload extends HttpServlet
 	               	Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	                is.close();
 	                setIn(f.getAbsolutePath());
+	                */
                 } else {		    
 			    	String partName = part.getName();
 			    	String fieldValue = request.getParameter(partName);
@@ -105,8 +106,6 @@ public class Upload extends HttpServlet
 		      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
 		      			setTime(uploadtime);		       	        
 			    	}
-*/
-			    	
                 }
 		} catch (Exception e) {
 			throw new Exception("A problem occurred while uploading your file." + 
