@@ -32,12 +32,12 @@ import gov.fnal.elab.usermanagement.impl.*;
  * //EPeronja-10/22/2025: new upload code
  */
 
-//@WebServlet("/upload")
-//@MultipartConfig(
-//    fileSizeThreshold = 1024 * 1024 * 500, 
-//    maxFileSize = 1024 * 1024 * 1000,      
-//    maxRequestSize = 1024 * 1024 * 5000    
-//)
+@WebServlet("/upload")
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 500, 
+    maxFileSize = 1024 * 1024 * 1000,      
+    maxRequestSize = 1024 * 1024 * 5000    
+)
 public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
