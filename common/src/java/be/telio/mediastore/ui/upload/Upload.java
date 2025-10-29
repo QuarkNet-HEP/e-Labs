@@ -49,15 +49,15 @@ public class Upload extends HttpServlet
     
     public Upload(HttpServletRequest request, Elab elab) throws Exception
     {
-		//long lStartTime = new Date().getTime();
-		//String dataDir = elab.getProperties().getDataDir();
-		//String detectorId = "";     //detector id
-		//String comments = "";       //optional comments on raw data file
-		//String benchmark = "";
-		//String usebenchmark = "";
-		System.out.println("it gets here");
-		/*		
+		long lStartTime = new Date().getTime();
+		String dataDir = elab.getProperties().getDataDir();
+		String detectorId = "";     //detector id
+		String comments = "";       //optional comments on raw data file
+		String benchmark = "";
+		String usebenchmark = "";
 		try {
+			System.out.println("it gets here");
+			/*		
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
 		    for (Part part : parts) {
@@ -109,12 +109,12 @@ public class Upload extends HttpServlet
 		      			setTime(uploadtime);		       	        
 			    	}
                 }
+*/
 		} catch (Exception e) {
 			throw new Exception("A problem occurred while uploading your file." + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
 								e.toString());
 		}
-*/
     }
     public void setIn(String value) {
     	in = value;
