@@ -32,12 +32,12 @@ import gov.fnal.elab.usermanagement.impl.*;
  * //EPeronja-10/22/2025: new upload code
  */
 
-@WebServlet("/upload")
-@MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 500, 
-    maxFileSize = 1024 * 1024 * 1000,      
-    maxRequestSize = 1024 * 1024 * 5000    
-)
+//@WebServlet("/upload")
+//@MultipartConfig(
+//    fileSizeThreshold = 1024 * 1024 * 500, 
+//    maxFileSize = 1024 * 1024 * 1000,      
+//    maxRequestSize = 1024 * 1024 * 5000    
+//)
 public class Upload extends HttpServlet
 {
     private HttpServletRequest request;
@@ -49,12 +49,12 @@ public class Upload extends HttpServlet
     
     public Upload(HttpServletRequest request, Elab elab) throws Exception
     {
-		long lStartTime = new Date().getTime();
-		String dataDir = elab.getProperties().getDataDir();
-		String detectorId = "";     //detector id
-		String comments = "";       //optional comments on raw data file
-		String benchmark = "";
-		String usebenchmark = "";
+		//long lStartTime = new Date().getTime();
+		//String dataDir = elab.getProperties().getDataDir();
+		//String detectorId = "";     //detector id
+		//String comments = "";       //optional comments on raw data file
+		//String benchmark = "";
+		//String usebenchmark = "";
 		System.out.println("it gets here");
 		/*		
 		try {

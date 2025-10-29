@@ -49,8 +49,9 @@ String exceptionMessage = "";
 		
 //EPeronja-10/22/2025: new upload code		
 if (request.getContentType() != null) {
-	if (request.getContentType().toLowerCase().startsWith("multipart/form-data") {
-		System.out.println("upload jsp");
+	if (request.getContentType().startsWith("multipart/form-data")) {
+		Upload up = new Upload(request, elab);
+		System.out.println("we are in business");
 	}
 } //end "if form has a file to upload"
 else {
