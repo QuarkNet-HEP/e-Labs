@@ -92,16 +92,16 @@ public class Upload extends HttpServlet
 			    			detectorId = fieldValue;
 			    		}} 
 			    		else if (("benchmark_"+detectorId).equals(partName)) {
-		    				benchmark = fieldValue;
+			    			uploadBenchmark = fieldValue;
 		    			} else if ("comments".equals(partName)) {
 		    				if (StringUtils.isNotBlank(fieldValue)) {
-		    					comments = fieldValue; 
+		    					uploadComments = fieldValue; 
 		    				}
 		    			}
-						comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
+			    		uploadComments = ElabUtil.stringSanitization(uploadComments, elab, "Cosmic Upload");
 		       	        setDetectorId(detectorId);
-		       	        setComments(comments);
-		       	        setBenchmark(benchmark);
+		       	        setComments(uploadComments);
+		       	        setBenchmark(uploadBenchmark);
 		      			long lEndTime = new Date().getTime();
 		      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
 		      			setTime(uploadtime);		       	        
