@@ -61,8 +61,26 @@ if (request.getContentType() != null) {
 		System.out.println(comments);
 		System.out.println(benchmark);
 		System.out.println(uploadTime);
+		request.setAttribute("in", in);
+	   	request.setAttribute("detectorid", detectorId);
+	   	request.setAttribute("comments", comments);
+	  	request.setAttribute("benchmark", benchmark);
+	  	request.setAttribute("uploadtime", uploadTime);
+		%>
+			<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+				<e:trdefault name="in" value="${in}"/>
+				<e:trdefault name="datadir" value="${datadir}"/>
+				<e:trdefault name="detectorid" value="${detectorid}"/>
+				<e:trdefault name="comments" value="${comments}"/>
+				<e:trdefault name="benchmark" value="${benchmark}"/>	
+				<e:trdefault name="uploadtime" value="${uploadtime}"/>									
+				<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
+					<jsp:param name="provider" value="shell"/>
+				</jsp:include>
+			</e:analysis>
+		<%
 		
-		System.out.println("we are in business");
+
 	}
 } //end "if form has a file to upload"
 else {
