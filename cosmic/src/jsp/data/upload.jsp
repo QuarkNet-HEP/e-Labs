@@ -56,6 +56,11 @@ if (request.getContentType() != null) {
 		String comments = up.getComments();
 		benchmark = up.getBenchmark();
 		String uploadTime = up.getTime();
+		System.out.println(in);
+		System.out.println(detectorId);
+		System.out.println(comments);
+		System.out.println(benchmark);
+		System.out.println(uploadTime);
 		
 		System.out.println("we are in business");
 	}

@@ -53,9 +53,10 @@ public class Upload extends HttpServlet
 		String dataDir = elab.getProperties().getDataDir();
 		try {
 			System.out.println("it gets here");
-			/*		
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
+			/*		
+
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
                 if (fileName != null) { // It's a file part
