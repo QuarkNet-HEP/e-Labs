@@ -52,13 +52,13 @@ public class Upload extends HttpServlet
 		long lStartTime = new Date().getTime();
 		String dataDir = elab.getProperties().getDataDir();
 		try {
-			System.out.println("it gets here");
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
-			/*		
 
 		    for (Part part : parts) {
                 String fileName = part.getSubmittedFileName();
+    			System.out.println(fileName);
+    			/*		
                 if (fileName != null) { // It's a file part
                 	System.out.println(fileName);
 					if (StringUtils.isBlank(fileName)) {
@@ -105,8 +105,9 @@ public class Upload extends HttpServlet
 		      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
 		      			setTime(uploadtime);		       	        
 			    	}
-                }
 */
+			    	
+                }
 		} catch (Exception e) {
 			throw new Exception("A problem occurred while uploading your file." + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
