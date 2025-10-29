@@ -55,7 +55,8 @@ public class Upload extends HttpServlet
 		String comments = "";       //optional comments on raw data file
 		String benchmark = "";
 		String usebenchmark = "";
-		
+		System.out.println("it gets here");
+		/*		
 		try {
 		    UploadListener listener = new UploadListener(request, 0);
 		    Collection<Part> parts = request.getParts();
@@ -113,7 +114,7 @@ public class Upload extends HttpServlet
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: " +
 								e.toString());
 		}
-
+*/
     }
     public void setIn(String value) {
     	in = value;
