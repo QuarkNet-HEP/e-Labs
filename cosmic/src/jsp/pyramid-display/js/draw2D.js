@@ -12,34 +12,39 @@ var yCoord = [];
 let quadPosOffset = 60;
 let pedThreshold = 10;
 let size = 35;
-let startNdxX = 5; //we start drawing the top layer in Z first (for X)
-let startNdxY = 6; //we start drawing the top layer in Z first (for Y)
 let totalIntensity = 300;
 let zOffset = 20;
 let lineExtension = 80;
 let pointSize = 8;
 let debug2D = false;
 let debug2DLayer = false;
+let debug2DLayerMore = false;
 let debug2DEvent = false;
 let debug2DPoint = false;
 let debug2DLine = false;
 let debug2DTrack = false;
 let debug2DTriangle = false;
 let debug2DQuad = false;
+let overallCellSize = 0;
 
 var inputValue = inputElement.value;
 function updateInputValue() {
   inputValue = inputElement.value;
-  draw(inputValue-1); 
+  if (is_numeric(inputValue)) {
+	if (inputValue > 0) {
+	  draw(inputValue-1);
+	} 
+  }
 }//end of updateInputValue
+
+function is_numeric(str){
+    return /^\d+$/.test(str);
+}
 
 function drawLine(x1, y1, x2, y2, extensionLength) {
   // 80 for extensionLength 
   // Calculate the length and angle of the original line
-  //var originalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  //console.log("length",originalLength);
   var angle = Math.atan2(y2 - y1, x2 - x1);
-  //console.log("angle",angle);
   // Calculate the new end points based on the extensionLength and the angle
   var newX2 = x2 + extensionLength * Math.cos(angle);
   var newY2 = y2 + extensionLength * Math.sin(angle);
@@ -70,14 +75,24 @@ function calculatePointByPercentage(x1, y1, x2, y2, percentage, yProjected) {
   return { x, y, yProjected };
 }//end of calculatePointByPercentage
 
-function getSingleSidePoint(layerTriangle, layer) {
+function getSingleSidePoint(event, layerTriangle) {
 	var sidePoint = [];
-	var x1 = layerTriangle[layer][0][2][0];
-	var y1 = layerTriangle[layer][0][2][1];
-	var x2 = layerTriangle[layer][0][3][0];
-	var y2 = layerTriangle[layer][0][3][1];
-	var x3 = layerTriangle[layer][0][4][0];
-	var y3 = layerTriangle[layer][0][4][1];
+	var eventsToTest = [66];
+	//var x1 = layerTriangle[layer][0][2][0];
+	//var y1 = layerTriangle[layer][0][2][1];
+	//var x2 = layerTriangle[layer][0][3][0];
+	//var y2 = layerTriangle[layer][0][3][1];
+	//var x3 = layerTriangle[layer][0][4][0];
+	//var y3 = layerTriangle[layer][0][4][1];
+	var x1 = layerTriangle[2][0];
+	var y1 = layerTriangle[2][1];
+	var x2 = layerTriangle[3][0];
+	var y2 = layerTriangle[3][1];
+	var x3 = layerTriangle[4][0];
+	var y3 = layerTriangle[4][1];
+	//if (eventsToTest.includes(event)) {
+	//	console.log(x1,y1,x2,y2,x3,y3);
+	//}
 	var x = (x1 + x2 + x3)/3;
 	var y = (y1 + y2 + y3)/3;
 	yProjected = y;
@@ -85,93 +100,160 @@ function getSingleSidePoint(layerTriangle, layer) {
 	return sidePoint; 
 }//end of getSingleSidePoint
 
-function calculateSidePoint(layerTriangle, layer) {
+function calculateSidePoint(event, layerAct, layerTriangle, layer) {
+	var sidePointGroup = [];
 	var sidePoint = [];
 	var yProjected = 0;
+	var eventsToTest = [66];
 	if (debug2DPoint === true) {
-		console.log("layer triangle: ", layerTriangle);
+		console.log("layer triangle: ", layerAct, layerTriangle[layer], layer);
 	}
 	if (layerTriangle[layer].length > 0) {
 	  if (layerTriangle[layer].length == 1) {
-		//the point falls in the middle of the triangle
-		sidePoint = getSingleSidePoint(layerTriangle, layer);
-	  }	else {
+		sidePoint = getSingleSidePoint(event, layerTriangle[layer][0]);
+		sidePointGroup.push(sidePoint);
+	  }	else {			
 		//first we have to check for neighbors
-        var quadFirstCell = layerTriangle[layer][0][6];
-        var quadSecondCell = layerTriangle[layer][1][6];
-        //these are not neighbors
-        if ((quadSecondCell-quadFirstCell) > 1) {
-			sidePoint = getSingleSidePoint(layerTriangle, layer);
-		} else {					
-			//we have to calculate between neighbors... I will assume it is the first two neigbors for now
-			var up = layerTriangle[layer][0][0];
-			//the last line of the first triangle and the first line of the second triangle are a match
-			//use the first values
-			var x1 = layerTriangle[layer][0][3][0];
-			var y1 = layerTriangle[layer][0][3][1];
-			var x2 = layerTriangle[layer][0][4][0];
-			var y2 = layerTriangle[layer][0][4][1];
-			yProjected = layerTriangle[layer][0][5];	
-			var point1Intensity = layerTriangle[layer][0][1];
-			var point2Intensity = 0;
-			if (layerTriangle[layer].length > 1) {
-				point2Intensity = layerTriangle[layer][1][1];
+		for (var x = 0; x < layerTriangle[layer].length-1; x++) {
+			var quadFirstCell = layerTriangle[layer][x][6];
+			var quadSecondCell = layerTriangle[layer][x+1][6];
+			var firstX = layerTriangle[layer][x][3][0];
+			var secondX = layerTriangle[layer][x+1][4][0];
+			var layerValueDiff = layerAct[layer][x+1][0]-layerAct[layer][x][0];
+			if (debug2DPoint === true) {
+				console.log(layer, x, layerAct[layer][x], layerAct[layer][x+1], layerValueDiff);
+				console.log("checking x for neighbors: firstX and secondX in pixels", layerValueDiff, firstX, secondX, (secondX-firstX));
+				console.log("single side point1-no neighbors", layer, layerAct[layer], layerTriangle[layer][x]);
+				console.log("single side point2-no neighbors", layer, layerAct[layer], layerTriangle[layer][x+1]);
 			}
-			var pointPercent = 0;
-		    var pointPercentSum = point1Intensity + point2Intensity;
-			if (up) {
-			   if (point1Intensity > point2Intensity) {
-				 //first triangle is pyramid with higher intensity
-				 pointPercent = point1Intensity * 100 / pointPercentSum;
-				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
-			   } else {
-				 //first triangle is pyramid with lower intensity			 
-				 pointPercent = point2Intensity * 100 / pointPercentSum;
-				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
-			   }			
+			//these are not neighbors
+			//if (event == 66) {
+			//	console.log(x, layer, layerAct[x], layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize);
+			//}	
+			if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff) != 17.5) && ((secondX - firstX) > overallCellSize)) {
+				//if (event == 66) {
+				//	console.log("not neigbors:", x, x+1, layer, layerAct[x], layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize)
+				//}
+				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x]);
+				sidePointGroup.push(sidePoint);
+				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x+1]);
+				sidePointGroup.push(sidePoint);
+				x += 1;
 			} else {
-				if (point1Intensity > point2Intensity) {
-				 //first triangle is down with higher intensity
-				 pointPercent = point1Intensity * 100 / pointPercentSum;
-				 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
-				} else {
-			     //sthe first triangle is down with lower intensity
-				 pointPercent = point2Intensity * 100 / pointPercentSum;
-				 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
-				}
+				//if (layerValueDiff == 17.5) {
+					//we have to calculate between neighbors... I will assume it is the first two neigbors for now
+					//NEED TO ADD CHECKING FOR OTHER NEIGHBORS TO THE RIGHT!!!!!
+					var up = layerTriangle[layer][x][0];
+					//the last line of the first triangle and the first line of the second triangle are a match
+					//use the first values
+					var x1 = layerTriangle[layer][x][3][0];
+					var y1 = layerTriangle[layer][x][3][1];
+					var x2 = layerTriangle[layer][x][4][0];
+					var y2 = layerTriangle[layer][x][4][1];
+					yProjected = layerTriangle[layer][x][5];	
+					var point1Intensity = layerTriangle[layer][x][1];
+					var point2Intensity = 0;
+					if (layerTriangle[layer].length > 1) {
+						point2Intensity = layerTriangle[layer][x+1][1];
+					}
+					var pointPercent = 0;
+					var pointPercentSum = point1Intensity + point2Intensity;
+					if (up) {
+					   if (point1Intensity > point2Intensity) {
+						 //first triangle is pyramid with higher intensity
+						 pointPercent = point1Intensity * 100 / pointPercentSum;
+						 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+						 if (eventsToTest.includes(event)) {
+							 //console.log("calculated point1", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
+							 }
+						 sidePointGroup.push(sidePoint);
+					   } else {
+						 //first triangle is pyramid with lower intensity			 
+						 pointPercent = point2Intensity * 100 / pointPercentSum;
+						 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+						 if (eventsToTest.includes(event)) {
+						  //console.log("calculated point2", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
+						  }
+						 sidePointGroup.push(sidePoint);
+					   }			
+					} else {
+						if (point1Intensity > point2Intensity) {
+						 //first triangle is down with higher intensity
+						 pointPercent = point1Intensity * 100 / pointPercentSum;
+						 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+						 if (eventsToTest.includes(event)) {
+						  //console.log("calculated point3", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
+						  }
+						 sidePointGroup.push(sidePoint);
+						} else {
+					     //the first triangle is down with lower intensity
+						 pointPercent = point2Intensity * 100 / pointPercentSum;
+						 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+						 if (eventsToTest.includes(event)) {
+						  //console.log("calculated point4", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
+						  }
+						 sidePointGroup.push(sidePoint);
+						}
+					}
+					x += 1;
+				//}
 			}
-		}//end of neighbor calculation
+		}
 	  }
-	} 
-    if (debug2DPoint === true) {
-		console.log("intensity:", point1Intensity, point2Intensity);
-		console.log("point percent: ", pointPercent);
-		console.log("side point coords: ", x1,y1,x2,y2);
-		console.log("side point: ", sidePoint);
-	}							
-	return sidePoint;
+	  if (layerTriangle[layer].length > 1) {
+		  var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
+		  var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
+		  var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
+		  var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
+		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-1]][0];
+		  if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff) != 17.5) && ((secondX - firstX) > overallCellSize)) { 		
+			  //we still need to deal with the last point
+			  sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1]);
+			  sidePointGroup.push(sidePoint);
+		  }
+		}
+    }//end of checking if layerTriangle is great than 0
+	return sidePointGroup;
 }//end of calculateSidePoint
 
-function caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot){
-  var sidePointX1 = calculateSidePoint(layerTriangle, 0);
-  if (debug2DTrack === true) {
-	  console.log("side point pixels 1: ", sidePointX1);
-  }
-  var sidePointX2 = calculateSidePoint(layerTriangle, 1);
-  if (debug2DTrack === true) {
-	  console.log("side point pixels 2: ", sidePointX2);
-  }  
-  var sidePointX3 = calculateSidePoint(layerTriangle, 2);
-  if (debug2DTrack === true) {
-	  console.log("side point pixels 3: ", sidePointX3);
-  } 
-  drawPoint(sidePointX1.x, sidePointX1.y, 'yellow');
-  drawPoint(sidePointX1.x, sidePointX1.yProjected, 'cyan');
-  drawPoint(sidePointX2.x, sidePointX2.y, 'yellow');
-  drawPoint(sidePointX2.x, sidePointX2.yProjected, 'cyan');
-  drawPoint(sidePointX3.x, sidePointX3.y, 'yellow');
-  drawPoint(sidePointX3.x, sidePointX3.yProjected, 'cyan');
-  drawLine(sidePointX3.x, sidePointX3.yProjected, sidePointX1.x, sidePointX1.yProjected, lineExtension);
+function findCalculatedX(point1, point2, y3) {
+   const m = (point2.y - point1.y) / (point2.x - point1.x);
+   const x3 = (y3.y - point1.y) / m + point1.x;
+   return {x:x3, y:y3.y};
+}
+
+function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot, layerOrder){
+	  var sidePointX1 = calculateSidePoint(event,layerAct, layerTriangle, layerOrder[0][2]);
+	  if (debug2DTrack === true) {
+		  console.log("side point pixels 1: ", sidePointX1);
+	  }
+	  var sidePointX2 = calculateSidePoint(event,layerAct, layerTriangle, layerOrder[1][2]);
+	  if (debug2DTrack === true) {
+		  console.log("side point pixels 2: ", sidePointX2);
+	  }  
+	  var sidePointX3 = calculateSidePoint(event,layerAct, layerTriangle, layerOrder[2][2]);
+	  if (debug2DTrack === true) {
+		  console.log("side point pixels 3: ", sidePointX3);
+	  }
+	  for (var i = 0; i < sidePointX3.length; i++) {
+	  	drawPoint(sidePointX3[i].x, sidePointX3[i].y, 'yellow');
+	  	drawPoint(sidePointX3[i].x, sidePointX3[i].yProjected, 'cyan');	 	
+	  }
+	  
+	  for (var i = 0; i < sidePointX2.length; i++) {
+	   drawPoint(sidePointX2[i].x, sidePointX2[i].y, 'yellow');
+	   drawPoint(sidePointX2[i].x, sidePointX2[i].yProjected, 'cyan');	 	
+	  }
+	  for (var i = 0; i < sidePointX1.length; i++) {
+	   drawPoint(sidePointX1[i].x, sidePointX1[i].y, 'yellow');
+	   drawPoint(sidePointX1[i].x, sidePointX1[i].yProjected, 'cyan');	 	
+	  }
+	  	 
+	  for (var i = 0; i < sidePointX1.length; i++) {
+		for (var j = 0; j < sidePointX3.length; j++) {
+			drawLine(sidePointX3[j].x, sidePointX3[j].yProjected, sidePointX1[i].x, sidePointX1[i].yProjected, lineExtension);							
+	  	}
+	  }
 }//end of calculateTrack
 
 function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
@@ -211,8 +293,8 @@ function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
         ctx.fillStyle = 'rgba(255, 255, 255, 1 )';
 	    if (debug2DTriangle == true) {
 	    	console.log("intensity == 0");
-	    	triangleCoords = [];
 	    }
+		triangleCoords = [];
       } else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.font = '15px Arial';
@@ -250,14 +332,22 @@ function drawQuadPos(up, cellSize, xpos, ypos, value) {
     ctx.fillText(value, up ? xpos - (cellSize/2)+1 : xpos+(cellSize/2)+1, ypos + quadPosOffset);  
 }//end of drawQuadPos
 
-function drawZPosition(xpos, ypos, value, reversed) {
+function drawZPosition(xpos, ypos, value, reversed, caen) {
       ctx.beginPath();
       ctx.moveTo(xpos, ypos);
       ctx.fillStyle = 'rgba(0, 0, 0, 1)';
       ctx.font = '9px Arial';
 	  ctx.fillText(value, xpos, ypos);  
 	  ctx.moveTo(xpos, ypos+zOffset);
-	  ctx.fillText(reversed, xpos, ypos+zOffset);  
+	  ctx.fillText(reversed, xpos, ypos+zOffset); 
+	  
+	  ctx.beginPath();
+	  ctx.moveTo(xpos-45, ypos);
+	  ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+	  ctx.font = '9px Arial';
+	  var cbox = "CAEN " + caen + ":";
+	  ctx.fillText(cbox, xpos-45, ypos);  
+	   
 }//end of drawZPosition
 
 function drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordArray,ped,layerQuad,quadMember,layerQuadSize,cellSize,quadGap,layerTriangle) {
@@ -372,50 +462,61 @@ function drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordA
 	return channel;
 }//end of drawQuad
 	
-function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop) {
+function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop) {
     var channel = 0;
     var layer = 2; // we start with the top layer data in Z for both X and Y --> array goes 0,1,2
-    var ndx = startNdx; //also the start in Z for either X or Y
     var up = false;
     var reversed = false;
     var quadSize = 0.0;
     var cellSize = 0.0;
     var quadGap = 0.0;    
-    var numQuads = (layers[ndx-1].length-2);
     var startPoint = startX;
-    //need to check the pixel we start drawing based on the # of cells
-	if (layers[ndx-1].length-2 === 12) {
-		startPoint = 80;
-	}
-	var zPos = startPoint - 20;
 	// Read the value of the input
     var layerAct = [[],[],[]];
     var layerQuad = [[],[],[]];
     var layerQuadSize = [[],[],[]];
     var layerTriangle = [[],[],[]];   
     var end, middle, start;
+	var layerOrder = [];
+	var startNdx = 0;
     if (whichLayer === 'X') { 
-    	end = parseFloat(geometry[1][geometry[1].length-4]);
-    	middle = parseFloat(geometry[3][geometry[3].length-4]);
-    	start = parseFloat(geometry[5][geometry[5].length-4]);
+		layerOrder = layerOrderX;
+		startNdx = 5;
     } else {
-    	end = parseFloat(geometry[2][geometry[2].length-4]);
-    	middle = parseFloat(geometry[4][geometry[4].length-4]);
-    	start = parseFloat(geometry[6][geometry[6].length-4]);
-		
+		layerOrder = layerOrderY;
+		startNdx = 4;
 	}
-    if (debug2DLayer === true) {
+	// Sort in descending order by the first element
+	layerOrder.sort(function(a, b) {
+	  return a[0] - b[0]; 
+	});
+	end = layerOrder[0][0];
+	middle = layerOrder[1][0];
+	start = layerOrder[2][0];
+	
+	var ndx = layerOrder[2][1];
+	layer = layerOrder[2][2];
+	var layerNdx = 2;
+	var numQuads = (layers[ndx-1].length-2);
+	//need to check the pixel we start drawing based on the # of cells
+	if (layers[ndx-1].length-2 === 12) {
+		startPoint = 80;
+	}
+	var zPos = startPoint - 20;
+	
+    if (debug2DLayerMore === true) {
+	  console.log("layer order:", layerOrder);
       console.log("canvas:", ctx);
       console.log("layers: ", layers);
 	  console.log("startPoint", startPoint, "numQuads:", numQuads);
 	}
-    var cm = 260 / 100.0;
+	var units = 260.0 / (start - end);
     if (debug2DLayer === true) {
-		console.log("start, middle, end:",start, middle, end);
+		console.log("start, middle, end, cm:",start, middle, end, units);
 	}
-    var firstLayer = startY; //starts drawing at this position in the canvas
-	var secondLayer = (start - middle) * cm;	
-    var thirdLayer = 260;
+    var firstLayer = startY; //starts drawing at this position in the canvas (70 and 450)
+	var secondLayer = (start - middle) * units;	
+    var thirdLayer = (start - end) * units;
     //loop to draw the three y layers, the layers are not evenly placed so we have to calculate
     if (debug2DLayer === true) {
 		console.log("first, second and third layer: ", firstLayer, secondLayer, thirdLayer);
@@ -447,11 +548,12 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 	  var posQuadSize = geometry[ndx].length-3; //get the quad size from the geometry
 	  quadSize = geometry[ndx][posQuadSize];
 	  cellSize = quadSize * size / 2.0;
+	  overallCellSize = cellSize;
 	  triangleHeight = Math.sqrt(3) * cellSize / 2;
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
-	  if (debug2DLayer === true) {
+	  if (debug2DLayerMore === true) {
 		  console.log("yp: ", yp);
 		  console.log("up: ", up);
 		  console.log("posQuadSize: ", posQuadSize);
@@ -460,7 +562,11 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 		  console.log("quadGap: ", quadGap);
 		  console.log("xpSize:", xpSize);
 	  }
-	  drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2]);
+	  if (whichLayer === 'X') {
+		drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2], (layer*2));
+	  } else {
+		drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2], ((layer*2)+1));		
+	  }
 	  //loop and draw quads taking into account the intercell spacing and flipping
 	  var quadNo = 0;
 	  for (var xp = startPoint; xp < xpSize; xp += quadGap) {
@@ -484,20 +590,23 @@ function drawLayer(whichLayer, event, startNdx, startX, startY, lineRouteBottom,
 		  }
 	  }//end inner for loop	
       channel = 0;
-      layer-= 1;
-      ndx -= 2;
+	  layerNdx -= 1;
+	  if (layerNdx >= 0) {
+	  	layer = layerOrder[layerNdx][2];
+	  	ndx = layerOrder[layerNdx][1];
+	  }
    }//end outer for loop  
 
    if (debug2DLine === true) {
 	   console.log("calculateTrack for ",whichLayer,": ", layerAct, layerQuadSize, layerTriangle);
    }
-   caculateTrack(layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop);	
+   caculateTrack(event,layerAct, layerQuad, layerQuadSize, layerTriangle, lineRouteBottom, lineRouteTop, layerOrder);	
 }//end of drawLayer
 
 function draw(event){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawLayer('X', event, startNdxX, 255, 70, 350, 88); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
-  drawLayer('Y', event, startNdxY, 80, 450, 730, 470); //whichLayer, event, startNdx, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('X', event, 255, 70, 350, 88); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
+  drawLayer('Y', event, 80, 450, 730, 470); //whichLayer, event, startX, startY, lineRouteBottom, lineRouteTop
   ctx.font = 'italic 25px Arial';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(0, 0, 0, 1 )'
@@ -505,6 +614,7 @@ function draw(event){
   ctx.fillText('Y-view display - find muon track with 3 planes', canvas.width / 2, 420);
 }//end of draw
 
+//function draw2DSettings(event, g, l) {
 function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	subtractPedX = sX;
 	subtractPedY = sY;
@@ -517,10 +627,6 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 		console.log("2D drawings");
 		console.log("geometry:",g);
 		console.log("layers:",l);
-		console.log("subPedX:",sX);
-		console.log("subPedY:",sY);
-		console.log("xCoord:",cX);
-		console.log("yCoord:",cY);
 	}
 	document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;

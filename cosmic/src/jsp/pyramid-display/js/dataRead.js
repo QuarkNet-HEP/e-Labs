@@ -6,27 +6,32 @@ var adcmap = [];
 var geometry = [];
 var pedestal = [];
 var detectorName = "";
+var layerMaxSize = 64;
 globalThis.adcmapArr = [];
 globalThis.pedestalArr = [];
 globalThis.geometryArr = [];
 globalThis.selectedFile = "";
+globalThis.selectedFileClean = "";
 globalThis.pedestalFile = ""; 
 globalThis.geometryFile = ""; 
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
+globalThis.conversionComments = "";
 globalThis.midPed = 0;
-let debugRead = true;
+let debugRead = false;
 
 // helper function to clean the headers
 function cleanFile(arr, type) {
  	var temp = []
- 	//console.log("it gets here ", arr);
  	for (var ndx=0; ndx < arr.length; ndx++ ) {		
 		// eliminate empty lines and comment lines
 		if (arr[ndx] != "" && !arr[ndx].startsWith("//")) {
 			if (arr[ndx].substring(0, 3) === 'ATH' && type === "DATAFILE") {
 				document.getElementById("detector-name").value = arr[ndx].trim();
 				detectorName = arr[ndx].trim();
+			} else if (arr[ndx].startsWith("COMMENTS")){
+				globalThis.conversionComments = arr[ndx];
+				//console.log(globalThis.conversionComments);
 			} else {
 				temp.push(arr[ndx]);
 			}
@@ -54,7 +59,6 @@ function parseFileDate(d, t) {
 function retrieveTimedData(fileName, completeArr, type) {
 	var timestamps = [];
 	var detector = fileName.trim().split(' ');	
-	//console.log(completeArr);
 	if (type === "ADCMAP") {
 		timestamps = [];
 		done = false;
@@ -70,17 +74,6 @@ function retrieveTimedData(fileName, completeArr, type) {
 						done = true;
 					}			
 				}
-				//if (completeArr[i][0][0][1] === detector[2]) {
-				//	if (detector[3] > completeArr[i][0][0][2] && !done) {
-				//		console.log(completeArr[i][0][0][2]);
-				//		var completeMod = completeArr[i][1].concat(completeArr[i][2], completeArr[i][3],completeArr[i][4])
-					    //console.log(completeMod);
-				//		timestamps.push(completeMod);
-				//		if (completeArr[i][0][1] === "Mod5") {
-				//			done = true;
-				//		}
-				//	}
-				//}
 			}
 		}
  	return timestamps;
@@ -99,15 +92,6 @@ function retrieveTimedData(fileName, completeArr, type) {
 						done = true;
 					}
 				}
-				//if (completeArr[i][0][0][1] === detector[2]) {
-				//	if (detector[3] > completeArr[i][0][0][2] && !done) {
-				//		var completeMod = completeArr[i][1].concat(completeArr[i][2], completeArr[i][3],completeArr[i][4])
-				//		timestamps.push(completeMod);
-				//		if (completeArr[i][0][1] === "Mod5") {
-				//			done = true;
-				//		}
-				//	}
-				//}
 			}
 		}
  	return timestamps;
@@ -142,6 +126,7 @@ globalThis.retrieveData = function () {
   var dataUrl = globalThis.selectedFile;
   x = [];
   y = [];
+  eventTime = [];
   subtractPedX = [];
   subtractPedY = [];
   fetch(dataUrl)
@@ -149,7 +134,6 @@ globalThis.retrieveData = function () {
       return response.text();
     })
     .then(function(data) {
-      //console.log("Fetched data:"+data);
       var lines = data.trim().split(/\r\n|\n|\r/);
       var allLines = cleanFile(lines, "DATAFILE");
 	  // check that we have a detector name, date and time
@@ -210,6 +194,7 @@ globalThis.retrieveData = function () {
           } else {
             columnIndex = columnName;
           }
+		  //console.log(rowIndex,columnIndex);
           return this.data[rowIndex][columnIndex];
         },
         isna: function(num) {
@@ -231,38 +216,42 @@ globalThis.retrieveData = function () {
          df.data[i][1] = df.at(i - 1, 'TrgID');
          }
       }
-      console.log(df);
-	  // retrieve the correct adcmap by checking the name and timestamp
+ 	  // retrieve the correct adcmap by checking the name and timestamp
 	  var adcmap = retrieveTimedData(detectorName, globalThis.adcmapArr, 'ADCMAP');
 	  if (debugRead === true) {
 		  console.log("correct adcmap");
 		  console.log(adcmap);
 	  }
-	  //console.log(pedestalArr);
       var pedestal = retrieveTimedData(detectorName, globalThis.pedestalArr, 'PEDESTAL');
 	  if (debugRead === true) {
 		  console.log("correct pedestal");
 		  console.log(pedestal);
-	 }
+	  }
+	  if (debugRead === true) {
+	   console.log("data read");
+	   console.log(df);
+	  }
       //id needs to get the first event in the file which it was first assumed as zero
       //we need to read the first event number instead
-      //var id = 0;
       var id = 0;
       var i = 0;
       var dn = detectorName.split(" ");
       var minPed = Math.floor(dn[dn.length-1]);
       globalThis.minPed = minPed;
+
       while (id <= parseInt(df.at(df.index[df.shape[0] - 1], 'TrgID'))) {
-        x.push(Array.from({ length: 3 }, function() {return Array.from({ length: 64 }, function() { return [0,0,0,0]; });}));
-        y.push(Array.from({ length: 3 }, function() {return Array.from({ length: 64 }, function() { return [0,0,0,0]; });}));
-        subtractPedX.push(Array.from({ length: 3 }, function() {return Array.from({ length: 64 }, function() { return 0; });}));
-        subtractPedY.push(Array.from({ length: 3 }, function() {return Array.from({ length: 64 }, function() { return 0; });}));
+		//initialize to zeros
+		eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
+        x.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
+        y.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
+        subtractPedX.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return 0; });}));
+        subtractPedY.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return 0; });}));
         var countPerEvent = 0;
         var countX = 0;
         var countY = 0;
         // Initialize arrays with adcmap information
 		// Need to un-hardcode this
-        for (ndx = 0; ndx < 64; ndx++) {
+        for (ndx = 0; ndx < layerMaxSize; ndx++) {
 			x[id][0][ndx][0] = getADCPosition(0,ndx, adcmap);
 			x[id][0][ndx][2] = getPedestalValue(0,ndx, pedestal);
 			x[id][1][ndx][0] = getADCPosition(2,ndx, adcmap);
@@ -278,38 +267,63 @@ globalThis.retrieveData = function () {
         }
         // Collect the data from that that specific id within TrgID
         while (i < df.shape[0] && parseInt(df.at(df.index[i], 'TrgID')) == id) {
+		  var countHit = true;
           var brd = parseFloat(df.at(df.index[i], 'Brd'));
           var ch = parseInt(df.at(df.index[i], 'Ch'));
           var lg = parseFloat(df.at(df.index[i], 'LG'));
           //if the Brd value is even, it goes to X
           if (brd % 2 === 0) {
+			//need to make sure the correct board is filled in
+			//some do not exist
 			newLg = lg - x[id][Math.floor(brd / 2)][ch][2];
 			if (newLg < minPed) {
 				newLg = 0;
+				countHit = false;
 			}
             x[id][Math.floor(brd / 2)][ch][1] = lg;
 			x[id][Math.floor(brd / 2)][ch][3] = newLg;
             subtractPedX[id][Math.floor(brd / 2)][ch] = newLg;
 			countX++;
+			if ((parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0)) {
+				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
+				if (countHit) {
+					if (eventTime.includes(time)){
+						//do nothing
+					} else {
+						eventTime[id][brd] = time;
+					}
+				}
+			}
           // else it goes to Y
           } else {
 			newLg = lg - y[id][Math.floor((brd - 1) / 2)][ch][2];
 			if (newLg < minPed) {
 				newLg = 0;
+				countHit = false;
 			}
             y[id][Math.floor((brd - 1) / 2)][ch][1] = lg;				
             y[id][Math.floor((brd - 1) / 2)][ch][3] = newLg;				
             subtractPedY[id][Math.floor((brd - 1) / 2)][ch] = newLg;
 			countY++;
+			if (parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0) {
+				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
+				if (countHit) {
+					if (eventTime.includes(time)){
+						//do nothing
+					} else {
+						eventTime[id][brd] = time;
+					}
+				}
+			}
           }
 		  countPerEvent++;
           i++;
 		}
         id++;
       }
-      
 	  if (debugRead === true) {	      
 	      console.log("data is ready");
+		  console.log(eventTime);
 	      console.log(x);
 	      console.log(y);  
 	      console.log(subtractPedX);
@@ -339,7 +353,6 @@ globalThis.retrievePedestal = function () {
         return response.text();
       })
       .then(function(data) {
-        //console.log('Fetched pedestal:', content); // Debug: Output the fetched data to the console
         var lines = data.trim().split(/\r\n|\n|\r/);
         var allLines = cleanFile(lines, "PEDESTAL");
         var pedestalArr = [];
@@ -388,19 +401,15 @@ globalThis.retrieveADCmap = function () {
         return response.text();
       })
       .then(function(data) {
-        //console.log('Fetched adcmap:', data); // Debug: Output the fetched data to the console
         var lines = data.trim().split(/\r\n|\n|\r/);
         var allLines = cleanFile(lines, "ADCMAP");
         var adcmapArr = [];
         var adcmap = [[], [], [], [], []];
         var mapName = allLines[0].trim().split(' ');       
         adcmap[0] = [mapName, allLines[1].trim(), allLines[2].trim()];
-        //adcmap[1] = allLines[1].trim();
-        //adcmap[2] = allLines[2].trim();
 		var modData = [];
 		var modNdx = 1;
         for (var r = 3; r < allLines.length; r++) {
-		  //console.log(allLines[r]);
 		  if (allLines[r].startsWith('ATH')) {
             mapName = allLines[r].trim().split(' ');
           } 
@@ -443,10 +452,8 @@ globalThis.retrieveGeometry = function () {
         return response.text();
       })
       .then(function(data) {
-        //console.log('Fetched data:', data); // Debug: Output the fetched data to the console
         // Process the data as needed
         var lines = data.split(/\r\n|\n|\r/); // Use regex to handle different line endings
-        //console.log(lines);
         geometry = [];
         var singleGeometry = [];
         var addDetails = false;
@@ -458,13 +465,12 @@ globalThis.retrieveGeometry = function () {
 			}
 			singleGeometry.push(lines[i].split(/\s+/));	
 			addDetails = true;
-			//console.log(singleGeometry);			
 		  }
 	      if (lines[i].substring(5, 10) === 'Layer' && addDetails === true) {
           	singleGeometry.push(lines[i].split(/\s+/)); 
           }
         }
-        globalThis.geometryArr = geometry;
+		globalThis.geometryArr = geometry;
         if (debugRead === true) {
 	        console.log("Geometry is ready");
 	        console.log(geometry);
