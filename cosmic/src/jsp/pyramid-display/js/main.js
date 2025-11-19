@@ -2,6 +2,7 @@ var x;
 var y;
 var eventTime;
 var detector = [];
+var run = [];
 var localGeometry;
 var singleGeometry = [];
 var layerOrderX = [];
@@ -19,16 +20,14 @@ let debugMain = false;
 // Display errors
 function print(string) { throw new Error(string); }
 let dataFiles = [
-			    'Run116_list_no_shift.txt',
-				'Run117_list_no_shift.txt',
-				'Run118_list_no_shift.txt',
-				'Run119_list_no_shift.txt',
-				'Run120_list_no_shift.txt',
-			'Run121_list_no_shift.txt',
-		'Run122_list_no_shift.txt',
-	'Run123_list_no_shift.txt',
-'Run124_list_no_shift.txt',
-'Run125_list_no_shift.txt',
+	'Run116Sample.txt',
+	'Run151Sample.txt',
+	'Run116_list_no_swap.txt',
+	'Run142_list_swap_00_01.txt',
+	'Run151_list_no_swap.txt',
+	'Run156_list_no_swap.txt',
+	'Run158_list_swap_00_01.txt',
+	'Run161_list_swap_00_01.txt',
 			    ]
 
 let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -41,6 +40,11 @@ function parseFileDate(d, t) {
 	let newDate =  new Date(parseInt(y),M,parseInt(d),parseInt(h),parseInt(m),parseInt(s));
 	return newDate;
 }// end of parseFileDate
+
+function calculateProcessTime(endDate, startDate) {
+	var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+    return seconds;
+}//end of calculateProcessTime
 
 function getSingleGeometry() {
 	timestamps = [];
@@ -91,6 +95,7 @@ function getSingleGeometry() {
 	layerOrderX.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
+	//console.log(layerOrderX);
 	layerOrderY = [];
 	layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
 	layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
@@ -99,8 +104,12 @@ function getSingleGeometry() {
 	layerOrderY.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});	
+	//console.log(layerOrderY);
 }// end of getGeometry
 const loadingMessage = document.getElementById("loading-message");
+let timeElapsed = "";
+let initialTime = "";
+let endTime = "";
 
 function loadDataFile() {
   return new Promise((resolve) => {
@@ -118,6 +127,9 @@ function loadDataFile() {
 	  }     
       // Usage of Promise.all() to wait for functions to finish
 	  loadingMessage.style.display = "block";
+	  initialTime = new Date();
+	  removeCharts();
+	  NewremoveCharts();
       Promise.all([retrieveData()])
         .then(([data]) => {
           if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
@@ -148,10 +160,21 @@ function loadDataFile() {
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
           draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-          drawAnalysis(layers, singleGeometry);  
-          if (debugMain === true) {
+		  drawAnalysis(layers, singleGeometry); 
+		  //document.getElementById('analysis-run').style.display = "block";
+		  //document.getElementById('new-analysis-run').style.display = "block";
+		  //document.getElementById('runAnalysis').addEventListener('click', () => {
+		  drawAnalysis(layers, singleGeometry); 
+		  //});
+		  //document.getElementById('NewrunAnalysis').addEventListener('click', () => {
+		  //	NewdrawAnalysis(layers, singleGeometry); 
+		  //});
+
+         if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
+		  endTime = new Date();
+		  document.getElementById("loading-time").value = "Loading time: "+calculateProcessTime(endTime,initialTime)+" seconds";
 		  loadingMessage.style.display = "none";
         })
         .catch(error => {
@@ -202,6 +225,7 @@ function GUIinit() {
 	var selectedFile = document.getElementById('selected-file');
 	selectedFile.value = value;
 	var path = "data/";
+	globalThis.selectedFileClean = value.trim();
 	globalThis.selectedFile = path+value.trim();
  	GUIupdate("remove");    
 	loadDataFile();

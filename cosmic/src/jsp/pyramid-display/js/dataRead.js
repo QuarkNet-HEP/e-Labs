@@ -11,12 +11,23 @@ globalThis.adcmapArr = [];
 globalThis.pedestalArr = [];
 globalThis.geometryArr = [];
 globalThis.selectedFile = "";
+globalThis.selectedFileClean = "";
 globalThis.pedestalFile = ""; 
 globalThis.geometryFile = ""; 
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
+globalThis.conversionComments = "";
+globalThis.runNumber = "";
 globalThis.midPed = 0;
+globalThis.eventFilter6 = [];
+globalThis.eventFilter5 = [];
+globalThis.eventFilter4 = [];
+
 let debugRead = false;
+
+function isNumeric(num){
+  return !isNaN(num);
+}
 
 // helper function to clean the headers
 function cleanFile(arr, type) {
@@ -27,6 +38,14 @@ function cleanFile(arr, type) {
 			if (arr[ndx].substring(0, 3) === 'ATH' && type === "DATAFILE") {
 				document.getElementById("detector-name").value = arr[ndx].trim();
 				detectorName = arr[ndx].trim();
+				var parts = arr[ndx].split(" ");
+				if (isNumeric(parts[1].trim())) {
+					globalThis.runNumber = parts[1];
+					document.getElementById("run-number").value = globalThis.runNumber;					
+				}	
+			} else if (arr[ndx].startsWith("COMMENTS")){
+				globalThis.conversionComments = arr[ndx];
+				//console.log(globalThis.conversionComments);
 			} else {
 				temp.push(arr[ndx]);
 			}
@@ -189,6 +208,7 @@ globalThis.retrieveData = function () {
           } else {
             columnIndex = columnName;
           }
+		  //console.log(rowIndex,columnIndex);
           return this.data[rowIndex][columnIndex];
         },
         isna: function(num) {
@@ -261,6 +281,7 @@ globalThis.retrieveData = function () {
         }
         // Collect the data from that that specific id within TrgID
         while (i < df.shape[0] && parseInt(df.at(df.index[i], 'TrgID')) == id) {
+		  var countHit = true;
           var brd = parseFloat(df.at(df.index[i], 'Brd'));
           var ch = parseInt(df.at(df.index[i], 'Ch'));
           var lg = parseFloat(df.at(df.index[i], 'LG'));
@@ -271,21 +292,28 @@ globalThis.retrieveData = function () {
 			newLg = lg - x[id][Math.floor(brd / 2)][ch][2];
 			if (newLg < minPed) {
 				newLg = 0;
+				countHit = false;
 			}
             x[id][Math.floor(brd / 2)][ch][1] = lg;
 			x[id][Math.floor(brd / 2)][ch][3] = newLg;
             subtractPedX[id][Math.floor(brd / 2)][ch] = newLg;
 			countX++;
-			if (parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0) {
+			if ((parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0)) {
 				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
-				eventTime[id][brd] = time;
+				if (countHit) {
+					if (eventTime.includes(time)){
+						//do nothing
+					} else {
+						eventTime[id][brd] = time;
+					}
+				}
 			}
           // else it goes to Y
           } else {
-			//console.log('y', id, brd, ch);
 			newLg = lg - y[id][Math.floor((brd - 1) / 2)][ch][2];
 			if (newLg < minPed) {
 				newLg = 0;
+				countHit = false;
 			}
             y[id][Math.floor((brd - 1) / 2)][ch][1] = lg;				
             y[id][Math.floor((brd - 1) / 2)][ch][3] = newLg;				
@@ -293,7 +321,13 @@ globalThis.retrieveData = function () {
 			countY++;
 			if (parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0) {
 				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
-				eventTime[id][brd] = time;
+				if (countHit) {
+					if (eventTime.includes(time)){
+						//do nothing
+					} else {
+						eventTime[id][brd] = time;
+					}
+				}
 			}
           }
 		  countPerEvent++;
