@@ -21,7 +21,30 @@ function downloadXYdata(data, filename) {
     URL.revokeObjectURL(url); // Clean up the URL object
 }
 
-function downloadArray(data, filename) {
+function checkForObjects(data) {
+	var newData = [];
+	var newDataLine = [];
+	for (var i = 0; i < data.length; i++) {
+		for (var j = 0; j < data[i].length; j++) {
+			newDataLine = [];
+			if (typeof data[i][j] === 'object') {
+				var keys = Object.keys(data[i][j]);
+				var values = Object.values(data[i][j]);
+				if (keys.length > 0) {
+					newDataLine.push(keys.join(','));
+				}
+				if (values.length > 0) {
+					newDataLine.push(values.join(','));
+				}			
+			 } else {
+				newDataLine.push(data[i][j]);
+			 }
+			 newData.push(newDataLine+"\n");
+		}
+	}
+	return newData;
+}
+function downloadArray(data, filename){
 	const csvContent = data.join('\n'); 
 	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);	
 	const link = document.createElement("a");
@@ -33,7 +56,9 @@ function downloadArray(data, filename) {
 }
 
 function download2DArray(data, filename) {
-	let csvContent = data.map(e => e.join(",")).join("\n");
+	var csvContent = checkForObjects(data);	
+	//console.log(csvContent);
+	//let csvContent = newData.map(e => e.join(",")).join("\n");
 	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);	
 	const link = document.createElement("a");
 	link.setAttribute("href", encodedUri);

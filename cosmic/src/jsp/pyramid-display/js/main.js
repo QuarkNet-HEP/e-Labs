@@ -2,6 +2,7 @@ var x;
 var y;
 var eventTime;
 var detector = [];
+var run = [];
 var localGeometry;
 var singleGeometry = [];
 var layerOrderX = [];
@@ -19,7 +20,6 @@ let debugMain = false;
 // Display errors
 function print(string) { throw new Error(string); }
 let dataFiles = [
-	'testFile.txt',
 	'Run116Sample.txt',
 	'Run151Sample.txt',
 	'Run116_list_no_swap.txt',
@@ -40,6 +40,11 @@ function parseFileDate(d, t) {
 	let newDate =  new Date(parseInt(y),M,parseInt(d),parseInt(h),parseInt(m),parseInt(s));
 	return newDate;
 }// end of parseFileDate
+
+function calculateProcessTime(endDate, startDate) {
+	var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+    return seconds;
+}//end of calculateProcessTime
 
 function getSingleGeometry() {
 	timestamps = [];
@@ -102,6 +107,9 @@ function getSingleGeometry() {
 	//console.log(layerOrderY);
 }// end of getGeometry
 const loadingMessage = document.getElementById("loading-message");
+let timeElapsed = "";
+let initialTime = "";
+let endTime = "";
 
 function loadDataFile() {
   return new Promise((resolve) => {
@@ -119,6 +127,9 @@ function loadDataFile() {
 	  }     
       // Usage of Promise.all() to wait for functions to finish
 	  loadingMessage.style.display = "block";
+	  initialTime = new Date();
+	  removeCharts();
+	  NewremoveCharts();
       Promise.all([retrieveData()])
         .then(([data]) => {
           if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
@@ -149,11 +160,21 @@ function loadDataFile() {
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
           draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-          drawAnalysis(layers, singleGeometry);  
-		  NewdrawAnalysis(layers, singleGeometry);  
+		  drawAnalysis(layers, singleGeometry); 
+		  //document.getElementById('analysis-run').style.display = "block";
+		  //document.getElementById('new-analysis-run').style.display = "block";
+		  //document.getElementById('runAnalysis').addEventListener('click', () => {
+		  drawAnalysis(layers, singleGeometry); 
+		  //});
+		  //document.getElementById('NewrunAnalysis').addEventListener('click', () => {
+		  //	NewdrawAnalysis(layers, singleGeometry); 
+		  //});
+
          if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
+		  endTime = new Date();
+		  document.getElementById("loading-time").value = "Loading time: "+calculateProcessTime(endTime,initialTime)+" seconds";
 		  loadingMessage.style.display = "none";
         })
         .catch(error => {

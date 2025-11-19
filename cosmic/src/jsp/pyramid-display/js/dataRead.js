@@ -17,8 +17,17 @@ globalThis.geometryFile = "";
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
 globalThis.conversionComments = "";
+globalThis.runNumber = "";
 globalThis.midPed = 0;
+globalThis.eventFilter6 = [];
+globalThis.eventFilter5 = [];
+globalThis.eventFilter4 = [];
+
 let debugRead = false;
+
+function isNumeric(num){
+  return !isNaN(num);
+}
 
 // helper function to clean the headers
 function cleanFile(arr, type) {
@@ -29,6 +38,11 @@ function cleanFile(arr, type) {
 			if (arr[ndx].substring(0, 3) === 'ATH' && type === "DATAFILE") {
 				document.getElementById("detector-name").value = arr[ndx].trim();
 				detectorName = arr[ndx].trim();
+				var parts = arr[ndx].split(" ");
+				if (isNumeric(parts[1].trim())) {
+					globalThis.runNumber = parts[1];
+					document.getElementById("run-number").value = globalThis.runNumber;					
+				}	
 			} else if (arr[ndx].startsWith("COMMENTS")){
 				globalThis.conversionComments = arr[ndx];
 				//console.log(globalThis.conversionComments);

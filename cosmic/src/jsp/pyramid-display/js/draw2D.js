@@ -1,8 +1,15 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 var inputElement = document.getElementById("quantity");
+var inputElement6 = document.getElementById("quantity6");
+var inputElement5 = document.getElementById("quantity5");
+var inputElement4 = document.getElementById("quantity4");
 // Add an event listener to the input element
 inputElement.addEventListener("input", updateInputValue);
+//let elementsArray = document.querySelectorAll("input");
+//elementsArray.forEach(function(elem) {
+//    elem.addEventListener("input", updateInputValue);
+//});
 var geometry = [];
 var layers = [];
 var subtractPedX = [];
@@ -27,7 +34,6 @@ let debug2DTriangle = false;
 let debug2DQuad = false;
 let overallCellSize = 0;
 
-var inputValue = inputElement.value;
 function updateInputValue() {
   inputValue = inputElement.value;
   if (is_numeric(inputValue)) {
@@ -127,11 +133,11 @@ function calculateSidePoint(event, layerAct, layerTriangle, layer) {
 				console.log("single side point2-no neighbors", layer, layerAct[layer], layerTriangle[layer][x+1]);
 			}
 			//these are not neighbors
-			//if (event == 66) {
-			//	console.log(x, layer, layerAct[x], layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize);
+			//if (event == 41 & layer == 0) {
+			//	console.log(x, layer, layerAct, layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize);
 			//}	
-			if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff) != 17.5) && ((secondX - firstX) > overallCellSize)) {
-				//if (event == 66) {
+			if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff != 17.5) && (secondX - firstX) > overallCellSize)) {
+				//if (event == 41 & layer == 0) {
 				//	console.log("not neigbors:", x, x+1, layer, layerAct[x], layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize)
 				//}
 				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x]);
@@ -205,8 +211,8 @@ function calculateSidePoint(event, layerAct, layerTriangle, layer) {
 		  var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
 		  var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
 		  var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
-		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-1]][0];
-		  if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff) != 17.5) && ((secondX - firstX) > overallCellSize)) { 		
+		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
+		  if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff != 17.5) && (secondX - firstX) > overallCellSize)) { 		
 			  //we still need to deal with the last point
 			  sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1]);
 			  sidePointGroup.push(sidePoint);
@@ -628,8 +634,10 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 		console.log("geometry:",g);
 		console.log("layers:",l);
 	}
-	document.getElementById('event').style = "display:inline";
+	//document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;
+	document.getElementById("rundata").innerHTML = "Run: "+globalThis.globalThis.runNumber;
+	document.getElementById("rundata").style.fontWeight = "bold";
 	inputElement.max = subtractPedX.length;
 	draw(event);
 }
