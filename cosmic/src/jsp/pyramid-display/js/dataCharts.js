@@ -127,7 +127,7 @@ function drawAnalysis(l,g) {
 	    }
 	  }
 	};
-
+	var start1 = new Date();
 	var CAENOptions = {
 		scales: {
 		y: {
@@ -275,13 +275,26 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadYCAEN5data').addEventListener('click', () => {
 	    download2DArray(getCAENdata(subtractPedY, 2), 'YCAEN5originaldata.csv');
 	});
-
+	var end1 = new Date();
+	if (showTime) {
+		console.log("CAEN analysis: "+calculateProcessTime(end1,start1)+" seconds");
+	}
 	//these function calls get all the arrays needed for the coming charts
-	message.innerHTML= "Calculating data...";			
+	start1 = new Date();
 	getDxy();
+	end1 = new Date();
+	if (showTime) {
+		console.log("get dx and dy: "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start = new Date();
 	getDxyBothLayers();	
 	getDxyTopMiddleBothLayers();
 	getDxyBottomMiddleBothLayers();	
+	end1 = new Date();
+	if (showTime) {
+		console.log("get dx and dy both layers: "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 	populateDropdownSix();
 	populateDropdownFive();
 	populateDropdownFour();
@@ -326,13 +339,18 @@ function drawAnalysis(l,g) {
 		  }		
 	};
 	
+//console.log(total6);
+//console.log(tracking6MiddleHitsXY.length);
+//console.log(tracking6MiddleMissedX.length);
+//console.log(tracking6MiddleMissedY.length);
+//console.log(tracking6MiddleMissedXY.length);
 		
 	//6 plane X middle hits
 	var hit6middleXtotalEvents = getTotalChartEvents(tracking6MiddleHitsXY);
-	//var hit6middleX2_27Counts = getCountsBetween('X', tracking6MiddleHitsXY, 2.0, 27.0);
-	//var hit6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 2.0, 47.0);
-	//var hitExtraComments = '- x between 2 and 27, Count : '+hit6middleX2_27Counts;
-	//hitExtraComments += '- y between 2 and 47, Count: '+hit6middleY2_47Counts;
+	//var hit6middleX2_27Counts = getCountsBetween('X', tracking6MiddleHitsXY, 2.5, 26.0);
+	//var hit6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 4.0, 45.0);
+	//var hitExtraComments = '- x between 2.5 and 26, Count : '+hit6middleX2_27Counts;
+	//hitExtraComments += '- y between 4 and 45, Count: '+hit6middleY2_47Counts;
 	var hit6middleXComments = chartComments+' Total Events: '+hit6middleXtotalEvents;
 	var hit6middleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -355,10 +373,10 @@ function drawAnalysis(l,g) {
 
 	//6 plane missed X middle point
 	var missed6middleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX);
-	//var missedX6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedX, 2.0, 27.0);
-	//var missedX6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 2.0, 47.0);
-	//var missedXExtraComments = '- x between 2 and 27, Count : '+missedX6middleX2_27Counts;
-	//missedXExtraComments += '- y between 2 and 47, Count: '+missedX6middleY2_47Counts;
+	//var missedX6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedX, 2.5, 26.0);
+	//var missedX6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 4.0, 45.0);
+	//var missedXExtraComments = '- x between 2.5 and 26, Count : '+missedX6middleX2_27Counts;
+	//missedXExtraComments += '- y between 4 and 45, Count: '+missedX6middleY2_47Counts;
 	var missed6middleXComments = chartComments+' Total Events: '+missed6middleXtotalEvents;
 	var missed6middleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -382,10 +400,10 @@ function drawAnalysis(l,g) {
 	//6 plane missed Y middle point
 	var missed6middleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY);
 	var missed6middleYComments = chartComments+' Total Events: '+missed6middleYtotalEvents;
-	//var missedY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedY, 2.0, 27.0);
-	//var missedY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedY, 2.0, 47.0);
-	//var missedYExtraComments = '- x between 2 and 27, Count : '+missedY6middleX2_27Counts;
-	//missedYExtraComments += '- y between 2 and 47, Count: '+missedY6middleY2_47Counts;
+	//var missedY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedY, 2.5, 26.0);
+	//var missedY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedY, 4.0, 45.0);
+	//var missedYExtraComments = '- x between 2.5 and 26, Count : '+missedY6middleX2_27Counts;
+	//missedYExtraComments += '- y between 4 and 45, Count: '+missedY6middleY2_47Counts;
 	var missed6middleY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [{
@@ -409,10 +427,10 @@ function drawAnalysis(l,g) {
 	//6 plane missed XY middle point
 	var missed6middleXYtotalEvents = getTotalChartEvents(tracking6MiddleMissedXY);
 	var missed6middleXYComments = chartComments+' Total Events: '+missed6middleXYtotalEvents;
-	//var missedXY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedXY, 2.0, 27.0);
-	//var missedXY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedXY, 2.0, 47.0);
-	//var missedXYExtraComments = '- x between 2 and 27, Count : '+missedXY6middleX2_27Counts;
-	//missedXYExtraComments += '- y between 2 and 47, Count: '+missedY6middleY2_47Counts;
+	//var missedXY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedXY, 2.5, 26.0);
+	//var missedXY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedXY, 4.0, 45.0);
+	//var missedXYExtraComments = '- x between 2.5 and 26, Count : '+missedXY6middleX2_27Counts;
+	//missedXYExtraComments += '- y between 4 and 45, Count: '+missedY6middleY2_47Counts;
 	var missed6middleXY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [{
@@ -436,7 +454,7 @@ function drawAnalysis(l,g) {
 	var barOptions = {
 		scales: {
 		  y: {
-		    beginAtZero: true,
+			beginAtZero: false,
 		    stepSize: 1,
 		    precision: 0,// Set the step size to 1 to show only whole numbers
 		  },
@@ -445,7 +463,10 @@ function drawAnalysis(l,g) {
 	var frequency6MiddleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX) + getTotalChartEvents(tracking6MiddleMissedXY);
 	var frequency6MiddleXComments = chartComments+' Total Events: '+frequency6MiddleXtotalEvents;
 	var frequency6MiddleX = getFrequency6ExpectedActual('X',tracking6MiddleMissedX,tracking6MiddleMissedXY);
-	var labels6MX = Object.keys(frequency6MiddleX);
+	var labels6MX = [];//Object.keys(frequency6MiddleX);
+	for (var i = 0; i < frequency6MiddleX.length; i++) {
+		labels6MX.push(frequency6MiddleX[i].x);
+	}
 	var values6MX = Object.values(frequency6MiddleX);
 	var frequency6MiddleX = {
 	  labels: labels6MX, // Array of labels for each bar on the x-axis
@@ -469,7 +490,10 @@ function drawAnalysis(l,g) {
 	var frequency6MiddleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY) + getTotalChartEvents(tracking6MiddleMissedXY);
 	var frequency6MiddleYComments = chartComments+' Total Events: '+frequency6MiddleYtotalEvents;
 	var frequency6MiddleY = getFrequency6ExpectedActual('Y',tracking6MiddleMissedY,tracking6MiddleMissedXY);
-	var labels6MY = Object.keys(frequency6MiddleY);
+	var labels6MY = [];//Object.keys(frequency6MiddleY);
+	for (var i = 0; i < frequency6MiddleY.length; i++) {
+		labels6MY.push(frequency6MiddleY[i].x);
+		}
 	var values6MY = Object.values(frequency6MiddleY);
 	var frequency6MiddleY = {
 	  labels: labels6MY, // Array of labels for each bar on the x-axis
@@ -490,14 +514,19 @@ function drawAnalysis(l,g) {
 	    download2DArray(frequency6MiddleY, 'PDIFFMY6originaldata.csv');
 	});
 	
+	end1 = new Date();
+	if (showTime) {
+		console.log("6 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 	
 	// 5 planes, X top missing
 	var missing5TopXtotalEvents = getTotalChartEvents(tracking5TopMissingX);
 	var tracking5TopMissingXComments = chartComments+' Total Events: '+missing5TopXtotalEvents;
-	var tracking5TopMissingX2_27Counts = getCountsBetween5('X','TX',tracking5TopMissingX, 2.0, 27.0);
-	var tracking5TopMissingX2_47Counts = getCountsBetween5('Y','TX',tracking5TopMissingX, 2.0, 47.0);
-	var tracking5TopMissingXExtraComments = '- x between 2 and 27, Count : '+tracking5TopMissingX2_27Counts;
-	tracking5TopMissingXExtraComments += '- y between 2 and 47, Count: '+tracking5TopMissingX2_47Counts;
+	var tracking5TopMissingX2_27Counts = getCountsBetween5('X','TX',tracking5TopMissingX, 2.5, 26.0);
+	var tracking5TopMissingY2_47Counts = getCountsBetween5('Y','TX',tracking5TopMissingX, 4.0, 45.0);
+	var tracking5TopMissingXExtraComments = '- x between 2.5 and 26, Count : '+tracking5TopMissingX2_27Counts;
+	tracking5TopMissingXExtraComments += '- y between 4 and 45, Count: '+tracking5TopMissingY2_47Counts;
 	var missing5TopX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
@@ -521,10 +550,10 @@ function drawAnalysis(l,g) {
 
 	//5 planes x middle missing		
 	var missing5MiddleXtotalEvents = getTotalChartEvents(tracking5MiddleMissingX);
-	var tracking5MiddleMissingX2_27Counts = getCountsBetween5('X','MX',tracking5MiddleMissingX, 2.0, 27.0);
-	var tracking5MiddleMissingX2_47Counts = getCountsBetween5('Y','MX',tracking5MiddleMissingX, 2.0, 47.0);
-	var tracking5MiddleMissingXExtraComments = '- x between 2 and 27, Count : '+tracking5MiddleMissingX2_27Counts;
-	tracking5MiddleMissingXExtraComments += '- y between 2 and 47, Count: '+tracking5MiddleMissingX2_47Counts;
+	var tracking5MiddleMissingX2_27Counts = getCountsBetween5('X','MX',tracking5MiddleMissingX, 2.5, 26.0);
+	var tracking5MiddleMissingY2_47Counts = getCountsBetween5('Y','MX',tracking5MiddleMissingX, 4.0, 45.0);
+	var tracking5MiddleMissingXExtraComments = '- x between 2.5 and 26, Count : '+tracking5MiddleMissingX2_27Counts;
+	tracking5MiddleMissingXExtraComments += '- y between 4 and 45, Count: '+tracking5MiddleMissingY2_47Counts;
 	var tracking5MiddleMissingXComments = chartComments+' Total Events: '+missing5MiddleXtotalEvents + tracking5MiddleMissingXExtraComments;
 	var missing5MiddleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -549,10 +578,10 @@ function drawAnalysis(l,g) {
 	
 	//5 planes x bottom missing
 	var missing5BottomXtotalEvents = getTotalChartEvents(tracking5BottomMissingX);
-	var tracking5BottomMissingX2_27Counts = getCountsBetween5('X','BX',tracking5BottomMissingX, 2.0, 27.0);
-	var tracking5BottomMissingX2_47Counts = getCountsBetween5('Y','BX',tracking5BottomMissingX, 2.0, 47.0);
-	var tracking5BottomMissingXExtraComments = '- x between 2 and 27, Count : '+tracking5BottomMissingX2_27Counts;
-	tracking5BottomMissingXExtraComments += '- y between 2 and 47, Count: '+tracking5BottomMissingX2_47Counts;
+	var tracking5BottomMissingX2_27Counts = getCountsBetween5('X','BX',tracking5BottomMissingX, 2.5, 26.0);
+	var tracking5BottomMissingY2_47Counts = getCountsBetween5('Y','BX',tracking5BottomMissingX, 4.0, 45.0);
+	var tracking5BottomMissingXExtraComments = '- x between 2.5 and 26, Count : '+tracking5BottomMissingX2_27Counts;
+	tracking5BottomMissingXExtraComments += '- y between 4 and 45, Count: '+tracking5BottomMissingY2_47Counts;
 	var tracking5BottomMissingXComments = chartComments+' Total Events: '+missing5BottomXtotalEvents + tracking5BottomMissingXExtraComments;
 	var missing5BottomX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -577,10 +606,10 @@ function drawAnalysis(l,g) {
 	
 	//5 planes y top missing
 	var missing5TopYMissingtotalEvents = getTotalChartEvents(tracking5TopMissingY);
-	var tracking5TopMissingY2_27Counts = getCountsBetween5('X','TY',tracking5TopMissingY, 2.0, 27.0);
-	var tracking5TopMissingY2_47Counts = getCountsBetween5('Y','TY',tracking5TopMissingY, 2.0, 47.0);
-	var tracking5TopMissingYExtraComments = '- x between 2 and 27, Count : '+tracking5TopMissingY2_27Counts;
-	tracking5TopMissingYExtraComments += '- y between 2 and 47, Count: '+tracking5TopMissingY2_47Counts;
+	var tracking5TopMissingY2_27Counts = getCountsBetween5('X','TY',tracking5TopMissingY, 2.5, 26.0);
+	var tracking5TopMissingY2_47Counts = getCountsBetween5('Y','TY',tracking5TopMissingY, 4.0, 45.0);
+	var tracking5TopMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5TopMissingY2_27Counts;
+	tracking5TopMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5TopMissingY2_47Counts;
 	var tracking5TopYMissingComments = chartComments+' Total Events: '+missing5TopYMissingtotalEvents + tracking5TopMissingYExtraComments;	
 	var missing5TopY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -605,10 +634,10 @@ function drawAnalysis(l,g) {
 
 	//5 plane y middle missing
 	var missing5MiddleYMissingtotalEvents = getTotalChartEvents(tracking5MiddleMissingY);
-	var tracking5MiddleMissingY2_27Counts = getCountsBetween5('X','MY',tracking5MiddleMissingY, 2.0, 27.0);
-	var tracking5MiddleMissingY2_47Counts = getCountsBetween5('Y','MY',tracking5MiddleMissingY, 2.0, 47.0);
-	var tracking5MiddleMissingYExtraComments = '- x between 2 and 27, Count : '+tracking5MiddleMissingY2_27Counts;
-	tracking5MiddleMissingYExtraComments += '- y between 2 and 47, Count: '+tracking5MiddleMissingY2_47Counts;
+	var tracking5MiddleMissingY2_27Counts = getCountsBetween5('X','MY',tracking5MiddleMissingY, 2.5, 26.0);
+	var tracking5MiddleMissingY2_47Counts = getCountsBetween5('Y','MY',tracking5MiddleMissingY, 4.0, 45.0);
+	var tracking5MiddleMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5MiddleMissingY2_27Counts;
+	tracking5MiddleMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5MiddleMissingY2_47Counts;
 	var tracking5MiddleYMissingComments = chartComments+' Total Events: '+tracking5MiddleMissingYExtraComments;	
 	var missing5MiddleY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -633,10 +662,10 @@ function drawAnalysis(l,g) {
 	
 	//5 plane y bottom missing
 	var missing5BottomYMissingtotalEvents = getTotalChartEvents(tracking5BottomMissingY);
-	var tracking5BottomMissingY2_27Counts = getCountsBetween5('X','BY',tracking5BottomMissingY, 2.0, 27.0);
-	var tracking5BottomMissingY2_47Counts = getCountsBetween5('Y','BY',tracking5BottomMissingY, 2.0, 47.0);
-	var tracking5BottomMissingYExtraComments = '- x between 2 and 27, Count : '+tracking5BottomMissingY2_27Counts;
-	tracking5BottomMissingYExtraComments += '- y between 2 and 47, Count: '+tracking5BottomMissingY2_47Counts;
+	var tracking5BottomMissingY2_27Counts = getCountsBetween5('X','BY',tracking5BottomMissingY, 2.5, 26.0);
+	var tracking5BottomMissingY2_47Counts = getCountsBetween5('Y','BY',tracking5BottomMissingY, 4.0, 45.0);
+	var tracking5BottomMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5BottomMissingY2_27Counts;
+	tracking5BottomMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5BottomMissingY2_47Counts;
 	var tracking5BottomYMissingComments = chartComments+' Total Events: '+missing5BottomYMissingtotalEvents+tracking5BottomMissingYExtraComments;	
 	var missing5BottomY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -658,13 +687,17 @@ function drawAnalysis(l,g) {
 	document.getElementById('download5PTBYdata').addEventListener('click', () => {
 	    download2DArray(tracking5BottomMissingY, '5PTBYoriginaldata.csv');
 	});
-	
+	end1 = new Date();
+	if (showTime) {		
+		console.log("5 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 	//4 plane top missing
 	var missing4TopMissingtotalEvents = getTotalChartEvents(tracking4TopMissing);
-	var trackin4TopMissingY2_27Counts = getCountsBetween4('X','T',tracking4TopMissing, 2.0, 27.0);
-	var tracking4TopMissingY2_47Counts = getCountsBetween4('Y','T',tracking4TopMissing, 2.0, 47.0);
-	var tracking4TopMissingYExtraComments = '- x between 2 and 27, Count : '+trackin4TopMissingY2_27Counts;
-	tracking4TopMissingYExtraComments += '- y between 2 and 47, Count: '+tracking4TopMissingY2_47Counts;
+	var trackin4TopMissingY2_27Counts = getCountsBetween4('X','T',tracking4TopMissing, 2.5, 26.0);
+	var tracking4TopMissingY2_47Counts = getCountsBetween4('Y','T',tracking4TopMissing, 4.0, 45.0);
+	var tracking4TopMissingYExtraComments = '- x between 2.5 and 26, Count : '+trackin4TopMissingY2_27Counts;
+	tracking4TopMissingYExtraComments += '- y between 4 and 45, Count: '+tracking4TopMissingY2_47Counts;
 	var tracking4TopMissingComments = chartComments+' Total Events: '+missing4TopMissingtotalEvents + tracking4TopMissingYExtraComments;	
 	var missing4Top = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -689,10 +722,10 @@ function drawAnalysis(l,g) {
 		
 	//4 plane middle missing
 	var missing4MiddleMissingtotalEvents = getTotalChartEvents(tracking4MiddleMissing);
-	var trackin4MiddleMissingY2_27Counts = getCountsBetween4('X','M',tracking4MiddleMissing, 2.0, 27.0);
-	var tracking4MiddleMissingY2_47Counts = getCountsBetween4('Y','M',tracking4MiddleMissing, 2.0, 47.0);
-	var tracking4MiddleMissingYExtraComments = '- x between 2 and 27, Count : '+trackin4MiddleMissingY2_27Counts;
-	tracking4MiddleMissingYExtraComments += '- y between 2 and 47, Count: '+tracking4MiddleMissingY2_47Counts;
+	var trackin4MiddleMissingY2_27Counts = getCountsBetween4('X','M',tracking4MiddleMissing, 2.5, 26.0);
+	var tracking4MiddleMissingY2_47Counts = getCountsBetween4('Y','M',tracking4MiddleMissing, 4.0, 45.0);
+	var tracking4MiddleMissingYExtraComments = '- x between 2.5 and 26, Count : '+trackin4MiddleMissingY2_27Counts;
+	tracking4MiddleMissingYExtraComments += '- y between 4 and 45, Count: '+tracking4MiddleMissingY2_47Counts;
 	var tracking4MiddleMissingComments = chartComments+' Total Events: '+missing4MiddleMissingtotalEvents+tracking4MiddleMissingYExtraComments;	
 	var missing4Middle = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -717,10 +750,10 @@ function drawAnalysis(l,g) {
 	
 	//4 plane bottom missing
 	var missing4BottomMissingtotalEvents = getTotalChartEvents(tracking4BottomMissing);
-	var trackin4BottomMissingY2_27Counts = getCountsBetween4('X','M',tracking4BottomMissing, 2.0, 27.0);
-	var tracking4BottomMissingY2_47Counts = getCountsBetween4('Y','M',tracking4BottomMissing, 2.0, 47.0);
-	var tracking4BottomMissingYExtraComments = '- x between 2 and 27, Count : '+trackin4BottomMissingY2_27Counts;
-	tracking4BottomMissingYExtraComments += '- y between 2 and 47, Count: '+tracking4BottomMissingY2_47Counts;
+	var trackin4BottomMissingY2_27Counts = getCountsBetween4('X','M',tracking4BottomMissing, 2.5, 26.0);
+	var tracking4BottomMissingY2_47Counts = getCountsBetween4('Y','M',tracking4BottomMissing, 4.0, 45.0);
+	var tracking4BottomMissingYExtraComments = '- x between 2.5 and 26, Count : '+trackin4BottomMissingY2_27Counts;
+	tracking4BottomMissingYExtraComments += '- y between 4 and 45, Count: '+tracking4BottomMissingY2_47Counts;
 	var tracking4BototomMissingComments = chartComments+' Total Events: '+missing4BottomMissingtotalEvents+tracking4BottomMissingYExtraComments;	
 	var missing4Bottom = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -742,6 +775,11 @@ function drawAnalysis(l,g) {
 	document.getElementById('download4PBdata').addEventListener('click', () => {
 	    download2DArray(tracking4BottomMissing, '4BToriginaldata.csv');
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("4 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 	
 	//delta X / delta Y
 	var deltaXdeltaYOptions = {
@@ -1234,6 +1272,11 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDYBM1Ddata').addEventListener('click', () => {
 	    downloadArray(dybottomMiddleChannelfrequency, 'DYBM1Dchanneldata.csv');
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("DX/DY : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 
 	//dx dz charts
 	var DXDZDYDZdatasetsComments = chartComments;
@@ -1321,6 +1364,11 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDXDZDYDZMBYdata').addEventListener('click', () => {
 	    download2DArray(dybottommiddlebothlayers, 'DXDZDYDZMBYdata.csv');
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("DX/DZ : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 
 	//delta T charts
 	var deltaTOptions = {
@@ -1574,6 +1622,11 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadDT3-5').addEventListener('click', () => {	
 		downloadArray(getDeltaT(5,3), 'DTCAEN3-5data.csv');
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("Delta T : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 
 	//track counts	
 	var trackCountOptions = {
@@ -1704,6 +1757,11 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadTRACKS6').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(6,''), 'EVENTSTRACKS6MINUTEdata.csv');
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("Track counts : "+calculateProcessTime(end1,start1)+" seconds");
+	}
+	start1 = new Date();
 
 	//ADC charts
 	var adcOptionsX = {
@@ -1935,6 +1993,10 @@ function drawAnalysis(l,g) {
 	    },
 		options: adcOptionsY,
 	});
+	end1 = new Date();
+	if (showTime) {
+		console.log("ADCs : "+calculateProcessTime(end1,start1)+" seconds");
+	}
 	document.getElementById('analysis-run').style.display = "none";
 	document.getElementById('analysis-message').style.display = "none";
 };

@@ -12,6 +12,14 @@ Plane Name; start triangle (Pyramid, Tree); location of first fiber in every mod
 
 Example data:
 
+ATHAB 24NOV2025 19:40:44.
+P0_X-Layer_1 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 0.0 1.95 OFF 0.0
+P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 4.0 1.95 OFF 0.0
+P2_X-Layer_2 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 42.3 1.95 OFF 0.0
+P3_Y-Layer_2 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 46.3 1.95 OFF 0.0
+P4_X-Layer_3 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 -41.8 1.95 OFF 0.0
+P5_Y-Layer_3 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 -37.8 1.95 OFF 0.0
+
 ATHAB 29OCT2025 20:40:00.   all planes NORMAL
 P0_X-Layer_1 Pyramid NORMAL -27.0 -19.0 -11.0 -3.0 5.0 13.0 21.0 42.3 1.95 OFF 0.0
 P1_Y-Layer_1 Tree NORMAL -48.0 -40.0 -32.0 -24.0 -16.0 -8.0 0.0 8.0 16.0 24.0 32.0 40.0 46.3 1.95 OFF 0.0

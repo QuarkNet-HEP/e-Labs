@@ -19,7 +19,7 @@ var dybottommiddlebothlayers = [];
 var dxbothlayers = [];
 var dybothlayers = [];
 var microMinute = 60000000;
-let pointTolerance = 0.0;
+let pointTolerance = 1.0;
 var investigatePlanes = [];
 var eventMissingOnePlane = [];
 var tracking6MiddleMissedX = [];
@@ -527,9 +527,10 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 }// end of getEventsWithTracksPerMinute
 
 function arePointsAlmostCollinear(event, point1, point2, point3) {
+	var eventsToTest = [];//64796,24066,55425];
 	var m = 0;
 	var x3 = point3[0];
-	if ((point2[0] - point1[0]) > 0) {
+	if ((point2[0] - point1[0]) != 0) {
 		m = (point2[1] - point1[1]) / (point2[0] - point1[0]);
 		if (m != 0) {
 			x3 = (point3[1] - point1[1]) / m + point1[0];
@@ -537,8 +538,12 @@ function arePointsAlmostCollinear(event, point1, point2, point3) {
 			//x3 = point3[0];
 		}
 	} 				
+	
 	var lowerBound = x3 - pointTolerance;
 	var upperBound = x3 + pointTolerance;
+	if (eventsToTest.includes(event)) {
+		console.log("in collinear:", event, point1,point2,point3,m,x3,lowerBound,upperBound);
+	}
 	if (point3[0] >= lowerBound && point3[0] <= upperBound) {
 		return true;		
 	} else {
@@ -548,7 +553,7 @@ function arePointsAlmostCollinear(event, point1, point2, point3) {
 
 function findExpectedX(point1, point2, y3) {
 	var x3 = point1[0];
-	if ((point2[0] - point1[0]) > 0) {
+	if ((point2[0] - point1[0]) != 0) {
 	   const m = (point2[1] - point1[1]) / (point2[0] - point1[0]);
 	   if (m != 0) {
 		x3 = (y3 - point1[1]) / m + point1[0];	
@@ -557,23 +562,44 @@ function findExpectedX(point1, point2, y3) {
 	return {x3, y3};
 }//end of findExpectedX
 
+function arrayMin(arr) {
+  var len = arr.length, min = Infinity;
+  while (len--) {
+    if (Number(arr[len]) < min) {
+      min = Number(arr[len]);
+    }
+  }
+  return min;
+};//end of arrayMin
+
+function arrayMax(arr) {
+  var len = arr.length, max = -Infinity;
+  while (len--) {
+    if (Number(arr[len]) > max) {
+      max = Number(arr[len]);
+    }
+  }
+  return max;
+};//end of arrayMax
+
 function getBinnedData(arr) {
 	var bins = [];
 	var binCount = 0;
 	var interval = 1;
-	var numOfBuckets = 20;
+	//var numOfBuckets = 20;
+	var arrayMinValue = arrayMin(arr)-1;
+	var arrayMaxValue = arrayMax(arr)+1;
 
 	//Setup Bins
-	for(var i = 0; i < numOfBuckets; i += interval){
+	for(var i = arrayMinValue; i <= arrayMaxValue; i += interval){
 	  bins.push({
-	    binNum: binCount,
+	    binNum: Math.floor(i),
 	    minNum: i,
 	    maxNum: i + interval,
 	    count: 0
 	  })
 	  binCount++;
 	}
-
 	//Loop through data and add to bin's count
 	for (var i = 0; i < arr.length; i++){
 	  var item = arr[i];
@@ -589,25 +615,26 @@ function getBinnedData(arr) {
 }//end of getBinnedData
 
 function getFrequency6ExpectedActual(option, arr1, arr2) {
+	//console.log(option, arr1, arr2);
 	var diff = 0;
 	var diffCollection = [];
 	if (option == 'X') {
 		for (var i = 0; i < arr1.length; i++) {
-			diff = Math.abs(arr1[i][2].x3 - arr1[i][1][1][0]);
+			diff = arr1[i][2].x3 - arr1[i][1][1][0];
 			diffCollection.push(diff);
 		}
 		for (var i = 0; i < arr2.length; i++) {
-			diff = Math.abs(arr2[i][2].x3 - arr2[i][1][1][0]);
+			diff = arr2[i][2].x3 - arr2[i][1][1][0];
 			diffCollection.push(diff);
 		}
 	}
 	if (option == 'Y') {
 		for (var i = 0; i < arr1.length; i++) {
-			diff = Math.abs(arr1[i][2].x3 - arr1[i][1][4][0]);
+			diff = arr1[i][2].x3 - arr1[i][1][4][0];
 			diffCollection.push(diff);
 		}
 		for (var i = 0; i < arr2.length; i++) {
-			diff = Math.abs(arr2[i][2].x3 - arr2[i][1][4][0]);
+			diff = arr2[i][2].x3 - arr2[i][1][4][0];
 			diffCollection.push(diff);
 		}
 	}
@@ -620,6 +647,7 @@ function getFrequency6ExpectedActual(option, arr1, arr2) {
 }//end of getFrequency6ExpectedActual
 
 function checkTracking(event, arr, numberofplanes1, numberofplanes2) {
+	var eventsToTest = [];//64796,24066,55425];
 	var points = []; //we'll collect x layer points first and y layer next, always top to bottom
 	for (var i = 0; i < arr.length; i++) {
 			points.push(arr[i][2]);
@@ -640,26 +668,39 @@ function checkTracking(event, arr, numberofplanes1, numberofplanes2) {
 		//test if all points are in the line
 		allPointsInLineX = arePointsAlmostCollinear(event,points[0],points[2],points[1]);	
 		allPointsInLineY = arePointsAlmostCollinear(event,points[3],points[5],points[4]);
+		if (eventsToTest.includes(event)) {
+			console.log("pointsCollinear?: ", event, points, allPointsInLineX, allPointsInLineY);
+			}		
 		if (allPointsInLineX == false && allPointsInLineY == false) {
 			// it is a miss in X and Y
 			var expectedPointX = findExpectedX(points[0], points[2], points[1][1]);
 			var expectedPointY = findExpectedX(points[3], points[5], points[4][1]);
 			tracking6MiddleMissedXY.push([event, points, expectedPointX, expectedPointY]);
-			//console.log("both off for 6 plane tracks: ", tracking6MiddleMissedXY);
+			if (eventsToTest.includes(event)) {
+				console.log("both off for 6 plane tracks: ", event, points, expectedPointX, expectedPointY);
+				}
 		} else if (allPointsInLineX == false) {
 			// it is only a miss in X
 			var expectedPoint = findExpectedX(points[0], points[2], points[1][1]);
 			tracking6MiddleMissedX.push([event, points, expectedPoint]);
-			//console.log("x off for 6 plane tracks: ", tracking6MiddleMissedX);
+			if (eventsToTest.includes(event)) {
+				console.log("x off for 6 plane tracks: ", event, points, expectedPoint);
+				}
 		} else if (allPointsInLineY == false) {
 			// it is only a miss in Y
 			var expectedPoint = findExpectedX(points[3], points[5], points[4][1]);
 			tracking6MiddleMissedY.push([event, points, expectedPoint]);			
-			//console.log("y off for 6 plane tracks: ", tracking6MiddleMissedY);
+			if (eventsToTest.includes(event)) {
+				console.log("y off for 6 plane tracks: ", event, points, expectedPoint);
+				}
 		} else {
 			//do nothing
 		}
 		if (allPointsInLineX && allPointsInLineY) {
+			if (eventsToTest.includes(event)) {
+				console.log("hits for 6 plane tracks: ", event, points);
+				}
+
 			tracking6MiddleHitsXY.push([event, points]);
 			globalThis.eventFilter6.push(event+1);
 		}
@@ -965,125 +1006,272 @@ function checkCalculatedX(point1, point2, y3) {
 }// end of checkCcalculatedX
 
 //attempt to calculate delta
-function calculateDeltaPointByPercentage(event, x1, y1, x2, y2, percentage, yProjected,eventChannels, layer, zValue) {
+function calculateDeltaPointByPercentage(event, x1, y1, x2, y2, percentage, yProjected,eventChannels, layer, zValue, neighbors) {
+	var eventsToTest = [];
 	var dx = x2 - x1;
 	var dy = y2 - y1;
-	const x = ((x1 + (dx * percentage/100))/(size/2.0))+1;
+	//const x = ((x1 + (dx * percentage/100))/(size/2.0))+1;
+	const x = ((x1 + (dx * percentage/100.0))/(overallCellSize/2.0))+0.5
+	if (eventsToTest.includes(event)) {
+		//console.log("percent0:",x2, x1, x2-x1);
+		console.log("percent:",event, x1, x2, dx,percentage,x);
+	}
 	var y = zValue;
-	var channel1 = eventChannels[layer][0];
-	var channel2 = eventChannels[layer][1];
+	if (neighbors[0] < neighbors[1]) {										
+		var channel1 = eventChannels[layer][0];
+		var channel2 = eventChannels[layer][1];
+	} else {
+		var channel1 = eventChannels[layer][1];
+		var channel2 = eventChannels[layer][0];		
+	}
   	return { x, y, yProjected, channel1, channel2};
 }//end of calculatePointByPercentage
 
 function getSingleDeltaSidePoint(event, layerTriangle,eventChannels, layer, zValue) {
+	var eventsToTest = [];
 	var sidePoint = [];
 	var x1 = layerTriangle[2][0];
 	var x2 = layerTriangle[3][0];
 	var x3 = layerTriangle[4][0];
-	var x = (((x1 + x2 + x3)/3) /(size/2.0))+1;
+	//var x = (((x1 + x2 + x3)/3) /(size/2.0))+1;
+	var x = (((x1 + x2 + x3)/3) /(overallCellSize/2.0))+0.5;
 	var y = zValue;
-	yProjected = (y /(size/2.0))+1;
+	//var yProjected = (y /(size/2.0))+1;
+	var yProjected = (y /(overallCellSize/2.0))+0.5;
 	var channel1 = -1; 
 	if (eventChannels[layer].length === 0) {
 		channel1 = -1;
 	} else {
 		channel1 = eventChannels[layer][0];
 	}
+	if (eventsToTest.includes(event)) {
+		console.log("single point:",event, x1,x2,x3,x, eventChannels);
+	}
 	var channel2 = -1;
 	sidePoint = {x, y, yProjected, channel1, channel2};	
 	return sidePoint; 
 }//end of getSingleSidePoint
 
-function calculateDeltaSidePoint(event, layerAct, layerTriangle,eventChannels, layer, zValue) {
-	var sidePointGroup = [];
+function getDeltaIndexesOfTwoHighest(arr) {
+  // 1. Create an array of objects with value and original index
+  const indexedArray = arr.map((value, index) => ({ value, index }));
+
+  // 2. Sort the array in descending order based on value
+  indexedArray.sort((a, b) => b.value - a.value);
+
+  // 3. Extract the indices of the top two elements
+  if (indexedArray.length >= 2) {
+    return [indexedArray[0].index, indexedArray[1].index];
+  } else if (indexedArray.length === 1) {
+    return [indexedArray[0].index]; // Return only one index if array has only one element
+  } else {
+    return []; // Return an empty array for an empty input array
+  }
+}
+
+function analyzeDeltaCluster(event, x,arr) {
+	var eventsToTest = [];//41,110,9674,9681,9725,9858,9956];
+	var ndx = [];
+	var intensities = [];
+	var lastX = 0;
+	if (eventsToTest.includes(event)) {			
+	 console.log("it gets here 0:", x,arr);
+	 }
+	if (arr.length-x == 2 && (arr[arr.length-1][0] - arr[arr.length-2][0] <= overallCellSize)) {
+		intensities.push(arr[arr.length-2][1]);		
+		intensities.push(arr[arr.length-1][1]);	
+		if (eventsToTest.includes(event)) {			
+		 //console.log("it gets here 1:", arr, arr[arr.length-1][0] - arr[arr.length-2][0], intensities);
+		 }
+	} else {
+		for (var i = x; i < arr.length-1; i++) {
+			if (arr[i+1][0] - arr[i][0] <= overallCellSize && intensities.length < 2) {
+				//these are neighbors
+				intensities.push(arr[i][1]);
+				if (eventsToTest.includes(event)) {			
+				 //console.log("it gets here 2:", intensities);
+				 }
+			}
+			lastX = i;
+		}
+		//deal with one more item
+		if (eventsToTest.includes(event)) {			
+		 console.log("it gets here 3:", lastX, arr.length, intensities);
+		}	
+		if (arr.length >= lastX && lastX >= 1  && intensities.length < 2) {
+			if (arr[lastX][0] - arr[lastX-1][0] <= overallCellSize) {
+				intensities.push(arr[lastX][1])
+			if (eventsToTest.includes(event)) {			
+			 console.log("it gets here 3:", lastX, arr[lastX][0], arr[lastX-1][0],arr[lastX][0] - arr[lastX-1][0], intensities);
+			}	
+			}	
+		}
+	}
+	ndx = getIndexesOfTwoHighest(intensities);
+	for (var i = 0; i < ndx.length; i++) {
+		ndx[i] += x;
+	}
+	if (eventsToTest.includes(event)) {			
+	 console.log("it gets here last:", ndx);
+	 }
+	return ndx;
+}
+
+function getDeltaSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer, eventChannels, zValue) {
+	var eventsToTest = [];//26020,566119073,34789	
 	var sidePoint = [];
 	var yProjected = 0;
-	if (layerTriangle[layer].length > 0) {
-	  if (layerTriangle[layer].length == 1) {
-		//the point falls in the middle of the triangle
-		sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][0],eventChannels, layer, zValue);
-		sidePointGroup.push(sidePoint);
-	  }	else {
-		for (var x = 0; x < layerTriangle[layer].length-1; x++) {
-			var quadFirstCell = layerTriangle[layer][x][6];
-			var quadSecondCell = layerTriangle[layer][x+1][6];
-			var firstX = layerTriangle[layer][x][3][0];
-			var secondX = layerTriangle[layer][x+1][4][0];
-			var layerValueDiff = layerAct[layer][x+1][0]-layerAct[layer][x][0];
-			//these are not neighbors	
-			if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff) != 1) && ((secondX - firstX) > overallCellSize)) {
-				sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][x],eventChannels, layer, zValue);
-				sidePointGroup.push(sidePoint);
-				sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][x+1],eventChannels, layer, zValue);
-				sidePointGroup.push(sidePoint);
-				x += 1;
+	var up = true;
+	var x1 = 0;
+	var y1 = 0;
+	var x2 = 0;
+	var y2 = 0;
+	var point1Intensity = 0;
+	var point2Intensity = 0;
+	var neighborEventChannels = [];
+	var neighbors = analyzeDeltaCluster(event,x,layerAct[layer]);
+	if (eventsToTest.includes(event)) {
+		//console.log("neighbors: ", neighbors, x, layerAct, layer, layerAct[layer]);
+	}
+	if (neighbors.length > 1) {
+		if (neighbors[0] < neighbors[1]) {										
+			up = layerTriangle[layer][neighbors[0]][0];					
+			x1 = layerTriangle[layer][neighbors[0]][3][0];
+		    y1 = layerTriangle[layer][neighbors[0]][3][1];
+			x2 = layerTriangle[layer][neighbors[0]][4][0];
+			y2 = layerTriangle[layer][neighbors[0]][4][1];
+			yProjected = layerTriangle[layer][neighbors[0]][5];
+			point1Intensity = layerTriangle[layer][neighbors[0]][1];
+			point2Intensity = layerTriangle[layer][neighbors[1]][1];
+		} else {
+			up = layerTriangle[layer][neighbors[1]][0];					
+			x1 = layerTriangle[layer][neighbors[1]][3][0];
+			y1 = layerTriangle[layer][neighbors[1]][3][1];
+			x2 = layerTriangle[layer][neighbors[1]][4][0];
+			y2 = layerTriangle[layer][neighbors[1]][4][1];
+			yProjected = layerTriangle[layer][neighbors[1]][5];
+			point1Intensity = layerTriangle[layer][neighbors[1]][1];
+			point2Intensity = layerTriangle[layer][neighbors[0]][1];						
+		}
+		var pointPercent = 0;
+		var pointPercentSum = point1Intensity + point2Intensity;
+		//console.log("get points from neighbors:", eventChannels, neighbors, neighborEventChannels);
+		if (up) {
+		   if (point1Intensity > point2Intensity) {
+			 //first triangle is pyramid with higher intensity
+			 pointPercent = point1Intensity * 100 / pointPercentSum;
+			 sidePoint = calculateDeltaPointByPercentage(event,x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue, neighbors);
+		   } else {
+			 //first triangle is pyramid with lower intensity			 
+			 pointPercent = point2Intensity * 100 / pointPercentSum;
+			 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue, neighbors);
+		   }			
+		} else {
+			if (point1Intensity > point2Intensity) {
+			 //first triangle is down with higher intensity
+			 pointPercent = point1Intensity * 100 / pointPercentSum;
+			 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue, neighbors);
 			} else {
-				//if (layerValueDiff == 17.5) {
-					//we have to calculate between neighbors... I will assume it is the first two neigbors for now
-					//NEED TO ADD CHECKING FOR OTHER NEIGHBORS TO THE RIGHT!!!!!
-					var up = layerTriangle[layer][x][0];
-					//the last line of the first triangle and the first line of the second triangle are a match
-					//use the first values
-					var x1 = layerTriangle[layer][x][3][0];
-					var y1 = layerTriangle[layer][x][3][1];
-					var x2 = layerTriangle[layer][x][4][0];
-					var y2 = layerTriangle[layer][x][4][1];
-					yProjected = layerTriangle[layer][x][5];	
-					var point1Intensity = layerTriangle[layer][x][1];
-					var point2Intensity = 0;
-					if (layerTriangle[layer].length > 1) {
-						point2Intensity = layerTriangle[layer][x+1][1];
-					}
-					var pointPercent = 0;
-					var pointPercentSum = point1Intensity + point2Intensity;
-					if (up) {
-					   if (point1Intensity > point2Intensity) {
-						 //first triangle is pyramid with higher intensity
-						 pointPercent = point1Intensity * 100 / pointPercentSum;
-						 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue);
-						 sidePointGroup.push(sidePoint);
-					   } else {
-						 //first triangle is pyramid with lower intensity			 
-						 pointPercent = point2Intensity * 100 / pointPercentSum;
-						 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue);
-						 sidePointGroup.push(sidePoint);
-					   }			
-					} else {
-						if (point1Intensity > point2Intensity) {
-						 //first triangle is down with higher intensity
-						 pointPercent = point1Intensity * 100 / pointPercentSum;
-						 sidePoint = calculateDeltaPointByPercentage(event, x1, y1, x2, y2, pointPercent, yProjected,eventChannels, layer, zValue);
-						 sidePointGroup.push(sidePoint);
-						} else {
-					     //the first triangle is down with lower intensity
-						 pointPercent = point2Intensity * 100 / pointPercentSum;
-						 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue);
-						 sidePointGroup.push(sidePoint);
-						}
-					}
-					x += 1;
+		     //the first triangle is down with lower intensity
+			 pointPercent = point2Intensity * 100 / pointPercentSum;
+			 sidePoint = calculateDeltaPointByPercentage(event, x2, y2, x1, y1, pointPercent, yProjected,eventChannels, layer, zValue, neighbors);
 			}
 		}
-	  }
-	  
-	  //we still need to deal with the last point
-	  if (layerTriangle[layer].length > 1) {
-	    var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
-	    var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
-	    var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
-	    var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
-	    var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
-	    if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff != 1) && (secondX - firstX) > overallCellSize)) { 		
-	  	  //we still need to deal with the last point
-	  	  sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1], eventChannels,layer, zValue);
-	  	  sidePointGroup.push(sidePoint);
-	    }
-	  }	  	  
-	}// end of testing the size of layerTriangle
-	return sidePointGroup;
+	}
+	return sidePoint;	
+}//end of getDeltaSidePointFromNeighbors
+
+
+function calculateDeltaSidePoint(event, layerAct, layerTriangle,eventChannels, layer, zValue) {
+		var layerTracker = [];
+		var eventsToTest = [];//26020,566119073,34789
+		var sidePointGroup = [];
+		var sidePoint = [];
+		var yProjected = 0;
+		if (layerTriangle[layer].length > 0) {
+		  if (layerTriangle[layer].length == 1) {
+			//the point falls in the middle of the triangle
+			sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][0],eventChannels, layer, zValue);
+			if (eventsToTest.includes(event)) {
+				//console.log("single point 1:", sidePoint ,layerTriangle[layer]);
+			}
+			sidePointGroup.push(sidePoint);
+		  }	else {
+			for (var x = 0; x < layerTriangle[layer].length-1; x++) {
+				//var quadFirstCell = layerTriangle[layer][x][6];
+				//var quadSecondCell = layerTriangle[layer][x+1][6];
+				//var firstX = layerTriangle[layer][x][3][0];
+				//var secondX = layerTriangle[layer][x+1][4][0];
+				var layerValueDiff = layerAct[layer][x+1][0]-layerAct[layer][x][0];
+				if (eventsToTest.includes(event)) {
+					//console.log("checking neighbors:", layerValueDiff, layer, layerAct[layer]);
+				}
+				//these are not neighbors	
+				if (layerValueDiff != 17.5 && layerValueDiff > overallCellSize && !layerTracker.includes(x)) {
+					sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][x],eventChannels, layer, zValue);
+					if (eventsToTest.includes(event)) {
+						console.log("single point 2-not neighbors:", sidePoint);
+					}
+					sidePointGroup.push(sidePoint);
+					layerTracker.push(x);
+				} else {
+					if (!layerTracker.includes(x)) {
+						var sidePoint = getDeltaSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer, eventChannels, zValue);
+						if (eventsToTest.includes(event)) {
+							console.log("point 3-neighbors:", sidePoint);
+						}
+						if (!isPointInGroup(sidePoint, sidePointGroup)) {
+						  sidePointGroup.push(sidePoint);
+						}
+					}			
+					layerTracker.push(x);
+					x += 1;
+				 }
+			 layerTracker.push(x);
+			 }
+		   }
+			//need to deal with the last points
+			if (layerTriangle[layer].length > 1) {
+				//var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
+				//var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
+				//var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
+				//var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
+				var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
+				var x = layerTriangle[layer].length-2;
+				if (!layerTracker.includes(x)) {
+					var neighbors = analyzeDeltaCluster(event, x,layerAct[layer]);
+					if (neighbors.length > 1) {
+						var sidePoint = getDeltaSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer, eventChannels, zValue);
+						if (eventsToTest.includes(event)) {
+							console.log("last point 1 - neighbors:", sidePoint);
+						}
+						if (isPointInGroup(sidePoint, sidePointGroup)) {
+						//do nothing
+						} else {
+							  sidePointGroup.push(sidePoint);
+						}
+					} else {
+					    if (layerValueDiff != 17.5 && layerValueDiff > overallCellSize && !layerTracker.includes(x)) {
+							  //we still need to deal with the last point
+						  sidePoint = getSingleDeltaSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1], eventChannels,layer, zValue);
+						  if (eventsToTest.includes(event)) {
+						  	console.log("last point 2 - not neighbors:", sidePoint);
+						  }
+						  if (isPointInGroup(sidePoint, sidePointGroup)) {
+							//do nothing
+						  } else {
+						  	  sidePointGroup.push(sidePoint);
+						  } 
+						}		
+					}
+				}			
+			}
+		  }// end of checking if there are points to work with
+		return sidePointGroup;
 }//end of calculateSidePoint
 
 function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSize, layerTriangle, layerOrder,eventChannels){
+  var eventsToTest = [];//64796,24066,55425];//[4968,3410,22605];
   var sidePointX1 = calculateDeltaSidePoint(event, layerAct, layerTriangle,eventChannels, layerOrder[0][2], layerOrder[0][0]);
   var sidePointX2 = calculateDeltaSidePoint(event, layerAct, layerTriangle,eventChannels, layerOrder[1][2], layerOrder[1][0]);
   var sidePointX3 = calculateDeltaSidePoint(event, layerAct, layerTriangle,eventChannels, layerOrder[2][2], layerOrder[2][0]);
@@ -1110,23 +1298,13 @@ function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSi
  if (sidePointX2.length > 0) {
 	//now check if it belongs to a full track
 	if (sidePointX1.length > 0 && sidePointX3.length > 0) {
+		//loop through the middle points
 		for (var i = 0; i < sidePointX2.length; i++) {
 			var middlePoint = sidePointX2[i];
-			//check how many points there are in other layers
-			if (sidePointX1.length > 1 && sidePointX3.length == 1) {
-				for (var j = 0; j < sidePointX1.length; j++) {
-					expectedMiddlePoint = checkCalculatedX(sidePointX1[j],sidePointX3[0],middlePoint);
-					//console.log(event, whichLayer, middlePoint, expectedMiddlePoint);
-					if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
-						diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
-						tempX1 = sidePointX1[j];
-						tempX2 = middlePoint;
-						tempX3 = sidePointX3[0];	
-					}
-					//need to check if this middle point is the best for the other layer points
-					//console.log(event,whichLayer,i,j,k,middlePoint, sidePointX1[j], sidePointX3[0]);		
-				}
+			if (eventsToTest.includes(event)) {
+			console.log("getting best point from these :", middlePoint);
 			}
+			//test case 1: 1 point in one of the other layer and more points in one of the other layers
 			if (sidePointX3.length > 1 && sidePointX1.length == 1) {
 				for (var j = 0; j < sidePointX3.length; j++) {
 					//need to check if this middle point is the best for the other layer points
@@ -1137,11 +1315,43 @@ function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSi
 						tempX1 = sidePointX1[0];
 						tempX2 = middlePoint;
 						tempX3 = sidePointX3[j];	
+						if (eventsToTest.includes(event)) {
+							console.log("case 1 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+						}
 					}					
-					//console.log(event,whichLayer,i,j,k,middlePoint, sidePointX1[0], sidePointX3[j]);		
 				}
 			}
-			//need to loop through both
+			//test case 2: reverse case from above
+			if (sidePointX1.length > 1 && sidePointX3.length == 1) {
+				for (var j = 0; j < sidePointX1.length; j++) {
+					expectedMiddlePoint = checkCalculatedX(sidePointX1[j],sidePointX3[0],middlePoint);
+					//console.log(event, whichLayer, middlePoint, expectedMiddlePoint);
+					if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+						diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+						tempX1 = sidePointX1[j];
+						tempX2 = middlePoint;
+						tempX3 = sidePointX3[0];	
+						if (eventsToTest.includes(event)) {
+							console.log("case 2 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+						}
+					}
+				}
+			}
+			//test case 3: there is only one point in both other layers
+			if (sidePointX1.length == 1 && sidePointX3.length == 1) {
+				expectedMiddlePoint = checkCalculatedX(sidePointX1[0],sidePointX3[0],middlePoint);
+				//console.log(event, whichLayer, middlePoint, expectedMiddlePoint);
+				if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+					diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+					tempX1 = sidePointX1[0];
+					tempX2 = middlePoint;
+					tempX3 = sidePointX3[0];	
+					if (eventsToTest.includes(event)) {
+						console.log("case 3 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+					}
+				}
+			}
+			//test case 4: both layers have multiple points
 			if (sidePointX1.length > 1 && sidePointX3.length > 1) {
 				for (var j = 0; j < sidePointX1.length; j++) {
 					for (var k = 0; k < sidePointX3.length; k++) {
@@ -1152,12 +1362,13 @@ function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSi
 							tempX1 = sidePointX1[j];
 							tempX2 = middlePoint;
 							tempX3 = sidePointX3[k];	
+							if (eventsToTest.includes(event)) {
+								console.log("case 4 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+							}
 						}					
-						//need to check if this middle point is the best for the other layer points
-						//console.log(event,whichLayer,i,j,k,middlePoint, sidePointX1[j], sidePointX3[k]);		
 					}
 				}
-			}
+			}			
 			if (typeof tempX1.x != "undefined" && tempX1.x != pointX1.x) {
 				pointX1 = tempX1;
 				//console.log(event, whichLayer, sidePointX1, pointX1);
@@ -1169,11 +1380,13 @@ function calculateDeltaTrack(whichLayer, event, layerAct, layerQuad, layerQuadSi
 			if (typeof tempX3.x != "undefined" && tempX3.x != pointX3.x) {
 				pointX3 = tempX3;
 				//console.log(event, whichLayer, sidePointX3, pointX3);
-			}				
-		}		
-	}	
- }
-	
+			}							
+		}	
+	}
+}
+  if (eventsToTest.includes(event)) {
+	console.log(sidePointX1, sidePointX2, sidePointX3, pointX1, pointX2, pointX3);
+  }
   //investigate tracking
   var xTopPoint = [undefined,undefined];
   var xMiddlePoint = [undefined,undefined];
@@ -1346,16 +1559,23 @@ function drawDeltaTriangle(dir, xpos, y, channel, inten, quadMember) {
 	  }
 	  triangleCoords.push([xpos, y]);
 	  triangleCoords.push([xpos+size, y]);
+	  //triangleCoords.push([xpos+overallCellSize, y]);
 	  var y3 = 0;
 	  var height = 0;
 	  if (dir) {
 		  y3 = y-(Math.sqrt(3) * size / 2);
 		  height = y-((Math.sqrt(3) * size / 2)/2.0);
 		  triangleCoords.push([xpos+(size/2), y3]);
+		  //y3 = y-(Math.sqrt(3) * overallCellSize / 2);
+		  //height = y-((Math.sqrt(3) * overallCellSize / 2)/2.0);
+		  //triangleCoords.push([xpos+(overallCellSize/2), y3]);
 	  } else { 
 		  y3 = y+(Math.sqrt(3) * size / 2);
 		  height = y+((Math.sqrt(3) * size / 2)/2.0);
 	      triangleCoords.push([xpos+(size/2), y3]);
+		  //y3 = y+(Math.sqrt(3) * overallCellSize / 2);
+		  //height = y+((Math.sqrt(3) * overallCellSize / 2)/2.0);
+		  //triangleCoords.push([xpos+(overallCellSize/2), y3]);
 	  }
 	  if(inten == 0){
 		triangleCoords = [];
@@ -1376,9 +1596,11 @@ function calculateDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQu
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
-	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+	        //triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			triangleCoords = drawDeltaTriangle(true, up ? xp - (cellSize/2)+1 : xp+(cellSize/2)+1, yp+cellSize-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
 	        if(ped[event][layer][channelPosition] > pedThreshold){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+	          	//layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+				layerAct[layer].push([up ? xp - (cellSize/2) : xp+(cellSize/2) , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
 	          	layerQuadSize[layer].push([cellSize,quadGap]);
 				layerTriangle[layer].push(triangleCoords); 
@@ -1386,9 +1608,11 @@ function calculateDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQu
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        //triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+			triangleCoords = drawDeltaTriangle(true, up ? xp - (cellSize/2)+1 : xp+(cellSize/2)+1, yp+cellSize-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
 	        if(ped[event][layer][channel] > pedThreshold){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+	          	//layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+				layerAct[layer].push([up ? xp - (cellSize/2) : xp+(cellSize/2) , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
 	          	layerQuadSize[layer].push([cellSize,quadGap]);
 				layerTriangle[layer].push(triangleCoords); 
@@ -1449,9 +1673,11 @@ function calculateDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQu
 			channelPosition = (numQuads * 4) - channel - 1;
 			adcChannel = coordArray[event][layer][channelPosition][0];
 			pedPosition = (numQuads * 4) - channelPosition;
-	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+	        //triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
+			triangleCoords = drawDeltaTriangle(true, up ? xp - (cellSize/2)+1 : xp+(cellSize/2)+1, yp+cellSize-5, adcChannel, ped[event][layer][channelPosition]/totalIntensity, quadMember);
 	        if(ped[event][layer][channelPosition] > pedThreshold){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+	          	//layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channelPosition]]);
+				layerAct[layer].push([up ? xp - (cellSize/2) : xp+(cellSize/2) , ped[event][layer][channelPosition]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channelPosition]]);
 	          	layerQuadSize[layer].push([cellSize,quadGap]);
 				layerTriangle[layer].push(triangleCoords); 
@@ -1459,9 +1685,11 @@ function calculateDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQu
 	        }
 		} else {
 			adcChannel = coordArray[event][layer][channel][0];
-	        triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+	        //triangleCoords = drawDeltaTriangle(true, up ? xp - (size/2)+1 : xp+(size/2)+1, yp+size-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
+			triangleCoords = drawDeltaTriangle(true, up ? xp - (cellSize/2)+1 : xp+(cellSize/2)+1, yp+cellSize-5, adcChannel, ped[event][layer][channel]/totalIntensity, quadMember);
 	        if(ped[event][layer][channel] > pedThreshold){
-	          	layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+	          	//layerAct[layer].push([up ? xp - (size/2) : xp+(size/2) , ped[event][layer][channel]]);
+				layerAct[layer].push([up ? xp - (cellSize/2) : xp+(cellSize/2) , ped[event][layer][channel]]);
 	          	layerQuad[layer].push([quadMember, ped[event][layer][channel]]);
 	          	layerQuadSize[layer].push([cellSize,quadGap]);
 				layerTriangle[layer].push(triangleCoords);
@@ -1475,6 +1703,7 @@ function calculateDeltaQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQu
 }//end of calculateDeltaQuad
 
 function calculateLayer(whichLayer, event) {
+	 var eventsToTest = []; 
 	 var channel = 0;
 	 var layer = 2; // we start with the top layer data in Z for both X and Y --> array goes 0,1,2
 	 var up = false;
@@ -1562,6 +1791,7 @@ function calculateLayer(whichLayer, event) {
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
 	  //loop and draw quads taking into account the intercell spacing and flipping
 	  var quadNo = 0;
+
 	  for (var xp = startPoint; xp < xpSize; xp += quadGap) {
 		  //have to pass the correct arguments per quad!!!!! need some calculations!!!!
 		  if (quadNo <= numQuads) {

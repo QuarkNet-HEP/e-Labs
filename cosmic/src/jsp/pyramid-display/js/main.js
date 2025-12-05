@@ -20,6 +20,13 @@ let debugMain = false;
 // Display errors
 function print(string) { throw new Error(string); }
 let dataFiles = [
+	'Run167_list_no_swap.txt',
+	'Run167Sample.txt',
+	'Run168_list_swap_00_01.txt',
+	'Run171_list_no_swap.txt',
+	'Run172_list_no_swap.txt',
+	'Run173_list_swap_00_01.txt',
+	'Run174_list_swap_00_01.txt',
 	'Run116Sample.txt',
 	'Run151Sample.txt',
 	'Run116_list_no_swap.txt',
@@ -128,8 +135,8 @@ function loadDataFile() {
       // Usage of Promise.all() to wait for functions to finish
 	  loadingMessage.style.display = "block";
 	  initialTime = new Date();
-	  removeCharts();
-	  NewremoveCharts();
+	  //removeCharts();
+	  //NewremoveCharts();
       Promise.all([retrieveData()])
         .then(([data]) => {
           if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
@@ -164,7 +171,7 @@ function loadDataFile() {
 		  //document.getElementById('analysis-run').style.display = "block";
 		  //document.getElementById('new-analysis-run').style.display = "block";
 		  //document.getElementById('runAnalysis').addEventListener('click', () => {
-		  drawAnalysis(layers, singleGeometry); 
+		  //NewdrawAnalysis(layers, singleGeometry); 
 		  //});
 		  //document.getElementById('NewrunAnalysis').addEventListener('click', () => {
 		  //	NewdrawAnalysis(layers, singleGeometry); 

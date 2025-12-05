@@ -83,7 +83,7 @@ function calculatePointByPercentage(x1, y1, x2, y2, percentage, yProjected) {
 
 function getSingleSidePoint(event, layerTriangle) {
 	var sidePoint = [];
-	var eventsToTest = [66];
+	var eventsToTest = [];
 	//var x1 = layerTriangle[layer][0][2][0];
 	//var y1 = layerTriangle[layer][0][2][1];
 	//var x2 = layerTriangle[layer][0][3][0];
@@ -106,11 +106,161 @@ function getSingleSidePoint(event, layerTriangle) {
 	return sidePoint; 
 }//end of getSingleSidePoint
 
+function isPointInGroup(point, pointGroup) {
+	var found = false;
+	for (var i = 0; i < pointGroup.length; i++) {
+		if (pointGroup[i].x == point.x && pointGroup[i].y == point.y) {
+			found = true;
+		}
+	}
+	return found;
+}//end of isPointInGroup
+
+function getHighestIntensityNeighbor(arr) {
+	var intensity = -1;
+	var ndx = -1;
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i][1] > intensity) {
+			intensity = arr[i][1];
+			ndx = i;
+		}
+	}
+	return ndx;
+}
+
+function getIndexesOfTwoHighest(arr) {
+  // 1. Create an array of objects with value and original index
+  const indexedArray = arr.map((value, index) => ({ value, index }));
+
+  // 2. Sort the array in descending order based on value
+  indexedArray.sort((a, b) => b.value - a.value);
+
+  // 3. Extract the indices of the top two elements
+  if (indexedArray.length >= 2) {
+    return [indexedArray[0].index, indexedArray[1].index];
+  } else if (indexedArray.length === 1) {
+    return [indexedArray[0].index]; // Return only one index if array has only one element
+  } else {
+    return []; // Return an empty array for an empty input array
+  }
+}
+
+function analyzeCluster(event, x, arr) {
+	var eventsToTest = [];//41,110,9674,9681,9725,9858,9956];
+	var ndx = [];
+	var intensities = [];
+	var lastX = 0;
+	if (eventsToTest.includes(event)) {			
+	 console.log("it gets here 0:", x,arr);
+	 }
+	if (arr.length-x == 2 && (arr[arr.length-1][0] - arr[arr.length-2][0] <= 17.5)) {
+		intensities.push(arr[arr.length-2][1]);		
+		intensities.push(arr[arr.length-1][1]);	
+		if (eventsToTest.includes(event)) {			
+		 //console.log("it gets here 1:", arr, arr[arr.length-1][0] - arr[arr.length-2][0], intensities);
+		 }
+	} else {
+		for (var i = x; i < arr.length-1; i++) {
+			if (arr[i+1][0] - arr[i][0] <= 17.5 && intensities.length < 2) {
+				//these are neighbors
+				intensities.push(arr[i][1]);
+				if (eventsToTest.includes(event)) {			
+				 //console.log("it gets here 2:", intensities);
+				 }
+			}
+			lastX = i;
+		}
+		//deal with one more item
+		if (eventsToTest.includes(event)) {			
+		 console.log("it gets here 3:", lastX, arr.length, intensities);
+		}	
+		if (arr.length >= lastX && lastX >= 1  && intensities.length < 2) {
+			if (arr[lastX][0] - arr[lastX-1][0] <= 17.5) {
+				intensities.push(arr[lastX][1])
+			if (eventsToTest.includes(event)) {			
+			 console.log("it gets here 3:", lastX, arr[lastX][0], arr[lastX-1][0],arr[lastX][0] - arr[lastX-1][0], intensities);
+			}	
+			}	
+		}
+	}
+	ndx = getIndexesOfTwoHighest(intensities);
+	for (var i = 0; i < ndx.length; i++) {
+		ndx[i] += x;
+	}
+	if (eventsToTest.includes(event)) {			
+	 console.log("it gets here last:", ndx);
+	 }
+	return ndx;
+}// end of analyzeCluster
+
+function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer) {
+	var eventsToTest = [];//9674,9681,9725,9858,9956];
+	var sidePoint = [];
+	var yProjected = 0;
+	var up = true;
+	var x1 = 0;
+	var y1 = 0;
+	var x2 = 0;
+	var y2 = 0;
+	var point1Intensity = 0;
+	var point2Intensity = 0;
+	var neighbors = analyzeCluster(event, x,layerAct[layer]);
+	if (eventsToTest.includes(event)) {
+		//console.log(layerAct[layer], neighbors);
+	}
+	if (neighbors.length > 1) {
+		if (neighbors[0] < neighbors[1]) {										
+			up = layerTriangle[layer][neighbors[0]][0];					
+			x1 = layerTriangle[layer][neighbors[0]][3][0];
+		    y1 = layerTriangle[layer][neighbors[0]][3][1];
+			x2 = layerTriangle[layer][neighbors[0]][4][0];
+			y2 = layerTriangle[layer][neighbors[0]][4][1];
+			yProjected = layerTriangle[layer][neighbors[0]][5];
+			point1Intensity = layerTriangle[layer][neighbors[0]][1];
+			point2Intensity = layerTriangle[layer][neighbors[1]][1];
+		} else {
+			up = layerTriangle[layer][neighbors[1]][0];					
+			x1 = layerTriangle[layer][neighbors[1]][3][0];
+			y1 = layerTriangle[layer][neighbors[1]][3][1];
+			x2 = layerTriangle[layer][neighbors[1]][4][0];
+			y2 = layerTriangle[layer][neighbors[1]][4][1];
+			yProjected = layerTriangle[layer][neighbors[1]][5];
+			point1Intensity = layerTriangle[layer][neighbors[1]][1];
+			point2Intensity = layerTriangle[layer][neighbors[0]][1];						
+		}
+		var pointPercent = 0;
+		var pointPercentSum = point1Intensity + point2Intensity;
+		if (up) {
+		   if (point1Intensity > point2Intensity) {
+			 //first triangle is pyramid with higher intensity
+			 pointPercent = point1Intensity * 100 / pointPercentSum;
+			 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+		   } else {
+			 //first triangle is pyramid with lower intensity			 
+			 pointPercent = point2Intensity * 100 / pointPercentSum;
+			 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+		   }			
+		} else {
+			if (point1Intensity > point2Intensity) {
+			 //first triangle is down with higher intensity
+			 pointPercent = point1Intensity * 100 / pointPercentSum;
+			 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
+			} else {
+		     //the first triangle is down with lower intensity
+			 pointPercent = point2Intensity * 100 / pointPercentSum;
+			 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
+			}
+		}
+	}
+	return sidePoint;	
+}//end of getSidePointFromNeighbors
+
 function calculateSidePoint(event, layerAct, layerTriangle, layer) {
+	var layerTracker = [];
 	var sidePointGroup = [];
 	var sidePoint = [];
 	var yProjected = 0;
-	var eventsToTest = [66];
+	var eventsToTest = [];//110,9674,9681,9725,9858,9956];
 	if (debug2DPoint === true) {
 		console.log("layer triangle: ", layerAct, layerTriangle[layer], layer);
 	}
@@ -118,105 +268,75 @@ function calculateSidePoint(event, layerAct, layerTriangle, layer) {
 	  if (layerTriangle[layer].length == 1) {
 		sidePoint = getSingleSidePoint(event, layerTriangle[layer][0]);
 		sidePointGroup.push(sidePoint);
+		if (eventsToTest.includes(event)) {
+			console.log("point added as a single point:", sidePoint);
+		}
 	  }	else {			
 		//first we have to check for neighbors
 		for (var x = 0; x < layerTriangle[layer].length-1; x++) {
-			var quadFirstCell = layerTriangle[layer][x][6];
-			var quadSecondCell = layerTriangle[layer][x+1][6];
-			var firstX = layerTriangle[layer][x][3][0];
-			var secondX = layerTriangle[layer][x+1][4][0];
+			//var quadFirstCell = layerTriangle[layer][x][6];
+			//var quadSecondCell = layerTriangle[layer][x+1][6];
+			//var firstX = layerTriangle[layer][x][3][0];
+			//var secondX = layerTriangle[layer][x+1][4][0];
 			var layerValueDiff = layerAct[layer][x+1][0]-layerAct[layer][x][0];
 			if (debug2DPoint === true) {
 				console.log(layer, x, layerAct[layer][x], layerAct[layer][x+1], layerValueDiff);
 				console.log("checking x for neighbors: firstX and secondX in pixels", layerValueDiff, firstX, secondX, (secondX-firstX));
-				console.log("single side point1-no neighbors", layer, layerAct[layer], layerTriangle[layer][x]);
-				console.log("single side point2-no neighbors", layer, layerAct[layer], layerTriangle[layer][x+1]);
 			}
-			//these are not neighbors
-			//if (event == 41 & layer == 0) {
-			//	console.log(x, layer, layerAct, layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize);
-			//}	
-			if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff != 17.5) && (secondX - firstX) > overallCellSize)) {
-				//if (event == 41 & layer == 0) {
-				//	console.log("not neigbors:", x, x+1, layer, layerAct[x], layerTriangle, layerValueDiff, quadFirstCell,quadSecondCell, firstX, secondX, overallCellSize)
-				//}
+			if (eventsToTest.includes(event)) {
+				//console.log("point added not neighbors:", quadSecondCell-quadFirstCell, layerValueDiff, (secondX - firstX), overallCellSize/2.0);
+			}
+			//(quadSecondCell-quadFirstCell) > 1 ||
+			if (layerValueDiff > 17.5 && !layerTracker.includes(x)) {
 				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x]);
 				sidePointGroup.push(sidePoint);
-				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x+1]);
-				sidePointGroup.push(sidePoint);
-				x += 1;
+				layerTracker.push(x);
 			} else {
-				//if (layerValueDiff == 17.5) {
-					//we have to calculate between neighbors... I will assume it is the first two neigbors for now
-					//NEED TO ADD CHECKING FOR OTHER NEIGHBORS TO THE RIGHT!!!!!
-					var up = layerTriangle[layer][x][0];
-					//the last line of the first triangle and the first line of the second triangle are a match
-					//use the first values
-					var x1 = layerTriangle[layer][x][3][0];
-					var y1 = layerTriangle[layer][x][3][1];
-					var x2 = layerTriangle[layer][x][4][0];
-					var y2 = layerTriangle[layer][x][4][1];
-					yProjected = layerTriangle[layer][x][5];	
-					var point1Intensity = layerTriangle[layer][x][1];
-					var point2Intensity = 0;
-					if (layerTriangle[layer].length > 1) {
-						point2Intensity = layerTriangle[layer][x+1][1];
-					}
-					var pointPercent = 0;
-					var pointPercentSum = point1Intensity + point2Intensity;
-					if (up) {
-					   if (point1Intensity > point2Intensity) {
-						 //first triangle is pyramid with higher intensity
-						 pointPercent = point1Intensity * 100 / pointPercentSum;
-						 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
-						 if (eventsToTest.includes(event)) {
-							 //console.log("calculated point1", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
-							 }
-						 sidePointGroup.push(sidePoint);
-					   } else {
-						 //first triangle is pyramid with lower intensity			 
-						 pointPercent = point2Intensity * 100 / pointPercentSum;
-						 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
-						 if (eventsToTest.includes(event)) {
-						  //console.log("calculated point2", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
-						  }
-						 sidePointGroup.push(sidePoint);
-					   }			
-					} else {
-						if (point1Intensity > point2Intensity) {
-						 //first triangle is down with higher intensity
-						 pointPercent = point1Intensity * 100 / pointPercentSum;
-						 sidePoint = calculatePointByPercentage(x1, y1, x2, y2, pointPercent, yProjected);
-						 if (eventsToTest.includes(event)) {
-						  //console.log("calculated point3", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
-						  }
-						 sidePointGroup.push(sidePoint);
-						} else {
-					     //the first triangle is down with lower intensity
-						 pointPercent = point2Intensity * 100 / pointPercentSum;
-						 sidePoint = calculatePointByPercentage(x2, y2, x1, y1, pointPercent, yProjected);
-						 if (eventsToTest.includes(event)) {
-						  //console.log("calculated point4", event, sidePoint, layerAct[layer], layerTriangle[layer][0]);
-						  }
-						 sidePointGroup.push(sidePoint);
+				if (!layerTracker.includes(x)) {
+				   var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer);
+				   if (!isPointInGroup(sidePoint, sidePointGroup)) {
+			   	  		sidePointGroup.push(sidePoint);
+			   	  		if (eventsToTest.includes(event)) {
+			   	  		//console.log("point added AS neighbors:", sidePoint);
+			   	  	}
+				}			
+			   layerTracker.push(x);
+			   x += 1;
+			   }
+			}// end of else	
+			layerTracker.push(x);
+
+		}//end of for
+	  }//end of second if else
+		//now deal with last points
+	  if (layerTriangle[layer].length > 1) {
+		  //var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
+		  //var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
+		  //var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
+		  //var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
+		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
+          var x = layerTriangle[layer].length-2;
+		  if (!layerTracker.includes(x)) {
+			  var neighbors = analyzeCluster(event, x,layerAct[layer]);
+			  if (neighbors.length > 1) {
+				var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer);
+				if (!isPointInGroup(sidePoint, sidePointGroup)) {
+				  sidePointGroup.push(sidePoint);
+				}			
+		  	  } else {
+				  if (layerValueDiff > 17.5) {
+					  //they are not neighbors
+					  //we still need to deal with the last point
+				  		sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1]);
+				  		if (eventsToTest.includes(event)) {
+							//console.log(sidePoint);
+						}
+					    if (!isPointInGroup(sidePoint, sidePointGroup)) {
+					  	  sidePointGroup.push(sidePoint);
 						}
 					}
-					x += 1;
-				//}
-			}
-		}
-	  }
-	  if (layerTriangle[layer].length > 1) {
-		  var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
-		  var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
-		  var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
-		  var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
-		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
-		  if ((quadSecondCell-quadFirstCell) > 1 || ((layerValueDiff != 17.5) && (secondX - firstX) > overallCellSize)) { 		
-			  //we still need to deal with the last point
-			  sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1]);
-			  sidePointGroup.push(sidePoint);
-		  }
+				}
+			}    
 		}
     }//end of checking if layerTriangle is great than 0
 	return sidePointGroup;
@@ -229,6 +349,7 @@ function findCalculatedX(point1, point2, y3) {
 }
 
 function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot, layerOrder){
+	var eventsToTest = [];//26020,19073,34789
 	  var sidePointX1 = calculateSidePoint(event,layerAct, layerTriangle, layerOrder[0][2]);
 	  if (debug2DTrack === true) {
 		  console.log("side point pixels 1: ", sidePointX1);
@@ -241,6 +362,11 @@ function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle,
 	  if (debug2DTrack === true) {
 		  console.log("side point pixels 3: ", sidePointX3);
 	  }
+	  if (eventsToTest.includes(event)) {
+		  console.log(layerOrder, sidePointX1,sidePointX2,sidePointX3);
+	  }	  
+	  	  
+	  //
 	  for (var i = 0; i < sidePointX3.length; i++) {
 	  	drawPoint(sidePointX3[i].x, sidePointX3[i].y, 'yellow');
 	  	drawPoint(sidePointX3[i].x, sidePointX3[i].yProjected, 'cyan');	 	
@@ -622,6 +748,7 @@ function draw(event){
 
 //function draw2DSettings(event, g, l) {
 function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
+	var start = new Date();
 	subtractPedX = sX;
 	subtractPedY = sY;
 	xCoord = cX;
@@ -640,4 +767,8 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	document.getElementById("rundata").style.fontWeight = "bold";
 	inputElement.max = subtractPedX.length;
 	draw(event);
+	var end = new Date();
+	if (showTime) {
+		console.log("Draw2D: "+calculateProcessTime(end,start)+" seconds");
+	}
 }

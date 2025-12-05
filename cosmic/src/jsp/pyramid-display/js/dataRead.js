@@ -22,9 +22,12 @@ globalThis.midPed = 0;
 globalThis.eventFilter6 = [];
 globalThis.eventFilter5 = [];
 globalThis.eventFilter4 = [];
-
+let showTime = true;
 let debugRead = false;
-
+let dumpVariables = false;
+let loadedVariables = [
+	'Run116_list_no_swap.txt',
+]
 function isNumeric(num){
   return !isNaN(num);
 }
@@ -131,7 +134,23 @@ function getPedestalValue(mod, channel, pedestal) {
 		}
 	}
 	return pedestalValue;
-}		
+}	
+
+const cache = {};
+
+function fetchData(url) {
+  if (cache[url]) {
+	console.log(cache);
+    return cache[url];  // Return cached data
+  }
+  return fetch(url)
+    .then(response => response.text())
+    .then(data => {
+      cache[url] = data;  // Store data in memory for future use
+	  console.log(cache);
+      return data;
+    });
+}	
 
 // Read adcmap, pedestal and data file
 globalThis.retrieveData = function () {
@@ -143,11 +162,38 @@ globalThis.retrieveData = function () {
   eventTime = [];
   subtractPedX = [];
   subtractPedY = [];
+  //fetch(fetchData(dataUrl))
+/*
+if (loadedVariables.includes(globalThis.selectedFileClean)) {
+	var start = new Date();
+    globalThis.runNumber = runNumber116;
+	document.getElementById("run-number").value = globalThis.runNumber;					
+	detector = detector116;		
+	document.getElementById("detector-name").value = detector;
+	eventTime = eventTime116;
+	adcmap = adcmap116;
+	pedestal = pedestal116;
+	x = x116;
+	y = y116;
+	subtractPedX = subtractPedX116;
+	subtractPedY = subtractPedY116;
+	globalThis.xCoord = x;
+	globalThis.yCoord = y;
+	globalThis.subtractPedX = subtractPedX;
+	globalThis.subtractPedY = subtractPedY;
+	var end = new Date();
+	if (showTime) {
+	  console.log("Read initial data: "+calculateProcessTime(end,start)+" seconds"); 
+	}	
+	resolve();		
+} else {
+*/
   fetch(dataUrl)
     .then(function(response) {
       return response.text();
     })
     .then(function(data) {
+	  var start = new Date();
       var lines = data.trim().split(/\r\n|\n|\r/);
       var allLines = cleanFile(lines, "DATAFILE");
 	  // check that we have a detector name, date and time
@@ -338,11 +384,24 @@ globalThis.retrieveData = function () {
 	  if (debugRead === true) {	      
 	      console.log("data is ready");
 		  console.log(eventTime);
-	      console.log(x);
+		  console.log(x);
 	      console.log(y);  
 	      console.log(subtractPedX);
 	      console.log(subtractPedY);  
-	  }        
+	  }       
+	  var end = new Date();
+	  if (showTime) {
+		  console.log("Read initial data: "+calculateProcessTime(end,start)+" seconds"); 
+	  }
+	  if (dumpVariables) {
+		  //downloadArrayAsArray(adcmap, "Run166_list_no_swap_adcmap.csv",1);
+		  //downloadArrayAsArray(pedestal, "Run166_list_no_swap_pedestal.csv",1);
+		  //downloadArrayAsArray(eventTime, "Run166_list_no_swap_eventTime.csv", 1);
+		  //downloadArrayAsArray(x, "Run166_list_no_swap_x.csv",3);
+	  	  //downloadArrayAsArray(y, "Run166_list_no_swap_y.csv",3);
+	  	  //downloadArrayAsArray(subtractPedX, "Run166_list_no_swap_subtractPedX.csv",2);
+  		  //downloadArrayAsArray(subtractPedY, "Run166_list_no_swap_subtractPedY.csv",2);
+	  }
       globalThis.xCoord = x;
       globalThis.yCoord = y;
       globalThis.subtractPedX = subtractPedX;
@@ -351,10 +410,12 @@ globalThis.retrieveData = function () {
 
       })
       .catch(function(error) {
-		 console.error('Error fetching data:', error);
-         reject();
-      });
-    });
+		 console.error('Error fetching data:', error);         
+		 reject();
+	
+     });
+	 //}//end of if we find file or read
+   });
 }// end of retrieveData    
 
 // Read the pedestal file

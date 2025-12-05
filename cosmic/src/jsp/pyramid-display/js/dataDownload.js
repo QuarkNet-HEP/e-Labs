@@ -44,6 +44,68 @@ function checkForObjects(data) {
 	}
 	return newData;
 }
+function downloadArrayAsArray(data, filename, nestedLevels){
+	//let csvContent = "data:text/csv;charset=utf-8,";
+	var csvContent = '';
+	//console.log(data);
+	if (nestedLevels == 1) {
+		data.forEach(function(rowArray) {
+		    let row = rowArray.join(",");
+		    csvContent += '['+row + "],\r\n";
+		});
+	}
+	if (nestedLevels == 2) {
+		data.forEach(function(rowArray) {
+		    let row = rowArray;
+			csvContent += '[';
+			rowArray.forEach(function(subRowArray) {
+				let subRow = subRowArray;
+				csvContent += '[';
+				subRowArray.forEach(function(itemArray) {
+					let item = itemArray;
+					csvContent += item +",";
+				});
+			csvContent += "],";
+			});
+		csvContent += "],\r\n";
+		});
+	};
+	if (nestedLevels == 3) {
+		data.forEach(function(rowArray) {
+		    let row = rowArray;
+			csvContent += '[';
+			rowArray.forEach(function(subRowArray) {
+				let subRow = subRowArray;
+				csvContent += '[';
+				subRowArray.forEach(function(itemArray) {
+					let item = itemArray;
+					csvContent += '['+item + "],";
+				});
+			csvContent += "],";
+			});
+		csvContent += "],\r\n";
+		});
+	};
+	/*
+	const encodedUri = encodeURI(csvContent);	
+	const link = document.createElement("a");
+	link.setAttribute("href", encodedUri);
+	link.setAttribute("download", filename);
+	document.body.appendChild(link); // Append to trigger download in some browsers
+	link.click();
+	document.body.removeChild(link); // Clean up
+	*/
+	const blob = new Blob([csvContent], { type: 'text/csv' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = filename;
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url); // Clean up the temporary URL
+}
+
 function downloadArray(data, filename){
 	const csvContent = data.join('\n'); 
 	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);	
