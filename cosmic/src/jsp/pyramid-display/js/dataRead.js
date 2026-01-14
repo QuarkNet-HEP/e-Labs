@@ -1,3 +1,7 @@
+/*
+	Edit Peronja 23/10/2025: This script is invoked when a new data file is selected.
+*/
+
 var xCoord = [];
 var yCoord = [];
 var subtractPedX = [];
@@ -11,14 +15,21 @@ globalThis.adcmapArr = [];
 globalThis.pedestalArr = [];
 globalThis.geometryArr = [];
 globalThis.selectedFile = "";
+globalThis.selectedFileClean = "";
 globalThis.pedestalFile = ""; 
 globalThis.geometryFile = ""; 
 globalThis.adcmapFile = "";
 globalThis.selectedFileDate = "";
+globalThis.conversionComments = "";
+globalThis.runNumber = "";
 globalThis.midPed = 0;
+globalThis.eventFilter6 = [];
+globalThis.eventFilter5 = [];
+globalThis.eventFilter4 = [];
+let showTime = false;
 let debugRead = false;
 
-// helper function to clean the headers
+// Clean the headers
 function cleanFile(arr, type) {
  	var temp = []
  	for (var ndx=0; ndx < arr.length; ndx++ ) {		
@@ -27,30 +38,23 @@ function cleanFile(arr, type) {
 			if (arr[ndx].substring(0, 3) === 'ATH' && type === "DATAFILE") {
 				document.getElementById("detector-name").value = arr[ndx].trim();
 				detectorName = arr[ndx].trim();
+				var parts = arr[ndx].split(" ");
+				if (isNumeric(parts[1].trim())) {
+					globalThis.runNumber = parts[1];
+					document.getElementById("run-number").value = globalThis.runNumber;					
+				}	
+			} else if (arr[ndx].startsWith("COMMENTS")){
+				globalThis.conversionComments = arr[ndx];
+				//console.log(globalThis.conversionComments);
 			} else {
 				temp.push(arr[ndx]);
 			}
 		}	
  	}
  	return temp;
-}
-// helper function to determine if line starts with a number
-function startsWithNumber(str) {
-	return /^\d+\b/.test(str);
-}
+}//end of cleanFile
 
-//let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-function parseFileDate(d, t) {
-	let day = d.substring(0,2);
-	let month = d.substring(2,5);
-	let M = months.indexOf(month);
-	let y = d.substring(5,9);
-	let [h,m,s] = t.split(/[- :]/);
-	let newDate =  new Date(parseInt(y),M,parseInt(d),parseInt(h),parseInt(m),parseInt(s));
-	return newDate;
-}// end of parseFileDate
-
-// helper function to determine correct data based on timestamps
+// Determine correct data based on timestamps
 function retrieveTimedData(fileName, completeArr, type) {
 	var timestamps = [];
 	var detector = fileName.trim().split(' ');	
@@ -93,7 +97,7 @@ function retrieveTimedData(fileName, completeArr, type) {
    }
 }// end of retrieveTimedData
 
-// helper function to retrieve the correct adc mapping
+// Retrieve the correct adc mapping
 function getADCPosition(mod, channel, adcmap) {
 	var mapPosition = 0;
 	for (var i = 0; i < adcmap[mod].length; i++) {
@@ -103,7 +107,7 @@ function getADCPosition(mod, channel, adcmap) {
 	}
 	return mapPosition;
 }	
-// helper function to retrieve the correct pedestal value
+// Retrieve the correct pedestal value
 function getPedestalValue(mod, channel, pedestal) {
 	var pedestalValue = 0;
 	for (var i = 0; i < pedestal[mod].length; i++) {
@@ -112,7 +116,7 @@ function getPedestalValue(mod, channel, pedestal) {
 		}
 	}
 	return pedestalValue;
-}		
+}	
 
 // Read adcmap, pedestal and data file
 globalThis.retrieveData = function () {
@@ -129,13 +133,14 @@ globalThis.retrieveData = function () {
       return response.text();
     })
     .then(function(data) {
+      var start = new Date();
       var lines = data.trim().split(/\r\n|\n|\r/);
       var allLines = cleanFile(lines, "DATAFILE");
-	  // check that we have a detector name, date and time
-	  if (detectorName === "") {
-			throw new Error('File does not have detector, date and time information:');
-         	reject();			
-	  }
+      // check that we have a detector name, date and time
+      if (detectorName === "") {
+        throw new Error('File does not have detector, date and time information:');
+        reject();
+      }
       var header = allLines[0].trim().split(/\s+/); // Assuming the first line is the header
       var data = allLines.slice(1).filter(function(line) {
         return line.trim() !== '';
@@ -189,6 +194,7 @@ globalThis.retrieveData = function () {
           } else {
             columnIndex = columnName;
           }
+          //console.log(rowIndex,columnIndex);
           return this.data[rowIndex][columnIndex];
         },
         isna: function(num) {
@@ -199,43 +205,92 @@ globalThis.retrieveData = function () {
       //df contains all the data in the data array
       //df.shape[0] has the total number of data lines
       //df.shape[1] has the number of columns for each line
-      for (var i = 0; i < df.shape[0]; i++) {
+
+      // Cache frequently used references and header indices to speed up hot loops
+      var dfData = df.data;
+      var nRows = df.shape[0];
+      var nCols = df.shape[1];
+      var headerIndex = {};
+      for (var h = 0; h < df.columns.length; h++) {
+        headerIndex[df.columns[h]] = h;
+      }
+
+      // Keep original semantics: use df.at where code expects it, but avoid repeated expensive lookups elsewhere
+      for (var i = 0; i < nRows; i++) {
         if (df.isna(df.at(i, 4))) {
           df.shift(i, -2);
         }
       }
-	  // this copies over the value in TrgID from the first row to all the rows
-      for (var i = 1; i < df.shape[0]; i++) {
-        if (df.isna(df.at(df.index[i], 'TrgID'))) {
-         df.data[i][1] = df.at(i - 1, 'TrgID');
-         }
+      // this copies over the value in TrgID from the first row to all the rows
+      if (nRows > 1) {
+        for (var r = 1; r < nRows; r++) {
+          if (df.isna(df.at(df.index[r], 'TrgID'))) {
+            df.data[r][1] = df.at(r - 1, 'TrgID');
+          }
+        }
       }
- 	  // retrieve the correct adcmap by checking the name and timestamp
-	  var adcmap = retrieveTimedData(detectorName, globalThis.adcmapArr, 'ADCMAP');
-	  if (debugRead === true) {
-		  console.log("correct adcmap");
-		  console.log(adcmap);
-	  }
+
+      // retrieve the correct adcmap by checking the name and timestamp
+      var adcmap = retrieveTimedData(detectorName, globalThis.adcmapArr, 'ADCMAP');
+      if (debugRead === true) {
+        console.log("correct adcmap");
+        console.log(adcmap);
+      }
       var pedestal = retrieveTimedData(detectorName, globalThis.pedestalArr, 'PEDESTAL');
-	  if (debugRead === true) {
-		  console.log("correct pedestal");
-		  console.log(pedestal);
-	  }
-	  if (debugRead === true) {
-	   console.log("data read");
-	   console.log(df);
-	  }
+      if (debugRead === true) {
+        console.log("correct pedestal");
+        console.log(pedestal);
+      }
+
+      if (debugRead === true) {
+        console.log("data read");
+        console.log(df);
+      }
+
+      // Precompute ADC position and pedestal lookup tables once (big win)
+      var maxMods = 6; // code references mods 0..5
+      var mapPosCache = [];
+      var pedValCache = [];
+      for (var m = 0; m < maxMods; m++) {
+        mapPosCache[m] = new Array(layerMaxSize).fill(0);
+        pedValCache[m] = new Array(layerMaxSize).fill(0);
+        if (adcmap && adcmap[m]) {
+          var arr = adcmap[m];
+          for (var j = 0; j < arr.length; j++) {
+            var v = Math.floor(arr[j]);
+            if (v > 0 && (v - 1) < layerMaxSize) {
+              mapPosCache[m][v - 1] = j + 1;
+            }
+          }
+        }
+        if (pedestal && pedestal[m]) {
+          var parr = pedestal[m];
+          for (var k = 0; k < Math.min(parr.length, layerMaxSize); k++) {
+            pedValCache[m][k] = Math.floor(parr[k]);
+          }
+        }
+      }
+
       //id needs to get the first event in the file which it was first assumed as zero
       //we need to read the first event number instead
       var id = 0;
-      var i = 0;
+      var iRow = 0;
       var dn = detectorName.split(" ");
       var minPed = Math.floor(dn[dn.length-1]);
       globalThis.minPed = minPed;
 
-      while (id <= parseInt(df.at(df.index[df.shape[0] - 1], 'TrgID'))) {
-		//initialize to zeros
-		eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
+      // Cache column indices used in the main loop to avoid string lookup each iteration
+      var trgIdx = headerIndex['TrgID'];
+      var brdIdx = headerIndex['Brd'];
+      var chIdx = headerIndex['Ch'];
+      var lgIdx = headerIndex['LG'];
+      var tstampIdx = headerIndex['Tstamp_us'];
+
+      // compute last trigger once
+      var lastTrg = parseInt(df.at(df.index[nRows - 1], 'TrgID'));
+      while (id <= lastTrg) {
+        //initialize to zeros
+        eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
         x.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         y.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         subtractPedX.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return 0; });}));
@@ -244,83 +299,105 @@ globalThis.retrieveData = function () {
         var countX = 0;
         var countY = 0;
         // Initialize arrays with adcmap information
-		// Need to un-hardcode this
-        for (ndx = 0; ndx < layerMaxSize; ndx++) {
-			x[id][0][ndx][0] = getADCPosition(0,ndx, adcmap);
-			x[id][0][ndx][2] = getPedestalValue(0,ndx, pedestal);
-			x[id][1][ndx][0] = getADCPosition(2,ndx, adcmap);
-			x[id][1][ndx][2] = getPedestalValue(2,ndx, pedestal);
-			x[id][2][ndx][0] = getADCPosition(4,ndx, adcmap);
-			x[id][2][ndx][2] = getPedestalValue(4,ndx, pedestal);
-			y[id][0][ndx][0] = getADCPosition(1,ndx, adcmap);
-			y[id][0][ndx][2] = getPedestalValue(1,ndx, pedestal);
-			y[id][1][ndx][0] = getADCPosition(3,ndx, adcmap);
-			y[id][1][ndx][2] = getPedestalValue(3,ndx, pedestal);
-			y[id][2][ndx][0] = getADCPosition(5,ndx, adcmap);
-			y[id][2][ndx][2] = getPedestalValue(5,ndx, pedestal);
+        // Use cached lookup tables instead of calling getADCPosition/getPedestalValue for every id
+        for (var ndx = 0; ndx < layerMaxSize; ndx++) {
+          x[id][0][ndx][0] = mapPosCache[0][ndx] || 0;
+          x[id][0][ndx][2] = pedValCache[0][ndx] || 0;
+          x[id][1][ndx][0] = mapPosCache[2][ndx] || 0;
+          x[id][1][ndx][2] = pedValCache[2][ndx] || 0;
+          x[id][2][ndx][0] = mapPosCache[4][ndx] || 0;
+          x[id][2][ndx][2] = pedValCache[4][ndx] || 0;
+          y[id][0][ndx][0] = mapPosCache[1][ndx] || 0;
+          y[id][0][ndx][2] = pedValCache[1][ndx] || 0;
+          y[id][1][ndx][0] = mapPosCache[3][ndx] || 0;
+          y[id][1][ndx][2] = pedValCache[3][ndx] || 0;
+          y[id][2][ndx][0] = mapPosCache[5][ndx] || 0;
+          y[id][2][ndx][2] = pedValCache[5][ndx] || 0;
         }
         // Collect the data from that that specific id within TrgID
-        while (i < df.shape[0] && parseInt(df.at(df.index[i], 'TrgID')) == id) {
-          var brd = parseFloat(df.at(df.index[i], 'Brd'));
-          var ch = parseInt(df.at(df.index[i], 'Ch'));
-          var lg = parseFloat(df.at(df.index[i], 'LG'));
+        while (iRow < nRows && parseInt(df.at(df.index[iRow], 'TrgID')) == id) {
+          var countHit = true;
+          var row = dfData[iRow];
+          var brd = parseFloat(row[brdIdx]);
+          var ch = parseInt(row[chIdx]);
+          var lg = parseFloat(row[lgIdx]);
           //if the Brd value is even, it goes to X
           if (brd % 2 === 0) {
-			//need to make sure the correct board is filled in
-			//some do not exist
-			newLg = lg - x[id][Math.floor(brd / 2)][ch][2];
-			if (newLg < minPed) {
-				newLg = 0;
-			}
+            //need to make sure the correct board is filled in
+            //some do not exist
+            var newLg = lg - x[id][Math.floor(brd / 2)][ch][2];
+            if (newLg < minPed) {
+              newLg = 0;
+              countHit = false;
+            }
             x[id][Math.floor(brd / 2)][ch][1] = lg;
-			x[id][Math.floor(brd / 2)][ch][3] = newLg;
+            x[id][Math.floor(brd / 2)][ch][3] = newLg;
             subtractPedX[id][Math.floor(brd / 2)][ch] = newLg;
-			countX++;
-			if (parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0) {
-				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
-				eventTime[id][brd] = time;
-			}
+            countX++;
+            var tstampVal = parseFloat(row[tstampIdx]);
+            if (tstampVal > 0) {
+              var time = tstampVal;
+              if (countHit) {
+                if (eventTime.includes(time)){
+                  //do nothing
+                } else {
+                  eventTime[id][brd] = time;
+                }
+              }
+            }
           // else it goes to Y
           } else {
-			//console.log('y', id, brd, ch);
-			newLg = lg - y[id][Math.floor((brd - 1) / 2)][ch][2];
-			if (newLg < minPed) {
-				newLg = 0;
-			}
-            y[id][Math.floor((brd - 1) / 2)][ch][1] = lg;				
-            y[id][Math.floor((brd - 1) / 2)][ch][3] = newLg;				
+            var newLg = lg - y[id][Math.floor((brd - 1) / 2)][ch][2];
+            if (newLg < minPed) {
+              newLg = 0;
+              countHit = false;
+            }
+            y[id][Math.floor((brd - 1) / 2)][ch][1] = lg;
+            y[id][Math.floor((brd - 1) / 2)][ch][3] = newLg;
             subtractPedY[id][Math.floor((brd - 1) / 2)][ch] = newLg;
-			countY++;
-			if (parseFloat(df.at(df.index[i], 'Tstamp_us')) > 0) {
-				var time = parseFloat(df.at(df.index[i], 'Tstamp_us'));
-				eventTime[id][brd] = time;
-			}
+            countY++;
+            var tstampVal = parseFloat(row[tstampIdx]);
+            if (tstampVal > 0) {
+              var time = tstampVal;
+              if (countHit) {
+                if (eventTime.includes(time)){
+                  //do nothing
+                } else {
+                  eventTime[id][brd] = time;
+                }
+              }
+            }
           }
-		  countPerEvent++;
-          i++;
-		}
+          countPerEvent++;
+          iRow++;
+        }
         id++;
       }
-	  if (debugRead === true) {	      
-	      console.log("data is ready");
-		  console.log(eventTime);
-	      console.log(x);
-	      console.log(y);  
-	      console.log(subtractPedX);
-	      console.log(subtractPedY);  
-	  }        
+      if (debugRead === true) {
+        console.log("data is ready");
+        console.log(eventTime);
+        console.log(x);
+        console.log(y);
+        console.log(subtractPedX);
+        console.log(subtractPedY);
+      }
+      var end = new Date();
+      if (showTime) {
+        console.log("Read initial data: "+calculateProcessTime(end,start)+" seconds"); 
+      }
       globalThis.xCoord = x;
       globalThis.yCoord = y;
       globalThis.subtractPedX = subtractPedX;
       globalThis.subtractPedY = subtractPedY;
       resolve();
-
       })
       .catch(function(error) {
-		 console.error('Error fetching data:', error);
+         console.error('Error fetching data:', error);         
          reject();
-      });
-    });
+
+     });
+    //}//end of if we find file or read
+   });
 }// end of retrieveData    
 
 // Read the pedestal file
@@ -369,7 +446,7 @@ globalThis.retrievePedestal = function () {
         reject();
       });
   });
-}
+}//end of retrievePedestal
 
 // Read the adcmap file
 globalThis.retrieveADCmap = function () {
@@ -419,7 +496,7 @@ globalThis.retrieveADCmap = function () {
         reject();
       });
   });
-}
+}//end of retrieveADCmap
 
 // Read the geometry file
 globalThis.retrieveGeometry = function () {
@@ -462,4 +539,4 @@ globalThis.retrieveGeometry = function () {
         reject();
       });
   });
-}
+}//end of retrieveGeometry

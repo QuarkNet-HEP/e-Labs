@@ -1,7 +1,12 @@
+/*
+	Edit Peronja 23/10/2025: This script has functions that start and setup the main html page
+*/
+
 var x;
 var y;
 var eventTime;
 var detector = [];
+var run = [];
 var localGeometry;
 var singleGeometry = [];
 var layerOrderX = [];
@@ -15,34 +20,41 @@ var eventTotal = [1];
 var parameters = {};
 var dataGUI;
 let debugMain = false;
+const loadingMessage = document.getElementById("loading-message");
 
-// Display errors
-function print(string) { throw new Error(string); }
 let dataFiles = [
-				'Run68_list_no_shift.txt',
-	            'Run69_list_00_01_shifted.txt',
-				'Run69_list_no_shift.txt',
-				'Run70_list_no_shift.txt',
-				'Run50_list_no_shift.txt',
-				'Run49_list_brd5_shifted.txt',
-				'Run48_shifted.txt',
-				'Run103_list_brd00_shifted.txt',
+	'Run181_list_swap_00_01.txt',
+	'Run132_list_no_swap.txt',
+		'Run132_list_no_swap_converted.txt',
+	'Run133_list_no_swap.txt',
+	'Run167_list_no_swap.txt',
+	'Run168_list_swap_00_01.txt',
+	'Run171_list_no_swap.txt',
+	'Run172_list_no_swap.txt',
+	'Run173_list_swap_00_01.txt',
+	'Run174_list_swap_00_01.txt',
+	'Run116_list_no_swap.txt',
+	'Run142_list_swap_00_01.txt',
+	'Run151_list_no_swap.txt',
+	'Run156_list_no_swap.txt',
+	'Run158_list_swap_00_01.txt',
+	'Run161_list_swap_00_01.txt',
+	'Run167Sample.txt',
+	'Run132_list_cluster_no_swap.txt',
+	'Run133_list_cluster_no_swap.txt',
+	'Run167_list_cluster_no_swap.txt',
+	'Run168_list_cluster_swap_00_01.txt',
+	'Run171_list_cluster_no_swap.txt',
+	'Run172_list_cluster_no_swap.txt',
+	'Run173_list_cluster_swap_00_01.txt',
+	'Run174_list_cluster_swap_00_01.txt',
+	'Run181_list_cluster_swap_00_01.txt',
 			    ]
 
-let months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-function parseFileDate(d, t) {
-	let day = d.substring(0,2);
-	let month = d.substring(2,5);
-	let M = months.indexOf(month);
-	let y = d.substring(5,9);
-	let [h,m,s] = t.split(/[- :]/);
-	let newDate =  new Date(parseInt(y),M,parseInt(d),parseInt(h),parseInt(m),parseInt(s));
-	return newDate;
-}// end of parseFileDate
-
+// Function to get the geometry corresponding to the selected data file
 function getSingleGeometry() {
-	timestamps = [];
-	done = false;
+	var timestamps = [];
+	var done = false;
 	for (let i = 0; i < localGeometry.length; i++) {
 		if (localGeometry[i][0][0] === detector[0]) {
 			//01JUL2023 09:46:47
@@ -54,10 +66,11 @@ function getSingleGeometry() {
 			}
 		}
 	}
+	//these two are global variables
 	singleGeometry = []
 	layers = [];
 	for (let i = 0; i < localGeometry.length; i++) {
-		//geometry needs to match detector name, date ?and time
+		//geometry needs to match detector name, date and time
 		if (localGeometry[i][0][0] === timestamps[0][0] && localGeometry[i][0][1] === timestamps[0][1] && localGeometry[i][0][2] === timestamps[0][2]) {
 			singleGeometry.push(localGeometry[i][0]);
 			for (let x = 1; x < 7; x++) {
@@ -89,6 +102,7 @@ function getSingleGeometry() {
 	layerOrderX.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
+	//console.log(layerOrderX);
 	layerOrderY = [];
 	layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
 	layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
@@ -97,9 +111,11 @@ function getSingleGeometry() {
 	layerOrderY.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});	
+	//console.log(layerOrderY);
 }// end of getGeometry
 const loadingMessage = document.getElementById("loading-message");
 
+// Load the selected data file
 function loadDataFile() {
   return new Promise((resolve) => {
     //const checkInterval = setInterval(() => {
@@ -116,6 +132,7 @@ function loadDataFile() {
 	  }     
       // Usage of Promise.all() to wait for functions to finish
 	  loadingMessage.style.display = "block";
+	  initialTime = new Date();
       Promise.all([retrieveData()])
         .then(([data]) => {
           if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
@@ -146,10 +163,12 @@ function loadDataFile() {
           getSingleGeometry();
           draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
           draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-          drawAnalysis(layers, singleGeometry);  
-          if (debugMain === true) {
+		  drawAnalysis(layers, singleGeometry); 
+         if (debugMain === true) {
 	          console.log("Data and geometry are ready");
 	          }
+		  endTime = new Date();
+		  document.getElementById("loading-time").value = "Loading time: "+calculateProcessTime(endTime,initialTime)+" seconds";
 		  loadingMessage.style.display = "none";
         })
         .catch(error => {
@@ -171,13 +190,15 @@ function GUIupdate(what) {
 		}
     }
 	if (what != "remove") {
-		dataGUI.add(parameters, 'eventIndex', 1,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 		
+		//dataGUI.add(parameters, 'eventIndex', 1,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 		
+		dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 
   		function onEventIndexChange() { loadIndex(parameters.eventIndex); }
   		controller = dataGUI.__controllers[1];
   		dataGUI.__controllers[1].updateDisplay();
   	}
 }
 
+// Create 3D datgui
 function GUIinit() {
   //dat gui
   const guiContainer = document.getElementById('gui-container');
@@ -193,13 +214,15 @@ function GUIinit() {
   //File loading software
   dataGUI = gui.addFolder("Data");
   dataGUI.add(parameters, "loadDataFile", dataFiles).name('Load File').listen().onChange((value)=>{useNewFile(value)});
-  dataGUI.add(parameters, 'eventIndex',0,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 
+  //dataGUI.add(parameters, 'eventIndex',0,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 
+  dataGUI.add(parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 
   function onEventIndexChange() {loadIndex(parameters.eventIndex);}
   function useNewFile(value) { 
 	console.clear();   
 	var selectedFile = document.getElementById('selected-file');
 	selectedFile.value = value;
 	var path = "data/";
+	globalThis.selectedFileClean = value.trim();
 	globalThis.selectedFile = path+value.trim();
  	GUIupdate("remove");    
 	loadDataFile();
@@ -328,4 +351,5 @@ async function execute() {
     GUIinit();
 }// end of execute
 
+// Begin everything
 execute();

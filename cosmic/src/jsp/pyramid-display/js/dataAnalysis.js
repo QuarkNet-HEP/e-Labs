@@ -1,4 +1,15 @@
+/*
+	Edit Peronja 23/10/2025: all these functions analyze the data generated in dataAnalysisDataPreparation.js
+							 and return values for dataCharts.js
+*/
+
 let debugAnalysis = false;
+let debugFunction = false; //turn on for Mark's review
+var xLayerLength = 0;
+var yLayerLength = 0;
+var microMinute = 60000000;
+
+// Populate first 6 charts
 var xLayerLength = 0;
 var yLayerLength = 0;
 var geometry = '';
@@ -32,6 +43,7 @@ function populateX(letter, layer){
   		console.log("values:", vals);
   	}  	
   	return vals;
+}// end of populateX
 }
 
 function populateY(letter, layer){
@@ -48,6 +60,18 @@ function populateY(letter, layer){
   		console.log("values:", vals);
   	}  	
   	return vals;
+}// end of populateY
+
+// Get data for download from first 6 charts
+function getCAENdata(arr, layer) {
+	var vals = [];
+	for(var a = 0; a < arr.length; a++) {
+		vals.push(arr[a][layer]);		
+	}
+	return vals;
+}// end of getCAENdata
+
+//Used by populateX and populateY
 }
 
 //helper function used by populateX and populateY
@@ -61,8 +85,521 @@ function addArrays(arr1, arr2) {
   	}
   }
   return result;
-}
+}// end of addArrays
 
+// TRACKING functions in the order they are called from drawCharts.js
+// These following function analyze HITS
+function get6planemiddlehits(arr) {
+	var vals = [];
+	console.log(arr.length);
+	for (var i = 0; i < arr.length; i++) {
+			//console.log(arr[i])
+			vals.push({x:arr[i][1][1][0],y:arr[i][1][4][0],event: (arr[i][0]+1)});
+			if (debugFunction) {
+				console.log("6 plane hits: ",i,arr[i],arr[i][1][1],arr[i][1][4]);
+				}
+	}
+	return vals;
+}// end of get6planemiddlehits
+
+function get6singlepoints(option, arr) {
+	console.log(option,arr.length);
+	var vals = [];
+	for (var i = 0; i < arr.length; i++) {
+		vals.push({x:arr[i][1][1][0],y:arr[i][1][4][0],event: (arr[i][0]+1)});				
+	}
+	//console.log(option,vals);
+	return vals;
+}//end of get6singlepoints
+
+function get6singlepointsBothLayers(option, arr1) {
+	var vals = [];
+	console.log(option,arr1.length);
+	for (var i = 0; i < arr1.length; i++) {
+		vals.push({x:arr1[i][1][1][0],y:arr1[i][1][4][0],event: (arr1[i][0]+1)});
+	}
+	return vals;
+}//end of get6singlepointsBothLayer
+
+function getFrequency6ExpectedActualforHits(option, arr) {
+	//console.log(option, arr);
+	var diff = 0;
+	var diffCollection = [];
+	//for (var i = 0; i < arr.length; i++) {
+	//	console.log(arr[i]);
+	//}
+	if (option == 'X') {
+		for (var i = 0; i < arr.length; i++) {
+			diff = arr[i][2].x3 - arr[i][1][1][0];
+			diffCollection.push(diff);
+		}
+	}
+	if (option == 'Y') {
+		for (var i = 0; i < arr.length; i++) {
+			diff = arr[i][3].x3 - arr[i][1][4][0];
+			diffCollection.push(diff);
+		}
+	}
+	//console.log(option, diffCollection);
+	var binnedData = getBinnedData(diffCollection, 0.2);
+	var result = [];
+	for (var i = 0; i < binnedData.length; i++) {
+		result.push({x:binnedData[i].binNum, y:binnedData[i].count});
+	}
+	//console.log("frequency for 6 plane hits: ", option, result);
+	return result;
+}//end of getFrequency6ExpectedActualforHits
+
+function getDeltaXYforhits(option, arr) {
+	var vals = [];
+	//console.log(arr);
+	for (var i = 0; i < arr.length; i++) {
+		if (option == 'TB') {
+			var deltax = arr[i][1][2][0] - arr[i][1][0][0];
+			var deltay = arr[i][1][5][0] - arr[i][1][3][0];
+			//console.log(arr, arr[i][0], arr[i][1][2], arr[i][1][0], deltax, deltay);
+			vals.push({x:deltax, y:deltay, event: arr[i][0]+1});
+		}
+		if (option == 'TM') {
+			var deltax = arr[i][1][2][0] - arr[i][1][1][0];
+			var deltay = arr[i][1][5][0] - arr[i][1][4][0];
+			//console.log(arr, arr[i][0], arr[i][1][2], arr[i][1][0], deltax, deltay);
+			vals.push({x:deltax, y:deltay, event: arr[i][0]+1});
+		}
+		if (option == 'MB') {
+			var deltax = arr[i][1][1][0] - arr[i][1][0][0];
+			var deltay = arr[i][1][4][0] - arr[i][1][3][0];
+			//console.log(arr, arr[i][0], arr[i][1][2], arr[i][1][0], deltax, deltay);
+			vals.push({x:deltax, y:deltay, event: arr[i][0]+1});
+		}
+	}
+	return vals;
+}//end of getDeltaXYforhits
+
+//These following functions analyze 6 plane X missed
+function get6planemiddlemissed(arr, option) {
+	var vals = [];
+	//console.log("6 plane tracks: ",option,i,arr);
+	for (var i = 0; i < arr.length; i++) {
+		//there is only one missed, either X or Y
+		//add expected x vs real y
+		if (arr[i].length == 3) {
+			if (option == 'X') {
+				vals.push({x:arr[i][2].x3,y:arr[i][1][4][0],event: (arr[i][0]+1)});				
+			}
+			if (option == 'Y') {
+				vals.push({x:arr[i][1][1][0],y:arr[i][2].x3,event: (arr[i][0]+1)});				
+			}
+		}
+	
+		if (arr[i].length == 4) {
+			//there are missed points both in middle X and middle Y	
+			//add expected x vs real y
+			vals.push({x:arr[i][2].x3,y:arr[i][3].x3,event: (arr[i][0]+1)});
+			//if (debugFunction) {
+			//	console.log("6 plane tracks: ",i,option,arr[i],arr[i][2].x3,arr[i][1][4][0],arr[i][3].x3,arr[i][1][2][0]);
+			//	}
+		}	
+	}
+	return vals;
+}// end of get6planemiddlemissed
+
+function arrayMin(arr) {
+  var len = arr.length, min = Infinity;
+  while (len--) {
+    if (Number(arr[len]) < min) {
+      min = Number(arr[len]);
+    }
+  }
+  return min;
+};//end of arrayMin
+
+function arrayMax(arr) {
+  var len = arr.length, max = -Infinity;
+  while (len--) {
+    if (Number(arr[len]) > max) {
+      max = Number(arr[len]);
+    }
+  }
+  return max;
+};//end of arrayMax
+
+function getBinnedData(arr, intervalSize) {
+	var bins = [];
+	var binCount = 0;
+	var interval = intervalSize;
+	var arrayMinValue = arrayMin(arr)-intervalSize;
+	var arrayMaxValue = arrayMax(arr)+intervalSize;
+
+	//Setup Bins
+	for(var i = arrayMinValue; i <= arrayMaxValue; i += interval){
+	  bins.push({
+	    binNum: i.toFixed(2),
+	    minNum: i,
+	    maxNum: i + interval,
+	    count: 0
+	  })
+	  binCount++;
+	}
+	//Loop through data and add to bin's count
+	var totalCount = 0;
+	for (var i = 0; i < arr.length; i++){
+	  var item = arr[i];
+	  for (var j = 0; j < bins.length; j++){
+	    var bin = bins[j];
+	    if(item > bin.minNum && item <= bin.maxNum){
+		  //console.log(item, bin.minNum, bin.maxNum);
+	      bin.count++;
+		  totalCount += 1;
+	      break;  // An item can only be in one bin.
+	    }
+	  }  
+	}	
+	//console.log(intervalSize, arrayMinValue, arrayMaxValue)
+	//for (var i = 0; i < bins.length; i++) {
+	//	console.log(bins[i]);
+	//}
+	return bins;
+}//end of getBinnedData
+
+function getFrequency6ExpectedActual(option, arr1, arr2) {
+	var diff = 0;
+	var diffCollection = [];
+	if (option == 'X') {
+		for (var i = 0; i < arr1.length; i++) {
+			diff = arr1[i][2].x3 - arr1[i][1][1][0];
+			diffCollection.push(diff);
+		}
+		for (var i = 0; i < arr2.length; i++) {
+			diff = arr2[i][2].x3 - arr2[i][1][1][0];
+			diffCollection.push(diff);
+		}
+	}
+	if (option == 'Y') {
+		for (var i = 0; i < arr1.length; i++) {
+			diff = arr1[i][2].x3 - arr1[i][1][4][0];
+			diffCollection.push(diff);
+		}
+		for (var i = 0; i < arr2.length; i++) {
+			diff = arr2[i][3].x3 - arr2[i][1][4][0];
+			diffCollection.push(diff);
+		}
+	}
+	//console.log(option, diffCollection);
+	var binnedData = getBinnedData(diffCollection, 1.0);
+	var result = [];
+	for (var i = 0; i < binnedData.length; i++) {
+		result.push({x:binnedData[i].binNum, y:binnedData[i].count});
+	}
+	return result;
+}//end of getFrequency6ExpectedActual
+
+//5 PLANE analysis: one of the layers is missing a hit
+function getCountsBetween5(layer, option, arr, lowerbound, upperbound) {
+	var totalCount = 0;
+	if (layer == 'X') {
+		if (option == 'TY') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][0][0] >= lowerbound && arr[i][1][0][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} else
+		if (option == 'MY') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][1][0] >= lowerbound && arr[i][1][1][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} else		
+		if (option == 'BY') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][2][0] >= lowerbound && arr[i][1][2][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} 				
+		else {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][2].x3 >= lowerbound && arr[i][2].x3 <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		}
+	}
+	if (layer == 'Y') {
+		if (option == 'TX') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][3][0] >= lowerbound && arr[i][1][3][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} else
+		if (option == 'MX') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][4][0] >= lowerbound && arr[i][1][4][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} else
+		if (option == 'BX') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1][5][0] >= lowerbound && arr[i][1][5][0] <= upperbound) {
+					totalCount += 1;
+				}
+			}
+		} else {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][2].x3 >= lowerbound && arr[i][2].x3 <= upperbound) {
+					totalCount += 1;
+				}
+			}			
+		}
+		
+	}	
+	return totalCount;
+}//end of getCountsBetween5
+
+function get5planemissing(arr, option) {
+	var vals = [];
+	if (option == 'TX') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][2].x3,y:arr[i][1][3][0],event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][3][0]);
+			}
+		}
+	}
+	if (option == 'MX') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][2].x3,y:arr[i][1][4][0],event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][4][0]);
+			}
+		}
+	}
+	if (option == 'BX') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][2].x3,y:arr[i][1][5][0],event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][5][0]);
+			}			
+		}
+	}
+	
+	if (option == 'TY') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][1][0][0],y:arr[i][2].x3,event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][0][0]);
+			}			
+		}
+	}
+	if (option == 'MY') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][1][1][0],y:arr[i][2].x3,event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][1][0]);
+			}
+
+		}
+	}
+	if (option == 'BY') {
+		for (var i = 0; i < arr.length; i++) {
+			vals.push({x:arr[i][1][2][0],y:arr[i][2].x3,event: (arr[i][0]+1)});		
+			if (debugFunction) {
+				console.log("5 plane tracks: ", option, arr[i], arr[i][2].x3,arr[i][1][2][0]);
+			}
+		}
+	}
+	return vals;	
+}// end of get5planemissing
+
+//4 PLANE analysis: one of the layers is missing a hit in both groups
+function getCountsBetween4(layer, option, arr, lowerBound, upperBound) {
+	var totalCount = 0;
+	if (layer == 'X') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][1].x3 >= lowerBound && arr[i][1].x3 <= upperBound) {
+					totalCount += 1;
+				}
+			}						
+	}
+	if (layer == 'Y') {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i][2].x3 >= lowerBound && arr[i][2].x3 <= upperBound) {
+					totalCount += 1;
+				}
+			}						
+	}
+	return totalCount;
+}//end of getCountsBetween4
+
+function get4planemissing(arr, option) {
+	var vals = [];
+	for (var i = 0; i < arr.length; i++) {
+		vals.push({x:arr[i][1].x3,y:arr[i][2].x3,event: (arr[i][0]+1)});		
+		if (debugFunction) {
+			console.log("4 plane tracks: ", option, arr[i], arr[i][1].x3,arr[i][2].x3);
+		}
+	}		
+	return vals;
+}//end of get4planemissing
+
+//DELTA XY functions
+function getDxDy(events) {
+	var vals = [];
+	var totalEvents = dxbothlayers.length;
+	if (events > 0 && events <= dxbothlayers.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) {
+		//if (i < 5) {
+		//	console.log(dxbothlayers[i],dybothlayers[i]);
+		//}
+		vals.push({x:dxbothlayers[i][4], y:dybothlayers[i][4]});
+	}
+	//console.log(vals);
+	return vals;
+}//end of getDxDy
+
+function getDxDyMiddle(arrX, arrY, events) {
+	var vals = [];
+	var totalEvents = arrX.length;
+	if (totalEvents > arrY.length) {
+		totalEvents = arrY.length;
+	}
+	if (events > 0 && events <= arrX.length && events <= arrY.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) {
+		vals.push({x:arrX[i][4], y:arrY[i][4]});
+	}
+	return vals;
+}//end of getDxDyMiddle
+
+function calculateDeltaXDeltaYFrequency(arr, events, binWidth) {
+	var deltaValues = [];
+	var totalEvents = arr.length;
+	if (events > 0 && events <= arr.length) {
+		totalEvents = events;
+	}
+	for (let i = 1; i < totalEvents; i++) {
+		deltaValues.push(arr[i][4]);
+	}	
+	// Find min and max values to determine the range
+	var minVal = Math.min(...deltaValues);
+	var maxVal = Math.max(...deltaValues);
+
+	// Calculate bin boundaries
+	var binBoundaries = [];
+	for (let i = minVal; i <= maxVal + binWidth; i += binWidth) {
+	    binBoundaries.push(i);
+	}	
+	
+	// Initialize bins
+	var bins = [];
+	if (binBoundaries.length > 0) {
+		bins = Array(binBoundaries.length - 1).fill(0);
+	}
+	// Populate bins
+	deltaValues.forEach(value => {
+	  for (let i = 0; i < binBoundaries.length - 1; i++) {
+	    if (value >= binBoundaries[i] && value < binBoundaries[i + 1]) {
+	      bins[i]++;
+	      break;
+	    }
+	  }
+	});
+
+	var lineChartData = [];
+	if (bins.length > 0) {
+		for (let i = 0; i < bins.length; i++) {
+		  var binCenter = (binBoundaries[i] + binBoundaries[i + 1]) / 2;
+		  lineChartData.push({ x: binCenter, y: bins[i] }); 
+		}		
+	}
+	return lineChartData;
+}//end of calculateDeltaXDeltaYFrequency
+
+//CHANNEL FREQUENCY
+function getFrequency(arr1) {
+	vals = [];
+	var frequency = arr1.reduce((acc, num) => {
+	  acc.set(num, (acc.get(num) || 0) + 1);
+	  return acc;
+	}, new Map());		
+
+	for (const [n, f] of frequency.entries()) {
+		vals.push({x:n,y:f});
+	}	
+	return vals;
+}//end of getFrequency
+
+function getChannelData(whichLayer, arr1, upperLimit, events) {
+    var vals = [];
+	var totalEvents = arr1.length;
+	var layerNdx = 0;
+	if (whichLayer == 'top') {
+		layerNdx = 3;
+	}
+	if (whichLayer == 'middle') {
+		layerNdx = 2;
+	}
+	if (whichLayer == 'bottom') {
+		layerNdx = 1;
+	}
+	if (events > 0 && events <= arr1.length) {
+		totalEvents = events;
+	}
+    for (var i = 0; i < totalEvents; i++) {		
+        if (typeof arr1[i][layerNdx] != "undefined" && arr1[i][layerNdx].channel1 != -1) {
+             if (arr1[i][layerNdx].channel1 > upperLimit) {
+                  vals.push(upperLimit);
+             } else {
+                  vals.push(arr1[i][layerNdx].channel1);
+             }
+         }
+         if (typeof arr1[i][layerNdx] != "undefined" && arr1[i][layerNdx].channel2 != -1) {
+             if (arr1[i][layerNdx].channel2 > upperLimit) {
+                  vals.push(upperLimit);
+              } else {
+                  vals.push(arr1[i][layerNdx].channel2);
+              }
+         }
+    }
+    return vals;
+}//end of getChannelData
+
+//DELTA XZ
+function getDxDz(events) {
+	var vals = [];
+	var totalEvents = dxbothlayers.length;
+	if (events > 0 && events <= dxbothlayers.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) { 
+		//if (i < 5) {
+		//	console.log(dxbothlayers[i],dybothlayers[i], dxbothlayers[i][4]/dxbothlayers[i][5],dybothlayers[i][4]/dybothlayers[i][5] );
+		//}
+		vals.push({x:dxbothlayers[i][4]/dxbothlayers[i][5], y:dybothlayers[i][4]/dybothlayers[i][5]});
+	}
+	return vals;
+}//end of getDxDz
+
+function getDxyDzMiddle(arrX, arrY, events) {
+	var vals = [];
+	var totalEvents = arrX.length;
+	if (events > 0 && events <= arrX.length) {
+		totalEvents = events;
+	}
+	for (var i = 0; i < totalEvents; i++) {
+		vals.push({x:arrX[i][4]/arrX[i][5], y:arrY[i][4]/arrY[i][5]});
+	}
+	return vals;
+}//end of getDxyDzMiddle
+
+//DELTA T 
 function getDeltaT(index1, index2) {
 	var vals = []
 	for (var i = 0; i < eventTime.length; i ++) {
@@ -73,6 +610,164 @@ function getDeltaT(index1, index2) {
 		}
 	}
 	return vals;
+}// end of getDeltaT
+
+//TRACK COUNTS
+function getEventsWithTracksPerMinute(layerCount, option) {
+	var vals = [];
+	var xtop = layerOrderX[2][2]*2;
+	var xmiddle = layerOrderX[1][2]*2;
+	var xbottom = layerOrderX[0][2]*2;
+	var ytop = (layerOrderY[2][2]*2)+1;
+	var ymiddle = (layerOrderY[1][2]*2)+1;
+	var ybottom = (layerOrderY[0][2]*2)+1;
+	var startTime = 0;
+	var minuteTime = microMinute+eventTime[0][0];
+	var trackCounter = 0;
+	//console.log(eventTime);
+	for (var i = 0; i < eventTime.length; i++) {		
+		//check for top and bottom in both layers
+		if (layerCount == 4) {
+			if (option == 'TM') {
+				if (eventTime[i][xtop] > 0 &&
+					eventTime[i][xmiddle] > 0 &&
+					eventTime[i][xbottom] <= 0 &&
+					eventTime[i][ytop] > 0 &&
+					eventTime[i][ymiddle] > 0 &&
+					eventTime[i][ybottom] <= 0) {
+					//check if it belongs within each minute
+					if (eventTime[i][0] <= minuteTime) {
+						if (debugEventsWithTracks) {
+							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						}
+						trackCounter += 1;
+					} else {
+						//console.log(layerCount, option, startTime, trackCounter);
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}				
+			} else { //it is 'MB'
+				if (eventTime[i][xtop] <= 0 &&
+					eventTime[i][xmiddle] > 0 &&
+					eventTime[i][xbottom] > 0 &&
+					eventTime[i][ytop] <= 0 &&
+					eventTime[i][ymiddle] > 0 &&
+					eventTime[i][ybottom] > 0) {
+					//check if it belongs within each minute
+					if (eventTime[i][0] <= minuteTime) {
+						if (debugEventsWithTracks) {
+							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						}
+						trackCounter += 1;
+					} else {
+						//console.log(layerCount, option, startTime, trackCounter);
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}				
+			}
+		}
+		//check for top, middle and bottom but not in both layers
+		if (layerCount == 5) {
+			//middle missing
+			if (option == 'M') {
+				//console.log("5 middle missing");
+				if ((eventTime[i][xtop] > 0 &&
+					eventTime[i][xbottom] > 0 &&
+					eventTime[i][ytop] > 0 &&
+					eventTime[i][ybottom] > 0) &&
+					((eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] <= 0)
+				    || (eventTime[i][xmiddle] <= 0 && eventTime[i][ymiddle] > 0))) {					
+					//check if it belongs within each minute
+					var count = eventTime[i].filter(num => num > 0).length;
+					if (eventTime[i][0] <= minuteTime && count == layerCount) {
+						if (debugEventsWithTracks) {
+							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						}
+						trackCounter += 1;
+					} else {
+						//console.log(layerCount, option, startTime, trackCounter);
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}
+				}
+			} else { //it is TB, either top or bottom missing
+				var count = eventTime[i].filter(num => num > 0).length;
+				if (eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] > 0 && count == layerCount) {
+					if (eventTime[i][0] <= minuteTime) {
+						if (debugEventsWithTracks) {
+							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+						}
+						trackCounter += 1;						
+					} else {
+						//console.log(layerCount, option, startTime, trackCounter);
+						//save and move up a minute
+						vals.push({x:startTime+1,y:trackCounter})
+						startTime += 1;
+						trackCounter = 0;
+						minuteTime = microMinute+eventTime[i][0];
+					}					
+				}
+			}
+		}		
+		//check for top, middle and bottom in both layers
+		if (layerCount == 6) {
+			if (eventTime[i][xtop] > 0 &&
+				eventTime[i][xmiddle] > 0 &&
+				eventTime[i][xbottom] > 0 &&
+				eventTime[i][ytop] > 0 &&
+				eventTime[i][ymiddle] > 0 &&
+				eventTime[i][ybottom] > 0) {
+				//check if it belongs within each minute
+				if (eventTime[i][0] <= minuteTime) {
+					if (debugEventsWithTracks) {
+						console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+					}
+					trackCounter += 1;
+				} else {
+					//console.log(layerCount, option, startTime, trackCounter);
+					//save and move up a minute
+					vals.push({x:startTime+1,y:trackCounter})
+					startTime += 1;
+					trackCounter = 0;
+					minuteTime = microMinute+eventTime[i][0];
+				}
+			}
+		}		
+	}
+	vals.push({x:startTime+1,y:trackCounter})
+	//console.log(layerCount,option,vals);
+	return vals;
+}// end of getEventsWithTracksPerMinute
+
+
+function getTotalChartEvents(arr) {
+	return arr.length;
+}//end of getTotalChartEvents
+
+function getTotalChartEventsComparing(arr1, arr2) {
+	var eventCount = 0;
+	for (var i = 0; i < arr1.length; i++) {
+		for (var j = 0; j < arr2.length; j++) {
+			if (arr1[i][0] == arr2[j][0]) {
+				eventCount += 1;
+			}
+		}
+	}
+	return eventCount;
+}//end of getTotalChartEventsComparing
+
+// Populate the last 12 ADC charts
 }
 
 function popXADR(layer) {
@@ -91,7 +786,22 @@ function popXADR(layer) {
   		console.log("values:", vals);
   	}
   	return vals;
-}
+}// end of popXADR
+
+function popXADRAverage(layer) {
+	var data = [];
+  	for (var event = 0; event < subtractPedX.length; event++) {
+    	for(var channel = 1; channel < subtractPedX[event][layer].length; channel++){
+      		if(subtractPedX[event][layer][channel-1] > 0 && subtractPedX[event][layer][channel] > 0){
+        		var xCord = channel - 1;
+        		var yCord = (subtractPedX[event][layer][channel-1] + subtractPedX[event][layer][channel]);
+        		data.push({ x: xCord, y: yCord});
+      		}
+    	}
+  	}
+	var averageYPerX = getAverage(data);	
+  	return averageYPerX;
+}// end of popXADRAverage
 
 function popXADRAverage(layer) {
 	var data = [];
@@ -124,6 +834,44 @@ function popYADR(layer) {
   		console.log("values:", vals);
   	}
   	return vals;
+}// end of popYADR
+
+function popYADRAverage(layer) {
+  	var data = [];
+  	for (var event = 0; event < subtractPedY.length; event++) {
+    	for(var channel = 1; channel < subtractPedY[event][layer].length; channel++){
+      		if(subtractPedY[event][layer][channel-1]>0 &&subtractPedY[event][layer][channel]>0){
+        		var xCord = channel - 1;
+        		var yCord = (subtractPedY[event][layer][channel-1]+ subtractPedY[event][layer][channel]);
+        		data.push({ x: xCord, y: yCord});
+      		}
+    	}
+  	}
+	//console.log(data);
+	var averageYPerX = getAverage(data);	
+	return averageYPerX;
+}// end of popYADRAverage
+
+//helper function used by popXADRAverage and popYADRAverage
+function getAverage(data) {
+	var groupedByX = {};
+	data.forEach(item => {
+	  if (!groupedByX[item.x]) {
+	    groupedByX[item.x] = [];
+	  }
+	  groupedByX[item.x].push(item.y);
+	});	
+
+	var averageYPerX = {};
+
+	for (var xValue in groupedByX) {
+	  var yValues = groupedByX[xValue];
+	  var sumY = yValues.reduce((sum, y) => sum + y, 0);
+	  var averageY = sumY / yValues.length;
+	  averageYPerX[xValue] = averageY;
+	}	
+	return averageYPerX;
+}//end of getAverage
 }
 
 function popYADRAverage(layer) {

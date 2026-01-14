@@ -1,4 +1,7 @@
-//global variable init;
+/*
+	Edit Peronja 23/10/2025: 3D variables and functions
+*/
+
 var scene;
 var camera;
 var axesHelper;
@@ -35,6 +38,7 @@ let debug3Devent = false;
 let debug3Dreverse = false;
 let debug3Dline = false;
 
+// classes to create the 3D display
 class triShaft {
   constructor() {
     this.dir = 'x';
