@@ -11,6 +11,10 @@ function removeCharts() {
 		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D','DXDZDYDZ','DXDZDYDZTM','DXDZDYDZMB',
 		'DT','DT10','DT20','DT30','DT40','DT50','DT42','DT13','DT15','DT35',
 		'#TRACKS4TM','#TRACKS4MB','#TRACKS5M','#TRACKS5TB','#TRACKS6',
+function removeCharts() {
+	canvasIDs = ['X1','X2','X3','Y1','Y2','Y3','DXDY','DX1D','DY1D',
+		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D','DXDZDYDZ','DXDZDYDZTM','DXDZDYDZMB',
+		'DT','DT10','DT20','DT30','DT40','DT50','#TRACKS4TM','#TRACKS4MB','#TRACKS5M','#TRACKS5TB','#TRACKS6',
 		'X1ADC','X2ADC','X3ADC','Y1ADC','Y2ADC','Y3ADC',
 		'X1ADCAverage','X2ADCAverage','X3ADCAverage','Y1ADCAverage','Y2ADCAverage','Y3ADCAverage'
 	];
@@ -21,6 +25,7 @@ function removeCharts() {
 	  	}
 	}
 }//end of removeCharts
+}
 
 function drawAnalysis(l,g) {	
 	removeCharts();
@@ -102,6 +107,11 @@ function drawAnalysis(l,g) {
 	if (yLayerLength == null) {
 		yLayerLength = 48;
 	}
+	
+	getDxy();
+	getDxyBothLayers();	
+	getDxyTopMiddleBothLayers();
+	getDxyBottomMiddleBothLayers();
 		  
 	var xLabels = [];
 	for(var i = 0; i < xLayerLength; i++){
@@ -114,6 +124,16 @@ function drawAnalysis(l,g) {
 	}
 	
 	var chartComments = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments;
+	var xADRLabels = [];
+	for(var i = 1; i <= xLayerLength; i++){
+	    xADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
+	}
+	  
+	var yADRLabels = [];
+	for(var i = 1; i <= yLayerLength; i++){
+	    yADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
+	}
+	
 	var options = {
 	  scales: {
 	    y: {
@@ -135,11 +155,13 @@ function drawAnalysis(l,g) {
 		},		
 	};
 	//X CAEN 0
+	
 	var dataX1 = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
 	    {
 	      label: 'X CAEN 0 -'+chartComments, // Label for the dataset
+	      label: 'X CAEN 0', // Label for the dataset
 	      backgroundColor: 'rgba(54, 162, 235, 0.5)', // Color or array of colors for the bars
 	      data: populateX('x', 0), // Array of numerical values for the bars
 	    },
@@ -158,11 +180,31 @@ function drawAnalysis(l,g) {
 	});
 	
 	//X CAEN 2
+
+	var barChartX1 = new Chart(ctx1, {
+    	type: 'bar',
+    	data: dataX1,
+    	options: {
+      	scales: {
+        	y: {
+          		beginAtZero: true,
+          		stepSize: 1,
+          		precision: 0,// Set the step size to 1 to show only whole numbers
+        	},
+	     },
+	   },
+	});
+
+	document.getElementById('downloadXCAEN0').addEventListener('click', () => {
+	    downloadArray(populateX('x', 0), 'XCAEN0data.csv');
+	});
+	
 	var dataX2 = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
 	    {
 	      label: 'X CAEN 2 -'+chartComments,
+	      label: 'X CAEN 2',
 	       backgroundColor: 'rgba(255, 99, 132, 0.5)',
 	       data: populateX('x', 1),
 	     },
@@ -181,6 +223,25 @@ function drawAnalysis(l,g) {
 	});
 
 	//X CAEN 3
+			
+	var barChartX2 = new Chart(ctx2, {
+	    type: 'bar',
+	    data: dataX2,
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true,
+	          stepSize: 1,
+	          precision: 0,// Set the step size to 1 to show only whole numbers
+	        },
+	     },
+	   },
+	});
+
+	document.getElementById('downloadXCAEN2').addEventListener('click', () => {
+	    downloadArray(populateX('x', 1), 'XCAEN2data.csv');
+	});
+
 	var dataX3 = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [

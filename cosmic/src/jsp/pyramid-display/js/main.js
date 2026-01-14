@@ -113,6 +113,7 @@ function getSingleGeometry() {
 	});	
 	//console.log(layerOrderY);
 }// end of getGeometry
+const loadingMessage = document.getElementById("loading-message");
 
 // Load the selected data file
 function loadDataFile() {
