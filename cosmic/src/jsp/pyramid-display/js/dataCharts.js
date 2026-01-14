@@ -1,5 +1,11 @@
+/*
+	Edit Peronja 23/10/2025: all charts in data analysis
+*/
+
 function removeCharts() {
-	canvasIDs = ['X1','X2','X3','Y1','Y2','Y3','6PTXYMIDDLE','6PTMX','6PTMY','6PTMXY','6PDIFFMX','6PDIFFMY',
+	canvasIDs = ['X1','X2','X3','Y1','Y2','Y3',
+		'6PTXYMIDDLE','6PTMX','6PTMY','6PTMXY','6PDIFFMX','6PDIFFMY',
+		'6PTXYMIDDLEX','6PTXYMIDDLEY','6PTXYMIDDLEXY','6PDIFFMXHITS','6PDIFFMYHITS','6DXDYHITS',//'LEGO',
 		'5PTTX','5PTMX','5PTBX','5PTTY','5PTMY','5PTBY',
 		'4PTT','4PTM','4PTB','DXDY','DX1D','DY1D',
 		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D','DXDZDYDZ','DXDZDYDZTM','DXDZDYDZMB',
@@ -14,15 +20,9 @@ function removeCharts() {
 	  		chartStatus.destroy();
 	  	}
 	}
-}
+}//end of removeCharts
 
 function drawAnalysis(l,g) {	
-	document.getElementById('analysis-message').style.display = "block";
-	let message = document.getElementById("analysis-message");
-	message.innerHTML = "";
-	document.getElementById('analysis-message').style.display = "block";	
-	message.innerHTML= "Running analysis...";
-	document.getElementById('analysis-message').innerHTML = "Running Analysis...";
 	removeCharts();
 	var ctx1 = document.getElementById('X1').getContext('2d');
 	var ctx2 = document.getElementById('X2').getContext('2d');
@@ -31,6 +31,13 @@ function drawAnalysis(l,g) {
 	var cty2 = document.getElementById('Y2').getContext('2d');
 	var cty3 = document.getElementById('Y3').getContext('2d');
 	var PTXYMIDDLE6 = document.getElementById('6PTXYMIDDLE').getContext('2d');
+	var PTXYMIDDLEX6 = document.getElementById('6PTXYMIDDLEX').getContext('2d');
+	var PTXYMIDDLEY6 = document.getElementById('6PTXYMIDDLEY').getContext('2d');
+	var PTXYMIDDLEXY6 = document.getElementById('6PTXYMIDDLEXY').getContext('2d');
+	var PDIFFMXHITS6 = document.getElementById('6PDIFFMXHITS').getContext('2d');
+	var PDIFFMYHITS6 = document.getElementById('6PDIFFMYHITS').getContext('2d');
+	var DXDYHITS6 = document.getElementById('6DXDYHITS').getContext('2d');
+	//var LEGO = document.getElementById('LEGO').getContext('2D');
 	var PTMX6 = document.getElementById('6PTMX').getContext('2d');
 	var PTMY6 = document.getElementById('6PTMY').getContext('2d');
 	var PTMXY6 = document.getElementById('6PTMXY').getContext('2d');
@@ -106,17 +113,7 @@ function drawAnalysis(l,g) {
 	  yLabels.push('Channel ' + i.toString());
 	}
 	
-	var xADRLabels = [];
-	for(var i = 1; i <= xLayerLength; i++){
-	    xADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
-	}
-	  
-	var yADRLabels = [];
-	for(var i = 1; i <= yLayerLength; i++){
-	    yADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
-	}
 	var chartComments = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments;
-	message.innerHTML= "CAEN values...";	
 	var options = {
 	  scales: {
 	    y: {
@@ -279,51 +276,42 @@ function drawAnalysis(l,g) {
 	if (showTime) {
 		console.log("CAEN analysis: "+calculateProcessTime(end1,start1)+" seconds");
 	}
+	
 	//these function calls get all the arrays needed for the coming charts
 	start1 = new Date();
-	getDxy();
+	getAnalysisXY();
 	end1 = new Date();
 	if (showTime) {
 		console.log("get dx and dy: "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start = new Date();
-	getDxyBothLayers();	
-	getDxyTopMiddleBothLayers();
-	getDxyBottomMiddleBothLayers();	
+	getAnalysisBothLayers();	
+	getAnalysisTopMiddleBothLayers();
+	getAnalysisBottomMiddleBothLayers();	
 	end1 = new Date();
 	if (showTime) {
 		console.log("get dx and dy both layers: "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
+
+	// fill the spinner data in draw2D with all the point tracking data	
 	populateDropdownSix();
 	populateDropdownFive();
 	populateDropdownFour();
-	message.innerHTML= "Point tracking...";			
+	
+	//POINT TRACKING section
 	var pointTrackingOptions = {
 			plugins: {
 			    tooltip: {
 			        callbacks: {
 			            label: function(tooltipItem) {
-			                let label = //tooltipItem.dataset.label || '';
-			                //if (label) {
-			                //    label += ': ';
-			                //}
-			                //label += 
-							`(${tooltipItem.parsed.x}, ${tooltipItem.parsed.y})`;
+			                let label = `(${tooltipItem.parsed.x}, ${tooltipItem.parsed.y})`;
 			                // Add the comment from your data
 			                if (tooltipItem.raw.event) {
 			                    label += ` - ${tooltipItem.raw.event}`;
 			                }
 			                return label;
 			            },
-			            // Alternatively, use the footer for comments
-			            // footer: function(tooltipItems) {
-			            //     const item = tooltipItems[0]; // Assuming single point hover
-			            //     if (item.raw.comment) {
-			            //         return `Comment: ${item.raw.comment}`;
-			            //     }
-			            //     return '';
-			            // }
 			        }
 			    }
 			},
@@ -339,18 +327,8 @@ function drawAnalysis(l,g) {
 		  }		
 	};
 	
-//console.log(total6);
-//console.log(tracking6MiddleHitsXY.length);
-//console.log(tracking6MiddleMissedX.length);
-//console.log(tracking6MiddleMissedY.length);
-//console.log(tracking6MiddleMissedXY.length);
-		
 	//6 plane X middle hits
 	var hit6middleXtotalEvents = getTotalChartEvents(tracking6MiddleHitsXY);
-	//var hit6middleX2_27Counts = getCountsBetween('X', tracking6MiddleHitsXY, 2.5, 26.0);
-	//var hit6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 4.0, 45.0);
-	//var hitExtraComments = '- x between 2.5 and 26, Count : '+hit6middleX2_27Counts;
-	//hitExtraComments += '- y between 4 and 45, Count: '+hit6middleY2_47Counts;
 	var hit6middleXComments = chartComments+' Total Events: '+hit6middleXtotalEvents;
 	var hit6middleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -371,12 +349,235 @@ function drawAnalysis(l,g) {
 	    download2DArray(tracking6MiddleHitsXY, '6PTMHoriginaldata.csv');
 	});
 
+	//6 plane X layer middle hits with only one hit on top and bottom
+	var hit6XsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsXsingleTopBottom);
+	var hit6XsinglepointsComments = chartComments+' Total Events: '+hit6XsinglepointsEvents;
+	var hit6Xsinglepoints = {
+		labels: xLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking X Layer only: middle hit with single cell top/bottom layers '+hit6XsinglepointsComments,
+		      backgroundColor: 'lightblue',
+		      data: get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom),
+		      options: options,
+			  pointRadius: 3,
+		   },],	
+	};
+	var pointTracking6XsinglePoints = new Chart(PTXYMIDDLEX6, {	
+	    type: 'scatter',
+	    data: hit6Xsinglepoints,
+	    options: pointTrackingOptions,
+	});
+	document.getElementById('download6PTMHXdata').addEventListener('click', () => {
+	    download2DArray(get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom), '6PTMHXoriginaldata.csv');
+	});
+	
+	//6 plane Y layer middle hits with only one hit on top and bottom	
+	var hit6YsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsYsingleTopBottom);
+	var hit6YsinglepointsComments = chartComments+' Total Events: '+hit6YsinglepointsEvents;
+	var hit6Ysinglepoints = {
+		labels: xLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking Y Layer only: middle hit with single cell top/bottom layers '+hit6YsinglepointsComments,
+		      backgroundColor: 'lightgreen',
+			  data: get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom),
+		      options: options,
+			  pointRadius: 3,
+		   },],			
+	};
+	var pointTracking6YsinglePoints = new Chart(PTXYMIDDLEY6, {	
+	    type: 'scatter',
+	    data: hit6Ysinglepoints,
+	    options: pointTrackingOptions,
+	});
+	document.getElementById('download6PTMHYdata').addEventListener('click', () => {
+	    download2DArray(get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom), '6PTMHYoriginaldata.csv');
+	});
+
+	//6 plane XY layers middle hits with only one hit on top and bottom	
+	var hit6XYsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsXsingleBothLayers);
+	var hit6XYsinglepointsComments = chartComments+' Total Events: '+hit6XYsinglepointsEvents;
+	var hit6XYsinglepoints = {
+		labels: xLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking Both Layers: middle points '+hit6XYsinglepointsComments,
+		      backgroundColor: 'orange',
+		      data: get6singlepointsBothLayers('XY', tracking6MiddleHitsXsingleBothLayers),
+		      options: options,
+			  pointRadius: 3,
+		   },],			
+	};
+	var pointTracking6XYsinglePoints = new Chart(PTXYMIDDLEXY6, {	
+	    type: 'scatter',
+	    data: hit6XYsinglepoints,
+	    options: pointTrackingOptions,
+	});
+	//document.getElementById('download6PTMHXYdata').addEventListener('click', () => {
+	//    download2DArray(get6singlepointsBothLayers('XY', tracking6MiddleHitsXsingleBothLayers), '6PTMHXYoriginaldata.csv');
+	//});
+	
+	//6 plane tracking, frequency of difference between expected and actual points in middle X
+	var barOptions = {
+		scales: {
+		  y: {
+			beginAtZero: false,
+		    stepSize: 1,
+		    precision: 0,// Set the step size to 1 to show only whole numbers
+		  },
+		},
+	};
+	var hit6XhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsXY);
+	var hit6XhitsfrequencyComments = chartComments+' Total Events: '+hit6XhitsfrequencyEvents;
+	var hit6Xhitsfrequency = getFrequency6ExpectedActualforHits('X', tracking6MiddleHitsXY);
+	var hit6XhitsfrequencyLabels = [];
+	for (var i = 0; i < hit6Xhitsfrequency.length; i++) {
+		hit6XhitsfrequencyLabels.push(hit6Xhitsfrequency[i].x);
+	}
+	var hit6XhitsfrequencyValues = Object.values(hit6Xhitsfrequency);
+	var hit6Xhitsfrequency = {
+		labels: hit6XhitsfrequencyLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking 6 planes: frequency of expected vs accepted point in middle X '+hit6XhitsfrequencyComments,
+		      backgroundColor: 'red',
+			  data: hit6XhitsfrequencyValues,
+		      options: options,
+			  pointRadius: 3,
+		   },],			
+	};
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMXHITS6, {	
+	    type: 'bar',
+	    data: hit6Xhitsfrequency,
+	    options: barOptions,
+	});
+	document.getElementById('download6PDIFFMXHITSdata').addEventListener('click', () => {
+	    download2DArray('', '6PDIFFMXHITSoriginaldata.csv');
+	});
+
+	//6 plane tracking, frequency of difference between expected and actual points in middle Y
+	var hit6YhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsXY);
+	var hit6YhitsfrequencyComments = chartComments+' Total Events: '+hit6YhitsfrequencyEvents;
+	var hit6Yhitsfrequency = getFrequency6ExpectedActualforHits('Y', tracking6MiddleHitsXY);
+	var hit6YhitsfrequencyLabels = [];
+	for (var i = 0; i < hit6Yhitsfrequency.length; i++) {
+		hit6YhitsfrequencyLabels.push(hit6Yhitsfrequency[i].x);
+	}
+	var hit6YhitsfrequencyValues = Object.values(hit6Yhitsfrequency);
+	var hit6Yhitsfrequency = {
+		labels: hit6YhitsfrequencyLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking 6 planes: frequency of expected vs accepted point in middle Y '+hit6YhitsfrequencyComments,
+		      backgroundColor: 'blue',
+			  data: hit6YhitsfrequencyValues,
+		      options: options,
+			  pointRadius: 3,
+		   },],					
+	};
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMYHITS6, {	
+	    type: 'bar',
+	    data: hit6Yhitsfrequency,
+	    options: barOptions,
+	});
+	document.getElementById('download6PDIFFMYHITSdata').addEventListener('click', () => {
+	    download2DArray('', '6PDIFFMYHITSoriginaldata.csv');
+	});
+
+	//6 plane tracking, delta XY for middle hits			
+	var dxdyhitsEvents = getTotalChartEvents(tracking6MiddleHitsXY);;
+	var dxdyhitsComments = chartComments+' Total Events: '+dxdyhitsEvents;
+	var dxdyhits = {
+		labels: xLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Delta X and Y for hits '+dxdyhitsComments,
+		      backgroundColor: 'cyan',
+			  data: getDeltaXYforhits('TB',tracking6MiddleHitsXY),
+		      options: options,
+			  pointRadius: 3,
+		   },]							
+	};
+	var dxdyhitsScatter = new Chart(DXDYHITS6, {	
+	    type: 'scatter',
+	    data: dxdyhits,
+	    options: pointTrackingOptions,
+	});
+	document.getElementById('download6DXHITSDY').addEventListener('click', () => {
+	    download2DArray('', 'download6DXHITSDYoriginaldata.csv');
+	});
+	
+
+	
+	//LEGO plot
+	var xx = [];
+	var yy = [];
+	var deltaXYformiddlehits = getDeltaXYforhits('TB',tracking6MiddleHitsXY);
+	for (var i = 0; i < deltaXYformiddlehits.length; i ++) {
+		xx[i] = deltaXYformiddlehits[i].x;
+		yy[i] = deltaXYformiddlehits[i].y;
+	}
+
+	var data = [
+	  {
+	    x: xx,
+	    y: yy,
+	    type: 'histogram2d',
+		colorscale: 'Jet',// or 'Viridis', 'Hot', 'Greys', etc.
+		autobinx: false,
+		xbins: {
+		  start: -30,
+		  end: 30,
+		  size: 1
+		},
+		autobiny: false,
+		ybins: {
+		  start: -30,
+		  end: 30,
+		  size: 1
+		},		
+		//nbinsx: 50,
+		//nbinsy: 50,
+		//colorscale: [
+		//    ['0', 'rgb(12,51,131)'],    // low end
+		//    ['0.5', 'rgb(242,211,56)'], // middle
+		//    ['1', 'rgb(217,30,30)']     // high end
+		//  ]
+		//Set the histnorm attribute to options like 'probability', 'percent', 'density', or 'probability density'.
+		histnorm: 'density', // Normalize to show probability
+		//zsmooth: 'best', // 'best' performs bi-linear interpolation
+	  }
+	];
+	var layout = {
+	  title: '2D Histogram of DX/DY Data '+chartComments,
+	  xaxis: { title: 'DX/DY for X Layer' },
+	  yaxis: { title: 'DX/DY for Y Layer' },
+	  height: 600, // Set the desired height in pixels
+	  width: 950,  // Set the desired width in pixels
+	  // Optional: add margins, axes details, etc.
+	  //margin: { t: 50 } // Example margin to prevent title cutoff	  
+	  // Add custom shapes, e.g., a vertical line at mean of X
+	  //shapes: [{
+	  //    type: 'line',
+	  //    xref: 'x', yref: 'paper', // reference the x-axis data and paper height
+	  //    x0: 50, y0: 0,
+	  //    x1: 50, y1: 1,
+	  //    line: { color: 'black', width: 2, dash: 'dashdot' }
+	  //  }]
+	  //shapes: [{
+	  //    type: 'line',
+	  //    xref: 'x',
+	  //    yref: 'paper',
+	  //    x0: meanX, // assuming meanX is calculated
+	  //    y0: 0,
+	  //    x1: meanX,
+	  //    y1: 1,
+	  //    line: {
+	  //        color: 'red',
+	  //        width: 2,
+	  //        dash: 'dash'
+	  //    }
+	 // }]
+	};
+	Plotly.newPlot('LEGO', data, layout);	
+	
 	//6 plane missed X middle point
 	var missed6middleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX);
-	//var missedX6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedX, 2.5, 26.0);
-	//var missedX6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleHitsXY, 4.0, 45.0);
-	//var missedXExtraComments = '- x between 2.5 and 26, Count : '+missedX6middleX2_27Counts;
-	//missedXExtraComments += '- y between 4 and 45, Count: '+missedX6middleY2_47Counts;
 	var missed6middleXComments = chartComments+' Total Events: '+missed6middleXtotalEvents;
 	var missed6middleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -400,10 +601,6 @@ function drawAnalysis(l,g) {
 	//6 plane missed Y middle point
 	var missed6middleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY);
 	var missed6middleYComments = chartComments+' Total Events: '+missed6middleYtotalEvents;
-	//var missedY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedY, 2.5, 26.0);
-	//var missedY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedY, 4.0, 45.0);
-	//var missedYExtraComments = '- x between 2.5 and 26, Count : '+missedY6middleX2_27Counts;
-	//missedYExtraComments += '- y between 4 and 45, Count: '+missedY6middleY2_47Counts;
 	var missed6middleY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [{
@@ -423,18 +620,13 @@ function drawAnalysis(l,g) {
 	    download2DArray(tracking6MiddleMissedY, '6PTMYHoriginaldata.csv');
 	});
 	
-
 	//6 plane missed XY middle point
 	var missed6middleXYtotalEvents = getTotalChartEvents(tracking6MiddleMissedXY);
 	var missed6middleXYComments = chartComments+' Total Events: '+missed6middleXYtotalEvents;
-	//var missedXY6middleX2_27Counts = getCountsBetween('X', tracking6MiddleMissedXY, 2.5, 26.0);
-	//var missedXY6middleY2_47Counts = getCountsBetween('Y', tracking6MiddleMissedXY, 4.0, 45.0);
-	//var missedXYExtraComments = '- x between 2.5 and 26, Count : '+missedXY6middleX2_27Counts;
-	//missedXYExtraComments += '- y between 4 and 45, Count: '+missedY6middleY2_47Counts;
 	var missed6middleXY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [{
-	       label: 'Tracking: Y and Y middle miss '+missed6middleXYComments,
+	       label: 'Tracking: X and Y middle miss '+missed6middleXYComments,
 	       backgroundColor: 'blue',
 	       data: get6planemiddlemissed(tracking6MiddleMissedXY, "XY"),
 	       options: options,
@@ -449,17 +641,8 @@ function drawAnalysis(l,g) {
 	document.getElementById('download6PTMXYdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleMissedXY, '6PTMXYHoriginaldata.csv');
 	});
-
-	//6 plane tracking, frequency of difference between expected and actual points in middle X
-	var barOptions = {
-		scales: {
-		  y: {
-			beginAtZero: false,
-		    stepSize: 1,
-		    precision: 0,// Set the step size to 1 to show only whole numbers
-		  },
-		},
-	};
+	
+	//6 plane missed X frequency
 	var frequency6MiddleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX) + getTotalChartEvents(tracking6MiddleMissedXY);
 	var frequency6MiddleXComments = chartComments+' Total Events: '+frequency6MiddleXtotalEvents;
 	var frequency6MiddleX = getFrequency6ExpectedActual('X',tracking6MiddleMissedX,tracking6MiddleMissedXY);
@@ -487,6 +670,7 @@ function drawAnalysis(l,g) {
 	    download2DArray(frequency6MiddleX, 'PDIFFMX6originaldata.csv');
 	});
 	
+	//6 plane missed Y frequency
 	var frequency6MiddleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY) + getTotalChartEvents(tracking6MiddleMissedXY);
 	var frequency6MiddleYComments = chartComments+' Total Events: '+frequency6MiddleYtotalEvents;
 	var frequency6MiddleY = getFrequency6ExpectedActual('Y',tracking6MiddleMissedY,tracking6MiddleMissedXY);
@@ -692,7 +876,8 @@ function drawAnalysis(l,g) {
 		console.log("5 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
-	//4 plane top missing
+
+		//4 plane top missing
 	var missing4TopMissingtotalEvents = getTotalChartEvents(tracking4TopMissing);
 	var trackin4TopMissingY2_27Counts = getCountsBetween4('X','T',tracking4TopMissing, 2.5, 26.0);
 	var tracking4TopMissingY2_47Counts = getCountsBetween4('Y','T',tracking4TopMissing, 4.0, 45.0);
@@ -705,7 +890,7 @@ function drawAnalysis(l,g) {
 	        {
 	      label: 'Tracking 4 planes: top missing '+tracking4TopMissingComments,
 	       backgroundColor: 'darkyellow',
-	       data: get4planemissing(tracking4TopMissing, "T"),
+	       data: get4planemissing(dx, "T"),
 	          options: options,
 		  pointRadius: 3,
 	     },
@@ -780,7 +965,7 @@ function drawAnalysis(l,g) {
 		console.log("4 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
-	
+
 	//delta X / delta Y
 	var deltaXdeltaYOptions = {
 		      scales: {
@@ -1757,6 +1942,7 @@ function drawAnalysis(l,g) {
 	document.getElementById('downloadTRACKS6').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(6,''), 'EVENTSTRACKS6MINUTEdata.csv');
 	});
+
 	end1 = new Date();
 	if (showTime) {
 		console.log("Track counts : "+calculateProcessTime(end1,start1)+" seconds");
@@ -1764,6 +1950,16 @@ function drawAnalysis(l,g) {
 	start1 = new Date();
 
 	//ADC charts
+	var xADRLabels = [];
+	for(var i = 1; i <= xLayerLength; i++){
+	    xADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
+	}
+	  
+	var yADRLabels = [];
+	for(var i = 1; i <= yLayerLength; i++){
+	    yADRLabels.push('Channel ' + (i-1).toString() + " & " + i.toString());
+	}
+	
 	var adcOptionsX = {
 		scales: {
 		  x: {
@@ -1997,6 +2193,4 @@ function drawAnalysis(l,g) {
 	if (showTime) {
 		console.log("ADCs : "+calculateProcessTime(end1,start1)+" seconds");
 	}
-	document.getElementById('analysis-run').style.display = "none";
-	document.getElementById('analysis-message').style.display = "none";
-};
+};//end of drawAnalysis

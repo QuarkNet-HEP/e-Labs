@@ -1,15 +1,16 @@
+/*
+	Edit Peronja 23/10/2025: 2D variables and functions
+*/
+
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 var inputElement = document.getElementById("quantity");
 var inputElement6 = document.getElementById("quantity6");
 var inputElement5 = document.getElementById("quantity5");
 var inputElement4 = document.getElementById("quantity4");
-// Add an event listener to the input element
+// Add an event listener to the all events input element
 inputElement.addEventListener("input", updateInputValue);
-//let elementsArray = document.querySelectorAll("input");
-//elementsArray.forEach(function(elem) {
-//    elem.addEventListener("input", updateInputValue);
-//});
+
 var geometry = [];
 var layers = [];
 var subtractPedX = [];
@@ -37,17 +38,13 @@ let overallCellSize = 0;
 function updateInputValue() {
   inputValue = inputElement.value;
   if (is_numeric(inputValue)) {
-	if (inputValue > 0) {
+	if (inputValue > 0 && inputValue <= subtractPedX.length) {
 	  draw(inputValue-1);
 	} 
   }
 }//end of updateInputValue
 
-function is_numeric(str){
-    return /^\d+$/.test(str);
-}
-
-function drawLine(x1, y1, x2, y2, extensionLength) {
+function drawLine(x1, y1, x2, y2, extensionLength, lineWidth) {
   // 80 for extensionLength 
   // Calculate the length and angle of the original line
   var angle = Math.atan2(y2 - y1, x2 - x1);
@@ -61,7 +58,7 @@ function drawLine(x1, y1, x2, y2, extensionLength) {
   ctx.beginPath();
   ctx.moveTo(newX1, newY1);
   ctx.lineTo(newX2, newY2);
-  ctx.lineWidth = 2;
+  ctx.lineWidth = lineWidth;
   ctx.stroke();
 }//end of drawLine
 		
@@ -82,23 +79,17 @@ function calculatePointByPercentage(x1, y1, x2, y2, percentage, yProjected) {
 }//end of calculatePointByPercentage
 
 function getSingleSidePoint(event, layerTriangle) {
-	var sidePoint = [];
 	var eventsToTest = [];
-	//var x1 = layerTriangle[layer][0][2][0];
-	//var y1 = layerTriangle[layer][0][2][1];
-	//var x2 = layerTriangle[layer][0][3][0];
-	//var y2 = layerTriangle[layer][0][3][1];
-	//var x3 = layerTriangle[layer][0][4][0];
-	//var y3 = layerTriangle[layer][0][4][1];
+	var sidePoint = [];
 	var x1 = layerTriangle[2][0];
 	var y1 = layerTriangle[2][1];
 	var x2 = layerTriangle[3][0];
 	var y2 = layerTriangle[3][1];
 	var x3 = layerTriangle[4][0];
 	var y3 = layerTriangle[4][1];
-	//if (eventsToTest.includes(event)) {
-	//	console.log(x1,y1,x2,y2,x3,y3);
-	//}
+	if (eventsToTest.includes(event)) {
+		console.log(x1,y1,x2,y2,x3,y3);
+	}
 	var x = (x1 + x2 + x3)/3;
 	var y = (y1 + y2 + y3)/3;
 	yProjected = y;
@@ -126,16 +117,11 @@ function getHighestIntensityNeighbor(arr) {
 		}
 	}
 	return ndx;
-}
+}//end of getHighestIntensityNeighbor
 
 function getIndexesOfTwoHighest(arr) {
-  // 1. Create an array of objects with value and original index
   const indexedArray = arr.map((value, index) => ({ value, index }));
-
-  // 2. Sort the array in descending order based on value
   indexedArray.sort((a, b) => b.value - a.value);
-
-  // 3. Extract the indices of the top two elements
   if (indexedArray.length >= 2) {
     return [indexedArray[0].index, indexedArray[1].index];
   } else if (indexedArray.length === 1) {
@@ -143,57 +129,158 @@ function getIndexesOfTwoHighest(arr) {
   } else {
     return []; // Return an empty array for an empty input array
   }
-}
+}//end of getIndexesOfTwoHighest
 
-function analyzeCluster(event, x, arr) {
+function analyzeCluster(event, x, arr, howmany) {
 	var eventsToTest = [];//41,110,9674,9681,9725,9858,9956];
 	var ndx = [];
 	var intensities = [];
 	var lastX = 0;
 	if (eventsToTest.includes(event)) {			
 	 console.log("it gets here 0:", x,arr);
-	 }
-	if (arr.length-x == 2 && (arr[arr.length-1][0] - arr[arr.length-2][0] <= 17.5)) {
-		intensities.push(arr[arr.length-2][1]);		
-		intensities.push(arr[arr.length-1][1]);	
-		if (eventsToTest.includes(event)) {			
-		 //console.log("it gets here 1:", arr, arr[arr.length-1][0] - arr[arr.length-2][0], intensities);
-		 }
-	} else {
-		for (var i = x; i < arr.length-1; i++) {
-			if (arr[i+1][0] - arr[i][0] <= 17.5 && intensities.length < 2) {
-				//these are neighbors
-				intensities.push(arr[i][1]);
-				if (eventsToTest.includes(event)) {			
-				 //console.log("it gets here 2:", intensities);
-				 }
+	}
+	/*
+    if (howmany == 3) { //there is a cluster of 3
+		var highestIntensityNdx = -1;
+		var highestIntensityX = 0;
+		var highestIntensity = -1;
+		for (var i = x; i < howmany+x-1; i++) {
+			if (arr[i][1] > highestIntensity || arr[i+1][1] > highestIntensity) {
+				if (arr[i][1] > arr[i+1][1]) {
+					highestIntensity = arr[i][1];
+					highestIntensityNdx = i;
+					highestIntesityX = i;
+				} else {
+					highestIntensity = arr[i+1][1];
+					highestIntensityNdx = i+1;
+					highestIntensityX = i+1;
+				}
 			}
-			lastX = i;
 		}
-		//deal with one more item
-		if (eventsToTest.includes(event)) {			
-		 console.log("it gets here 3:", lastX, arr.length, intensities);
-		}	
-		if (arr.length >= lastX && lastX >= 1  && intensities.length < 2) {
-			if (arr[lastX][0] - arr[lastX-1][0] <= 17.5) {
-				intensities.push(arr[lastX][1])
-			if (eventsToTest.includes(event)) {			
-			 console.log("it gets here 3:", lastX, arr[lastX][0], arr[lastX-1][0],arr[lastX][0] - arr[lastX-1][0], intensities);
-			}	
-			}	
-		}
-	}
-	ndx = getIndexesOfTwoHighest(intensities);
-	for (var i = 0; i < ndx.length; i++) {
-		ndx[i] += x;
-	}
+		//choose either left or right as neighbor
+		if (highestIntensityNdx > -1) {
+			if (highestIntensityNdx == howmany+x) {
+				intensities.push(arr[highestIntensityNdx][1]);
+				intensities.push(arr[highestIntensityNdx-1][1]);
+				ndx.push(highestIntensity)
+				ndx.push(highestIntensityX-1);
+			} else if (highestIntensityNdx == x) {
+				intensities.push(arr[x][1]);
+				intensities.push(arr[x+1][1]);			
+				ndx.push(x);
+				ndx.push(x+1)
+			} else {
+				intensities.push(arr[highestIntensityNdx][1]);
+				if (highestIntensityNdx < arr.length-1) {
+					if (arr[highestIntensityNdx-1][1] > arr[highestIntensityNdx+1][1]) {
+						intensities.push(arr[highestIntensityNdx-1][1]);				
+					} else {
+						intensities.push(arr[highestIntensityNdx+1][1]);							
+					}
+				} else {
+					intensities.push(arr[highestIntensityNdx-1][1]);									
+				}
+				if (intensities[0] > intensities[1]) {
+					ndx.push(highestIntensityX-1);
+					ndx.push(highestIntensityX)
+				} else {
+					ndx.push(highestIntensityX)
+					ndx.push(highestIntensityX-1);
+				}
+			}
+		}		
+	} else { //analyze pairs	
+		*/
+		//if (channelClusterCount <= 1) {
+			if (arr.length-x == 2 && (arr[arr.length-1][0] - arr[arr.length-2][0] <= 17.5)) {
+				intensities.push(arr[arr.length-2][1]);		
+				intensities.push(arr[arr.length-1][1]);	
+				if (eventsToTest.includes(event)) {				
+				 //console.log("it gets here 1:", arr, arr[arr.length-1][0] - arr[arr.length-2][0], intensities);
+				 }
+			} else {
+				for (var i = x; i < arr.length-1; i++) {
+					if (arr[i+1][0] - arr[i][0] <= 17.5 && intensities.length < 2) {
+						//these are neighbors
+						intensities.push(arr[i][1]);
+						intensities.push(arr[i+1][1]);
+						if (eventsToTest.includes(event)) {			
+						 //console.log("it gets here 2:", intensities);
+						 }
+					}
+					lastX = i;
+				}
+				//deal with one more item
+				if (eventsToTest.includes(event)) {			
+				 console.log("it gets here 3:", lastX, arr.length, intensities);
+				}	
+				if (arr.length >= lastX && lastX >= 1  && intensities.length < 2) {
+					if (arr[lastX][0] - arr[lastX-1][0] <= 17.5) {
+						intensities.push(arr[lastX][1])
+					if (eventsToTest.includes(event)) {			
+					 //console.log("it gets here 3:", lastX, arr[lastX][0], arr[lastX-1][0],arr[lastX][0] - arr[lastX-1][0], intensities);
+					}	
+					}	
+				}
+			}
+			ndx = getIndexesOfTwoHighest(intensities);
+			for (var i = 0; i < ndx.length; i++) {
+				ndx[i] += x;	
+			}
+		//}		
+	//}
 	if (eventsToTest.includes(event)) {			
-	 console.log("it gets here last:", ndx);
-	 }
+	 console.log("it gets here last:", intensities, ndx);
+	}
 	return ndx;
-}// end of analyzeCluster
+}//end of analyzeCluster
 
-function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer) {
+function areNeighborsIn(neighbors, length) {
+	for(var i = 0; i < neighbors.length; i++) {
+		if (neighbors[i] > length) {
+			return false;
+		}
+	}
+	return true;
+}//end of areNeighborsIn 
+
+function getSidePointFromThree(event, x1, layerTriangle, layerAct, layer, howmany) {
+	var point1Intensity = layerTriangle[layer][0][1];
+	var xa1 = layerTriangle[layer][0][3][0];
+	var ya1 = layerTriangle[layer][0][3][1];
+	var xa2 = layerTriangle[layer][0][4][0];
+	var ya2 = layerTriangle[layer][0][4][1];
+	var point2Intensity = layerTriangle[layer][1][1];
+	var xb1 = layerTriangle[layer][1][3][0];
+	var yb1 = layerTriangle[layer][1][3][1];
+	var xb2 = layerTriangle[layer][1][4][0];
+	var yb2 = layerTriangle[layer][1][4][1];
+	var point3Intensity = layerTriangle[layer][2][1];
+	var xc1 = layerTriangle[layer][2][3][0];
+	var yc1 = layerTriangle[layer][2][3][1];
+	var xc2 = layerTriangle[layer][2][4][0];
+	var yc2 = layerTriangle[layer][2][4][1];
+	var pointPercentSum = point1Intensity + point2Intensity + point3Intensity;
+	var point1Percent = point1Intensity * 100.0 / pointPercentSum;
+	var point2Percent = point2Intensity * 100.0 / pointPercentSum;
+	var point3Percent = point3Intensity * 100.0 / pointPercentSum;
+
+	var dx1 = xa2 - xa1;
+	var dy1 = ya2 - ya1;
+	var dx2 = xb2 - xb1;
+	var dy2 = yb2 - yb1;
+	var dx3 = xc2 - xc1;
+	var dy3 = yc2 - yc1;
+	const x = xa1 + (dx1 * point1Percent/100) + (dx2 * point2Percent/100) + (dx3 * point3Percent/100);
+	const y = ya1 + (dy1 * point1Percent/100) + (dy2 * point2Percent/100) + (dy3 * point3Percent/100);
+	console.log("three 0", layerTriangle[layer]);
+	console.log("three 1", event, point1Intensity, point2Intensity, point3Intensity);
+	console.log("three 2", point1Percent, point2Percent, point3Percent);
+	console.log("three 4", x, y);
+	return { x, y, yProjected };		
+}//end of getSidePointFromThree
+
+function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer, howmany) {
 	var eventsToTest = [];//9674,9681,9725,9858,9956];
 	var sidePoint = [];
 	var yProjected = 0;
@@ -204,12 +291,13 @@ function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer) {
 	var y2 = 0;
 	var point1Intensity = 0;
 	var point2Intensity = 0;
-	var neighbors = analyzeCluster(event, x,layerAct[layer]);
+	var neighbors = analyzeCluster(event, x,layerAct[layer], howmany);
 	if (eventsToTest.includes(event)) {
-		//console.log(layerAct[layer], neighbors);
+		console.log(event,layerAct[layer], neighbors, neighbors.length);
 	}
-	if (neighbors.length > 1) {
-		if (neighbors[0] < neighbors[1]) {										
+	if (neighbors.length > 1 && neighbors[0] > -1 && neighbors[1] > -1 && areNeighborsIn(neighbors, layerTriangle[layer].length)) {
+		if (neighbors[0] < neighbors[1]) {						
+			//console.log(event, layerTriangle, layer, neighbors);
 			up = layerTriangle[layer][neighbors[0]][0];					
 			x1 = layerTriangle[layer][neighbors[0]][3][0];
 		    y1 = layerTriangle[layer][neighbors[0]][3][1];
@@ -219,14 +307,14 @@ function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer) {
 			point1Intensity = layerTriangle[layer][neighbors[0]][1];
 			point2Intensity = layerTriangle[layer][neighbors[1]][1];
 		} else {
-			up = layerTriangle[layer][neighbors[1]][0];					
-			x1 = layerTriangle[layer][neighbors[1]][3][0];
-			y1 = layerTriangle[layer][neighbors[1]][3][1];
-			x2 = layerTriangle[layer][neighbors[1]][4][0];
-			y2 = layerTriangle[layer][neighbors[1]][4][1];
-			yProjected = layerTriangle[layer][neighbors[1]][5];
-			point1Intensity = layerTriangle[layer][neighbors[1]][1];
-			point2Intensity = layerTriangle[layer][neighbors[0]][1];						
+				up = layerTriangle[layer][neighbors[1]][0];					
+				x1 = layerTriangle[layer][neighbors[1]][3][0];
+				y1 = layerTriangle[layer][neighbors[1]][3][1];
+				x2 = layerTriangle[layer][neighbors[1]][4][0];
+				y2 = layerTriangle[layer][neighbors[1]][4][1];
+				yProjected = layerTriangle[layer][neighbors[1]][5];
+				point1Intensity = layerTriangle[layer][neighbors[1]][1];
+				point2Intensity = layerTriangle[layer][neighbors[0]][1];						
 		}
 		var pointPercent = 0;
 		var pointPercentSum = point1Intensity + point2Intensity;
@@ -252,101 +340,107 @@ function getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer) {
 			}
 		}
 	}
+	if (eventsToTest.includes(event)) {
+		console.log("sidepoint:", sidePoint);
+	}
 	return sidePoint;	
 }//end of getSidePointFromNeighbors
 
 function calculateSidePoint(event, layerAct, layerTriangle, layer) {
+	var eventsToTest = [];//110,9674,9681,9725,9858,9956];
 	var layerTracker = [];
 	var sidePointGroup = [];
 	var sidePoint = [];
 	var yProjected = 0;
-	var eventsToTest = [];//110,9674,9681,9725,9858,9956];
 	if (debug2DPoint === true) {
 		console.log("layer triangle: ", layerAct, layerTriangle[layer], layer);
 	}
 	if (layerTriangle[layer].length > 0) {
-	  if (layerTriangle[layer].length == 1) {
-		sidePoint = getSingleSidePoint(event, layerTriangle[layer][0]);
-		sidePointGroup.push(sidePoint);
-		if (eventsToTest.includes(event)) {
-			console.log("point added as a single point:", sidePoint);
-		}
-	  }	else {			
 		//first we have to check for neighbors
-		for (var x = 0; x < layerTriangle[layer].length-1; x++) {
-			//var quadFirstCell = layerTriangle[layer][x][6];
-			//var quadSecondCell = layerTriangle[layer][x+1][6];
-			//var firstX = layerTriangle[layer][x][3][0];
-			//var secondX = layerTriangle[layer][x+1][4][0];
-			var layerValueDiff = layerAct[layer][x+1][0]-layerAct[layer][x][0];
-			if (debug2DPoint === true) {
-				console.log(layer, x, layerAct[layer][x], layerAct[layer][x+1], layerValueDiff);
-				console.log("checking x for neighbors: firstX and secondX in pixels", layerValueDiff, firstX, secondX, (secondX-firstX));
-			}
-			if (eventsToTest.includes(event)) {
-				//console.log("point added not neighbors:", quadSecondCell-quadFirstCell, layerValueDiff, (secondX - firstX), overallCellSize/2.0);
-			}
-			//(quadSecondCell-quadFirstCell) > 1 ||
-			if (layerValueDiff > 17.5 && !layerTracker.includes(x)) {
-				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x]);
-				sidePointGroup.push(sidePoint);
-				layerTracker.push(x);
+		for (var x = 0; x < layerTriangle[layer].length; x++) {
+			//check how many channels are involved in the cluster at x
+			var channelClusterCount = 0;
+			if (layerAct[layer].length == 1) {
+				channelClusterCount = 1;
 			} else {
-				if (!layerTracker.includes(x)) {
-				   var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer);
-				   if (!isPointInGroup(sidePoint, sidePointGroup)) {
-			   	  		sidePointGroup.push(sidePoint);
-			   	  		if (eventsToTest.includes(event)) {
-			   	  		//console.log("point added AS neighbors:", sidePoint);
-			   	  	}
-				}			
-			   layerTracker.push(x);
-			   x += 1;
-			   }
-			}// end of else	
-			layerTracker.push(x);
-
-		}//end of for
-	  }//end of second if else
-		//now deal with last points
-	  if (layerTriangle[layer].length > 1) {
-		  //var quadFirstCell = layerTriangle[layer][layerTriangle[layer].length-2][6];
-		  //var quadSecondCell = layerTriangle[layer][[layerTriangle[layer].length-1]][6];
-		  //var firstX = layerTriangle[layer][[layerTriangle[layer].length-2]][3][0];
-		  //var secondX = layerTriangle[layer][[layerTriangle[layer].length-1]][4][0];
-		  var layerValueDiff = layerAct[layer][[layerTriangle[layer].length-1]][0]-layerAct[layer][[layerTriangle[layer].length-2]][0];
-          var x = layerTriangle[layer].length-2;
-		  if (!layerTracker.includes(x)) {
-			  var neighbors = analyzeCluster(event, x,layerAct[layer]);
-			  if (neighbors.length > 1) {
-				var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer);
-				if (!isPointInGroup(sidePoint, sidePointGroup)) {
-				  sidePointGroup.push(sidePoint);
-				}			
-		  	  } else {
-				  if (layerValueDiff > 17.5) {
-					  //they are not neighbors
-					  //we still need to deal with the last point
-				  		sidePoint = getSingleSidePoint(event, layerTriangle[layer][layerTriangle[layer].length-1]);
-				  		if (eventsToTest.includes(event)) {
-							//console.log(sidePoint);
-						}
-					    if (!isPointInGroup(sidePoint, sidePointGroup)) {
-					  	  sidePointGroup.push(sidePoint);
-						}
+				var done = false;
+				for (var i = x; i < layerAct[layer].length-1; i++ ) {
+					if (eventsToTest.includes(event)) {
+						console.log(event, x, i, layerAct[layer][i+1][0], layerAct[layer][i][0], layerAct[layer][i+1][0]-layerAct[layer][i][0]);
+					}
+					if (layerAct[layer][i+1][0]-layerAct[layer][i][0] <= 17.5 && done == false) {						
+						channelClusterCount += 1;
+					} else {
+						done = true;
 					}
 				}
-			}    
-		}
-    }//end of checking if layerTriangle is great than 0
+				channelClusterCount += 1;
+			}
+			if (channelClusterCount == 1) {
+				sidePoint = getSingleSidePoint(event, layerTriangle[layer][x]);
+				sidePointGroup.push(sidePoint);
+				if (eventsToTest.includes(event)) {
+					console.log("# points 1",event, x, channelClusterCount, layerAct[layer]);
+				}
+			} else if (channelClusterCount == 2) { //just two neighbors
+				var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer,channelClusterCount);
+				if (!isPointInGroup(sidePoint, sidePointGroup)) {
+				  		sidePointGroup.push(sidePoint);
+				}
+				if (eventsToTest.includes(event)) {
+					console.log("# points 2",event, x, channelClusterCount, layerAct[layer]);
+				}
+				x += 1;				
+			} //else if (channelClusterCount == 3) { //cluster of 3
+				//var sidePoint = getSidePointFromThree(event, x, layerTriangle, layerAct, layer,channelClusterCount);
+				//sidePointGroup.push(sidePoint);
+				//console.log(sidePoint);
+			//	var sidePoint = getSidePointFromNeighbors(event, x, layerTriangle, layerAct, layer,channelClusterCount);
+				//console.log(sidePoint);
+			//	if (!isPointInGroup(sidePoint, sidePointGroup)) {
+			//	  		sidePointGroup.push(sidePoint);
+			//	}
+			//	if (eventsToTest.includes(event)) {
+			//		console.log("# points 3",event, x, channelClusterCount, layerAct[layer]);
+			//	}
+			//	x += 2;				
+			//} 
+			 else { // the cluster is greater than 2
+				for (var j = x; j < channelClusterCount+x; j++) {
+					if (eventsToTest.includes(event)) {
+						console.log("# points multiple",event, x, j, channelClusterCount, layerAct[layer]);
+					}
+					var sidePoint = getSidePointFromNeighbors(event, j, layerTriangle, layerAct, layer,channelClusterCount);
+					if (!isPointInGroup(sidePoint, sidePointGroup)) {
+				  		sidePointGroup.push(sidePoint);
+					}
+				}
+				x += channelClusterCount-1;				
+			}
+		}	
+	}
 	return sidePointGroup;
 }//end of calculateSidePoint
 
 function findCalculatedX(point1, point2, y3) {
    const m = (point2.y - point1.y) / (point2.x - point1.x);
    const x3 = (y3.y - point1.y) / m + point1.x;
-   return {x:x3, y:y3.y};
-}
+   if (isNaN(x3)) {
+      return {x:point1.x, y:y3.y};	
+   } else {
+      return {x:x3, y:y3.y};
+   }
+}//end of findCalculatedX
+
+function checkCalculatedX(point1, point2, y3) {
+   const m = (point2.y - point1.y) / (point2.x - point1.x);
+   const x3 = (y3.y - point1.y) / m + point1.x;
+   if (isNaN(x3)) {
+	   return {x:point1.x, y:y3.y};	
+   } else {
+	   return {x:x3, y:y3.y};
+   }
+}// end of checkCcalculatedX
 
 function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle, lTop, lBot, layerOrder){
 	var eventsToTest = [];//26020,19073,34789
@@ -365,8 +459,111 @@ function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle,
 	  if (eventsToTest.includes(event)) {
 		  console.log(layerOrder, sidePointX1,sidePointX2,sidePointX3);
 	  }	  
-	  	  
-	  //
+	  //select best track
+	   var expectedMiddlePoint = ''; 
+	   var pointX1 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   var pointX2 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   var pointX3 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   var tempX1 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   var tempX2 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   var tempX3 = {x:undefined, y:undefined, yProjected:undefined, channel1: -1,channel2:-1};
+	   //get the first point of a group (we do not know if there is a group)
+	   if (sidePointX1.length > 0) {
+	   	pointX1 = sidePointX1[0];
+	   } 
+	   if (sidePointX2.length > 0) {
+	  pointX2 = sidePointX2[0];
+	   } 
+	   if (sidePointX3.length > 0) {
+	  pointX3 = sidePointX3[0];
+	  } 
+	  var diff = 1000.0;  
+	  //determine best track for all the data analysis
+	  // check if there is a middle point first in order to get the best one
+	  if (sidePointX2.length > 0) {
+	  //now check if it belongs to a full track, we need to have points in all layers
+	  if (sidePointX1.length > 0 && sidePointX3.length > 0) {
+	  	//loop through the middle points
+	  	for (var i = 0; i < sidePointX2.length; i++) {
+	  		var middlePoint = sidePointX2[i];
+	  		if (eventsToTest.includes(event)) {
+	  			console.log("getting best point from these :", middlePoint);
+	  		}
+	  		//test 1: there is only one point in both other layers
+	  		if (sidePointX1.length == 1 && sidePointX3.length == 1) {
+	  			expectedMiddlePoint = checkCalculatedX(sidePointX1[0],sidePointX3[0],middlePoint);
+	  			if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+	  				diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+	  				tempX1 = sidePointX1[0];
+	  				tempX2 = middlePoint;
+	  				tempX3 = sidePointX3[0];	
+	  				if (eventsToTest.includes(event)) {
+	  					console.log("case 1 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+	  				}
+	  			}
+	  		}//end of test 1
+	  		//test 2: 1 point in one of the other layer and more points in one of the other layers
+	  		if (sidePointX3.length > 1 && sidePointX1.length == 1) {
+	  			for (var j = 0; j < sidePointX3.length; j++) {
+	  				//need to check if this middle point is the best for the other layer points
+	  				expectedMiddlePoint = checkCalculatedX(sidePointX1[0],sidePointX3[j],middlePoint);
+	  				if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+	  					diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+	  					tempX1 = sidePointX1[0];
+	  					tempX2 = middlePoint;
+	  					tempX3 = sidePointX3[j];	
+	  					if (eventsToTest.includes(event)) {
+	  						console.log("case 2 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+	  					}
+	  				}					
+	  			}
+	  		}//end of test 2
+	  		//test 3: reverse case from above
+	  		if (sidePointX1.length > 1 && sidePointX3.length == 1) {
+	  			for (var j = 0; j < sidePointX1.length; j++) {
+	  				expectedMiddlePoint = checkCalculatedX(sidePointX1[j],sidePointX3[0],middlePoint);
+	  				if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+	  					diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+	  					tempX1 = sidePointX1[j];
+	  					tempX2 = middlePoint;
+	  					tempX3 = sidePointX3[0];	
+	  					if (eventsToTest.includes(event)) {
+	  						console.log("case 3 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+	  					}
+	  				}
+	  			}
+	  		}//end of test 3
+	  		//test 4: both layers have multiple points
+	  		if (sidePointX1.length > 1 && sidePointX3.length > 1) {
+	  			for (var j = 0; j < sidePointX1.length; j++) {
+	  				for (var k = 0; k < sidePointX3.length; k++) {
+	  					expectedMiddlePoint = checkCalculatedX(sidePointX1[j],sidePointX3[k],middlePoint);
+	  					//console.log(event, whichLayer, middlePoint, expectedMiddlePoint);
+	  					if (Math.abs(middlePoint.x - expectedMiddlePoint.x) < diff) {
+	  						diff = Math.abs(middlePoint.x - expectedMiddlePoint.x);
+	  						tempX1 = sidePointX1[j];
+	  						tempX2 = middlePoint;
+	  						tempX3 = sidePointX3[k];	
+	  						if (eventsToTest.includes(event)) {
+	  							console.log("case 4 :", middlePoint.x, expectedMiddlePoint.x, diff, tempX2);
+	  						}
+	  					}					
+	  				}
+	  			}
+	  		}//end of test 4			
+	  		if (typeof tempX1.x != "undefined" && tempX1.x != pointX1.x) {
+	  			pointX1 = tempX1;
+	  		}
+	  		if (typeof tempX2.x != "undefined" && tempX2.x != pointX2.x) {
+	  			pointX2 = tempX2;
+	  			//console.log(event, whichLayer, sidePointX2, pointX2);
+	  		}
+	  		if (typeof tempX3.x != "undefined" && tempX3.x != pointX3.x) {
+	  			pointX3 = tempX3;
+	  		}										
+	  	}//end for loop through middle points		
+	  }//end of checking if we have full tracks
+	  }//end of checking if we have a middle point	  
 	  for (var i = 0; i < sidePointX3.length; i++) {
 	  	drawPoint(sidePointX3[i].x, sidePointX3[i].y, 'yellow');
 	  	drawPoint(sidePointX3[i].x, sidePointX3[i].yProjected, 'cyan');	 	
@@ -383,9 +580,13 @@ function caculateTrack(event, layerAct, layerQuad, layerQuadSize, layerTriangle,
 	  	 
 	  for (var i = 0; i < sidePointX1.length; i++) {
 		for (var j = 0; j < sidePointX3.length; j++) {
-			drawLine(sidePointX3[j].x, sidePointX3[j].yProjected, sidePointX1[i].x, sidePointX1[i].yProjected, lineExtension);							
+			drawLine(sidePointX3[j].x, sidePointX3[j].yProjected, sidePointX1[i].x, sidePointX1[i].yProjected, lineExtension, 1);							
 	  	}
 	  }
+	  if (eventsToTest.includes(event)) {
+		  console.log(sidePointX1, sidePointX2, sidePointX2, pointX1, pointX2, pointX3);
+	  }
+	  drawLine(pointX3.x, pointX3.yProjected, pointX1.x, pointX1.yProjected, lineExtension, 3);
 }//end of calculateTrack
 
 function drawTriangle(dir, xpos, y, channel, inten, quadMember) {
@@ -761,7 +962,6 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 		console.log("geometry:",g);
 		console.log("layers:",l);
 	}
-	//document.getElementById('event').style = "display:inline";
 	document.getElementById("quantity").value = 1;
 	document.getElementById("rundata").innerHTML = "Run: "+globalThis.globalThis.runNumber;
 	document.getElementById("rundata").style.fontWeight = "bold";
