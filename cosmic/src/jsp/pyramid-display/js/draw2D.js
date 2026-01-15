@@ -812,12 +812,20 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
     var end, middle, start;
 	var layerOrder = [];
 	var startNdx = 0;
+	
     if (whichLayer === 'X') { 
-		layerOrder = layerOrderX;
+		layerOrder = globalThis.layerOrderX;
 		startNdx = 5;
     } else {
-		layerOrder = layerOrderY;
+		layerOrder = globalThis.layerOrderY;
 		startNdx = 4;
+	}
+	// Defensive guard: ensure layerOrder has three elements with numeric positions before proceeding
+	if (!Array.isArray(layerOrder) || layerOrder.length < 3 || !Array.isArray(layerOrder[0]) || typeof layerOrder[0][0] !== 'number') {
+		if (debug2DLayer === true || debug2D === true) {
+			console.warn('drawLayer: skipping draw because layerOrder is not ready', whichLayer, layerOrder);
+		}
+		return; // nothing to draw yet
 	}
 	// Sort in descending order by the first element
 	layerOrder.sort(function(a, b) {
@@ -968,7 +976,7 @@ function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
 	inputElement.max = subtractPedX.length;
 	draw(event);
 	var end = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("Draw2D: "+calculateProcessTime(end,start)+" seconds");
 	}
 }

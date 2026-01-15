@@ -1,7 +1,6 @@
 /*
 	Edit Peronja 23/10/2025: This script is invoked when a new data file is selected.
 */
-
 var xCoord = [];
 var yCoord = [];
 var subtractPedX = [];
@@ -11,6 +10,11 @@ var geometry = [];
 var pedestal = [];
 var detectorName = "";
 var layerMaxSize = 64;
+// Ensure these variables exist in this module scope to avoid ReferenceError when assigned inside functions
+var x = [];
+var y = [];
+let debugRead = false;
+globalThis.eventTime = [];
 globalThis.adcmapArr = [];
 globalThis.pedestalArr = [];
 globalThis.geometryArr = [];
@@ -26,8 +30,7 @@ globalThis.midPed = 0;
 globalThis.eventFilter6 = [];
 globalThis.eventFilter5 = [];
 globalThis.eventFilter4 = [];
-let showTime = false;
-let debugRead = false;
+globalThis.showTime = false;
 
 // Clean the headers
 function cleanFile(arr, type) {
@@ -57,7 +60,9 @@ function cleanFile(arr, type) {
 // Determine correct data based on timestamps
 function retrieveTimedData(fileName, completeArr, type) {
 	var timestamps = [];
-	var detector = fileName.trim().split(' ');	
+	var detector = fileName.trim().split(' ');
+	// function-scoped flag used to stop once we've found the correct module
+	let done;
 	if (type === "ADCMAP") {
 		timestamps = [];
 		done = false;
@@ -71,7 +76,7 @@ function retrieveTimedData(fileName, completeArr, type) {
 					timestamps.push(completeMod);
 					if (completeArr[i][0][1] === "Mod5") {
 						done = true;
-					}			
+					}				
 				}
 			}
 		}
@@ -290,7 +295,7 @@ globalThis.retrieveData = function () {
       var lastTrg = parseInt(df.at(df.index[nRows - 1], 'TrgID'));
       while (id <= lastTrg) {
         //initialize to zeros
-        eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
+        globalThis.eventTime.push(Array.from({ length: 6 }, function() { return 0; }));
         x.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         y.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return [0,0,0,0]; });}));
         subtractPedX.push(Array.from({ length: 3 }, function() {return Array.from({ length: layerMaxSize }, function() { return 0; });}));
@@ -338,10 +343,10 @@ globalThis.retrieveData = function () {
             if (tstampVal > 0) {
               var time = tstampVal;
               if (countHit) {
-                if (eventTime.includes(time)){
+                if (globalThis.eventTime.includes(time)){
                   //do nothing
                 } else {
-                  eventTime[id][brd] = time;
+                  globalThis.eventTime[id][brd] = time;
                 }
               }
             }
@@ -360,10 +365,10 @@ globalThis.retrieveData = function () {
             if (tstampVal > 0) {
               var time = tstampVal;
               if (countHit) {
-                if (eventTime.includes(time)){
+                if (globalThis.eventTime.includes(time)){
                   //do nothing
                 } else {
-                  eventTime[id][brd] = time;
+                  globalThis.eventTime[id][brd] = time;
                 }
               }
             }
@@ -375,14 +380,14 @@ globalThis.retrieveData = function () {
       }
       if (debugRead === true) {
         console.log("data is ready");
-        console.log(eventTime);
+        console.log(globalThis.eventTime);
         console.log(x);
         console.log(y);
         console.log(subtractPedX);
         console.log(subtractPedY);
       }
       var end = new Date();
-      if (showTime) {
+      if (globalThis.showTime) {
         console.log("Read initial data: "+calculateProcessTime(end,start)+" seconds"); 
       }
       globalThis.xCoord = x;
@@ -414,6 +419,8 @@ globalThis.retrievePedestal = function () {
         var allLines = cleanFile(lines, "PEDESTAL");
         var pedestalArr = [];
         var pedestal = [[], [], [], [], []];
+        let pedName;
+        let pedData;
         pedName = allLines[0].trim().split(' ');
         pedestal[0] = [pedName, allLines[1].trim()];	
         var pedNdx = 1;

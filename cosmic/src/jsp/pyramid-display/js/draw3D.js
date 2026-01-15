@@ -2,6 +2,68 @@
 	Edit Peronja 23/10/2025: 3D variables and functions
 */
 
+// Import THREE as an ES module and example helpers. Expose to window for compatibility
+import * as THREE from '../three/build/three.module.js';
+import { OrbitControls, MapControls } from '../three/examples/jsm/controls/OrbitControls.js';
+import { STLLoader } from '../three/examples/jsm/loaders/STLLoader.js';
+import { FontLoader } from '../three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from '../three/examples/jsm/geometries/TextGeometry.js';
+import { EffectComposer } from '../three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '../three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from '../three/examples/jsm/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from '../three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { CopyShader } from '../three/examples/jsm/shaders/CopyShader.js';
+import { LuminosityHighPassShader } from '../three/examples/jsm/shaders/LuminosityHighPassShader.js';
+
+// Expose to global for non-module scripts that still reference window.THREE
+if (typeof window !== 'undefined') {
+  try {
+    // Don't overwrite window.THREE. Instead, copy missing THREE namespace keys into window.THREE
+    const target = (typeof window.THREE !== 'undefined') ? window.THREE : window;
+    for (const key of Object.keys(THREE)) {
+      if (typeof target[key] === 'undefined') {
+        try { target[key] = THREE[key]; } catch (e) { /* ignore write failures */ }
+      }
+    }
+
+    // Attach helper classes if not already present
+    const helpers = {
+      OrbitControls,
+      MapControls,
+      STLLoader,
+      FontLoader,
+      TextGeometry,
+      EffectComposer,
+      RenderPass,
+      ShaderPass,
+      UnrealBloomPass,
+      CopyShader,
+      LuminosityHighPassShader
+    };
+    const host = (typeof window.THREE !== 'undefined') ? window.THREE : window;
+    for (const [k, v] of Object.entries(helpers)) {
+      if (typeof host[k] === 'undefined') {
+        try { host[k] = v; } catch (e) { /* ignore */ }
+      }
+    }
+  } catch (e) {
+    // fallback: try attaching helpers directly to window
+    try {
+      if (typeof window.OrbitControls === 'undefined') window.OrbitControls = OrbitControls;
+      if (typeof window.MapControls === 'undefined') window.MapControls = MapControls;
+      if (typeof window.STLLoader === 'undefined') window.STLLoader = STLLoader;
+      if (typeof window.FontLoader === 'undefined') window.FontLoader = FontLoader;
+      if (typeof window.TextGeometry === 'undefined') window.TextGeometry = TextGeometry;
+      if (typeof window.EffectComposer === 'undefined') window.EffectComposer = EffectComposer;
+      if (typeof window.RenderPass === 'undefined') window.RenderPass = RenderPass;
+      if (typeof window.ShaderPass === 'undefined') window.ShaderPass = ShaderPass;
+      if (typeof window.UnrealBloomPass === 'undefined') window.UnrealBloomPass = UnrealBloomPass;
+      if (typeof window.CopyShader === 'undefined') window.CopyShader = CopyShader;
+      if (typeof window.LuminosityHighPassShader === 'undefined') window.LuminosityHighPassShader = LuminosityHighPassShader;
+    } catch (e2) { /* ignore */ }
+  }
+}
+
 var scene;
 var camera;
 var axesHelper;
@@ -17,14 +79,15 @@ var sensorTheta;
 var sensorHeight;
 var skyboxMesh;
 var ground;
+if (typeof layers === 'undefined') { var layers = []; }
 var updateSpotlightPosition;
 var spotlight;
 var ambientLight;
 var target;
 var muonVectors = [];
 var acceptGroup = [];
-var x = [];
-var y = [];
+var localx = [];
+var localy = [];
 var geometry = [];
 var layers = [];
 var pyramid;
@@ -287,7 +350,7 @@ class sensor {
 
 function acceptanceRange(s,range) {
   //clear previous acceptance mesh
-  for (i in acceptGroup) { s.group.remove(acceptGroup[i]); }
+  for (var i in acceptGroup) { s.group.remove(acceptGroup[i]); }
   const plane1 = s.shafts[0]['y'];
   const high1 = plane1[0];
   const high2 = plane1[plane1.length-1];
@@ -399,7 +462,7 @@ function acceptanceRange(s,range) {
 } // end of acceptanceRange
 
 function clearMuons() { 
-  	for (i in muonVectors) { 
+  	for (var i in muonVectors) { 
 		s.group.remove(muonVectors[i]); 
 	}
 	for (let obj of s.job) {
@@ -411,7 +474,7 @@ function clearMuons() {
 
 function loadIndex(eventIndex) {
 	clearMuons();
-	loadEvent(eventIndex,x,y,s);
+	loadEvent(eventIndex,localx,localy,s);
 } // end of loadIndex
 
 function loadEvent(eventIndex,x,y,s) {
@@ -440,14 +503,14 @@ function loadEvent(eventIndex,x,y,s) {
   let ndxX = 5;
   let ndxY = 6;
  
-  end = layerOrderX[0][0];
-  middle = layerOrderX[1][0];
-  start = layerOrderX[2][0];
+  let end = globalThis.layerOrderX[0][0];
+  let middle = globalThis.layerOrderX[1][0];
+  let start = globalThis.layerOrderX[2][0];
 
   //change the order
-  var ndx = layerOrderX[2][1];
-  layer = layerOrderX[2][2];
-  var layerNdx = 2;
+  let ndx = globalThis.layerOrderX[2][1];
+  let layer = globalThis.layerOrderX[2][2];
+  let layerNdx = 2;
   //layer X
   for (let x = eventX.length-1; x >= 0; x--){
     let x_new = {};
@@ -470,7 +533,7 @@ function loadEvent(eventIndex,x,y,s) {
 	   }
 	    for (let i=channelPosition; i >= 0; i--) {
 	      let lg = eventX[layer][i];
-	      obj = s.shafts[layer]["x"][channelSensor];
+	      let obj = s.shafts[layer]["x"][channelSensor];
 		  if (debug3Devent === true) {
 		      console.log(eventX[layer].length, i, lg, obj);
 		  }
@@ -488,7 +551,7 @@ function loadEvent(eventIndex,x,y,s) {
 	} else {
 	    for (let i=0; i<eventX[layer].length; i++) {
 	      let lg = eventX[layer][i];
-	      obj = s.shafts[layer]["x"][i];
+	      let obj = s.shafts[layer]["x"][i];
 		  if (debug3Devent === true) {
 		      console.log(eventX[layer].length, i, lg, obj);
 		  }
@@ -507,14 +570,14 @@ function loadEvent(eventIndex,x,y,s) {
     x_prisms[layer] = xp_new;
 	layerNdx -= 1;
 	if (layerNdx >= 0) {
-		layer = layerOrderX[layerNdx][2];
-		ndx = layerOrderX[layerNdx][1];
+		layer = globalThis.layerOrderX[layerNdx][2];
+		ndx = globalThis.layerOrderX[layerNdx][1];
 	}
   }
 
-  var ndx = layerOrderY[2][1];
-  layer = layerOrderY[2][2];
-  var layerNdx = 2;
+  ndx = globalThis.layerOrderY[2][1];
+  layer = globalThis.layerOrderY[2][2];
+  layerNdx = 2;
   //Y layer
   for (let x=eventY.length-1; x >= 0; x--){
     let y_new = {};
@@ -537,7 +600,7 @@ function loadEvent(eventIndex,x,y,s) {
 	   }
 	    for (let i=channelPosition; i >= 0; i--) {
 	      let lg = eventY[layer][i];
-	      obj = s.shafts[layer]["y"][channelSensor];
+	      let obj = s.shafts[layer]["y"][channelSensor];
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
@@ -555,7 +618,7 @@ function loadEvent(eventIndex,x,y,s) {
 	 } else {
 	    for (let i=0; i<eventY[layer].length; i++) {
 	      let lg = eventY[layer][i];
-	      obj = s.shafts[layer]["y"][i];
+	      let obj = s.shafts[layer]["y"][i];
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
@@ -574,15 +637,15 @@ function loadEvent(eventIndex,x,y,s) {
     y_prisms[layer] = yp_new;
 	layerNdx -= 1;
 	if (layerNdx >= 0) {
-		layer = layerOrderY[layerNdx][2];
-		ndx = layerOrderY[layerNdx][1];
+		layer = globalThis.layerOrderY[layerNdx][2];
+		ndx = globalThis.layerOrderY[layerNdx][1];
 	}
   }
   let vectors = globalThis.calculate(scene,s,x_prisms, y_prisms, x_hit, y_hit);
   if (debug3Dline === true) {
       console.log("vectors:",vectors, "xprisms:", x_prisms, "yprisms", y_prisms, "xhit:",x_hit, "yhit:", y_hit);
   }  
-  for (i in vectors) {
+  for (var i in vectors) {
     const v = vectors[i];
     const point1 = v.x
     const point2 = v.y
@@ -645,18 +708,21 @@ function smoothCameraZoom(s,camera, targetPosition, duration, controls) {
   controls.update();
 } //end of smoothCameraZoom
 
-function updateSpotlightPosition (spotlight,target,distance) {
+updateSpotlightPosition = function (spotlight, target, distance) {
     // Set the spotlight position to match the camera position
-  spotlight.position.copy(camera.position);
-  const cameraDirection = new THREE.Vector3();
-  camera.getWorldDirection(cameraDirection);
-  // Calculate the target position in front of the camera based on the distance
-  const targetPosition = new THREE.Vector3();
-  targetPosition.copy(cameraDirection).multiplyScalar(distance).add(camera.position);
-  // Set the spotlight's target position to the calculated targetPosition
-  spotlight.target.position.copy(targetPosition);
-  spotlight.shadow.camera.updateProjectionMatrix();
-} //end of updateSpotlightPosition
+    if (!camera) return; // defensive
+    spotlight.position.copy(camera.position);
+    const cameraDirection = new THREE.Vector3();
+    camera.getWorldDirection(cameraDirection);
+    // Calculate the target position in front of the camera based on the distance
+    const targetPosition = new THREE.Vector3();
+    targetPosition.copy(cameraDirection).multiplyScalar(distance).add(camera.position);
+    // Set the spotlight's target position to the calculated targetPosition
+    if (spotlight.target) spotlight.target.position.copy(targetPosition);
+    if (spotlight.shadow && spotlight.shadow.camera) spotlight.shadow.camera.updateProjectionMatrix();
+};
+
+//end of updateSpotlightPosition
 
 function animate() {
     controls.update();
@@ -715,8 +781,8 @@ function setPyramidWireframe(wireframe) {
 function loadPyramid(visibility, wire) {
 	if (scene.getObjectByName("pyramid") === undefined) {
 	  const pyramidUrl = "images/"+document.getElementById('pyramid-file').value.trim();
-	  const loader = new THREE.STLLoader();
-  	  loader.load(pyramidUrl, function (pyramidGeo) {
+	  const loader = new STLLoader();
+   	  loader.load(pyramidUrl, function (pyramidGeo) {
 	    let center = new THREE.Vector3();
 	    pyramidGeo.computeBoundingBox();
 	    pyramidGeo.name = "pyramidSTL";  		
@@ -749,28 +815,28 @@ function loadPyramid(visibility, wire) {
 	    material.transparent = true;
 	    material.opacity = 0.5;
 	    pyramid = new THREE.Mesh(pyramidGeo, material);
-    	if (debug3D === true) {	    
-	    	console.log(pyramid);	
-	    }
-	    let rotationAngle = THREE.MathUtils.degToRad(270); // Convert degrees to radians
-	    let axis = new THREE.Vector3(1, 0, 0); // X-axis
-	    pyramid.rotateOnWorldAxis(axis, rotationAngle);
-	    rotationAngle = THREE.MathUtils.degToRad(180); // Convert degrees to radians
-	    axis = new THREE.Vector3(0, 1, 0); // Y-axis
-	    pyramid.rotateOnWorldAxis(axis, rotationAngle);
-	    pyramid.scale.x *= ratio;
-	    pyramid.scale.y *= ratio;
-	    pyramid.scale.z *= ratio;
-		pyramid.position.set(-6, 255, -400);	
-	    pyramid.castShadow = true;
-	    pyramid.name = 'pyramid';
-    	if (debug3D === true) {	    
-	    	let pyramidHelper = new THREE.AxesHelper(50);
-    		pyramid.add(pyramidHelper);   
-    	}	
-	    pyramid.visible = true;
-	    scene.add(pyramid)
-		});	
+    	if (debug3D === true) {    	
+    	    console.log(pyramid);
+    	}
+    	let rotationAngle = THREE.MathUtils.degToRad(270); // Convert degrees to radians
+    	let axis = new THREE.Vector3(1, 0, 0); // X-axis
+    	pyramid.rotateOnWorldAxis(axis, rotationAngle);
+    	rotationAngle = THREE.MathUtils.degToRad(180); // Convert degrees to radians
+    	axis = new THREE.Vector3(0, 1, 0); // Y-axis
+    	pyramid.rotateOnWorldAxis(axis, rotationAngle);
+    	pyramid.scale.x *= ratio;
+    	pyramid.scale.y *= ratio;
+    	pyramid.scale.z *= ratio;
+		pyramid.position.set(-6, 255, -400);
+    	pyramid.castShadow = true;
+    	pyramid.name = 'pyramid';
+    	if (debug3D === true) {    	
+    		let pyramidHelper = new THREE.AxesHelper(50);
+    		pyramid.add(pyramidHelper);
+    	}
+    	pyramid.visible = true;
+    	scene.add(pyramid)
+		});
 	} else {
 		pyramid.visible = visibility;
 	}
@@ -832,7 +898,9 @@ function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
 	acceptanceRange(s,parameters.acceptRange);
 	clearMuons();  
 	muonVectors = [];
-	loadEvent(1,x,y,s);
+	localx = x;
+	localy = y
+	loadEvent(1,localx,localy,s);
 	//loadEvent(1, s);
 	loadAngle(s,THREE.MathUtils.degToRad(-sensorTheta),THREE.MathUtils.degToRad(sensorPhi),0);	
     const targetPosition = new THREE.Vector3(s.centerx-10,s.centery+15,s.centerz+10); // Specify the target position
@@ -843,46 +911,57 @@ function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
 
 function initScene() {
  	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000000);
-	camera.position.set(-200,500,500); 
-    if (debug3D === true) {	  
-		// Add axes to help with positioning and rotation - this is all to help, visibility off to start with
-		axesHelper = new THREE.AxesHelper(axis_length);
-		axesHelper.linewidth = 100;
-		scene.add(axesHelper);
-	}
-	// Create a renderer
-	renderer = new THREE.WebGLRenderer({ antialias: true });
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	canvasContainer = document.getElementById('canvas-container');
-	canvasContainer.appendChild(renderer.domElement);
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
-	// Remove these two to take out the effect of keep moving after dragging with the mouse
-	//controls.enableDamping = true;
-	//controls.dampingFactor = 0.5;
-	//light
-	ambientLight = new THREE.AmbientLight(0xFFFFFF,0.05);
-	scene.add(ambientLight);
-	spotlight = new THREE.SpotLight(0x808080, 0.8, 0, Math.PI / 2, 10);
-	// Set the spotlight position to match the camera position
-	spotlight.position.copy(camera.position);
-	//spotlight.position.set(-50,75,75);
-	spotlight.castShadow = true;
-	spotlight.angle = 0.2;
-	// Add the spotlight to the scene
-	scene.add(spotlight);
-	if (debug3D === true) {	
-		const spotLightHelper = new THREE.SpotLightHelper(spotlight,100);
-		scene.add(spotLightHelper);
-    }
-	// Set the spotlight target to be a point in front of the camera
-	const fogColor = 0xFFFFFF; // Adjust the color to the desired misty tone
-	const fogDensity = 0.000002; // Adjust the density to control the mistiness
-	scene.fog = new THREE.FogExp2(fogColor, fogDensity);		
-	loadSkybox();
-  	loadGround();
-  	// Enable shadows in the renderer
-  	renderer.shadowMap.enabled = true;
-  	renderer.shadowMap.type = THREE.BasicShadowMap; 
-	animate();
-}// end of initScene
+ 	camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000000);
+ 	camera.position.set(-200,500,500); 
+     if (debug3D === true) {	  
+ 		// Add axes to help with positioning and rotation - this is all to help, visibility off to start with
+ 		axesHelper = new THREE.AxesHelper(axis_length);
+ 		axesHelper.linewidth = 100;
+ 		scene.add(axesHelper);
+ 	}
+ 	// Create a renderer
+ 	renderer = new THREE.WebGLRenderer({ antialias: true });
+ 	renderer.setSize(window.innerWidth, window.innerHeight);
+ 	canvasContainer = document.getElementById('canvas-container');
+ 	canvasContainer.appendChild(renderer.domElement);
+ 	controls = new OrbitControls(camera, renderer.domElement);
+ 	// Remove these two to take out the effect of keep moving after dragging with the mouse
+ 	//controls.enableDamping = true;
+ 	//controls.dampingFactor = 0.5;
+ 	//light
+ 	ambientLight = new THREE.AmbientLight(0xFFFFFF,0.05);
+ 	scene.add(ambientLight);
+ 	spotlight = new THREE.SpotLight(0x808080, 0.8, 0, Math.PI / 2, 10);
+ 	// Set the spotlight position to match the camera position
+ 	spotlight.position.copy(camera.position);
+ 	//spotlight.position.set(-50,75,75);
+ 	spotlight.castShadow = true;
+ 	spotlight.angle = 0.2;
+ 	// Add the spotlight to the scene
+ 	scene.add(spotlight);
+ 	if (debug3D === true) {	
+ 		const spotLightHelper = new THREE.SpotLightHelper(spotlight,100);
+ 		scene.add(spotLightHelper);
+     }
+ 	// Set the spotlight target to be a point in front of the camera
+ 	const fogColor = 0xFFFFFF; // Adjust the color to the desired misty tone
+ 	const fogDensity = 0.000002; // Adjust the density to control the mistiness
+ 	scene.fog = new THREE.FogExp2(fogColor, fogDensity);		
+ 	loadSkybox();
+   	loadGround();
+   	// Enable shadows in the renderer
+   	renderer.shadowMap.enabled = true;
+   	renderer.shadowMap.type = THREE.BasicShadowMap; 
+ 	animate();
+ }// end of initScene
+
+// Expose API for legacy scripts
+if (typeof window !== 'undefined') {
+  window.draw3DSettings = draw3DSettings;
+  window.initScene = initScene;
+  window.acceptanceRange = acceptanceRange;
+  window.loadPyramid = loadPyramid;
+  window.setPyramidWireframe = setPyramidWireframe;
+  window.removeObject3D = removeObject3D;
+  window.loadIndex = loadIndex;
+}

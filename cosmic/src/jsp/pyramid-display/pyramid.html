@@ -1,11 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<script src="../include/elab.js"></script>
+		<script src="../include/elab.js" defer></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css" />
+	<!-- Preconnect to common CDNs to reduce DNS/TCP latency -->
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://maxcdn.bootstrapcdn.com" crossorigin>
+
+	<!-- Preload critical CSS (then switch to stylesheet to avoid render-blocking while still ensuring it applies ASAP) -->
+	<link rel="preload" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<noscript><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></noscript>
+	<link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    
     <title>Our Search for Hidden Chambers in Kulkukan’s Pyramid at Chichen Itza</title>
     <style>    
       #canvas-container {
@@ -56,7 +65,8 @@
    <div class="tabbable-responsive">
       <div class="tabbable">
          <ul class="nav nav-pills nav-justified" id="linxea-avenir" role="tablist">
-		  	<p class="nav">Non-intrusive Archaeometry Using Cosmic Ray Muons</p>
+		  
+			<p class="nav">Non-intrusive Archaeometry Using Cosmic Ray Muons</p>
 	  		<li class="nav-item"><a href="index.html">Home</a></li>
 	  		<li class="nav-item"><a href="progress.html">Progress</a></li>
 	  		<li class="nav-item"><a class="active" href="pyramid.html">Data</a></li>
@@ -64,25 +74,16 @@
 	  </div>
    </div>
 	<!-- Three JS imports -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.154.0/three.js" defer></script>
+	<!-- Replaced classic three/example script tags with one module entry for draw3D which imports needed modules -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" defer></script>
 	<script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/loaders/FontLoader.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/geometries/TextGeometry.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/controls/OrbitControls.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three@0.133.0/examples/js/loaders/STLLoader.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/shaders/CopyShader.js" defer ></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/shaders/LuminosityHighPassShader.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/EffectComposer.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/RenderPass.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/ShaderPass.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/three/examples/js/postprocessing/UnrealBloomPass.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/ScrollTrigger.min.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js" integrity="sha512-V0j9LhrK9IMNdFYZqh+IqU4cjo7wdxyHNyH+L0td4HryBuZ7Oq6QxP2/CWr6TituX31+gv5PnolvERuTbz8UNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- Added defer to Chart.js and Plotly to avoid render-blocking -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js" integrity="sha512-V0j9LhrK9IMNdFYZqh+IqU4cjo7wdxyHNyH+L0td4HryBuZ7Oq6QxP2/CWr6TituX31+gv5PnolvERuTbz8UNA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
 	
 	<p id="error"></p>
 	<script>
@@ -114,9 +115,9 @@
       </div>
     
       <div class="tab-content" style="margin-top:2px">
-		 <div id="loading-message" style="display: none;">Loading...</div>
+	 <div id="loading-message" style="display: none;">Loading...</div>
          <div class="tab-pane fade show active" style="background-color: #ffffff;" id="tabs-1" role="tabpanel" aria-labelledby="eleve-tab">
- 		    <div id="canvas-container"><div id="gui-container"></div> <div id="fps-container" ></div> </div>
+ 		   <div id="canvas-container"><div id="gui-container"></div> <div id="fps-container" ></div> </div>
          </div>
 
         <div class="tab-pane fade" id="tabs-2" role="tabpanel" aria-labelledby="moyen-tab">          
@@ -147,30 +148,31 @@
 
         <div class="tab-pane fade" id="tabs-3" role="tabpanel" aria-labelledby="faible-tab">           
         <div class="tab-pane fade show active" style="background-color: #ffffff;" id="faible" role="tabpanel" aria-labelledby="faible-tab">
-		 	<h1 class="title">X CAEN 0</h1>
-		 	<div style="width: 75%; margin: auto;"><canvas id="X1"></canvas></div>
-		 	<button id="downloadXCAEN0">X CAEN 0</button>
-		 	<button id="downloadXCAEN0data">X CAEN 0 Data</button>
-		  	<h1 class="title">X CAEN 2</h1>
+	 		<h1 class="title">X CAEN 0</h1>
+	 		<div style="width: 75%; margin: auto;"><canvas id="X1"></canvas></div>
+	 		<button id="downloadXCAEN0">X CAEN 0</button>
+	 		<button id="downloadXCAEN0data">X CAEN 0 Data</button>
+			<h1 class="title">X CAEN 2</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X2"></canvas></div>
-		 	<button id="downloadXCAEN2">X CAEN 2</button>
-		 	<button id="downloadXCAEN2data">X CAEN 2 Data</button>
+	 		<button id="downloadXCAEN2">X CAEN 2</button>
+	 		<button id="downloadXCAEN2data">X CAEN 2 Data</button>
 			<h1 class="title">X CAEN 4</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="X3"></canvas></div>
-		 	<button id="downloadXCAEN4">X CAEN 4</button>
-		 	<button id="downloadXCAEN4data">X CAEN 4 Data</button>
-		  	<h1 class="title">Y CAEN 1</h1>
+	 		<button id="downloadXCAEN4">X CAEN 4</button>
+	 		<button id="downloadXCAEN4data">X CAEN 4 Data</button>
+		   
+			<h1 class="title">Y CAEN 1</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y1"></canvas></div>
-		 	<button id="downloadYCAEN1">Y CAEN 1</button>
-		 	<button id="downloadYCAEN1data">Y CAEN 1 Data</button>
-		  	<h1 class="title">Y CAEN 3</h1>
+	 		<button id="downloadYCAEN1">Y CAEN 1</button>
+	 		<button id="downloadYCAEN1data">Y CAEN 1 Data</button>
+			<h1 class="title">Y CAEN 3</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y2"></canvas></div>
-		 	<button id="downloadYCAEN3">Y CAEN 3</button>
-		 	<button id="downloadYCAEN3data">Y CAEN 3 Data</button>
-		  	<h1 class="title">Y CAEN 5</h1>
+	 		<button id="downloadYCAEN3">Y CAEN 3</button>
+	 		<button id="downloadYCAEN3data">Y CAEN 3 Data</button>
+			<h1 class="title">Y CAEN 5</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y3"></canvas></div>
-		 	<button id="downloadYCAEN5">X CAEN 5</button>
-		 	<button id="downloadYCAEN5data">Y CAEN 5 Data</button>
+	 		<button id="downloadYCAEN5">X CAEN 5</button>
+	 		<button id="downloadYCAEN5data">Y CAEN 5 Data</button>
 
             <h1 class="title">6 PLANE TRACKING - MIDDLE POINTS IN XY</h1>
             <div style="width: 75%; margin: auto;"><canvas id="6PTXYMIDDLE"></canvas></div>
@@ -415,15 +417,12 @@
 	<input type="text" id="detector-name" name="detector-name" style="display: inline;" value="" /> 
 	<input type="text" id="loading-time" name="loading-time" style="display: inline;" value="" /> 
 	<!--<script src="js/Run116_list_no_swap.js" defer></script>-->
-	<script src="js/helperFunctions.js" defer></script>
-    <script src="js/dataRead.js" defer></script>
-	<script src="js/muonVector.js" defer></script>
-	<script src="js/draw3D.js" defer></script>
+	<script type="module" src="js/draw3D.js"></script>
+	<script type="module" src="js/main.js"></script>
 	<script src="js/draw2D.js" defer></script>
 	<script src="js/dataAnalysisDataPreparation.js" defer></script>
 	<script src="js/dataAnalysis.js" defer></script>
 	<script src="js/dataCharts.js" defer></script>
-	<script src="js/dataDownload.js" defer></script>
-	<script src="js/main.js" defer></script>   
+	<script src="js/dataDownload.js" defer></script>   
 </body>
 </html>

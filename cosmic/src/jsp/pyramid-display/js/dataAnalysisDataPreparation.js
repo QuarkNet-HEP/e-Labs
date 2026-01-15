@@ -188,32 +188,32 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  		}
  		switch (missingPointNdx) {
  			case 0:
- 				y3 = layerOrderX[2][0];
+ 				y3 = globalThis.layerOrderX[2][0];
  				expectedPoint = findExpectedX(points[1], points[2], y3);
  				tracking5TopMissingX.push([event, points, expectedPoint]);
  				break;
  			case 1:
- 				y3 = layerOrderX[1][0];
+ 				y3 = globalThis.layerOrderX[1][0];
  				expectedPoint = findExpectedX(points[2], points[0], y3);
  				tracking5MiddleMissingX.push([event, points, expectedPoint]);
  				break;
  			case 2:
- 				y3 = layerOrderX[0][0];
+ 				y3 = globalThis.layerOrderX[0][0];
  				expectedPoint = findExpectedX(points[1], points[0], y3);
  				tracking5BottomMissingX.push([event, points, expectedPoint]);					
  				break;
  			case 3:
- 				y3 = layerOrderY[2][0];
+ 				y3 = globalThis.layerOrderY[2][0];
  				expectedPoint = findExpectedX(points[4], points[5], y3);
  				tracking5TopMissingY.push([event, points, expectedPoint]);					
  				break;
  			case 4:
- 				y3 = layerOrderY[1][0];
+ 				y3 = globalThis.layerOrderY[1][0];
  				expectedPoint = findExpectedX(points[3], points[5], y3);
  				tracking5MiddleMissingY.push([event, points, expectedPoint]);					
  				break;
  			case 5: 
- 				y3 = layerOrderY[0][0];
+ 				y3 = globalThis.layerOrderY[0][0];
  				expectedPoint = findExpectedX(points[3], points[4], y3);
  				tracking5BottomMissingY.push([event, points, expectedPoint]);					
  				break;
@@ -245,27 +245,27 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  			var secondMissing = indicesUndef[1];
  			if (firstMissing == 0 && secondMissing == 3) {
  				//we are dealing with top
- 				y3 = layerOrderX[2][0];
+ 				y3 = globalThis.layerOrderX[2][0];
  				xExpectedPoint = findExpectedX(points[1], points[2], y3);
- 				y3 = layerOrderY[2][0];
+ 				y3 = globalThis.layerOrderY[2][0];
  				yExpectedPoint = findExpectedX(points[4], points[5], y3);
  				tracking4TopMissing.push([event, xExpectedPoint, yExpectedPoint]);
  				globalThis.eventFilter4.push(event+1);
  			}			
  			if (firstMissing == 1 && secondMissing == 4) {
  				//we are dealing with middle
- 				y3 = layerOrderX[1][0];
+ 				y3 = globalThis.layerOrderX[1][0];
  				xExpectedPoint = findExpectedX(points[2], points[0], y3);
- 				y3 = layerOrderY[1][0];
+ 				y3 = globalThis.layerOrderY[1][0];
  				yExpectedPoint = findExpectedX(points[3], points[5], y3);
  				tracking4MiddleMissing.push([event, xExpectedPoint, yExpectedPoint]);
  				globalThis.eventFilter4.push(event+1);
  			}
  			if (firstMissing == 2 && secondMissing == 5) {
  				//we are dealing with bottom
- 				y3 = layerOrderX[0][0];
+ 				y3 = globalThis.layerOrderX[0][0];
  				xExpectedPoint = findExpectedX(points[1], points[0], y3);
- 				y3 = layerOrderY[0][0];
+ 				y3 = globalThis.layerOrderY[0][0];
  				yExpectedPoint = findExpectedX(points[3], points[4], y3);				
  				tracking4BottomMissing.push([event, xExpectedPoint, yExpectedPoint]);
  				globalThis.eventFilter4.push(event+1);

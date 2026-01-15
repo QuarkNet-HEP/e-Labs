@@ -273,7 +273,7 @@ function drawAnalysis(l,g) {
 	    download2DArray(getCAENdata(subtractPedY, 2), 'YCAEN5originaldata.csv');
 	});
 	var end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("CAEN analysis: "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	
@@ -281,7 +281,7 @@ function drawAnalysis(l,g) {
 	start1 = new Date();
 	getAnalysisXY();
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("get dx and dy: "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start = new Date();
@@ -289,7 +289,7 @@ function drawAnalysis(l,g) {
 	getAnalysisTopMiddleBothLayers();
 	getAnalysisBottomMiddleBothLayers();	
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("get dx and dy both layers: "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -699,7 +699,7 @@ function drawAnalysis(l,g) {
 	});
 	
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("6 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -872,7 +872,7 @@ function drawAnalysis(l,g) {
 	    download2DArray(tracking5BottomMissingY, '5PTBYoriginaldata.csv');
 	});
 	end1 = new Date();
-	if (showTime) {		
+	if (globalThis.showTime) {		
 		console.log("5 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -961,7 +961,7 @@ function drawAnalysis(l,g) {
 	    download2DArray(tracking4BottomMissing, '4BToriginaldata.csv');
 	});
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("4 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -1458,7 +1458,7 @@ function drawAnalysis(l,g) {
 	    downloadArray(dybottomMiddleChannelfrequency, 'DYBM1Dchanneldata.csv');
 	});
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("DX/DY : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -1550,7 +1550,7 @@ function drawAnalysis(l,g) {
 	    download2DArray(dybottommiddlebothlayers, 'DXDZDYDZMBYdata.csv');
 	});
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("DX/DZ : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -1615,7 +1615,7 @@ function drawAnalysis(l,g) {
 			options: deltaTOptions,
 	});	
 	document.getElementById('downloadDTData').addEventListener('click', () => {	
-		download2DArray(eventTime, 'DTdata.csv');
+		download2DArray(globalThis.eventTime, 'DTdata.csv');
 	});
 	
 	//single delta T charts
@@ -1808,7 +1808,7 @@ function drawAnalysis(l,g) {
 		downloadArray(getDeltaT(5,3), 'DTCAEN3-5data.csv');
 	});
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("Delta T : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -1944,7 +1944,7 @@ function drawAnalysis(l,g) {
 	});
 
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("Track counts : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -2190,7 +2190,7 @@ function drawAnalysis(l,g) {
 		options: adcOptionsY,
 	});
 	end1 = new Date();
-	if (showTime) {
+	if (globalThis.showTime) {
 		console.log("ADCs : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 };//end of drawAnalysis

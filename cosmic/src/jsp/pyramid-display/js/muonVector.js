@@ -1,18 +1,133 @@
+// Import THREE as an ES module and example helpers. Expose to window for compatibility
+import * as THREE from '../three/build/three.module.js';
+import { OrbitControls, MapControls } from '../three/examples/jsm/controls/OrbitControls.js';
+import { STLLoader } from '../three/examples/jsm/loaders/STLLoader.js';
+import { FontLoader } from '../three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from '../three/examples/jsm/geometries/TextGeometry.js';
+import { EffectComposer } from '../three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '../three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from '../three/examples/jsm/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from '../three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { CopyShader } from '../three/examples/jsm/shaders/CopyShader.js';
+import { LuminosityHighPassShader } from '../three/examples/jsm/shaders/LuminosityHighPassShader.js';
+
+// Expose to global for non-module scripts that still reference window.THREE
+if (typeof window !== 'undefined') {
+  try {
+    // Don't overwrite window.THREE. Instead, copy missing THREE namespace keys into window.THREE
+    const target = (typeof window.THREE !== 'undefined') ? window.THREE : window;
+    for (const key of Object.keys(THREE)) {
+      if (typeof target[key] === 'undefined') {
+        try { target[key] = THREE[key]; } catch (e) { /* ignore write failures */ }
+      }
+    }
+
+    // Attach helper classes if not already present
+    const helpers = {
+      OrbitControls,
+      MapControls,
+      STLLoader,
+      FontLoader,
+      TextGeometry,
+      EffectComposer,
+      RenderPass,
+      ShaderPass,
+      UnrealBloomPass,
+      CopyShader,
+      LuminosityHighPassShader
+    };
+    const host = (typeof window.THREE !== 'undefined') ? window.THREE : window;
+    for (const [k, v] of Object.entries(helpers)) {
+      if (typeof host[k] === 'undefined') {
+        try { host[k] = v; } catch (e) { /* ignore */ }
+      }
+    }
+  } catch (e) {
+    // fallback: try attaching helpers directly to window
+    try {
+      if (typeof window.OrbitControls === 'undefined') window.OrbitControls = OrbitControls;
+      if (typeof window.MapControls === 'undefined') window.MapControls = MapControls;
+      if (typeof window.STLLoader === 'undefined') window.STLLoader = STLLoader;
+      if (typeof window.FontLoader === 'undefined') window.FontLoader = FontLoader;
+      if (typeof window.TextGeometry === 'undefined') window.TextGeometry = TextGeometry;
+      if (typeof window.EffectComposer === 'undefined') window.EffectComposer = EffectComposer;
+      if (typeof window.RenderPass === 'undefined') window.RenderPass = RenderPass;
+      if (typeof window.ShaderPass === 'undefined') window.ShaderPass = ShaderPass;
+      if (typeof window.UnrealBloomPass === 'undefined') window.UnrealBloomPass = UnrealBloomPass;
+      if (typeof window.CopyShader === 'undefined') window.CopyShader = CopyShader;
+      if (typeof window.LuminosityHighPassShader === 'undefined') window.LuminosityHighPassShader = LuminosityHighPassShader;
+    } catch (e2) { /* ignore */ }
+  }
+}
+
 //const test is just so the linter gets annoyed at the first line
 const test = '';
 const min = 20
 var y;
 let debugMuon = false;
 
-globalThis.calculate = function (temp1, s, x_prisms, y_prisms, x, y) {
+function interpolate (length,a,b) {
+  //bogus interpolation method for now
+  return b/(a+b)*length;
+}
+
+function vectorize(hits) {
+  //Find all vectors intersecting the first and third plane
+  //Calculate how close the vector is to a point in the second plane, that is the efficiency
+  //sort by efficiency, and take the most efficient vector that belongs to each point in the first layer
+  var vectors = [];
+  var used = [];
+  for (let i=0;i<hits[0].length;i++) {
+    const p1 = hits[0][i];
+    //console.log(p1)
+    var efficiency = Number.MAX_SAFE_INTEGER;
+    var effMap = [];
+    var vector; //= new THREE.Vector2(p1,hits[2][0]);
+    
+    for (let j=0;j<hits[2].length;j++) {
+      const p2 = hits[2][j];
+      const m = (p1.x-p2.x)/(p1.y-p2.y);
+      const b = p1.y-m*p1.x;
+      
+      //find most efficient vector
+      var least_dist = Number.MAX_SAFE_INTEGER;
+      
+      //find efficiency
+      for (let k=0;k<hits[1].length;k++) {
+        const p3 = hits[1][k];
+        const nx = (p3.y - b)/m; //x-value at intersection
+        const nd = Math.abs( p3.x - nx ); //distance from actual x
+        
+        if (nd < least_dist ){ least_dist = nd; }
+      }
+      effMap[least_dist] = new THREE.Vector2(p1,p2);
+    }
+    
+    //sort by efficiency
+    effMap.sort(function(a, b) {
+      return a.key - b.key;
+    });
+
+    for (efficiency in effMap) {
+      if ( !used.includes( effMap[efficiency].y ) ) {
+        vectors.push(effMap[efficiency]);
+        used.push(effMap[efficiency].y);
+        break;
+      }
+    }
+  }
+  return vectors;  
+}
+
+function calculate_internal (temp1, s, x_prisms, y_prisms, x, y) {
   function point(x,y,z) { return new THREE.Vector2(x,y); }
-  x_hits = {0:[],1:[],2:[]}
+  let x_hits = {0:[],1:[],2:[]}
   //Search x-paths
-  for (layer in x) {
+  for (var layer in x) {
     const plane = x[layer.toString()]
     var prev_lg=0
     var current_lg=0;
-    for (i in plane) {
+    for (var i in plane) {
       //It will take maximum of two shafts at a time, since three hit shafts won't register all planes
       if (i>0) { prev_lg = plane[i-1] }
       //set current
@@ -36,14 +151,14 @@ globalThis.calculate = function (temp1, s, x_prisms, y_prisms, x, y) {
   }
   //end first loop
   
-  y_hits = {0:[],1:[],2:[]}
+  let y_hits = {0:[],1:[],2:[]}
   //Search x-paths
-  for (layer in y) {
+  for (var layer in y) {
     const plane = y[layer.toString()]
     var prev_lg=0
     var current_lg=0;
     
-    for (i in plane) {
+    for (var i in plane) {
       //It will take maximum of two shafts at a time, since three hit shafts won't register all planes
       if (i>0) { prev_lg = plane[i-1] }
       //set current
@@ -91,58 +206,13 @@ globalThis.calculate = function (temp1, s, x_prisms, y_prisms, x, y) {
   }
   //console.log(v);
   return v;
-};
-
-function interpolate (length,a,b) {
-  //bogus interpolation method for now
-  return b/(a+b)*length;
 }
 
-//Priority for LG value has not been incorporated yet
-function vectorize(hits) {
-  //Find all vectors intersecting the first and third plane
-  //Calculate how close the vector is to a point in the second plane, that is the efficiency
-  //sort by efficiency, and take the most efficient vector that belongs to each point in the first layer
-  var vectors = [];
-  var used = [];
-  for (let i=0;i<hits[0].length;i++) {
-    const p1 = hits[0][i];
-    //console.log(p1)
-    var efficiency = Number.MAX_SAFE_INTEGER;
-    var effMap = [];
-    var vector; //= new THREE.Vector2(p1,hits[2][0]);
-    
-    for (let j=0;j<hits[2].length;j++) {
-      const p2 = hits[2][j];
-      const m = (p1.x-p2.x)/(p1.y-p2.y);
-      const b = p1.y-m*p1.x;
-      
-      //find most efficient vector
-      var least_dist = Number.MAX_SAFE_INTEGER;
-      
-      //find efficiency
-      for (let k=0;k<hits[1].length;k++) {
-        const p3 = hits[1][k];
-        const nx = (p3.y - b)/m; //x-value at intersection
-        const nd = Math.abs( p3.x - nx ); //distance from actual x
-        
-        if (nd < least_dist ){ least_dist = nd; }
-      }
-      effMap[least_dist] = new THREE.Vector2(p1,p2);
-    }
-    
-    //sort by efficiency
-    effMap.sort(function(a, b) {
-      return a.key - b.key;
-    });
+// Expose a named export and also attach to globalThis for legacy code
+export function calculate(temp1, s, x_prisms, y_prisms, x, y) {
+  return calculate_internal(temp1, s, x_prisms, y_prisms, x, y);
+}
 
-    for (efficiency in effMap) {
-      if ( !used.includes( effMap[efficiency].y ) ) {
-        vectors.push(effMap[efficiency]);
-        used.push(effMap[efficiency].y);
-        break;
-      }
-    }
-  }
-  return vectors;  
+if (typeof window !== 'undefined') {
+  window.calculate = calculate;
 }

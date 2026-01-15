@@ -68,7 +68,7 @@ function addArrays(arr1, arr2) {
 // These following function analyze HITS
 function get6planemiddlehits(arr) {
 	var vals = [];
-	console.log(arr.length);
+	//console.log(arr.length);
 	for (var i = 0; i < arr.length; i++) {
 			//console.log(arr[i])
 			vals.push({x:arr[i][1][1][0],y:arr[i][1][4][0],event: (arr[i][0]+1)});
@@ -80,7 +80,7 @@ function get6planemiddlehits(arr) {
 }// end of get6planemiddlehits
 
 function get6singlepoints(option, arr) {
-	console.log(option,arr.length);
+	//console.log(option,arr.length);
 	var vals = [];
 	for (var i = 0; i < arr.length; i++) {
 		vals.push({x:arr[i][1][1][0],y:arr[i][1][4][0],event: (arr[i][0]+1)});				
@@ -91,7 +91,7 @@ function get6singlepoints(option, arr) {
 
 function get6singlepointsBothLayers(option, arr1) {
 	var vals = [];
-	console.log(option,arr1.length);
+	//console.log(option,arr1.length);
 	for (var i = 0; i < arr1.length; i++) {
 		vals.push({x:arr1[i][1][1][0],y:arr1[i][1][4][0],event: (arr1[i][0]+1)});
 	}
@@ -579,9 +579,9 @@ function getDxyDzMiddle(arrX, arrY, events) {
 //DELTA T 
 function getDeltaT(index1, index2) {
 	var vals = []
-	for (var i = 0; i < eventTime.length; i ++) {
-		var time1 = eventTime[i][index1];
-		var time2 = eventTime[i][index2];
+	for (var i = 0; i < globalThis.eventTime.length; i ++) {
+		var time1 = globalThis.eventTime[i][index1];
+		var time2 = globalThis.eventTime[i][index2];
 		if (time1 > 0 && time2 > 0) {
 			vals.push({x:i, y:time2-time1});
 		}
@@ -592,28 +592,42 @@ function getDeltaT(index1, index2) {
 //TRACK COUNTS
 function getEventsWithTracksPerMinute(layerCount, option) {
 	var vals = [];
-	var xtop = layerOrderX[2][2]*2;
-	var xmiddle = layerOrderX[1][2]*2;
-	var xbottom = layerOrderX[0][2]*2;
-	var ytop = (layerOrderY[2][2]*2)+1;
-	var ymiddle = (layerOrderY[1][2]*2)+1;
-	var ybottom = (layerOrderY[0][2]*2)+1;
+	// Defensive guards for layerOrder arrays
+	var safe = function(arr, i, j, fallback) {
+		if (!Array.isArray(arr)) return fallback;
+		if (arr.length <= i) return fallback;
+		if (!Array.isArray(arr[i])) return fallback;
+		if (typeof arr[i][j] === 'undefined') return fallback;
+		return arr[i][j];
+	};
+	var xtop = safe(globalThis.layerOrderX,2,2,-1);
+	var xmiddle = safe(globalThis.layerOrderX,1,2,-1);
+	var xbottom = safe(globalThis.layerOrderX,0,2,-1);
+	var ytop = safe(globalThis.layerOrderY,2,2,-1);
+	var ymiddle = safe(globalThis.layerOrderY,1,2,-1);
+	var ybottom = safe(globalThis.layerOrderY,0,2,-1);
+	if (xtop !== -1) xtop = xtop*2; else xtop = -1;
+	if (xmiddle !== -1) xmiddle = xmiddle*2; else xmiddle = -1;
+	if (xbottom !== -1) xbottom = xbottom*2; else xbottom = -1;
+	if (ytop !== -1) ytop = (ytop*2)+1; else ytop = -1;
+	if (ymiddle !== -1) ymiddle = (ymiddle*2)+1; else ymiddle = -1;
+	if (ybottom !== -1) ybottom = (ybottom*2)+1; else ybottom = -1;
 	var startTime = 0;
-	var minuteTime = microMinute+eventTime[0][0];
+	var minuteTime = microMinute+globalThis.eventTime[0][0];
 	var trackCounter = 0;
 	//console.log(eventTime);
-	for (var i = 0; i < eventTime.length; i++) {		
+	for (var i = 0; i < globalThis.eventTime.length; i++) {		
 		//check for top and bottom in both layers
 		if (layerCount == 4) {
 			if (option == 'TM') {
-				if (eventTime[i][xtop] > 0 &&
-					eventTime[i][xmiddle] > 0 &&
-					eventTime[i][xbottom] <= 0 &&
-					eventTime[i][ytop] > 0 &&
-					eventTime[i][ymiddle] > 0 &&
-					eventTime[i][ybottom] <= 0) {
+				if (globalThis.eventTime[i][xtop] > 0 &&
+					globalThis.eventTime[i][xmiddle] > 0 &&
+					globalThis.eventTime[i][xbottom] <= 0 &&
+					globalThis.eventTime[i][ytop] > 0 &&
+					globalThis.eventTime[i][ymiddle] > 0 &&
+					globalThis.eventTime[i][ybottom] <= 0) {
 					//check if it belongs within each minute
-					if (eventTime[i][0] <= minuteTime) {
+					if (globalThis.eventTime[i][0] <= minuteTime) {
 						if (debugEventsWithTracks) {
 							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
 						}
@@ -624,18 +638,18 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 						vals.push({x:startTime+1,y:trackCounter})
 						startTime += 1;
 						trackCounter = 0;
-						minuteTime = microMinute+eventTime[i][0];
+						minuteTime = microMinute+globalThis.eventTime[i][0];
 					}
 				}				
 			} else { //it is 'MB'
-				if (eventTime[i][xtop] <= 0 &&
-					eventTime[i][xmiddle] > 0 &&
-					eventTime[i][xbottom] > 0 &&
-					eventTime[i][ytop] <= 0 &&
-					eventTime[i][ymiddle] > 0 &&
-					eventTime[i][ybottom] > 0) {
+				if (globalThis.eventTime[i][xtop] <= 0 &&
+					globalThis.eventTime[i][xmiddle] > 0 &&
+					globalThis.eventTime[i][xbottom] > 0 &&
+					globalThis.eventTime[i][ytop] <= 0 &&
+					globalThis.eventTime[i][ymiddle] > 0 &&
+					globalThis.eventTime[i][ybottom] > 0) {
 					//check if it belongs within each minute
-					if (eventTime[i][0] <= minuteTime) {
+					if (globalThis.eventTime[i][0] <= minuteTime) {
 						if (debugEventsWithTracks) {
 							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
 						}
@@ -646,7 +660,7 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 						vals.push({x:startTime+1,y:trackCounter})
 						startTime += 1;
 						trackCounter = 0;
-						minuteTime = microMinute+eventTime[i][0];
+						minuteTime = microMinute+globalThis.eventTime[i][0];
 					}
 				}				
 			}
@@ -656,15 +670,15 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 			//middle missing
 			if (option == 'M') {
 				//console.log("5 middle missing");
-				if ((eventTime[i][xtop] > 0 &&
-					eventTime[i][xbottom] > 0 &&
-					eventTime[i][ytop] > 0 &&
-					eventTime[i][ybottom] > 0) &&
-					((eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] <= 0)
-				    || (eventTime[i][xmiddle] <= 0 && eventTime[i][ymiddle] > 0))) {					
+				if ((globalThis.eventTime[i][xtop] > 0 &&
+					globalThis.eventTime[i][xbottom] > 0 &&
+					globalThis.eventTime[i][ytop] > 0 &&
+					globalThis.eventTime[i][ybottom] > 0) &&
+					((globalThis.eventTime[i][xmiddle] > 0 && globalThis.eventTime[i][ymiddle] <= 0)
+				    || (globalThis.eventTime[i][xmiddle] <= 0 && globalThis.eventTime[i][ymiddle] > 0))) {					
 					//check if it belongs within each minute
-					var count = eventTime[i].filter(num => num > 0).length;
-					if (eventTime[i][0] <= minuteTime && count == layerCount) {
+					var count = globalThis.eventTime[i].filter(num => num > 0).length;
+					if (globalThis.eventTime[i][0] <= minuteTime && count == layerCount) {
 						if (debugEventsWithTracks) {
 							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
 						}
@@ -675,13 +689,13 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 						vals.push({x:startTime+1,y:trackCounter})
 						startTime += 1;
 						trackCounter = 0;
-						minuteTime = microMinute+eventTime[i][0];
+						minuteTime = microMinute+globalThis.eventTime[i][0];
 					}
 				}
 			} else { //it is TB, either top or bottom missing
-				var count = eventTime[i].filter(num => num > 0).length;
-				if (eventTime[i][xmiddle] > 0 && eventTime[i][ymiddle] > 0 && count == layerCount) {
-					if (eventTime[i][0] <= minuteTime) {
+				var count = globalThis.eventTime[i].filter(num => num > 0).length;
+				if (globalThis.eventTime[i][xmiddle] > 0 && globalThis.eventTime[i][ymiddle] > 0 && count == layerCount) {
+					if (globalThis.eventTime[i][0] <= minuteTime) {
 						if (debugEventsWithTracks) {
 							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
 						}
@@ -692,21 +706,21 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 						vals.push({x:startTime+1,y:trackCounter})
 						startTime += 1;
 						trackCounter = 0;
-						minuteTime = microMinute+eventTime[i][0];
+						minuteTime = microMinute+globalThis.eventTime[i][0];
 					}					
 				}
 			}
 		}		
 		//check for top, middle and bottom in both layers
 		if (layerCount == 6) {
-			if (eventTime[i][xtop] > 0 &&
-				eventTime[i][xmiddle] > 0 &&
-				eventTime[i][xbottom] > 0 &&
-				eventTime[i][ytop] > 0 &&
-				eventTime[i][ymiddle] > 0 &&
-				eventTime[i][ybottom] > 0) {
+			if (globalThis.eventTime[i][xtop] > 0 &&
+				globalThis.eventTime[i][xmiddle] > 0 &&
+				globalThis.eventTime[i][xbottom] > 0 &&
+				globalThis.eventTime[i][ytop] > 0 &&
+				globalThis.eventTime[i][ymiddle] > 0 &&
+				globalThis.eventTime[i][ybottom] > 0) {
 				//check if it belongs within each minute
-				if (eventTime[i][0] <= minuteTime) {
+				if (globalThis.eventTime[i][0] <= minuteTime) {
 					if (debugEventsWithTracks) {
 						console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
 					}
@@ -717,7 +731,7 @@ function getEventsWithTracksPerMinute(layerCount, option) {
 					vals.push({x:startTime+1,y:trackCounter})
 					startTime += 1;
 					trackCounter = 0;
-					minuteTime = microMinute+eventTime[i][0];
+					minuteTime = microMinute+globalThis.eventTime[i][0];
 				}
 			}
 		}		
