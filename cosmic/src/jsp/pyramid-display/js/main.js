@@ -14,20 +14,20 @@ globalThis.layerOrderY = [];
 globalThis.parameters = {};
 globalThis.initialTime = null;
 globalThis.endTime = null;
-var x;
-var y;
-var detector = [];
-var run = [];
-var localGeometry;
-var singleGeometry = [];
+let x;
+let y;
+let detector = [];
+let run = [];
+let localGeometry;
+let singleGeometry = [];
 // Keep single shared arrays (do not reassign later) so we can expose them as globals
-var layers = [];
-var localADCmap;
-var localPedestal;
-var xCoord;
-var yCoord;
-var eventTotal = [1];
-var dataGUI;
+let layers = [];
+let localADCmap;
+let localPedestal;
+let xCoord;
+let yCoord;
+let eventTotal = [1];
+let dataGUI;
 let debugMain = false;
 const loadingMessage = document.getElementById("loading-message");
 
@@ -62,8 +62,8 @@ let dataFiles = [
 
 // Function to get the geometry corresponding to the selected data file
 function getSingleGeometry() {
-	var timestamps = [];
-	var done = false;
+	let timestamps = [];
+	let done = false;
 	for (let i = 0; i < localGeometry.length; i++) {
 		if (localGeometry[i][0][0] === detector[0]) {
 			//01JUL2023 09:46:47
@@ -71,7 +71,8 @@ function getSingleGeometry() {
 			let dDate = parseFileDate(detector[2], detector[3]);
 			if (dDate > gDate && !done) {
 					timestamps.push(localGeometry[i][0]);
-					done = true;				
+					done = true;
+					
 			}
 		}
 	}
@@ -97,19 +98,19 @@ function getSingleGeometry() {
 							done = true;
 						} else {
 							if (done == false) {
-								layerDetail.push(localGeometry[i][x][n]);							}
+								layerDetail.push(localGeometry[i][x][n]);						}
 						}
 					}
 				}
 			}
-		} 
+		}
 	}
 	//get the layer order from the geometry
 	// push into the existing arrays so global references remain valid
 	globalThis.layerOrderX.push([parseFloat(singleGeometry[1][singleGeometry[1].length-4]),5,0]);
 	globalThis.layerOrderX.push([parseFloat(singleGeometry[3][singleGeometry[3].length-4]),3,1]);
 	globalThis.layerOrderX.push([parseFloat(singleGeometry[5][singleGeometry[5].length-4]),1,2]);
-	// Sort in descending order by the first element
+	// Sort in ascending order by the first element (preserve original behavior)
 	globalThis.layerOrderX.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
@@ -117,7 +118,7 @@ function getSingleGeometry() {
 	globalThis.layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
 	globalThis.layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
 	globalThis.layerOrderY.push([parseFloat(singleGeometry[6][singleGeometry[6].length-4]),2,2]);
-	// Sort in descending order by the first element
+	// Sort in ascending order by the first element (preserve original behavior)
 	globalThis.layerOrderY.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
@@ -125,71 +126,57 @@ function getSingleGeometry() {
 }// end of getGeometry
 
 // Load the selected data file
-function loadDataFile() {
-  return new Promise((resolve) => {
-    //const checkInterval = setInterval(() => {
-	  function retrieveData() {
-        return new Promise((resolve, reject) => {
-          globalThis.retrieveData()
-          .then(data => {
-            resolve(data);
-          })
-          .catch(error => {
-            reject(error);
-          });
-        });		
-	  }     
-      // Usage of Promise.all() to wait for functions to finish
-	  loadingMessage.style.display = "block";
-	  globalThis.initialTime = new Date();
-      Promise.all([retrieveData()])
-        .then(([data]) => {
-          if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
-          if (globalThis.subtractPedY != undefined && globalThis.subtractPedY.length > 0) { y = globalThis.subtractPedY; }
-          if (globalThis.xCoord != undefined && globalThis.xCoord.length > 0) { xCoord = globalThis.xCoord; }
-          if (globalThis.yCoord != undefined && globalThis.yCoord.length > 0) { yCoord = globalThis.yCoord; }
-           if (x != undefined && y != undefined) {
-            if (x.length > 0 && y.length > 0) {
-              //clearInterval(checkInterval);
-              eventTotal = [];
-              eventTotal.push(0);
-              for (var i = 0; i < x.length; i++) {
-	              eventTotal.push(i+1);
-	          }
-              GUIupdate("update");
-              resolve();
-            } else {
-				if (debugMain === true) {
-					console.log("Data and/or geometry are empty");
-					}
-			}
-          } else {
-			  if (debugMain === true) {
-				console.log("Data and geometry are not defined properly");
-				}
-		  }
-          detector = document.getElementById("detector-name").value.trim().split(' ');
-          getSingleGeometry();
-          draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
-          draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-		  drawAnalysis(layers, singleGeometry); 
-         if (debugMain === true) {
-	          console.log("Data and geometry are ready");
-	          }
-		  globalThis.endTime = new Date();
-          document.getElementById("loading-time").value = "Loading time: "+calculateProcessTime(globalThis.endTime,globalThis.initialTime)+" seconds";
-		  loadingMessage.style.display = "none";
-        })
-        .catch(error => {
-	      console.log(error);
-          console.log("Waiting for data load");
-        });
-    //}, 10); // Poll every 0.01 seconds
-  });
-}// end of loadDataFile
+async function loadDataFile() {
+  // Keep the same visible side-effects (loadingMessage) and return a Promise via async
+  loadingMessage.style.display = "block";
+  globalThis.initialTime = new Date();
+  try {
+    // retrieveData already returns a Promise; await it directly
+    const data = await globalThis.retrieveData();
+
+    if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
+    if (globalThis.subtractPedY != undefined && globalThis.subtractPedY.length > 0) { y = globalThis.subtractPedY; }
+    if (globalThis.xCoord != undefined && globalThis.xCoord.length > 0) { xCoord = globalThis.xCoord; }
+    if (globalThis.yCoord != undefined && globalThis.yCoord.length > 0) { yCoord = globalThis.yCoord; }
+    if (x != undefined && y != undefined) {
+      if (x.length > 0 && y.length > 0) {
+        eventTotal = [];
+        eventTotal.push(0);
+        for (let i = 0; i < x.length; i++) {
+          eventTotal.push(i+1);
+        }
+        GUIupdate("update");
+      } else {
+        if (debugMain === true) {
+          console.log("Data and/or geometry are empty");
+        }
+      }
+    } else {
+      if (debugMain === true) {
+        console.log("Data and geometry are not defined properly");
+      }
+    }
+
+    detector = document.getElementById("detector-name").value.trim().split(' ');
+    getSingleGeometry();
+    draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
+    draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
+    drawAnalysis(layers, singleGeometry);
+    if (debugMain === true) {
+      console.log("Data and geometry are ready");
+    }
+    globalThis.endTime = new Date();
+    document.getElementById("loading-time").value = "Loading time: "+calculateProcessTime(globalThis.endTime,globalThis.initialTime)+" seconds";
+  } catch (error) {
+    console.log(error);
+    console.log("Waiting for data load");
+  } finally {
+    loadingMessage.style.display = "none";
+  }
+}
 
 function GUIupdate(what) {
-    var controller;
+    let controller;
     if (what === "update" || what === "clear") {
 	    controller = dataGUI.__controllers[1];
     	controller.remove();
@@ -204,7 +191,7 @@ function GUIupdate(what) {
   		function onEventIndexChange() { loadIndex(globalThis.parameters.eventIndex); }
   		controller = dataGUI.__controllers[1];
   		dataGUI.__controllers[1].updateDisplay();
-  	}
+	}
 }
 
 // Create 3D datgui
@@ -225,12 +212,12 @@ function GUIinit() {
   dataGUI.add(globalThis.parameters, "loadDataFile", dataFiles).name('Load File').listen().onChange((value)=>{useNewFile(value)});
   //dataGUI.add(parameters, 'eventIndex',0,eventTotal.length).step(1).name("Event").onChange(onEventIndexChange); 
   dataGUI.add(globalThis.parameters, 'eventIndex', eventTotal).name("Event").onChange(onEventIndexChange); 
-  function onEventIndexChange() {loadIndex(globalThis.parameters.eventIndex);}
+  function onEventIndexChange() {loadIndex(globalThis.parameters.eventIndex);} 
   function useNewFile(value) { 
 	console.clear();   
-	var selectedFile = document.getElementById('selected-file');
+	const selectedFile = document.getElementById('selected-file');
 	selectedFile.value = value;
-	var path = "data/";
+	const path = "data/";
 	globalThis.selectedFileClean = value.trim();
 	globalThis.selectedFile = path+value.trim();
  	GUIupdate("remove");    
@@ -239,11 +226,11 @@ function GUIinit() {
   dataGUI.open();
   const sceneGUI = gui.addFolder("Scene"); 
   const params = { clearVectors: function() { 
-		for (i in muonVectors) { 
-			s.group.remove(muonVectors[i]); 
+		for (let i in muonVectors) { 
+			globalThis.sensor.group.remove(muonVectors[i]); 
 		}
-		for (let obj of s.job) {
-    		obj.faces.material.color.set(s.xcolor);
+		for (let obj of globalThis.sensor.job) {
+    		obj.faces.material.color.set(globalThis.sensor.xcolor);
     		obj.faces.material.transparent = true;
     		obj.faces.material.opacity = 0.01;
   		}
@@ -252,7 +239,7 @@ function GUIinit() {
   };
   sceneGUI.add(params, 'clearVectors').name('Clear Muon Vectors'); 
   sceneGUI.add(globalThis.parameters, 'acceptRange', 0, 20000).step(1).name("Acceptance Range").onChange(onAcceptanceRangeChange); 
-  function onAcceptanceRangeChange() { acceptanceRange(s,parameters.acceptRange) }
+  function onAcceptanceRangeChange() { acceptanceRange(globalThis.sensor,parameters.acceptRange) }
   sceneGUI.add(globalThis.parameters, 'showModel').name("Show Pyramid").onChange(onModelVisibilityChange);
   function onModelVisibilityChange() { loadPyramid(globalThis.parameters.showModel, globalThis.parameters.showModelWire);}  
   sceneGUI.add(globalThis.parameters, 'showModelWire').name("Show Wireframe").onChange(onModelWireframeChange);
@@ -265,97 +252,62 @@ function GUIinit() {
 }// end of GUIinit
 
 //function wait(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
-function loadStaticDataFiles() {
-  return new Promise((resolve) => {
-    //const checkInterval = setInterval(() => {
-      // Function to retrieve pedestal asynchronously
-      function retrievePedestal() {
-        return new Promise((resolve, reject) => {
-          globalThis.retrievePedestal()
-          .then(pedestal => {
-            resolve(pedestal);
-          })
-          .catch(error => {
-            reject(error);
-          });  
-        });
-      } 
-      function retrieveADCmap() {
-        return new Promise((resolve, reject) => {
-          globalThis.retrieveADCmap()
-          .then(adcmap => {
-            resolve(adcmap);
-          })
-          .catch(error => {
-            reject(error);
-          });  
-        });
-      } 
-      // Function to retrieve geometry asynchronously
-      function retrieveGeometry() {
-        return new Promise((resolve, reject) => {
-          globalThis.retrieveGeometry()
-          .then(geometry => {
-            resolve(geometry);
-          })
-          .catch(error => {
-            reject(error);
-          });  
-        });
-      }
-      // Usage of Promise.all() to wait for functions to finish
-      Promise.all([retrievePedestal(), retrieveADCmap(), retrieveGeometry()])
-        .then(([pedestal, adcmap, geometry]) => {
- 		 if(globalThis.pedestalArr.length > 0) {
-			localPedestal = globalThis.pedestalArr;
+async function loadStaticDataFiles() {
+  // Return a Promise via async; await the three retrievals in parallel
+  try {
+    const [pedestal, adcmap, geometry] = await Promise.all([
+      globalThis.retrievePedestal(),
+      globalThis.retrieveADCmap(),
+      globalThis.retrieveGeometry()
+    ]);
+
+    if(globalThis.pedestalArr.length > 0) {
+		localPedestal = globalThis.pedestalArr;
+		if (debugMain === true) {
+			console.log("We got pedestal data");
+		}
+		if(globalThis.adcmapArr.length > 0) {
 			if (debugMain === true) {
-				console.log("We got pedestal data");
-				}
-			 if(globalThis.adcmapArr.length > 0) {
-				if (debugMain === true) {
-					console.log("We got adcmap data");
-					}
-				localADCmap = globalThis.adcmapArr;
-	 			if(globalThis.geometryArr.length > 0) {
-					if (debugMain === true) {
-					   console.log("We got geometry data");
-					}
-				    localGeometry = globalThis.geometryArr;
-	                resolve();
-	                initScene();
-	            } else {
-					if (debugMain === true) {
-						console.log("Geometry is empty");
-					}
-			 	}
-			 } else {
-				if (debugMain === true) {
-					console.log("Adcmap is empty");	
-				}
-			 }
-          } else {
-			if (debugMain === true) {		  
-				console.log("Pedestal is empty");
+				console.log("We got adcmap data");
 			}
-		  }
-        })
-        .catch(error => {
-	      console.log(error);
-          console.log("Waiting for data load");
-        });
-    //}, 10); // Poll every 0.01 seconds
-  });	
+			localADCmap = globalThis.adcmapArr;
+			if(globalThis.geometryArr.length > 0) {
+				if (debugMain === true) {
+				   console.log("We got geometry data");
+				}
+				localGeometry = globalThis.geometryArr;
+				initScene();
+				return;
+			} else {
+				if (debugMain === true) {
+					console.log("Geometry is empty");	
+				}
+			}
+		} else {
+			if (debugMain === true) {
+				console.log("Adcmap is empty");	
+			}
+		}
+    } else {
+		if (debugMain === true) { 	  
+			console.log("Pedestal is empty");
+		}
+	}
+  } catch (error) {
+    console.log(error);
+    console.log("Waiting for data load");
+  }
 }// end of loadStaticDataFiles
 
 async function execute() {
-	var geometryFile = document.getElementById("geometry-file");
-	var pedestalFile = document.getElementById("pedestal-file");
-	var adcmapFile = document.getElementById("adcmap-file");
-	var path = "config/";
+	const geometryFile = document.getElementById("geometry-file");
+	const pedestalFile = document.getElementById("pedestal-file");
+	const adcmapFile = document.getElementById("adcmap-file");
+	const path = "config/";
 	globalThis.geometryFile = path+geometryFile.value.trim();
 	globalThis.pedestalFile = path+pedestalFile.value.trim();
 	globalThis.adcmapFile = path+adcmapFile.value.trim();
- 	//await 
+ 	// Note: preserve original behavior where loadStaticDataFiles was not awaited
     loadStaticDataFiles();
     GUIinit();
 }// end of execute

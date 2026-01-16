@@ -38,6 +38,8 @@
  var tracking4TopMissing = [];
  var tracking4MiddleMissing = [];
  var tracking4BottomMissing = [];
+// Cache some global math constants to avoid repeated Math.sqrt calls in hot paths
+const SQRT3 = Math.sqrt(3);
 
 function findExpectedX(point1, point2, y3) {
  	var x3 = point1[0];
@@ -753,12 +755,12 @@ function calculateAnalysisTriangle(dir, xpos, y, channel, inten, quadMember) {
 	  var y3 = 0;
 	  var height = 0;
 	  if (dir) {
-		  y3 = y-(Math.sqrt(3) * size / 2);
-		  height = y-((Math.sqrt(3) * size / 2)/2.0);
+		  y3 = y-(SQRT3 * size / 2);
+		  height = y-((SQRT3 * size / 2)/2.0);
 		  triangleCoords.push([xpos+(size/2), y3]);
 	  } else { 
-		  y3 = y+(Math.sqrt(3) * size / 2);
-		  height = y+((Math.sqrt(3) * size / 2)/2.0);
+		  y3 = y+(SQRT3 * size / 2);
+		  height = y+((SQRT3 * size / 2)/2.0);
 	      triangleCoords.push([xpos+(size/2), y3]);
 	  }
 	  if(inten == 0){
@@ -971,7 +973,7 @@ function calculateAnalysisLayer(whichLayer, event) {
 	  var posQuadSize = geometry[ndx].length-3; //get the quad size from the geometry
 	  quadSize = geometry[ndx][posQuadSize];
 	  cellSize = quadSize * size / 2.0;
-	  triangleHeight = Math.sqrt(3) * cellSize / 2;
+	  triangleHeight = SQRT3 * cellSize / 2;
 	  quadGap =  size - cellSize; 
 	  // Calculate the real estate for the triangles based on the geometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
@@ -1005,48 +1007,58 @@ function calculateAnalysisLayer(whichLayer, event) {
 }//end of calculateAnalysisLayer
 
 function getAnalysisBothLayers() {
-	for (var i = 0; i < dx.length; i++) {
-		var event = dx[i][0];
-		for (var j = 0; j < dy.length; j++) {
-			if (dy[j][0] == event) {
-				dxbothlayers.push(dx[i]);
-				dybothlayers.push(dy[j]);
-			}
-		}
-	}
-	//no need to keep these in memory
-	dx = [];
-	dy = [];
+    // Build a map from event -> dy entry for O(n) matching
+    var dyMap = new Map();
+    for (var j = 0; j < dy.length; j++) {
+        dyMap.set(dy[j][0], dy[j]);
+    }
+    for (var i = 0; i < dx.length; i++) {
+        var event = dx[i][0];
+        var matching = dyMap.get(event);
+        if (matching !== undefined) {
+            dxbothlayers.push(dx[i]);
+            dybothlayers.push(matching);
+        }
+    }
+    //no need to keep these in memory
+    dx = [];
+    dy = [];
 }//end of getAnalysisBothLayers
 
 function getAnalysisTopMiddleBothLayers() {
-	for (var i = 0; i < dxtopmiddle.length; i++) {
-		var event = dxtopmiddle[i][0];
-		for (var j = 0; j < dytopmiddle.length; j++) {
-			if (dytopmiddle[j][0] == event) {
-				dxtopmiddlebothlayers.push(dxtopmiddle[i]);
-				dytopmiddlebothlayers.push(dytopmiddle[j]);
-			}
-		}
-	}
-	//no need to keep these in memory
-	dxtopmiddle = [];
-	dytopmiddle = [];
+    var dyMap = new Map();
+    for (var j = 0; j < dytopmiddle.length; j++) {
+        dyMap.set(dytopmiddle[j][0], dytopmiddle[j]);
+    }
+    for (var i = 0; i < dxtopmiddle.length; i++) {
+        var event = dxtopmiddle[i][0];
+        var matching = dyMap.get(event);
+        if (matching !== undefined) {
+            dxtopmiddlebothlayers.push(dxtopmiddle[i]);
+            dytopmiddlebothlayers.push(matching);
+        }
+    }
+    //no need to keep these in memory
+    dxtopmiddle = [];
+    dytopmiddle = [];
 }//end of getAnalysisTopMiddleBothLayers
 
 function getAnalysisBottomMiddleBothLayers() {
-	for (var i = 0; i < dxbottommiddle.length; i++) {
-		var event = dxbottommiddle[i][0];
-		for (var j = 0; j < dybottommiddle.length; j++) {
-			if (dybottommiddle[j][0] == event) {
-				dxbottommiddlebothlayers.push(dxbottommiddle[i]);
-				dybottommiddlebothlayers.push(dybottommiddle[j]);
-			}
-		}
-	}
-	//no need to keep these in memory
-	dxbottommiddle = [];
-	dybottommiddle = [];
+    var dyMap = new Map();
+    for (var j = 0; j < dybottommiddle.length; j++) {
+        dyMap.set(dybottommiddle[j][0], dybottommiddle[j]);
+    }
+    for (var i = 0; i < dxbottommiddle.length; i++) {
+        var event = dxbottommiddle[i][0];
+        var matching = dyMap.get(event);
+        if (matching !== undefined) {
+            dxbottommiddlebothlayers.push(dxbottommiddle[i]);
+            dybottommiddlebothlayers.push(matching);
+        }
+    }
+    //no need to keep these in memory
+    dxbottommiddle = [];
+    dybottommiddle = [];
 }//end of getAnalysisBottomMiddleBothLayers
 
 function getAnalysisXY(){

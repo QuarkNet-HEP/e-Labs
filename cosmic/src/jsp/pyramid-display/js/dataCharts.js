@@ -22,75 +22,85 @@ function removeCharts() {
 	}
 }//end of removeCharts
 
-function drawAnalysis(l,g) {	
-	removeCharts();
-	var ctx1 = document.getElementById('X1').getContext('2d');
-	var ctx2 = document.getElementById('X2').getContext('2d');
-	var ctx3 = document.getElementById('X3').getContext('2d');
-	var cty1 = document.getElementById('Y1').getContext('2d');
-	var cty2 = document.getElementById('Y2').getContext('2d');
-	var cty3 = document.getElementById('Y3').getContext('2d');
-	var PTXYMIDDLE6 = document.getElementById('6PTXYMIDDLE').getContext('2d');
-	var PTXYMIDDLEX6 = document.getElementById('6PTXYMIDDLEX').getContext('2d');
-	var PTXYMIDDLEY6 = document.getElementById('6PTXYMIDDLEY').getContext('2d');
-	var PTXYMIDDLEXY6 = document.getElementById('6PTXYMIDDLEXY').getContext('2d');
-	var PDIFFMXHITS6 = document.getElementById('6PDIFFMXHITS').getContext('2d');
-	var PDIFFMYHITS6 = document.getElementById('6PDIFFMYHITS').getContext('2d');
-	var DXDYHITS6 = document.getElementById('6DXDYHITS').getContext('2d');
-	//var LEGO = document.getElementById('LEGO').getContext('2D');
-	var PTMX6 = document.getElementById('6PTMX').getContext('2d');
-	var PTMY6 = document.getElementById('6PTMY').getContext('2d');
-	var PTMXY6 = document.getElementById('6PTMXY').getContext('2d');
-	var PDIFFMX6 = document.getElementById('6PDIFFMX').getContext('2d');
-	var PDIFFMY6 = document.getElementById('6PDIFFMY').getContext('2d');
-	var PTTX5 = document.getElementById('5PTTX').getContext('2d');
-	var PTMX5 = document.getElementById('5PTMX').getContext('2d');
-	var PTBX5 = document.getElementById('5PTBX').getContext('2d');
-	var PTTY5 = document.getElementById('5PTTY').getContext('2d');
-	var PTMY5 = document.getElementById('5PTMY').getContext('2d');
-	var PTBY5 = document.getElementById('5PTBY').getContext('2d');
-	var PTT4 = document.getElementById('4PTT').getContext('2d');
-	var PTM4 = document.getElementById('4PTM').getContext('2d');
-	var PTB4 = document.getElementById('4PTB').getContext('2d');
-	var dxdy = document.getElementById('DXDY').getContext('2d');
-	var dx1d = document.getElementById('DX1D').getContext('2d');
-	var dy1d = document.getElementById('DY1D').getContext('2d');
-	var dxT1d = document.getElementById('DXT1D').getContext('2d');
-	var dxM1d = document.getElementById('DXM1D').getContext('2d');
-	var dxB1d = document.getElementById('DXB1D').getContext('2d');
-	var dyT1d = document.getElementById('DYT1D').getContext('2d');
-	var dyM1d = document.getElementById('DYM1D').getContext('2d');
-	var dyB1d = document.getElementById('DYB1D').getContext('2d');
-	var dxdzdydz = document.getElementById('DXDZDYDZ').getContext('2d');
-	var dxdzdydzTM = document.getElementById('DXDZDYDZTM').getContext('2d');
-	var dxdzdydzMB = document.getElementById('DXDZDYDZMB').getContext('2d');
-	var tracks4TM = document.getElementById('#TRACKS4TM').getContext('2d');
-	var tracks4MB = document.getElementById('#TRACKS4MB').getContext('2d');
-	var tracks5M = document.getElementById('#TRACKS5M').getContext('2d');
-	var tracks5TB = document.getElementById('#TRACKS5TB').getContext('2d');
-	var tracks6 = document.getElementById('#TRACKS6').getContext('2d');
-	var deltaT = document.getElementById('DT').getContext('2d');
-	var deltaT10 = document.getElementById('DT10').getContext('2d');
-	var deltaT20 = document.getElementById('DT20').getContext('2d');
-	var deltaT30 = document.getElementById('DT30').getContext('2d');
-	var deltaT40 = document.getElementById('DT40').getContext('2d');
-	var deltaT50 = document.getElementById('DT50').getContext('2d');
-	var deltaT42 = document.getElementById('DT42').getContext('2d');
-	var deltaT13 = document.getElementById('DT13').getContext('2d');
-	var deltaT15 = document.getElementById('DT15').getContext('2d');
-	var deltaT35 = document.getElementById('DT35').getContext('2d');
-	var X1ADC = document.getElementById('X1ADC').getContext('2d');
-	var X2ADC = document.getElementById('X2ADC').getContext('2d');
-	var X3ADC = document.getElementById('X3ADC').getContext('2d');
-	var Y1ADC = document.getElementById('Y1ADC').getContext('2d');
-	var Y2ADC = document.getElementById('Y2ADC').getContext('2d');
-	var Y3ADC = document.getElementById('Y3ADC').getContext('2d');
-	var X1ADCAverage = document.getElementById('X1ADCAverage').getContext('2d');
-	var X2ADCAverage = document.getElementById('X2ADCAverage').getContext('2d');
-	var X3ADCAverage = document.getElementById('X3ADCAverage').getContext('2d');
-	var Y1ADCAverage = document.getElementById('Y1ADCAverage').getContext('2d');
-	var Y2ADCAverage = document.getElementById('Y2ADCAverage').getContext('2d');
-	var Y3ADCAverage = document.getElementById('Y3ADCAverage').getContext('2d');
+function drawAnalysis(l,g) { 
+	// Cache DOM lookups to avoid repeated document.getElementById calls
+	const _elCache = new Map();
+	function getEl(id) {
+		if (!_elCache.has(id)) _elCache.set(id, document.getElementById(id));
+		return _elCache.get(id);
+	}
+	function getCtx(id) {
+		const el = getEl(id);
+		return el ? el.getContext('2d') : null;
+	}
+	removeCharts(); // Clear existing charts before drawing new ones
+	var ctx1 = getCtx('X1');
+	var ctx2 = getCtx('X2');
+	var ctx3 = getCtx('X3');
+	var cty1 = getCtx('Y1');
+	var cty2 = getCtx('Y2');
+	var cty3 = getCtx('Y3');
+	var PTXYMIDDLE6 = getCtx('6PTXYMIDDLE');
+	var PTXYMIDDLEX6 = getCtx('6PTXYMIDDLEX');
+	var PTXYMIDDLEY6 = getCtx('6PTXYMIDDLEY');
+	var PTXYMIDDLEXY6 = getCtx('6PTXYMIDDLEXY');
+	var PDIFFMXHITS6 = getCtx('6PDIFFMXHITS');
+	var PDIFFMYHITS6 = getCtx('6PDIFFMYHITS');
+	var DXDYHITS6 = getCtx('6DXDYHITS');
+	//var LEGO = getCtx('LEGO');
+	var PTMX6 = getCtx('6PTMX');
+	var PTMY6 = getCtx('6PTMY');
+	var PTMXY6 = getCtx('6PTMXY');
+	var PDIFFMX6 = getCtx('6PDIFFMX');
+	var PDIFFMY6 = getCtx('6PDIFFMY');
+	var PTTX5 = getCtx('5PTTX');
+	var PTMX5 = getCtx('5PTMX');
+	var PTBX5 = getCtx('5PTBX');
+	var PTTY5 = getCtx('5PTTY');
+	var PTMY5 = getCtx('5PTMY');
+	var PTBY5 = getCtx('5PTBY');
+	var PTT4 = getCtx('4PTT');
+	var PTM4 = getCtx('4PTM');
+	var PTB4 = getCtx('4PTB');
+	var dxdy = getCtx('DXDY');
+	var dx1d = getCtx('DX1D');
+	var dy1d = getCtx('DY1D');
+	var dxT1d = getCtx('DXT1D');
+	var dxM1d = getCtx('DXM1D');
+	var dxB1d = getCtx('DXB1D');
+	var dyT1d = getCtx('DYT1D');
+	var dyM1d = getCtx('DYM1D');
+	var dyB1d = getCtx('DYB1D');
+	var dxdzdydz = getCtx('DXDZDYDZ');
+	var dxdzdydzTM = getCtx('DXDZDYDZTM');
+	var dxdzdydzMB = getCtx('DXDZDYDZMB');
+	var tracks4TM = getCtx('#TRACKS4TM');
+	var tracks4MB = getCtx('#TRACKS4MB');
+	var tracks5M = getCtx('#TRACKS5M');
+	var tracks5TB = getCtx('#TRACKS5TB');
+	var tracks6 = getCtx('#TRACKS6');
+	var deltaT = getCtx('DT');
+	var deltaT10 = getCtx('DT10');
+	var deltaT20 = getCtx('DT20');
+	var deltaT30 = getCtx('DT30');
+	var deltaT40 = getCtx('DT40');
+	var deltaT50 = getCtx('DT50');
+	var deltaT42 = getCtx('DT42');
+	var deltaT13 = getCtx('DT13');
+	var deltaT15 = getCtx('DT15');
+	var deltaT35 = getCtx('DT35');
+	var X1ADC = getCtx('X1ADC');
+	var X2ADC = getCtx('X2ADC');
+	var X3ADC = getCtx('X3ADC');
+	var Y1ADC = getCtx('Y1ADC');
+	var Y2ADC = getCtx('Y2ADC');
+	var Y3ADC = getCtx('Y3ADC');
+	var X1ADCAverage = getCtx('X1ADCAverage');
+	var X2ADCAverage = getCtx('X2ADCAverage');
+	var X3ADCAverage = getCtx('X3ADCAverage');
+	var Y1ADCAverage = getCtx('Y1ADCAverage');
+	var Y2ADCAverage = getCtx('Y2ADCAverage');
+	var Y3ADCAverage = getCtx('Y3ADCAverage');
 
 	xLayerLength = (l[4].length - 2) * 4;
 	yLayerLength = (l[5].length - 2) * 4;
@@ -128,12 +138,26 @@ function drawAnalysis(l,g) {
 	var CAENOptions = {
 		scales: {
 		y: {
-		 		beginAtZero: true,
-		 		stepSize: 1,
-		 		precision: 0,// Set the step size to 1 to show only whole numbers
+				beginAtZero: true,
+				stepSize: 1,
+				precision: 0,// Set the step size to 1 to show only whole numbers
 			},
 		},		
 	};
+	// Precompute CAEN arrays once and reuse to avoid repeated computation
+	const xCAEN0 = populateX('x', 0);
+	const xCAEN2 = populateX('x', 1);
+	const xCAEN4 = populateX('x', 2);
+	const yCAEN1 = populateY('y', 0);
+	const yCAEN3 = populateY('y', 1);
+	const yCAEN5 = populateY('y', 2);
+	const xCAEN0Original = getCAENdata(subtractPedX, 0);
+	const xCAEN2Original = getCAENdata(subtractPedX, 1);
+	const xCAEN4Original = getCAENdata(subtractPedX, 2);
+	const yCAEN1Original = getCAENdata(subtractPedY, 0);
+	const yCAEN3Original = getCAENdata(subtractPedY, 1);
+	const yCAEN5Original = getCAENdata(subtractPedY, 2);
+
 	//X CAEN 0
 	var dataX1 = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
@@ -141,7 +165,7 @@ function drawAnalysis(l,g) {
 	    {
 	      label: 'X CAEN 0 -'+chartComments, // Label for the dataset
 	      backgroundColor: 'rgba(54, 162, 235, 0.5)', // Color or array of colors for the bars
-	      data: populateX('x', 0), // Array of numerical values for the bars
+	      data: xCAEN0, // Reuse precomputed data
 	    },
 	  ],
 	};
@@ -150,11 +174,13 @@ function drawAnalysis(l,g) {
     	data: dataX1,
     	options: CAENOptions,
 	});
-	document.getElementById('downloadXCAEN0').addEventListener('click', () => {
-	    downloadArray(populateX('x', 0), 'XCAEN0data.csv');
+	const downloadXCAEN0 = getEl('downloadXCAEN0');
+	if (downloadXCAEN0) downloadXCAEN0.addEventListener('click', () => {
+	    downloadArray(xCAEN0, 'XCAEN0data.csv');
 	});
-	document.getElementById('downloadXCAEN0data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedX, 0), 'XCAEN0originaldata.csv');
+	const downloadXCAEN0data = getEl('downloadXCAEN0data');
+	if (downloadXCAEN0data) downloadXCAEN0data.addEventListener('click', () => {
+	    download2DArray(xCAEN0Original, 'XCAEN0originaldata.csv');
 	});
 	
 	//X CAEN 2
@@ -164,7 +190,7 @@ function drawAnalysis(l,g) {
 	    {
 	      label: 'X CAEN 2 -'+chartComments,
 	       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-	       data: populateX('x', 1),
+	       data: xCAEN2,
 	     },
 	  ],
 	};
@@ -173,11 +199,13 @@ function drawAnalysis(l,g) {
 	    data: dataX2,
 	    options: CAENOptions,
 	});
-	document.getElementById('downloadXCAEN2').addEventListener('click', () => {
-	    downloadArray(populateX('x', 1), 'XCAEN2data.csv');
+	const downloadXCAEN2 = getEl('downloadXCAEN2');
+	if (downloadXCAEN2) downloadXCAEN2.addEventListener('click', () => {
+	    downloadArray(xCAEN2, 'XCAEN2data.csv');
 	});
-	document.getElementById('downloadXCAEN2data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedX, 1), 'XCAEN2originaldata.csv');
+	const downloadXCAEN2data = getEl('downloadXCAEN2data');
+	if (downloadXCAEN2data) downloadXCAEN2data.addEventListener('click', () => {
+	    download2DArray(xCAEN2Original, 'XCAEN2originaldata.csv');
 	});
 
 	//X CAEN 3
@@ -187,7 +215,7 @@ function drawAnalysis(l,g) {
 		{
 	      label: 'X CAEN 4 -'+chartComments,
 	       backgroundColor: 'rgba(20, 255, 132, 0.5)',
-	       data: populateX('x', 2),
+	       data: xCAEN4,
 	     },
 	  ],
 	};
@@ -196,11 +224,13 @@ function drawAnalysis(l,g) {
 	    data: dataX3,
 	    options: CAENOptions,
 	});  
-	document.getElementById('downloadXCAEN4').addEventListener('click', () => {
-	    downloadArray(populateX('x', 2), 'XCAEN4data.csv');
+	const downloadXCAEN4 = getEl('downloadXCAEN4');
+	if (downloadXCAEN4) downloadXCAEN4.addEventListener('click', () => {
+	    downloadArray(xCAEN4, 'XCAEN4data.csv');
 	});
-	document.getElementById('downloadXCAEN4data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedX, 2), 'XCAEN4originaldata.csv');
+	const downloadXCAEN4data = getEl('downloadXCAEN4data');
+	if (downloadXCAEN4data) downloadXCAEN4data.addEventListener('click', () => {
+	    download2DArray(xCAEN4Original, 'XCAEN4originaldata.csv');
 	});
 
 	//Y CAEN 1
@@ -210,7 +240,7 @@ function drawAnalysis(l,g) {
 	    {
 	      label: 'Y CAEN 1 -'+chartComments, // Label for the dataset
 	      backgroundColor: 'rgba(54, 162, 235, 0.5)', // Color or array of colors for the bars
-	      data: populateY('y', 0), // Array of numerical values for the bars
+	      data: yCAEN1, // Reuse precomputed data
 	    },
 	  ],
 	};
@@ -219,11 +249,13 @@ function drawAnalysis(l,g) {
 	    data: dataY1,
 	    options: CAENOptions,
 	});
-	document.getElementById('downloadYCAEN1').addEventListener('click', () => {
-	    downloadArray(populateY('y', 0), 'YCAEN1data.csv');
+	const downloadYCAEN1 = getEl('downloadYCAEN1');
+	if (downloadYCAEN1) downloadYCAEN1.addEventListener('click', () => {
+	    downloadArray(yCAEN1, 'YCAEN1data.csv');
 	});
-	document.getElementById('downloadYCAEN1data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedY, 0), 'YCAEN1originaldata.csv');
+	const downloadYCAEN1data = getEl('downloadYCAEN1data');
+	if (downloadYCAEN1data) downloadYCAEN1data.addEventListener('click', () => {
+	    download2DArray(yCAEN1Original, 'YCAEN1originaldata.csv');
 	});
 
 	//Y CAEN 3
@@ -233,20 +265,22 @@ function drawAnalysis(l,g) {
 	    {
 	      label: 'Y CAEN 3 -'+chartComments,
 	       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-	       data: populateY('y', 1),
+	       data: yCAEN3,
 	     },
 	  ],
-	};	
+	};
 	var barChartY2 = new Chart(cty2, {
 	    type: 'bar',
 	    data: dataY2,
 	    options: CAENOptions,
 	});
-	document.getElementById('downloadYCAEN3').addEventListener('click', () => {
-	    downloadArray(populateY('y', 1), 'YCAEN3data.csv');
+	const downloadYCAEN3 = getEl('downloadYCAEN3');
+	if (downloadYCAEN3) downloadYCAEN3.addEventListener('click', () => {
+	    downloadArray(yCAEN3, 'YCAEN3data.csv');
 	});
-	document.getElementById('downloadYCAEN3data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedY, 1), 'YCAEN3originaldata.csv');
+	const downloadYCAEN3data = getEl('downloadYCAEN3data');
+	if (downloadYCAEN3data) downloadYCAEN3data.addEventListener('click', () => {
+	    download2DArray(yCAEN3Original, 'YCAEN3originaldata.csv');
 	});
 
 	//Y CAEN 5
@@ -256,21 +290,23 @@ function drawAnalysis(l,g) {
 	        {
 	      label: 'Y CAEN 5 -'+chartComments,
 	       backgroundColor: 'rgba(20, 255, 132, 0.5)',
-	       data: populateY('y', 2),
+	       data: yCAEN5,
 	          options: options,
 	     },
 	  ],
-	};	
+	};
 	var barChartY3 = new Chart(cty3, {
 	    type: 'bar',
 	    data: dataY3,
 	    options: CAENOptions,
 	});
-	document.getElementById('downloadYCAEN5').addEventListener('click', () => {
-	    downloadArray(populateY('y', 2), 'YCAEN5data.csv');
+	const downloadYCAEN5 = getEl('downloadYCAEN5');
+	if (downloadYCAEN5) downloadYCAEN5.addEventListener('click', () => {
+	    downloadArray(yCAEN5, 'YCAEN5data.csv');
 	});
-	document.getElementById('downloadYCAEN5data').addEventListener('click', () => {
-	    download2DArray(getCAENdata(subtractPedY, 2), 'YCAEN5originaldata.csv');
+	const downloadYCAEN5data = getEl('downloadYCAEN5data');
+	if (downloadYCAEN5data) downloadYCAEN5data.addEventListener('click', () => {
+	    download2DArray(yCAEN5Original, 'YCAEN5originaldata.csv');
 	});
 	var end1 = new Date();
 	if (globalThis.showTime) {
@@ -340,12 +376,12 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 	     },],
 	};	
-	var pointTracking6X = new Chart(PTXYMIDDLE6, {	
+	var pointTracking6X = new Chart(PTXYMIDDLE6, { 	
 	    type: 'scatter',
 	    data: hit6middleX,
 	    options: pointTrackingOptions,
 	});
-	document.getElementById('download6PTMHdata').addEventListener('click', () => {
+	getEl('download6PTMHdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleHitsXY, '6PTMHoriginaldata.csv');
 	});
 
@@ -362,12 +398,12 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 		   },],	
 	};
-	var pointTracking6XsinglePoints = new Chart(PTXYMIDDLEX6, {	
+	var pointTracking6XsinglePoints = new Chart(PTXYMIDDLEX6, { 	
 	    type: 'scatter',
 	    data: hit6Xsinglepoints,
 	    options: pointTrackingOptions,
 	});
-	document.getElementById('download6PTMHXdata').addEventListener('click', () => {
+	getEl('download6PTMHXdata').addEventListener('click', () => {
 	    download2DArray(get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom), '6PTMHXoriginaldata.csv');
 	});
 	
@@ -384,12 +420,12 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 		   },],			
 	};
-	var pointTracking6YsinglePoints = new Chart(PTXYMIDDLEY6, {	
+	var pointTracking6YsinglePoints = new Chart(PTXYMIDDLEY6, { 	
 	    type: 'scatter',
 	    data: hit6Ysinglepoints,
 	    options: pointTrackingOptions,
 	});
-	document.getElementById('download6PTMHYdata').addEventListener('click', () => {
+	getEl('download6PTMHYdata').addEventListener('click', () => {
 	    download2DArray(get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom), '6PTMHYoriginaldata.csv');
 	});
 
@@ -406,7 +442,7 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 		   },],			
 	};
-	var pointTracking6XYsinglePoints = new Chart(PTXYMIDDLEXY6, {	
+	var pointTracking6XYsinglePoints = new Chart(PTXYMIDDLEXY6, { 	
 	    type: 'scatter',
 	    data: hit6XYsinglepoints,
 	    options: pointTrackingOptions,
@@ -443,12 +479,12 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 		   },],			
 	};
-	var pointTracking6XHitsFrequency = new Chart(PDIFFMXHITS6, {	
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMXHITS6, { 	
 	    type: 'bar',
 	    data: hit6Xhitsfrequency,
 	    options: barOptions,
 	});
-	document.getElementById('download6PDIFFMXHITSdata').addEventListener('click', () => {
+	getEl('download6PDIFFMXHITSdata').addEventListener('click', () => {
 	    download2DArray('', '6PDIFFMXHITSoriginaldata.csv');
 	});
 
@@ -469,14 +505,14 @@ function drawAnalysis(l,g) {
 			  data: hit6YhitsfrequencyValues,
 		      options: options,
 			  pointRadius: 3,
-		   },],					
+		   },],				
 	};
-	var pointTracking6XHitsFrequency = new Chart(PDIFFMYHITS6, {	
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMYHITS6, { 	
 	    type: 'bar',
 	    data: hit6Yhitsfrequency,
 	    options: barOptions,
 	});
-	document.getElementById('download6PDIFFMYHITSdata').addEventListener('click', () => {
+	getEl('download6PDIFFMYHITSdata').addEventListener('click', () => {
 	    download2DArray('', '6PDIFFMYHITSoriginaldata.csv');
 	});
 
@@ -491,14 +527,14 @@ function drawAnalysis(l,g) {
 			  data: getDeltaXYforhits('TB',tracking6MiddleHitsXY),
 		      options: options,
 			  pointRadius: 3,
-		   },]							
+		   },]					
 	};
-	var dxdyhitsScatter = new Chart(DXDYHITS6, {	
+	var dxdyhitsScatter = new Chart(DXDYHITS6, { 	
 	    type: 'scatter',
 	    data: dxdyhits,
 	    options: pointTrackingOptions,
 	});
-	document.getElementById('download6DXHITSDY').addEventListener('click', () => {
+	getEl('download6DXHITSDY').addEventListener('click', () => {
 	    download2DArray('', 'download6DXHITSDYoriginaldata.csv');
 	});
 	
@@ -589,12 +625,12 @@ function drawAnalysis(l,g) {
 			  pointRadius: 3,
 	     },],
 	};	
-	var pointTracking6MiddleX = new Chart(PTMX6, {	
+	var pointTracking6MiddleX = new Chart(PTMX6, { 	
 	    type: 'scatter',
 	    data: missed6middleX,
 	    options: pointTrackingOptions,
 	});
-	document.getElementById('download6PTMXdata').addEventListener('click', () => {
+	getEl('download6PTMXdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleMissedX, '6PTMXHoriginaldata.csv');
 	});
 	
@@ -608,15 +644,15 @@ function drawAnalysis(l,g) {
 		       backgroundColor: 'green',
 		       data: get6planemiddlemissed(tracking6MiddleMissedY, "Y"),
 		       options: options,
-			   pointRadius: 3,
+		   	   pointRadius: 3,
 	     },],
-	};	
-	var pointTracking6MiddleY = new Chart(PTMY6, {	
+	};
+	var pointTracking6MiddleY = new Chart(PTMY6, { 	
 	    type: 'scatter',
 	    data: missed6middleY,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download6PTMYdata').addEventListener('click', () => {
+	});
+	getEl('download6PTMYdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleMissedY, '6PTMYHoriginaldata.csv');
 	});
 	
@@ -632,13 +668,13 @@ function drawAnalysis(l,g) {
 	       options: options,
 		   pointRadius: 3,
 	     },],
-	};	
-	var pointTracking6MiddleXY = new Chart(PTMXY6, {	
+	};
+	var pointTracking6MiddleXY = new Chart(PTMXY6, { 	
 	    type: 'scatter',
 	    data: missed6middleXY,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download6PTMXYdata').addEventListener('click', () => {
+	});
+	getEl('download6PTMXYdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleMissedXY, '6PTMXYHoriginaldata.csv');
 	});
 	
@@ -660,13 +696,13 @@ function drawAnalysis(l,g) {
 	       data: values6MX,
 	     },
 	  ],
-	};	
-	var frequencyPointTracking6MiddleX = new Chart(PDIFFMX6, {	
+	};
+	var frequencyPointTracking6MiddleX = new Chart(PDIFFMX6, { 	
 	    type: 'bar',
 	    data: frequency6MiddleX,
 	    options: barOptions,
-	});	
-	document.getElementById('download6PDIFFMXdata').addEventListener('click', () => {
+	});
+	getEl('download6PDIFFMXdata').addEventListener('click', () => {
 	    download2DArray(frequency6MiddleX, 'PDIFFMX6originaldata.csv');
 	});
 	
@@ -688,22 +724,21 @@ function drawAnalysis(l,g) {
 	       data: values6MY,
 	     },
 	  ],
-	};	
-	var frequencyPointTracking6MiddleY = new Chart(PDIFFMY6, {	
+	};
+	var frequencyPointTracking6MiddleY = new Chart(PDIFFMY6, { 	
 	    type: 'bar',
 	    data: frequency6MiddleY,
 	    options: barOptions,
-	});	
-	document.getElementById('download6PDIFFMYdata').addEventListener('click', () => {
+	});
+	getEl('download6PDIFFMYdata').addEventListener('click', () => {
 	    download2DArray(frequency6MiddleY, 'PDIFFMY6originaldata.csv');
 	});
-	
 	end1 = new Date();
 	if (globalThis.showTime) {
 		console.log("6 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
-	
+
 	// 5 planes, X top missing
 	var missing5TopXtotalEvents = getTotalChartEvents(tracking5TopMissingX);
 	var tracking5TopMissingXComments = chartComments+' Total Events: '+missing5TopXtotalEvents;
@@ -722,13 +757,13 @@ function drawAnalysis(l,g) {
 		  pointRadius: 3,
 	     },
 	  ],
-	};	
-	var pointTracking5TopX = new Chart(PTTX5, {	
+	};
+	var pointTracking5TopX = new Chart(PTTX5, { 	
 	    type: 'scatter',
 	    data: missing5TopX,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download5PTTXdata').addEventListener('click', () => {
+	});
+	getEl('download5PTTXdata').addEventListener('click', () => {
 	    download2DArray(tracking5TopMissingX, '5PTTXoriginaldata.csv');
 	});
 
@@ -750,13 +785,13 @@ function drawAnalysis(l,g) {
 		  pointRadius: 3,
 	     },
 	  ],
-	};	
-	var pointTracking5MiddleX = new Chart(PTMX5, {	
+	};
+	var pointTracking5MiddleX = new Chart(PTMX5, { 	
 	    type: 'scatter',
 	    data: missing5MiddleX,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download5PTMXdata').addEventListener('click', () => {
+	});
+	getEl('download5PTMXdata').addEventListener('click', () => {
 	    download2DArray(tracking5MiddleMissingX, '5PTMXoriginaldata.csv');
 	});
 	
@@ -778,13 +813,13 @@ function drawAnalysis(l,g) {
 		  pointRadius: 3,
 	     },
 	  ],
-	};	
-	var pointTracking5BottomX = new Chart(PTBX5, {	
+	};
+	var pointTracking5BottomX = new Chart(PTBX5, { 	
 	    type: 'scatter',
 	    data: missing5BottomX,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download5PTBXdata').addEventListener('click', () => {
+	});
+	getEl('download5PTBXdata').addEventListener('click', () => {
 	    download2DArray(tracking5BottomMissingX, '5PTBXoriginaldata.csv');
 	});
 	
@@ -794,7 +829,7 @@ function drawAnalysis(l,g) {
 	var tracking5TopMissingY2_47Counts = getCountsBetween5('Y','TY',tracking5TopMissingY, 4.0, 45.0);
 	var tracking5TopMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5TopMissingY2_27Counts;
 	tracking5TopMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5TopMissingY2_47Counts;
-	var tracking5TopYMissingComments = chartComments+' Total Events: '+missing5TopYMissingtotalEvents + tracking5TopMissingYExtraComments;	
+	var tracking5TopYMissingComments = chartComments+' Total Events: '+missing5TopYMissingtotalEvents + tracking5TopMissingYExtraComments; 	
 	var missing5TopY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
@@ -807,12 +842,12 @@ function drawAnalysis(l,g) {
 	     },
 	  ],
 	};		
-	var pointTracking5TopY = new Chart(PTTY5, {	
+	var pointTracking5TopY = new Chart(PTTY5, { 	
 	    type: 'scatter',
 	    data: missing5TopY,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download5PTTYdata').addEventListener('click', () => {
+	});
+	getEl('download5PTTYdata').addEventListener('click', () => {
 	    download2DArray(tracking5TopMissingY, '5PTTYoriginaldata.csv');
 	});
 
@@ -822,7 +857,7 @@ function drawAnalysis(l,g) {
 	var tracking5MiddleMissingY2_47Counts = getCountsBetween5('Y','MY',tracking5MiddleMissingY, 4.0, 45.0);
 	var tracking5MiddleMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5MiddleMissingY2_27Counts;
 	tracking5MiddleMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5MiddleMissingY2_47Counts;
-	var tracking5MiddleYMissingComments = chartComments+' Total Events: '+tracking5MiddleMissingYExtraComments;	
+	var tracking5MiddleYMissingComments = chartComments+' Total Events: '+tracking5MiddleMissingYExtraComments; 	
 	var missing5MiddleY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
@@ -834,13 +869,13 @@ function drawAnalysis(l,g) {
 		  pointRadius: 3,
 	     },
 	  ],
-	};	
-	var pointTracking5MiddleY = new Chart(PTMY5, {	
+	};
+	var pointTracking5MiddleY = new Chart(PTMY5, { 	
 	    type: 'scatter',
 	    data: missing5MiddleY,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download5PTMYdata').addEventListener('click', () => {
+	});
+	getEl('download5PTMYdata').addEventListener('click', () => {
 	    download2DArray(tracking5MiddleMissingY, '5PTMYoriginaldata.csv');
 	});
 	
@@ -850,7 +885,7 @@ function drawAnalysis(l,g) {
 	var tracking5BottomMissingY2_47Counts = getCountsBetween5('Y','BY',tracking5BottomMissingY, 4.0, 45.0);
 	var tracking5BottomMissingYExtraComments = '- x between 2.5 and 26, Count : '+tracking5BottomMissingY2_27Counts;
 	tracking5BottomMissingYExtraComments += '- y between 4 and 45, Count: '+tracking5BottomMissingY2_47Counts;
-	var tracking5BottomYMissingComments = chartComments+' Total Events: '+missing5BottomYMissingtotalEvents+tracking5BottomMissingYExtraComments;	
+	var tracking5BottomYMissingComments = chartComments+' Total Events: '+missing5BottomYMissingtotalEvents+tracking5BottomMissingYExtraComments; 	
 	var missing5BottomY = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
@@ -862,13 +897,13 @@ function drawAnalysis(l,g) {
 		  pointRadius: 3,
 	     },
 	  ],
-	};	
-	var pointTracking5BottomY = new Chart(PTBY5, {	
+	};
+	var pointTracking5BottomY = new Chart(PTBY5, { 	
 	    type: 'scatter',
 	    data: missing5BottomY,
 	    options: pointTrackingOptions,
-	});			
-	document.getElementById('download5PTBYdata').addEventListener('click', () => {
+	});
+	getEl('download5PTBYdata').addEventListener('click', () => {
 	    download2DArray(tracking5BottomMissingY, '5PTBYoriginaldata.csv');
 	});
 	end1 = new Date();
@@ -883,7 +918,7 @@ function drawAnalysis(l,g) {
 	var tracking4TopMissingY2_47Counts = getCountsBetween4('Y','T',tracking4TopMissing, 4.0, 45.0);
 	var tracking4TopMissingYExtraComments = '- x between 2.5 and 26, Count : '+trackin4TopMissingY2_27Counts;
 	tracking4TopMissingYExtraComments += '- y between 4 and 45, Count: '+tracking4TopMissingY2_47Counts;
-	var tracking4TopMissingComments = chartComments+' Total Events: '+missing4TopMissingtotalEvents + tracking4TopMissingYExtraComments;	
+	var tracking4TopMissingComments = chartComments+' Total Events: '+missing4TopMissingtotalEvents + tracking4TopMissingYExtraComments; 	
 	var missing4Top = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [
@@ -896,12 +931,12 @@ function drawAnalysis(l,g) {
 	     },
 	  ],
 	};	
-	var pointTracking4Top = new Chart(PTT4, {	
+	var pointTracking4Top = new Chart(PTT4, { 	
 	    type: 'scatter',
 	    data: missing4Top,
 	    options: pointTrackingOptions,
-	});		
-	document.getElementById('download4PTdata').addEventListener('click', () => {
+	});
+	getEl('download4PTdata').addEventListener('click', () => {
 	    download2DArray(tracking4TopMissing, '4PToriginaldata.csv');
 	});
 		
@@ -924,12 +959,12 @@ function drawAnalysis(l,g) {
 	     },
 	  ],
 	};	
-	var pointTracking4Middle = new Chart(PTM4, {	
+	var pointTracking4Middle = new Chart(PTM4, { 	
 	    type: 'scatter',
 	    data: missing4Middle,
 	    options: pointTrackingOptions,
-	});		
-	document.getElementById('download4PMdata').addEventListener('click', () => {
+	});
+	getEl('download4PMdata').addEventListener('click', () => {
 	    download2DArray(tracking4MiddleMissing, '4PMoriginaldata.csv');
 	});
 	
@@ -952,12 +987,12 @@ function drawAnalysis(l,g) {
 	     },
 	  ],
 	};	
-	var pointTracking4Bottom = new Chart(PTB4, {	
+	var pointTracking4Bottom = new Chart(PTB4, { 	
 	    type: 'scatter',
 	    data: missing4Bottom,
 	    options: pointTrackingOptions,
-	});	
-	document.getElementById('download4PBdata').addEventListener('click', () => {
+	});
+	getEl('download4PBdata').addEventListener('click', () => {
 	    download2DArray(tracking4BottomMissing, '4BToriginaldata.csv');
 	});
 	end1 = new Date();
@@ -1017,32 +1052,32 @@ function drawAnalysis(l,g) {
 		    type: 'scatter',
 		    data: DXDYdatasets,
 		    options: deltaXdeltaYOptions,
-	});	
-	document.getElementById('downloadDXDY').addEventListener('click', () => {
+		});
+	getEl('downloadDXDY').addEventListener('click', () => {
 	    downloadXYdata(getDxDy(0), 'DXDYdata.csv');
 	});
-	document.getElementById('downloadDXdata').addEventListener('click', () => {
+	getEl('downloadDXdata').addEventListener('click', () => {
 	    download2DArray(dxbothlayers, 'DXoriginaldata.csv');
 	});
-	document.getElementById('downloadDYdata').addEventListener('click', () => {
+	getEl('downloadDYdata').addEventListener('click', () => {
 	    download2DArray(dybothlayers, 'DYoriginaldata.csv');
 	});
-	document.getElementById('downloadDXDYTOPMIDDLE').addEventListener('click', () => {
+	getEl('downloadDXDYTOPMIDDLE').addEventListener('click', () => {
 	    downloadXYdata(getDxDyMiddle(dxtopmiddlebothlayers, dytopmiddlebothlayers, 0), 'DXDYTOPMIDDLEdata.csv');
 	});
-	document.getElementById('downloadDXTMdata').addEventListener('click', () => {
+	getEl('downloadDXTMdata').addEventListener('click', () => {
 	    download2DArray(dxtopmiddlebothlayers, 'DXTMoriginaldata.csv');
 	});
-	document.getElementById('downloadDYTMdata').addEventListener('click', () => {
+	getEl('downloadDYTMdata').addEventListener('click', () => {
 	    download2DArray(dytopmiddlebothlayers, 'DYTMoriginaldata.csv');
-	});	
-	document.getElementById('downloadDXDYBOTTOMMIDDLE').addEventListener('click', () => {
+	});
+	getEl('downloadDXDYBOTTOMMIDDLE').addEventListener('click', () => {
 	    downloadXYdata(getDxDyMiddle(dxbottommiddlebothlayers, dybottommiddlebothlayers, 0), 'DXDYBOTTOMMIDDLEdata.csv');
 	});
-	document.getElementById('downloadDXBMdata').addEventListener('click', () => {
+	getEl('downloadDXBMdata').addEventListener('click', () => {
 	    download2DArray(dxbottommiddlebothlayers, 'DXBMoriginaldata.csv');
 	});
-	document.getElementById('downloadDYBMdata').addEventListener('click', () => {
+	getEl('downloadDYBMdata').addEventListener('click', () => {
 	    download2DArray(dybottommiddlebothlayers, 'DYBMoriginaldata.csv');
 	});
 	
@@ -1093,25 +1128,25 @@ function drawAnalysis(l,g) {
 			labels: deltaXFrequency.datasets[0].data.map(item => item.x),
 		    data: deltaXFrequency,
 		    options: deltaXdeltaYOptions,
-	});	
-	document.getElementById('downloadDX1D').addEventListener('click', () => {
+		});
+	getEl('downloadDX1D').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dxbothlayers,0,2), 'DX1Ddata.csv');
-	});	
-	document.getElementById('downloadDX1Ddata').addEventListener('click', () => {
+	});
+	getEl('downloadDX1Ddata').addEventListener('click', () => {
 	    download2DArray(dxbothlayers, 'DX1Doriginaldata.csv');
-	});	
-	document.getElementById('downloadDX1DTOPMIDDLE').addEventListener('click', () => {
+	});
+	getEl('downloadDX1DTOPMIDDLE').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0,2), 'DX1DTOPMIDDLEdata.csv');
-	});	
-	document.getElementById('downloadDX1DTOPMIDDLEdata').addEventListener('click', () => {
+	});
+	getEl('downloadDX1DTOPMIDDLEdata').addEventListener('click', () => {
 	    download2DArray(dxtopmiddlebothlayers, 'DX1DTOPMIDDLEoriginaldata.csv');
-	});	
-	document.getElementById('downloadDX1DBOTTOMMIDDLE').addEventListener('click', () => {
+	});
+	getEl('downloadDX1DBOTTOMMIDDLE').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0,2), 'DX1DBOTTOMMIDDLEdata.csv');
-	});	
-	document.getElementById('downloadDX1DBOTTOMMIDDLEdata').addEventListener('click', () => {
+	});
+	getEl('downloadDX1DBOTTOMMIDDLEdata').addEventListener('click', () => {
 	    download2DArray(dxbottommiddlebothlayers, 'DX1DBOTTOMMIDDLEoriginaldata.csv');
-	});	
+	});
 
 	//delta Y frequencies
 	var deltaYFrequencyEvents = getTotalChartEvents(dybothlayers);
@@ -1149,7 +1184,7 @@ function drawAnalysis(l,g) {
 		   borderWidth: 1,
 		   lineTension: 0.5,
 		   fill: false		   
-		 },
+		 },		
 	 ],
 	};		
 	var scatterDY1DChart = new Chart(dy1d, {
@@ -1157,25 +1192,25 @@ function drawAnalysis(l,g) {
 			labels: deltaYFrequency.datasets[0].data.map(item => item.x),
 		    data: deltaYFrequency,
 		    options: deltaXdeltaYOptions,
-	});	
-	document.getElementById('downloadDY1D').addEventListener('click', () => {
+	});
+	getEl('downloadDY1D').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dybothlayers,0,2), 'DY1Ddata.csv');
-	});	
-	document.getElementById('downloadDY1Ddata').addEventListener('click', () => {
+	});
+	getEl('downloadDY1Ddata').addEventListener('click', () => {
 	    download2DArray(dybothlayers, 'DY1Doriginaldata.csv');
-	});	
-	document.getElementById('downloadDY1DTOPMIDDLE').addEventListener('click', () => {
+	});
+	getEl('downloadDY1DTOPMIDDLE').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0,2), 'DY1DTOPMIDDLEdata.csv');
-	});	
-	document.getElementById('downloadDY1DTOPMIDDLEdata').addEventListener('click', () => {
+	});
+	getEl('downloadDY1DTOPMIDDLEdata').addEventListener('click', () => {
 	    download2DArray(dytopmiddlebothlayers, 'DY1DTOPMIDDLEoriginaldata.csv');
-	});	
-	document.getElementById('downloadDY1DBOTTOMMIDDLE').addEventListener('click', () => {
+	});
+	getEl('downloadDY1DBOTTOMMIDDLE').addEventListener('click', () => {
 	    downloadArray(calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0,2), 'DY1DBOTTOMMIDDLEdata.csv');
-	});	
-	document.getElementById('downloadDY1DBOTTOMMIDDLEdata').addEventListener('click', () => {
+	});
+	getEl('downloadDY1DBOTTOMMIDDLEdata').addEventListener('click', () => {
 	    download2DArray(dybottommiddlebothlayers, 'DY1DBOTTOMMIDDLEoriginaldata.csv');
-	});	
+	});
 
 	// channel frequency for X
 	var dxtopChannelComments = globalThis.selectedFileClean+' '+globalThis.conversionComment;
@@ -1207,16 +1242,16 @@ function drawAnalysis(l,g) {
 		    data: frequencyTopMapX,
 		    options: deltaXdeltaYOptions,
 	});	
-	document.getElementById('downloadDXT1D').addEventListener('click', () => {
+	getEl('downloadDXT1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxtopChannelfrequency), 'DXT1Ddata.csv');
 	});
-	document.getElementById('downloadDXT1Ddata').addEventListener('click', () => {
+	getEl('downloadDXT1Ddata').addEventListener('click', () => {
 	    downloadArray(dxtopChannelfrequency, 'DXT1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDXTM1D').addEventListener('click', () => {
+	getEl('downloadDXTM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxtopmiddleChannelfrequency), 'DXTM1Ddata.csv');
 	});
-	document.getElementById('downloadDXTM1Ddata').addEventListener('click', () => {
+	getEl('downloadDXTM1Ddata').addEventListener('click', () => {
 	    downloadArray(dxtopmiddleChannelfrequency, 'DXTM1Dchanneldata.csv');
 	});
 
@@ -1257,22 +1292,22 @@ function drawAnalysis(l,g) {
 		    data: frequencyMiddleMapX,
 		    options: deltaXdeltaYOptions,
 	});	
-	document.getElementById('downloadDXM1D').addEventListener('click', () => {
+	getEl('downloadDXM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxmiddleChannelfrequency), 'DXM1Ddata.csv');
 	});
-	document.getElementById('downloadDXM1Ddata').addEventListener('click', () => {
+	getEl('downloadDXM1Ddata').addEventListener('click', () => {
 	    downloadArray(dxmiddleChannelfrequency, 'DXM1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDXM1DT').addEventListener('click', () => {
+	getEl('downloadDXM1DT').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxmiddleChannelfrequencyT), 'DXM1DTdata.csv');
 	});
-	document.getElementById('downloadDXM1DTdata').addEventListener('click', () => {
+	getEl('downloadDXM1DTdata').addEventListener('click', () => {
 	    downloadArray(dxmiddleChannelfrequencyT, 'DXM1DTchanneldata.csv');
 	});
-	document.getElementById('downloadDXM1DB').addEventListener('click', () => {
+	getEl('downloadDXM1DB').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxmiddleChannelfrequencyB), 'DXM1DBdata.csv');
 	});
-	document.getElementById('downloadDXM1DBdata').addEventListener('click', () => {
+	getEl('downloadDXM1DBdata').addEventListener('click', () => {
 	    downloadArray(dxmiddleChannelfrequencyB, 'DXM1DBchanneldata.csv');
 	});
 
@@ -1306,16 +1341,16 @@ function drawAnalysis(l,g) {
 		    options: deltaXdeltaYOptions,
 		}		
 	);	
-	document.getElementById('downloadDXB1D').addEventListener('click', () => {
+	getEl('downloadDXB1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxbottomChannelfrequency), 'DXB1Ddata.csv');
 	});
-	document.getElementById('downloadDXB1Ddata').addEventListener('click', () => {
+	getEl('downloadDXB1Ddata').addEventListener('click', () => {
 	    downloadArray(dxbottomChannelfrequency, 'DXB1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDXBM1D').addEventListener('click', () => {
+	getEl('downloadDXBM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dxbottomMiddleChannelfrequency), 'DXBM1Ddata.csv');
 	});
-	document.getElementById('downloadDXBM1Ddata').addEventListener('click', () => {
+	getEl('downloadDXBM1Ddata').addEventListener('click', () => {
 	    downloadArray(dxbottomMiddleChannelfrequency, 'DXBM1Dchanneldata.csv');
 	});
 
@@ -1347,16 +1382,16 @@ function drawAnalysis(l,g) {
 		    data: frequencyTopMapY,
 		    options: deltaXdeltaYOptions,
 	});	
-	document.getElementById('downloadDYT1D').addEventListener('click', () => {
+	getEl('downloadDYT1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dytopChannelfrequency), 'DYT1Ddata.csv');
 	});
-	document.getElementById('downloadDYT1Ddata').addEventListener('click', () => {
+	getEl('downloadDYT1Ddata').addEventListener('click', () => {
 	    downloadArray(dytopChannelfrequency, 'DYT1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDYTM1D').addEventListener('click', () => {
+	getEl('downloadDYTM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dytopMiddleChannelfrequency), 'DYTM1Ddata.csv');
 	});
-	document.getElementById('downloadDYTM1Ddata').addEventListener('click', () => {
+	getEl('downloadDYTM1Ddata').addEventListener('click', () => {
 	    downloadArray(dytopMiddleChannelfrequency, 'DYTM1Dchanneldata.csv');
 	});
 	
@@ -1397,22 +1432,22 @@ function drawAnalysis(l,g) {
 		    data: frequencyMiddleMapY,
 		    options: deltaXdeltaYOptions
 	});	
-	document.getElementById('downloadDYM1D').addEventListener('click', () => {
+	getEl('downloadDYM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dymiddleChannelfrequency), 'DYM1Ddata.csv');
 	});
-	document.getElementById('downloadDYM1Ddata').addEventListener('click', () => {
+	getEl('downloadDYM1Ddata').addEventListener('click', () => {
 	    downloadArray(dymiddleChannelfrequency, 'DYM1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDYM1DT').addEventListener('click', () => {
+	getEl('downloadDYM1DT').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dymiddleChannelfrequencyT), 'DYM1DTdata.csv');
 	});
-	document.getElementById('downloadDYM1DTdata').addEventListener('click', () => {
+	getEl('downloadDYM1DTdata').addEventListener('click', () => {
 	    downloadArray(dymiddleChannelfrequencyT, 'DYM1DTchanneldata.csv');
 	});
-	document.getElementById('downloadDYM1DB').addEventListener('click', () => {
+	getEl('downloadDYM1DB').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dymiddleChannelfrequencyB), 'DYM1DBdata.csv');
 	});
-	document.getElementById('downloadDYM1DBdata').addEventListener('click', () => {
+	getEl('downloadDYM1DBdata').addEventListener('click', () => {
 	    downloadArray(dymiddleChannelfrequencyB, 'DYM1DBchanneldata.csv');
 	});
 
@@ -1445,16 +1480,16 @@ function drawAnalysis(l,g) {
 		    data: frequencyBottomMapY,
 		    options: deltaXdeltaYOptions,
 	});		
-	document.getElementById('downloadDYB1D').addEventListener('click', () => {
+	getEl('downloadDYB1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dybottomChannelfrequency), 'DYB1Ddata.csv');
 	});
-	document.getElementById('downloadDYB1Ddata').addEventListener('click', () => {
+	getEl('downloadDYB1Ddata').addEventListener('click', () => {
 	    downloadArray(dybottomChannelfrequency, 'DYB1Dchanneldata.csv');
 	});
-	document.getElementById('downloadDYBM1D').addEventListener('click', () => {
+	getEl('downloadDYBM1D').addEventListener('click', () => {
 	    downloadXYdata(getFrequency(dybottomMiddleChannelfrequency), 'DYBM1Ddata.csv');
 	});
-	document.getElementById('downloadDYBM1Ddata').addEventListener('click', () => {
+	getEl('downloadDYBM1Ddata').addEventListener('click', () => {
 	    downloadArray(dybottomMiddleChannelfrequency, 'DYBM1Dchanneldata.csv');
 	});
 	end1 = new Date();
@@ -1482,13 +1517,13 @@ function drawAnalysis(l,g) {
 		    data: DXDZDYDZdatasets,
 		    options: deltaXdeltaYOptions,
 	});
-	document.getElementById('downloadDXDZDYDZ').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZ').addEventListener('click', () => {
 	    downloadXYdata(getDxDz(0), 'DXDZDYDZdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZXdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZXdata').addEventListener('click', () => {
 	    download2DArray(dxbothlayers, 'DXDZDYDZXdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZYdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZYdata').addEventListener('click', () => {
 	    download2DArray(dybothlayers, 'DXDZDYDZYdata.csv');
 	});
 
@@ -1511,13 +1546,13 @@ function drawAnalysis(l,g) {
 		    data: DXDZDYDZTMdatasets,
 		    options: deltaXdeltaYOptions,
 	});
-	document.getElementById('downloadDXDZDYDZTM').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZTM').addEventListener('click', () => {
 	    downloadXYdata(getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0), 'DXDZDYDZTMdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZTMXdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZTMXdata').addEventListener('click', () => {
 	    download2DArray(dxtopmiddlebothlayers, 'DXDZDYDZTMXdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZTMYdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZTMYdata').addEventListener('click', () => {
 	    download2DArray(dytopmiddlebothlayers, 'DXDZDYDZTMYdata.csv');
 	});
 
@@ -1540,13 +1575,13 @@ function drawAnalysis(l,g) {
 		    data: DXDZDYDZMBdatasets,
 		    options: deltaXdeltaYOptions,
 	});
-	document.getElementById('downloadDXDZDYDZMB').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZMB').addEventListener('click', () => {
 	    downloadXYdata(getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0), 'DXDZDYDZMBdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZMBXdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZMBXdata').addEventListener('click', () => {
 	    download2DArray(dxbottommiddlebothlayers, 'DXDZDYDZMBXdata.csv');
 	});
-	document.getElementById('downloadDXDZDYDZMBYdata').addEventListener('click', () => {
+	getEl('downloadDXDZDYDZMBYdata').addEventListener('click', () => {
 	    download2DArray(dybottommiddlebothlayers, 'DXDZDYDZMBYdata.csv');
 	});
 	end1 = new Date();
@@ -1614,7 +1649,7 @@ function drawAnalysis(l,g) {
 			data: deltaTdatasets,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDTData').addEventListener('click', () => {	
+	getEl('downloadDTData').addEventListener('click', () => {	
 		download2DArray(globalThis.eventTime, 'DTdata.csv');
 	});
 	
@@ -1636,7 +1671,7 @@ function drawAnalysis(l,g) {
 			data: dT10,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT1-0').addEventListener('click', () => {
+	getEl('downloadDT1-0').addEventListener('click', () => {
 	    downloadArray(getDeltaT(0,1), 'DTCAEN1-0data.csv');
 	});
 	
@@ -1657,7 +1692,7 @@ function drawAnalysis(l,g) {
 			data: dT20,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT2-0').addEventListener('click', () => {	
+	getEl('downloadDT2-0').addEventListener('click', () => {	
 		downloadArray(getDeltaT(0,2), 'DTCAEN2-0data.csv');
 	});
 	
@@ -1678,7 +1713,7 @@ function drawAnalysis(l,g) {
 			data: dT30,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT3-0').addEventListener('click', () => {	
+	getEl('downloadDT3-0').addEventListener('click', () => {	
 		downloadArray(getDeltaT(0,3), 'DTCAEN3-0data.csv');
 	});
 
@@ -1699,7 +1734,7 @@ function drawAnalysis(l,g) {
 			data: dT40,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT4-0').addEventListener('click', () => {	
+	getEl('downloadDT4-0').addEventListener('click', () => {	
 		downloadArray(getDeltaT(0,4), 'DTCAEN4-0data.csv');
 	});
 
@@ -1720,7 +1755,7 @@ function drawAnalysis(l,g) {
 			data: dT50,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT5-0').addEventListener('click', () => {	
+	getEl('downloadDT5-0').addEventListener('click', () => {	
 		downloadArray(getDeltaT(0,5), 'DTCAEN5-0data.csv');
 	});
 
@@ -1741,7 +1776,7 @@ function drawAnalysis(l,g) {
 			data: dT42,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT4-2').addEventListener('click', () => {	
+	getEl('downloadDT4-2').addEventListener('click', () => {	
 		downloadArray(getDeltaT(2,4), 'DTCAEN2-4data.csv');
 	});
 
@@ -1762,7 +1797,7 @@ function drawAnalysis(l,g) {
 			data: dT13,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT1-3').addEventListener('click', () => {	
+	getEl('downloadDT1-3').addEventListener('click', () => {	
 		downloadArray(getDeltaT(3,1), 'DTCAEN1-3data.csv');
 	});
 
@@ -1783,7 +1818,7 @@ function drawAnalysis(l,g) {
 			data: dT15,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT1-5').addEventListener('click', () => {	
+	getEl('downloadDT1-5').addEventListener('click', () => {	
 		downloadArray(getDeltaT(5,1), 'DTCAEN1-5data.csv');
 	});
 
@@ -1804,7 +1839,7 @@ function drawAnalysis(l,g) {
 			data: dT35,
 			options: deltaTOptions,
 	});	
-	document.getElementById('downloadDT3-5').addEventListener('click', () => {	
+	getEl('downloadDT3-5').addEventListener('click', () => {	
 		downloadArray(getDeltaT(5,3), 'DTCAEN3-5data.csv');
 	});
 	end1 = new Date();
@@ -1843,7 +1878,7 @@ function drawAnalysis(l,g) {
 	    data: numberTracks4TM,
 	    options: trackCountOptions,
 	});
-	document.getElementById('downloadTRACKS4TM').addEventListener('click', () => {
+	getEl('downloadTRACKS4TM').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(4,'TM'), 'EVENTSTRACKS4TMMINUTEdata.csv');
 	});
 	
@@ -1867,7 +1902,7 @@ function drawAnalysis(l,g) {
 	    data: numberTracks4MB,
 		options: trackCountOptions,
 	});
-	document.getElementById('downloadTRACKS4MB').addEventListener('click', () => {
+	getEl('downloadTRACKS4MB').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(4,'MB'), 'EVENTSTRACKS4MBMINUTEdata.csv');
 	});		
 	
@@ -1891,7 +1926,7 @@ function drawAnalysis(l,g) {
 	    data: numberTracks5M,
 		options: trackCountOptions,
 	});
-	document.getElementById('downloadTRACKS5M').addEventListener('click', () => {
+	getEl('downloadTRACKS5M').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(5,'M'), 'EVENTSTRACKS5MINUTEdataM.csv');
 	});
 
@@ -1915,7 +1950,7 @@ function drawAnalysis(l,g) {
 	    data: numberTracks5TB,
 		options: trackCountOptions,
 	});
-	document.getElementById('downloadTRACKS5TB').addEventListener('click', () => {
+	getEl('downloadTRACKS5TB').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(5,'TB'), 'EVENTSTRACKS5MINUTEdataTB.csv');
 	});
 		
@@ -1939,7 +1974,7 @@ function drawAnalysis(l,g) {
 	    data: numberTracks6,
 		options: trackCountOptions,
 	});
-	document.getElementById('downloadTRACKS6').addEventListener('click', () => {
+	getEl('downloadTRACKS6').addEventListener('click', () => {
 	    downloadXYdata(getEventsWithTracksPerMinute(6,''), 'EVENTSTRACKS6MINUTEdata.csv');
 	});
 
@@ -1994,7 +2029,7 @@ function drawAnalysis(l,g) {
         },
         options: adcOptionsX,
 	});
-	document.getElementById('downloadXCAEN0ADC').addEventListener('click', () => {
+	getEl('downloadXCAEN0ADC').addEventListener('click', () => {
 	    downloadXYdata(popXADR(0), 'XCAEN0ADCdata.csv');
 	});
 
@@ -2025,7 +2060,7 @@ function drawAnalysis(l,g) {
         },
 		options: adcOptionsX,
 	});
-	document.getElementById('downloadXCAEN2ADC').addEventListener('click', () => {
+	getEl('downloadXCAEN2ADC').addEventListener('click', () => {
 	    downloadXYdata(popXADR(1), 'XCAEN2ADCdata.csv');
 	});
 
@@ -2056,7 +2091,7 @@ function drawAnalysis(l,g) {
         },
 		options: adcOptionsX,
 	});
-	document.getElementById('downloadXCAEN4ADC').addEventListener('click', () => {
+	getEl('downloadXCAEN4ADC').addEventListener('click', () => {
 	    downloadXYdata(popXADR(2), 'XCAEN4ADCdata.csv');
 	});
 		
@@ -2110,7 +2145,7 @@ function drawAnalysis(l,g) {
         },
         options: adcOptionsY,
 	});
-	document.getElementById('downloadYCAEN1ADC').addEventListener('click', () => {
+	getEl('downloadYCAEN1ADC').addEventListener('click', () => {
 	    downloadXYdata(popYADR(0), 'YCAEN1ADCdata.csv');
 	});
 	
@@ -2141,7 +2176,7 @@ function drawAnalysis(l,g) {
         },
 		options: adcOptionsY,
 	});
-	document.getElementById('downloadYCAEN3ADC').addEventListener('click', () => {
+	getEl('downloadYCAEN3ADC').addEventListener('click', () => {
 	    downloadXYdata(popYADR(1), 'YCAEN3ADCdata.csv');
 	});
 		
@@ -2172,7 +2207,7 @@ function drawAnalysis(l,g) {
         },
 		options: adcOptionsY,
 	});
-	document.getElementById('downloadYCAEN5ADC').addEventListener('click', () => {
+	getEl('downloadYCAEN5ADC').addEventListener('click', () => {
 	    downloadXYdata(popYADR(2), 'YCAEN5ADCdata.csv');
 	});
 

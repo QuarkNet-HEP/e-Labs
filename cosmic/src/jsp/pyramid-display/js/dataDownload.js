@@ -22,79 +22,80 @@ function downloadXYdata(data, filename) {
 }
 
 function checkForObjects(data) {
+	// Produce the same flattened array-of-strings output as original but with fewer allocations.
 	var newData = [];
-	var newDataLine = [];
 	for (var i = 0; i < data.length; i++) {
-		for (var j = 0; j < data[i].length; j++) {
-			newDataLine = [];
-			if (typeof data[i][j] === 'object') {
-				var keys = Object.keys(data[i][j]);
-				var values = Object.values(data[i][j]);
-				if (keys.length > 0) {
-					newDataLine.push(keys.join(','));
+		var row = data[i];
+		for (var j = 0; j < row.length; j++) {
+			var cell = row[j];
+			if (cell && typeof cell === 'object') {
+				// collect keys and values manually (faster than Object.keys/values)
+				var kParts = [];
+				var vParts = [];
+				for (var k in cell) {
+					if (Object.prototype.hasOwnProperty.call(cell, k)) {
+						kParts.push(k);
+						vParts.push(cell[k]);
+					}
 				}
-				if (values.length > 0) {
-					newDataLine.push(values.join(','));
-				}			
-			 } else {
-				newDataLine.push(data[i][j]);
-			 }
-			 newData.push(newDataLine+"\n");
+				// combine keys and values into a single comma-separated string (matches original coercion)
+				var combined = '';
+				if (kParts.length > 0) combined += kParts.join(',');
+				if (vParts.length > 0) {
+					if (combined.length > 0) combined += ',';
+					combined += vParts.join(',');
+				}
+				newData.push(combined + "\n");
+			} else {
+				newData.push(String(cell) + "\n");
+			}
 		}
 	}
 	return newData;
 }
+
 function downloadArrayAsArray(data, filename, nestedLevels){
-	//let csvContent = "data:text/csv;charset=utf-8,";
-	var csvContent = '';
-	//console.log(data);
+	// Build result pieces in an array then join once — faster than repeated string concatenation.
+	var parts = [];
 	if (nestedLevels == 1) {
-		data.forEach(function(rowArray) {
-		    let row = rowArray.join(",");
-		    csvContent += '['+row + "],\r\n";
-		});
+		for (var i = 0; i < data.length; i++) {
+			parts.push('[' + data[i].join(',') + '],\r\n');
+		}
+	} else if (nestedLevels == 2) {
+		for (var i = 0; i < data.length; i++) {
+			parts.push('[');
+			var rowArray = data[i];
+			for (var r = 0; r < rowArray.length; r++) {
+				parts.push('[');
+				var subRow = rowArray[r];
+				for (var s = 0; s < subRow.length; s++) {
+					parts.push(String(subRow[s]) + ',');
+				}
+				parts.push('],');
+			}
+			parts.push('],\r\n');
+		}
+	} else if (nestedLevels == 3) {
+		for (var i = 0; i < data.length; i++) {
+			parts.push('[');
+			var rowArray = data[i];
+			for (var r = 0; r < rowArray.length; r++) {
+				parts.push('[');
+				var subRow = rowArray[r];
+				for (var s = 0; s < subRow.length; s++) {
+					parts.push('[');
+					var itemArray = subRow[s];
+					for (var t = 0; t < itemArray.length; t++) {
+						parts.push(String(itemArray[t]) + ',');
+					}
+					parts.push('],');
+				}
+				parts.push('],');
+			}
+			parts.push('],\r\n');
+		}
 	}
-	if (nestedLevels == 2) {
-		data.forEach(function(rowArray) {
-		    let row = rowArray;
-			csvContent += '[';
-			rowArray.forEach(function(subRowArray) {
-				let subRow = subRowArray;
-				csvContent += '[';
-				subRowArray.forEach(function(itemArray) {
-					let item = itemArray;
-					csvContent += item +",";
-				});
-			csvContent += "],";
-			});
-		csvContent += "],\r\n";
-		});
-	};
-	if (nestedLevels == 3) {
-		data.forEach(function(rowArray) {
-		    let row = rowArray;
-			csvContent += '[';
-			rowArray.forEach(function(subRowArray) {
-				let subRow = subRowArray;
-				csvContent += '[';
-				subRowArray.forEach(function(itemArray) {
-					let item = itemArray;
-					csvContent += '['+item + "],";
-				});
-			csvContent += "],";
-			});
-		csvContent += "],\r\n";
-		});
-	};
-	/*
-	const encodedUri = encodeURI(csvContent);	
-	const link = document.createElement("a");
-	link.setAttribute("href", encodedUri);
-	link.setAttribute("download", filename);
-	document.body.appendChild(link); // Append to trigger download in some browsers
-	link.click();
-	document.body.removeChild(link); // Clean up
-	*/
+	var csvContent = parts.join('');
 	const blob = new Blob([csvContent], { type: 'text/csv' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
@@ -107,21 +108,23 @@ function downloadArrayAsArray(data, filename, nestedLevels){
 }
 
 function downloadArray(data, filename){
-	const csvContent = data.join('\n'); 
-	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);	
-	const link = document.createElement("a");
-	link.setAttribute("href", encodedUri);
-	link.setAttribute("download", filename);
-	document.body.appendChild(link); // Append to trigger download in some browsers
+	// Use Blob/URL method (more robust for large data); content preserved as before
+	const csvString = data.join('\n');
+	const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = filename;
+	document.body.appendChild(link);
 	link.click();
-	document.body.removeChild(link); // Clean up
+	document.body.removeChild(link);
+	URL.revokeObjectURL(url);
 }
 
 function download2DArray(data, filename) {
-	var csvContent = checkForObjects(data);	
-	//console.log(csvContent);
-	//let csvContent = newData.map(e => e.join(",")).join("\n");
-	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);	
+	var csvContent = checkForObjects(data);
+	// Keep the original coercion behavior (array coerced to string when concatenated with prefix)
+	const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
 	const link = document.createElement("a");
 	link.setAttribute("href", encodedUri);
 	link.setAttribute("download", filename);

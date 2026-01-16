@@ -11,35 +11,45 @@ var microMinute = 60000000;
 
 // Populate first 6 charts
 function populateX(letter, layer){
-  	var vals = Array(xLayerLength).fill(0);
-  	var pedestal = subtractPedX;
-  	for(var a = 0; a < pedestal.length; a++) {
-  		var modPed = pedestal[a][layer].slice(0, xLayerLength).map(function(value) {
-    	return value > 0 ? 1 : value;
-  		});
-    	vals = addArrays(vals, modPed);
-  	}
-	if (debugAnalysis === true) {
-  		console.log("X Pedestal "+layer+letter);
-  		console.log("values:", vals);
-  	}  	
-  	return vals;
+    // Optimized: avoid slice/map and repeated addArrays allocations
+    var vals = Array(xLayerLength).fill(0);
+    var pedestal = subtractPedX;
+    for (var a = 0; a < pedestal.length; a++) {
+        var row = pedestal[a][layer];
+        // defensive: if row is undefined, skip
+        if (!row) continue;
+        var len = Math.min(xLayerLength, row.length);
+        for (var i = 0; i < len; i++) {
+            var value = row[i];
+            vals[i] += (value > 0 ? 1 : value);
+        }
+        // if row is shorter than xLayerLength, remaining vals unchanged
+    }
+    if (debugAnalysis === true) {
+        console.log("X Pedestal "+layer+letter);
+        console.log("values:", vals);
+    }
+    return vals;
 }// end of populateX
 
 function populateY(letter, layer){
-  	var vals = Array(yLayerLength).fill(0);
-  	var pedestal =  subtractPedY;
-  	for(var a = 0; a < pedestal.length; a++){
-  		var modPed = pedestal[a][layer].slice(0, yLayerLength).map(function(value) {
-    	return value > 0 ? 1 : value;
-  		});
-    	vals = addArrays(vals, modPed)
-  	}
-	if (debugAnalysis === true) {
-  		console.log("Y Pedestal "+layer+letter);
-  		console.log("values:", vals);
-  	}  	
-  	return vals;
+    // Optimized: avoid slice/map and repeated addArrays allocations
+    var vals = Array(yLayerLength).fill(0);
+    var pedestal = subtractPedY;
+    for (var a = 0; a < pedestal.length; a++){
+        var row = pedestal[a][layer];
+        if (!row) continue;
+        var len = Math.min(yLayerLength, row.length);
+        for (var i = 0; i < len; i++) {
+            var value = row[i];
+            vals[i] += (value > 0 ? 1 : value);
+        }
+    }
+    if (debugAnalysis === true) {
+        console.log("Y Pedestal "+layer+letter);
+        console.log("values:", vals);
+    }
+    return vals;
 }// end of populateY
 
 // Get data for download from first 6 charts
@@ -202,41 +212,46 @@ function arrayMax(arr) {
 };//end of arrayMax
 
 function getBinnedData(arr, intervalSize) {
-	var bins = [];
-	var binCount = 0;
-	var interval = intervalSize;
-	var arrayMinValue = arrayMin(arr)-intervalSize;
-	var arrayMaxValue = arrayMax(arr)+intervalSize;
+    // Optimized to compute min/max in one pass and reduce overhead.
+    var bins = [];
+    if (!Array.isArray(arr) || arr.length === 0) return bins;
+    var interval = intervalSize;
+    var min = Infinity, max = -Infinity;
+    for (var i = 0; i < arr.length; i++) {
+        var v = Number(arr[i]);
+        if (v < min) min = v;
+        if (v > max) max = v;
+    }
+    // Expand the range slightly to match original behavior
+    var arrayMinValue = min - intervalSize;
+    var arrayMaxValue = max + intervalSize;
 
-	//Setup Bins
-	for(var i = arrayMinValue; i <= arrayMaxValue; i += interval){
-	  bins.push({
-	    binNum: i.toFixed(2),
-	    minNum: i,
-	    maxNum: i + interval,
-	    count: 0
-	  })
-	  binCount++;
-	}
-	//Loop through data and add to bin's count
-	var totalCount = 0;
-	for (var i = 0; i < arr.length; i++){
-	  var item = arr[i];
-	  for (var j = 0; j < bins.length; j++){
-	    var bin = bins[j];
-	    if(item > bin.minNum && item <= bin.maxNum){
-		  //console.log(item, bin.minNum, bin.maxNum);
-	      bin.count++;
-		  totalCount += 1;
-	      break;  // An item can only be in one bin.
-	    }
-	  }  
-	}	
-	//console.log(intervalSize, arrayMinValue, arrayMaxValue)
-	//for (var i = 0; i < bins.length; i++) {
-	//	console.log(bins[i]);
-	//}
-	return bins;
+    // Setup Bins
+    // compute number of bins to avoid incremental push inside loop
+    var numBins = Math.floor((arrayMaxValue - arrayMinValue) / interval) + 1;
+    for (var b = 0; b < numBins; b++) {
+        var binMin = arrayMinValue + b * interval;
+        bins.push({
+            binNum: binMin.toFixed(2),
+            minNum: binMin,
+            maxNum: binMin + interval,
+            count: 0
+        });
+    }
+
+    // Loop through data and add to bin's count
+    for (var i = 0; i < arr.length; i++){
+      var item = arr[i];
+      // Only search bins until a match is found; number of bins is usually small.
+      for (var j = 0; j < bins.length; j++){
+        var bin = bins[j];
+        if(item > bin.minNum && item <= bin.maxNum){
+          bin.count++;
+          break;  // An item can only be in one bin.
+        }
+      }
+    }
+    return bins;
 }//end of getBinnedData
 
 function getFrequency6ExpectedActual(option, arr1, arr2) {
@@ -456,52 +471,59 @@ function getDxDyMiddle(arrX, arrY, events) {
 }//end of getDxDyMiddle
 
 function calculateDeltaXDeltaYFrequency(arr, events, binWidth) {
-	var deltaValues = [];
-	var totalEvents = arr.length;
-	if (events > 0 && events <= arr.length) {
-		totalEvents = events;
-	}
-	for (let i = 1; i < totalEvents; i++) {
-		deltaValues.push(arr[i][4]);
-	}	
-	// Find min and max values to determine the range
-	var minVal = Math.min(...deltaValues);
-	var maxVal = Math.max(...deltaValues);
+    // Optimized: avoid spread operator and redundant arrays
+    var deltaValues = [];
+    var totalEvents = arr.length;
+    if (events > 0 && events <= arr.length) {
+        totalEvents = events;
+    }
+    for (var i = 1; i < totalEvents; i++) {
+        deltaValues.push(arr[i][4]);
+    }
+    if (deltaValues.length === 0) return [];
 
-	// Calculate bin boundaries
-	var binBoundaries = [];
-	for (let i = minVal; i <= maxVal + binWidth; i += binWidth) {
-	    binBoundaries.push(i);
-	}	
-	
-	// Initialize bins
-	var bins = [];
-	if (binBoundaries.length > 0) {
-		bins = Array(binBoundaries.length - 1).fill(0);
-	}
-	// Populate bins
-	deltaValues.forEach(value => {
-	  for (let i = 0; i < binBoundaries.length - 1; i++) {
-	    if (value >= binBoundaries[i] && value < binBoundaries[i + 1]) {
-	      bins[i]++;
-	      break;
-	    }
-	  }
-	});
+    var minVal = Infinity, maxVal = -Infinity;
+    for (var i = 0; i < deltaValues.length; i++) {
+        var v = Number(deltaValues[i]);
+        if (v < minVal) minVal = v;
+        if (v > maxVal) maxVal = v;
+    }
 
-	var lineChartData = [];
-	if (bins.length > 0) {
-		for (let i = 0; i < bins.length; i++) {
-		  var binCenter = (binBoundaries[i] + binBoundaries[i + 1]) / 2;
-		  lineChartData.push({ x: binCenter, y: bins[i] }); 
-		}		
-	}
-	return lineChartData;
+    // Calculate bin boundaries
+    var binBoundaries = [];
+    for (var x = minVal; x <= maxVal + binWidth; x += binWidth) {
+        binBoundaries.push(x);
+    }
+
+    // Initialize bins
+    var bins = [];
+    if (binBoundaries.length > 0) {
+        bins = new Array(binBoundaries.length - 1).fill(0);
+    }
+    // Populate bins
+    for (var i = 0; i < deltaValues.length; i++) {
+      var value = deltaValues[i];
+      for (var k = 0; k < binBoundaries.length - 1; k++) {
+        if (value >= binBoundaries[k] && value < binBoundaries[k + 1]) {
+          bins[k]++;
+          break;
+        }
+      }
+    }
+
+    var lineChartData = [];
+    if (bins.length > 0) {
+        for (var i = 0; i < bins.length; i++) {
+          var binCenter = (binBoundaries[i] + binBoundaries[i + 1]) / 2;
+          lineChartData.push({ x: binCenter, y: bins[i] });
+        }
+    }
+    return lineChartData;
 }//end of calculateDeltaXDeltaYFrequency
 
 //CHANNEL FREQUENCY
 function getFrequency(arr1) {
-	vals = [];
+	var vals = [];
 	var frequency = arr1.reduce((acc, num) => {
 	  acc.set(num, (acc.get(num) || 0) + 1);
 	  return acc;
@@ -591,154 +613,129 @@ function getDeltaT(index1, index2) {
 
 //TRACK COUNTS
 function getEventsWithTracksPerMinute(layerCount, option) {
-	var vals = [];
-	// Defensive guards for layerOrder arrays
-	var safe = function(arr, i, j, fallback) {
-		if (!Array.isArray(arr)) return fallback;
-		if (arr.length <= i) return fallback;
-		if (!Array.isArray(arr[i])) return fallback;
-		if (typeof arr[i][j] === 'undefined') return fallback;
-		return arr[i][j];
-	};
-	var xtop = safe(globalThis.layerOrderX,2,2,-1);
-	var xmiddle = safe(globalThis.layerOrderX,1,2,-1);
-	var xbottom = safe(globalThis.layerOrderX,0,2,-1);
-	var ytop = safe(globalThis.layerOrderY,2,2,-1);
-	var ymiddle = safe(globalThis.layerOrderY,1,2,-1);
-	var ybottom = safe(globalThis.layerOrderY,0,2,-1);
-	if (xtop !== -1) xtop = xtop*2; else xtop = -1;
-	if (xmiddle !== -1) xmiddle = xmiddle*2; else xmiddle = -1;
-	if (xbottom !== -1) xbottom = xbottom*2; else xbottom = -1;
-	if (ytop !== -1) ytop = (ytop*2)+1; else ytop = -1;
-	if (ymiddle !== -1) ymiddle = (ymiddle*2)+1; else ymiddle = -1;
-	if (ybottom !== -1) ybottom = (ybottom*2)+1; else ybottom = -1;
-	var startTime = 0;
-	var minuteTime = microMinute+globalThis.eventTime[0][0];
-	var trackCounter = 0;
-	//console.log(eventTime);
-	for (var i = 0; i < globalThis.eventTime.length; i++) {		
-		//check for top and bottom in both layers
-		if (layerCount == 4) {
-			if (option == 'TM') {
-				if (globalThis.eventTime[i][xtop] > 0 &&
-					globalThis.eventTime[i][xmiddle] > 0 &&
-					globalThis.eventTime[i][xbottom] <= 0 &&
-					globalThis.eventTime[i][ytop] > 0 &&
-					globalThis.eventTime[i][ymiddle] > 0 &&
-					globalThis.eventTime[i][ybottom] <= 0) {
-					//check if it belongs within each minute
-					if (globalThis.eventTime[i][0] <= minuteTime) {
-						if (debugEventsWithTracks) {
-							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
-						}
-						trackCounter += 1;
-					} else {
-						//console.log(layerCount, option, startTime, trackCounter);
-						//save and move up a minute
-						vals.push({x:startTime+1,y:trackCounter})
-						startTime += 1;
-						trackCounter = 0;
-						minuteTime = microMinute+globalThis.eventTime[i][0];
-					}
-				}				
-			} else { //it is 'MB'
-				if (globalThis.eventTime[i][xtop] <= 0 &&
-					globalThis.eventTime[i][xmiddle] > 0 &&
-					globalThis.eventTime[i][xbottom] > 0 &&
-					globalThis.eventTime[i][ytop] <= 0 &&
-					globalThis.eventTime[i][ymiddle] > 0 &&
-					globalThis.eventTime[i][ybottom] > 0) {
-					//check if it belongs within each minute
-					if (globalThis.eventTime[i][0] <= minuteTime) {
-						if (debugEventsWithTracks) {
-							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
-						}
-						trackCounter += 1;
-					} else {
-						//console.log(layerCount, option, startTime, trackCounter);
-						//save and move up a minute
-						vals.push({x:startTime+1,y:trackCounter})
-						startTime += 1;
-						trackCounter = 0;
-						minuteTime = microMinute+globalThis.eventTime[i][0];
-					}
-				}				
-			}
-		}
-		//check for top, middle and bottom but not in both layers
-		if (layerCount == 5) {
-			//middle missing
-			if (option == 'M') {
-				//console.log("5 middle missing");
-				if ((globalThis.eventTime[i][xtop] > 0 &&
-					globalThis.eventTime[i][xbottom] > 0 &&
-					globalThis.eventTime[i][ytop] > 0 &&
-					globalThis.eventTime[i][ybottom] > 0) &&
-					((globalThis.eventTime[i][xmiddle] > 0 && globalThis.eventTime[i][ymiddle] <= 0)
-				    || (globalThis.eventTime[i][xmiddle] <= 0 && globalThis.eventTime[i][ymiddle] > 0))) {					
-					//check if it belongs within each minute
-					var count = globalThis.eventTime[i].filter(num => num > 0).length;
-					if (globalThis.eventTime[i][0] <= minuteTime && count == layerCount) {
-						if (debugEventsWithTracks) {
-							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
-						}
-						trackCounter += 1;
-					} else {
-						//console.log(layerCount, option, startTime, trackCounter);
-						//save and move up a minute
-						vals.push({x:startTime+1,y:trackCounter})
-						startTime += 1;
-						trackCounter = 0;
-						minuteTime = microMinute+globalThis.eventTime[i][0];
-					}
-				}
-			} else { //it is TB, either top or bottom missing
-				var count = globalThis.eventTime[i].filter(num => num > 0).length;
-				if (globalThis.eventTime[i][xmiddle] > 0 && globalThis.eventTime[i][ymiddle] > 0 && count == layerCount) {
-					if (globalThis.eventTime[i][0] <= minuteTime) {
-						if (debugEventsWithTracks) {
-							console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
-						}
-						trackCounter += 1;						
-					} else {
-						//console.log(layerCount, option, startTime, trackCounter);
-						//save and move up a minute
-						vals.push({x:startTime+1,y:trackCounter})
-						startTime += 1;
-						trackCounter = 0;
-						minuteTime = microMinute+globalThis.eventTime[i][0];
-					}					
-				}
-			}
-		}		
-		//check for top, middle and bottom in both layers
-		if (layerCount == 6) {
-			if (globalThis.eventTime[i][xtop] > 0 &&
-				globalThis.eventTime[i][xmiddle] > 0 &&
-				globalThis.eventTime[i][xbottom] > 0 &&
-				globalThis.eventTime[i][ytop] > 0 &&
-				globalThis.eventTime[i][ymiddle] > 0 &&
-				globalThis.eventTime[i][ybottom] > 0) {
-				//check if it belongs within each minute
-				if (globalThis.eventTime[i][0] <= minuteTime) {
-					if (debugEventsWithTracks) {
-						console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
-					}
-					trackCounter += 1;
-				} else {
-					//console.log(layerCount, option, startTime, trackCounter);
-					//save and move up a minute
-					vals.push({x:startTime+1,y:trackCounter})
-					startTime += 1;
-					trackCounter = 0;
-					minuteTime = microMinute+globalThis.eventTime[i][0];
-				}
-			}
-		}		
-	}
-	vals.push({x:startTime+1,y:trackCounter})
-	//console.log(layerCount,option,vals);
-	return vals;
+    var vals = [];
+    // Cache frequently used globals locally to avoid repeated global lookups
+    var eventTime = globalThis.eventTime || [];
+    var layerOrderX = globalThis.layerOrderX || [];
+    var layerOrderY = globalThis.layerOrderY || [];
+    var micro = microMinute;
+
+    // Defensive guards for layerOrder arrays
+    var safe = function(arr, i, j, fallback) {
+        if (!Array.isArray(arr)) return fallback;
+        if (arr.length <= i) return fallback;
+        if (!Array.isArray(arr[i])) return fallback;
+        if (typeof arr[i][j] === 'undefined') return fallback;
+        return arr[i][j];
+    };
+    var xtop = safe(layerOrderX,2,2,-1);
+    var xmiddle = safe(layerOrderX,1,2,-1);
+    var xbottom = safe(layerOrderX,0,2,-1);
+    var ytop = safe(layerOrderY,2,2,-1);
+    var ymiddle = safe(layerOrderY,1,2,-1);
+    var ybottom = safe(layerOrderY,0,2,-1);
+    if (xtop !== -1) xtop = xtop*2; else xtop = -1;
+    if (xmiddle !== -1) xmiddle = xmiddle*2; else xmiddle = -1;
+    if (xbottom !== -1) xbottom = xbottom*2; else xbottom = -1;
+    if (ytop !== -1) ytop = (ytop*2)+1; else ytop = -1;
+    if (ymiddle !== -1) ymiddle = (ymiddle*2)+1; else ymiddle = -1;
+    if (ybottom !== -1) ybottom = (ybottom*2)+1; else ybottom = -1;
+    var startTime = 0;
+    var minuteTime = micro + (eventTime[0] ? eventTime[0][0] : 0);
+    var trackCounter = 0;
+
+    for (var i = 0; i < eventTime.length; i++) {
+        var et = eventTime[i];
+        if (!Array.isArray(et)) continue;
+        // Helper to read safely
+        var v = function(idx) { return (typeof et[idx] === 'number') ? et[idx] : (et[idx] ? Number(et[idx]) : 0); };
+
+        //check for top and bottom in both layers
+        if (layerCount == 4) {
+            if (option == 'TM') {
+                if (v(xtop) > 0 && v(xmiddle) > 0 && v(xbottom) <= 0 && v(ytop) > 0 && v(ymiddle) > 0 && v(ybottom) <= 0) {
+                    if (v(0) <= minuteTime) {
+                        if (debugEventsWithTracks) {
+                            console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+                        }
+                        trackCounter += 1;
+                    } else {
+                        vals.push({x:startTime+1,y:trackCounter});
+                        startTime += 1;
+                        trackCounter = 0;
+                        minuteTime = micro + v(0);
+                    }
+                }
+            } else { //it is 'MB'
+                if (v(xtop) <= 0 && v(xmiddle) > 0 && v(xbottom) > 0 && v(ytop) <= 0 && v(ymiddle) > 0 && v(ybottom) > 0) {
+                    if (v(0) <= minuteTime) {
+                        if (debugEventsWithTracks) {
+                            console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+                        }
+                        trackCounter += 1;
+                    } else {
+                        vals.push({x:startTime+1,y:trackCounter});
+                        startTime += 1;
+                        trackCounter = 0;
+                        minuteTime = micro + v(0);
+                    }
+                }
+            }
+        }
+        //check for top, middle and bottom but not in both layers
+        if (layerCount == 5) {
+            //middle missing
+            if (option == 'M') {
+                if ((v(xtop) > 0 && v(xbottom) > 0 && v(ytop) > 0 && v(ybottom) > 0) && ((v(xmiddle) > 0 && v(ymiddle) <= 0) || (v(xmiddle) <= 0 && v(ymiddle) > 0))) {
+                    var count = et.filter(function(num){ return num > 0; }).length;
+                    if (v(0) <= minuteTime && count == layerCount) {
+                        if (debugEventsWithTracks) {
+                            console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+                        }
+                        trackCounter += 1;
+                    } else {
+                        vals.push({x:startTime+1,y:trackCounter});
+                        startTime += 1;
+                        trackCounter = 0;
+                        minuteTime = micro + v(0);
+                    }
+                }
+            } else { //it is TB, either top or bottom missing
+                var count2 = et.filter(function(num){ return num > 0; }).length;
+                if (v(xmiddle) > 0 && v(ymiddle) > 0 && count2 == layerCount) {
+                    if (v(0) <= minuteTime) {
+                        if (debugEventsWithTracks) {
+                            console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+                        }
+                        trackCounter += 1;
+                    } else {
+                        vals.push({x:startTime+1,y:trackCounter});
+                        startTime += 1;
+                        trackCounter = 0;
+                        minuteTime = micro + v(0);
+                    }
+                }
+            }
+        }
+        //check for top, middle and bottom in both layers
+        if (layerCount == 6) {
+            if (v(xtop) > 0 && v(xmiddle) > 0 && v(xbottom) > 0 && v(ytop) > 0 && v(ymiddle) > 0 && v(ybottom) > 0) {
+                if (v(0) <= minuteTime) {
+                    if (debugEventsWithTracks) {
+                        console.log(i, layerCount, option, xtop, xmiddle, xbottom, ytop, ymiddle, ybottom, eventTime[i]);
+                    }
+                    trackCounter += 1;
+                } else {
+                    vals.push({x:startTime+1,y:trackCounter});
+                    startTime += 1;
+                    trackCounter = 0;
+                    minuteTime = micro + v(0);
+                }
+            }
+        }
+    }
+    vals.push({x:startTime+1,y:trackCounter});
+    return vals;
 }// end of getEventsWithTracksPerMinute
 
 
@@ -828,21 +825,20 @@ function popYADRAverage(layer) {
 
 //helper function used by popXADRAverage and popYADRAverage
 function getAverage(data) {
-	var groupedByX = {};
-	data.forEach(item => {
-	  if (!groupedByX[item.x]) {
-	    groupedByX[item.x] = [];
-	  }
-	  groupedByX[item.x].push(item.y);
-	});	
-
-	var averageYPerX = {};
-
-	for (var xValue in groupedByX) {
-	  var yValues = groupedByX[xValue];
-	  var sumY = yValues.reduce((sum, y) => sum + y, 0);
-	  var averageY = sumY / yValues.length;
-	  averageYPerX[xValue] = averageY;
-	}	
-	return averageYPerX;
+    // Optimized grouping using Map to reduce property coercion overhead
+    var grouped = new Map();
+    for (var i = 0; i < data.length; i++) {
+        var item = data[i];
+        var x = item.x;
+        var y = item.y;
+        if (!grouped.has(x)) grouped.set(x, {sum: 0, count: 0});
+        var entry = grouped.get(x);
+        entry.sum += y;
+        entry.count += 1;
+    }
+    var averageYPerX = {};
+    grouped.forEach(function(val, key) {
+        averageYPerX[key] = val.sum / val.count;
+    });
+    return averageYPerX;
 }//end of getAverage

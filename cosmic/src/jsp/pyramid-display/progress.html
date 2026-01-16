@@ -1,28 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<script src="../include/elab.js"></script>
+		<script src="../include/elab.js" defer></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="preload" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></noscript>
     <link rel="stylesheet" href="css/style.css" />
     <title>Our Search for Hidden Chambers in Kulkukan’s Pyramid at Chichen Itza</title>
-    <script>   
-      document.addEventListener("DOMContentLoaded", function() {
-        let order = document.querySelector("#order");
-        order.addEventListener("change", function() {
-          let events = document.querySelectorAll(".list-group-item.list-group-item-action.flex-column.align-items-start");
-          let sorted_events = Array.from(events).sort((a,b) => {
-            const idA = parseInt(a.id.split('-')[1]);
-            const idB = parseInt(b.id.split('-')[1]);
-            return order.value == "Earliest First" ? idB - idA : idA - idB;
-          });
-          const timeline = document.querySelector("#timeline");
-          events.forEach(event => timeline.removeChild(event));
-          sorted_events.forEach(event => timeline.appendChild(event));
-        });
-      });
-    </script>
 </head>
 <body>  
    <div class="tabbable-responsive">
@@ -38,9 +23,10 @@
     <!-- Timeline -->
     <h1 class="title">Timeline</h1>
     <div class="mb-3">
-      <select autofocus class="form-select mx-auto w-auto" id="order">
-        <option selected>Latest First</option>
-        <option>Earliest First</option>
+      <!-- give options explicit values to avoid string-dependent comparisons -->
+      <select class="form-select mx-auto w-auto" id="order" aria-label="Order timeline items">
+        <option value="latest" selected>Latest First</option>
+        <option value="earliest">Earliest First</option>
       </select> 
     </div>     
     <div class="list-group" id="timeline">
@@ -58,18 +44,18 @@
 		      <li style="all: revert">
 		        <h6 class="mb-1">
 		      		On December 15th, Arturo, Gerardo, Don Donisio, and Edmundo transported the detector to Chichen-Itza, 
-					driving two days through southeast Mexico, arriving to the archaeological site on December 17th.<br />
+				driving two days through southeast Mexico, arriving to the archaeological site on December 17th.<br />
 		        </h6>    
 		      </li>
 			  <li style="all: revert">
 			    <h6 class="mb-1">
-			  		 The detector was installed on-site, but outside the pyramid, to test 
-					 the internet communications and to take baseline data.<br />
+					 The detector was installed on-site, but outside the pyramid, to test 
+				 the internet communications and to take baseline data.<br />
 			    </h6>    
 			  </li>
 			  <li style="all: revert">
 			    <h6 class="mb-1">
-			  		 We were successfully running and transmitting data to Chicago on December 18th.<br />
+					 We were successfully running and transmitting data to Chicago on December 18th.<br />
 			    </h6>    
 			  </li>
 		</ul>
@@ -77,28 +63,27 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/December2025-1.png"><img src="images/December2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-1" title="" class="thumb-img"/></a>
 			<a href="images/December2025-2.png"><img src="images/December2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-2" title="" class="thumb-img"/></a>
 			<a href="images/December2025-3.png"><img src="images/December2025-3.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-3" title="" class="thumb-img"/></a>
 			<a href="images/December2025-4.png"><img src="images/December2025-4.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-4" title="" class="thumb-img"/></a>
 			<a href="images/December2025-5.png"><img src="images/December2025-5.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-5" title="" class="thumb-img"/></a>
 			<a href="images/December2025-6.png"><img src="images/December2025-6.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-6" title="" class="thumb-img"/></a>
 			<a href="images/December2025-7.png"><img src="images/December2025-7.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-7" title="" class="thumb-img"/></a>
 			<a href="images/December2025-8.png"><img src="images/December2025-8.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-8" title="" class="thumb-img"/></a>
 			<a href="images/December2025-9.png"><img src="images/December2025-9.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="December2025-9" title="" class="thumb-img"/></a>
 		 </div>                   
-	 </div>  				
-		
-				
-	   <!--E2 (dated, edited) this should always be the first item that appears in the list-->
+	 </div>  			
+			
+		   <!--E2 (dated, edited) this should always be the first item that appears in the list-->
 		<div class="list-group-item list-group-item-action flex-column align-items-start" id="item-2">
 		 <div style="float: left;"><span class="badge badge-primary">October 2025</span></div>
 		  <div class="d-flex w-100 justify-content-between dated" id="event-2">
@@ -111,7 +96,7 @@
 		      <li style="all: revert">
 		        <h6 class="mb-1">
 		      		In the US we are closing to the running configuration so it is tested and 
-					ready to be deployed when we move the detectors to Chichen Itza.<br />
+				ready to be deployed when we move the detectors to Chichen Itza.<br />
 		        </h6>    
 		      </li>
 		</ul>
@@ -119,16 +104,16 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/October2025-1.png"><img src="images/October2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="October2025-1" title="" class="thumb-img"/></a>
 			<a href="images/October2025-2.png"><img src="images/October2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="October2025-2" title="" class="thumb-img"/></a>
 			<a href="images/October2025-3.png"><img src="images/October2025-3.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="October2025-3" title="" class="thumb-img"/></a>
 			<a href="images/October2025-4.png"><img src="images/October2025-4.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="October2025-4" title="" class="thumb-img"/></a>
 		  </div>                   
-		</div>  				
-		
+		</div>  			
+			
 		<!--E3 (dated, edited) this should always be the first item that appears in the list-->
 		<div class="list-group-item list-group-item-action flex-column align-items-start" id="item-3">
 		 <div style="float: left;"><span class="badge badge-primary">September 2025</span></div>
@@ -149,11 +134,11 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/September2025-1.png"><img src="images/September2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="September2025-1" title="" class="thumb-img"/></a>
 			<a href="images/September2025-2.png"><img src="images/September2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="September2025-2" title="" class="thumb-img"/></a>
 		  </div>                   
-		</div>  				
+		</div>  			
 
 		<!--E4 (dated, edited) this should always be the first item that appears in the list-->
 		<div class="list-group-item list-group-item-action flex-column align-items-start" id="item-4">
@@ -168,7 +153,7 @@
 		      <li style="all: revert">
 		        <h6 class="mb-1">
 		      		In the US we are optimizing the data acquisition system and trigger 
-					configuration with Detector 2 and modifying accordingly the Detector 1 in Mexico.<br />
+				configuration with Detector 2 and modifying accordingly the Detector 1 in Mexico.<br />
 		        </h6>    
 		      </li>
 		</ul>
@@ -176,11 +161,11 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/August2025-1.png"><img src="images/August2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="August2025-1" title="" class="thumb-img"/></a>
 			<a href="images/August2025-2.png"><img src="images/August2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="August2025-2" title="" class="thumb-img"/></a>
 			<a href="images/August2025-3.png"><img src="images/August2025-3.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="August2025-3" title="" class="thumb-img"/></a>
 		  </div>                   
 		</div>  				
 		
@@ -206,15 +191,15 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/July2025-1.png"><img src="images/July2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="July2025-1" title="" class="thumb-img"/></a>
 			<a href="images/July2025-2.png"><img src="images/July2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="July2025-2" title="" class="thumb-img"/></a>
 			<a href="images/July2025-3.png"><img src="images/July2025-3.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="July2025-3" title="" class="thumb-img"/></a>
 			<a href="images/July2025-4.png"><img src="images/July2025-4.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="July2025-4" title="" class="thumb-img"/></a>
 			<a href="images/July2025-5.png"><img src="images/July2025-5.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="July2025-5" title="" class="thumb-img"/></a>
 		  </div>                   
 		</div>  				
 
@@ -239,17 +224,17 @@
 		  <div class="d-flex w-100 justify-content-between dated">
 		   <h6 class="mb-1">
 			<a href="images/May2025-1.png"><img src="images/May2025-1.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-1" title="" class="thumb-img"/></a>
 			<a href="images/May2025-2.png"><img src="images/May2025-2.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-2" title="" class="thumb-img"/></a>
 			<a href="images/May2025-3.png"><img src="images/May2025-3.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-3" title="" class="thumb-img"/></a>
 			<a href="images/May2025-4.png"><img src="images/May2025-4.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-4" title="" class="thumb-img"/></a>
 			<a href="images/May2025-5.png"><img src="images/May2025-5.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-5" title="" class="thumb-img"/></a>
 			<a href="images/May2025-6.png"><img src="images/May2025-6.png"
-			alt="" title="" class="thumb-img"/></a>
+			alt="May2025-6" title="" class="thumb-img"/></a>
 		  </div>                   
 		</div>  				
 				
@@ -273,17 +258,17 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/April2025-1.png"><img src="images/April2025-1.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-1" title="" class="thumb-img"/></a>
 	        <a href="images/April2025-2.png"><img src="images/April2025-2.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-2" title="" class="thumb-img"/></a>
 	        <a href="images/April2025-3.png"><img src="images/April2025-3.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-3" title="" class="thumb-img"/></a>
 	        <a href="images/April2025-4.png"><img src="images/April2025-4.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-4" title="" class="thumb-img"/></a>
 	        <a href="images/April2025-5.png"><img src="images/April2025-5.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-5" title="" class="thumb-img"/></a>
 	        <a href="images/April2025-6.png"><img src="images/April2025-6.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="April2025-6" title="" class="thumb-img"/></a>
 	    </div>                   
       </div>    
        <!--E8 (dated, edited)-->
@@ -306,13 +291,13 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/March2025-1.png"><img src="images/March2025-1.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="March2025-1" title="" class="thumb-img"/></a>
 	        <a href="images/March2025-2.png"><img src="images/March2025-2.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="March2025-2" title="" class="thumb-img"/></a>
 	        <a href="images/March2025-3.png"><img src="images/March2025-3.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="March2025-3" title="" class="thumb-img"/></a>
 	        <a href="images/March2025-4.png"><img src="images/March2025-4.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="March2025-4" title="" class="thumb-img"/></a>
 	    </div>                   
       </div>    
 	  
@@ -336,17 +321,17 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/January2025-1.png"><img src="images/January2025-1.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-1" title="" class="thumb-img"/></a>
 	        <a href="images/January2025-2.png"><img src="images/January2025-2.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-2" title="" class="thumb-img"/></a>
 	        <a href="images/January2025-3.png"><img src="images/January2025-3.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-3" title="" class="thumb-img"/></a>
 	        <a href="images/January2025-4.png"><img src="images/January2025-4.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-4" title="" class="thumb-img"/></a>
 	        <a href="images/January2025-5.png"><img src="images/January2025-5.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-5" title="" class="thumb-img"/></a>
 	        <a href="images/January2025-6.png"><img src="images/January2025-6.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="January2025-6" title="" class="thumb-img"/></a>
 	    </div>                   
       </div>  
         <!--E10 (dated, edited)-->
@@ -374,19 +359,19 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/December2024-1.png"><img src="images/December2024-1.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-1" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-2.png"><img src="images/December2024-2.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-2" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-3.png"><img src="images/December2024-3.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-3" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-4.png"><img src="images/December2024-4.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-4" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-5.png"><img src="images/December2024-5.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-5" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-6.png"><img src="images/December2024-6.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-6" title="" class="thumb-img"/></a>
 	        <a href="images/December2024-7.png"><img src="images/December2024-7.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="December2024-7" title="" class="thumb-img"/></a>
 	    </div>                   
       </div> 
 	  
@@ -420,15 +405,15 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/October2024-1.png"><img src="images/October2024-1.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="October2024-1" title="" class="thumb-img"/></a>
 	        <a href="images/October2024-2.png"><img src="images/October2024-2.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="October2024-2" title="" class="thumb-img"/></a>
 	        <a href="images/October2024-3.png"><img src="images/October2024-3.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="October2024-3" title="" class="thumb-img"/></a>
 	        <a href="images/October2024-4.png"><img src="images/October2024-4.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="October2024-4" title="" class="thumb-img"/></a>
 	        <a href="images/October2024-5.png"><img src="images/October2024-5.png"
-	        alt="" title="" class="thumb-img"/></a>
+	        alt="October2024-5" title="" class="thumb-img"/></a>
 	    </div>                   
       </div> 
 	  
@@ -460,17 +445,17 @@
 	          </h6>    
             </li>
 		</ul>
-        </div>         
-        <div class="d-flex w-100 justify-content-between dated">
-         <h6 class="mb-1">
-	        <a href="images/August2024-1.jpg"><img src="images/August2024-1.jpg"
-	        alt="" title="Quads assembled at UVA" class="thumb-img"/></a>
-	        <a href="images/August2024-2.png"><img src="images/August2024-2.png"
-	        alt="" title="Three boxes to house detector planes" class="thumb-img"/></a>
-	        <a href="images/August2024-3.jpg"><img src="images/August2024-3.jpg"
-	        alt="" title="Second support frame" class="thumb-img"/></a>
-	        <a href="images/August2024-4.png"><img src="images/August2024-4.png"
-	        alt="" title="Quads completed at UVA with boxes for planes in the background" class="thumb-img"/></a>
+		  </div>         
+		  <div class="d-flex w-100 justify-content-between dated">
+		   <h6 class="mb-1">
+			<a href="images/August2024-1.jpg"><img src="images/August2024-1.jpg"
+			alt="Quads assembled at UVA" title="" class="thumb-img"/></a>
+			<a href="images/August2024-2.png"><img src="images/August2024-2.png"
+			alt="Three boxes to house detector planes" title="" class="thumb-img"/></a>
+			<a href="images/August2024-3.jpg"><img src="images/August2024-3.jpg"
+			alt="Second support frame" title="" class="thumb-img"/></a>
+			<a href="images/August2024-4.png"><img src="images/August2024-4.png"
+			alt="Quads completed at UVA with boxes for planes in the background" title="" class="thumb-img"/></a>
 	    </div>                   
       </div>       
 	  
@@ -513,14 +498,14 @@
         </div>         
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
-	        <a href="images/July2024-1.png"><img src="images/July2024-1.png"
-	        alt="" title="Quads at UVA" class="thumb-img"/></a>
-	        <a href="images/July2024-2.png"><img src="images/July2024-2.png"
-	        alt="" title="Final box design" class="thumb-img"/></a>
-	        <a href="images/July2024-3.jpg"><img src="images/July2024-3.jpg"
-	        alt="" title="Source test at Dominican" class="thumb-img"/></a>
-	        <a href="images/July2024-4.jpg"><img src="images/July2024-4.jpg"
-	        alt="" title="Stand components arrive at UIC" class="thumb-img"/></a>
+			<a href="images/July2024-1.png"><img src="images/July2024-1.png"
+			alt="Quads at UVA" title="" class="thumb-img"/></a>
+			<a href="images/July2024-2.png"><img src="images/July2024-2.png"
+			alt="Final box design" title="" class="thumb-img"/></a>
+			<a href="images/July2024-3.jpg"><img src="images/July2024-3.jpg"
+			alt="Source test at Dominican" title="" class="thumb-img"/></a>
+			<a href="images/July2024-4.jpg"><img src="images/July2024-4.jpg"
+			alt="Stand components arrive at UIC" title="" class="thumb-img"/></a>
 	    </div>                   
       </div> 
 	  
@@ -588,7 +573,7 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/NAUM_Arturo_Edmundo.png"><img src="images/NAUM_Arturo_Edmundo.png"
-	        alt="" title="Arturo and Edmundo" class="thumb-img"/></a>
+	        alt="Arturo and Edmundo" title="" class="thumb-img"/></a>
 	      </h6>
 	    </div>        
       </div> 
@@ -623,15 +608,15 @@
         <div class="d-flex w-100 justify-content-between dated">
          <h6 class="mb-1">
 	        <a href="images/IMG_20240114_114148991.jpg"><img src="images/IMG_20240114_114148991.jpg"
-	        alt="" title="Jan 24 images" class="thumb-img"/></a>
+	        alt="Jan 24 images" title="" class="thumb-img"/></a>
 	        <a href="images/IMG_20240114_130645654.jpg"><img src="images/IMG_20240114_130645654.jpg"
-	        alt="" title="Jan 24 images" class="thumb-img"/></a>
+	        alt="Jan 24 images" title="" class="thumb-img"/></a>
 	        <a href="images/IMG_20240115_121054.jpg"><img src="images/IMG_20240115_121054.jpg"
-	        alt="" title="Jan 24 images" class="thumb-img"/></a>
+	        alt="Jan 24 images" title="" class="thumb-img"/></a>
 	        <a href="images/20240115_113117.jpg"><img src="images/20240115_113117.jpg"
-	        alt="" title="Jan 24 images" class="thumb-img"/></a>
+	        alt="Jan 24 images" title="" class="thumb-img"/></a>
 	        <a href="images/IMG_20240115_103529684.jpg"><img src="images/IMG_20240115_103529684.jpg"
-	        alt="" title="Jan 24 images" class="thumb-img"/></a>
+	        alt="Jan 24 images" title="" class="thumb-img"/></a>
 	    </div>                   
       </div>  
 	  
@@ -819,7 +804,7 @@
       </div>
 	  
       <!--E27 (edited)-->
-      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-27"">
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="item-27">
         <div class="d-flex w-100 justify-content-between" id="event-27">
           <div class="d-flex w-100 justify-content-between dated">
           <h6 class="mb-1">
@@ -881,5 +866,54 @@
     <br />
     <br />
     </div>
+
+    <!-- Non-blocking, small scripts: sorting + progressive enhancement for images -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const order = document.getElementById('order');
+        const timeline = document.getElementById('timeline');
+
+        // Helper: normalize option values
+        const isEarliest = (val) => val === 'earliest';
+
+        order.addEventListener('change', function() {
+          const events = Array.from(timeline.querySelectorAll('.list-group-item'));
+          const sorted = events.sort((a, b) => {
+            const idA = parseInt((a.id || '').split('-')[1]) || 0;
+            const idB = parseInt((b.id || '').split('-')[1]) || 0;
+            return isEarliest(order.value) ? idB - idA : idA - idB;
+          });
+
+          // Batch DOM update using a fragment
+          const frag = document.createDocumentFragment();
+          sorted.forEach(e => frag.appendChild(e));
+          // Replace children in one operation
+          timeline.innerHTML = '';
+          timeline.appendChild(frag);
+        });
+
+        // Progressive enhancement: ensure thumbnails are lazy-loaded and have alt text
+        const imgs = timeline.querySelectorAll('img.thumb-img');
+        imgs.forEach(img => {
+          try {
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+            // if alt is empty, try to use title, otherwise fall back to filename
+            const alt = (img.getAttribute('alt') || '').trim();
+            if (!alt) {
+              const title = (img.getAttribute('title') || '').trim();
+              if (title) img.setAttribute('alt', title);
+              else {
+                const parts = (img.getAttribute('src') || '').split('/');
+                img.setAttribute('alt', parts[parts.length - 1] || 'timeline image');
+              }
+            }
+          } catch (e) {
+            // non-fatal
+            console.warn('img enhancement error', e);
+          }
+        });
+      });
+    </script>
   </body>
 </html>
