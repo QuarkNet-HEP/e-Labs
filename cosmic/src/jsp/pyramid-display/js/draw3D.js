@@ -63,14 +63,14 @@ if (typeof window !== 'undefined') {
     } catch (e2) { /* ignore */ }
   }
 }
-
+globalThis.sensor = null;
+globalThis.muonVectors = [];
 var scene;
 var camera;
 var axesHelper;
 var renderer;
 var canvasContainer;
 var controls;
-var s;
 var sensorX;
 var sensorY;
 var sensorZ;
@@ -79,17 +79,11 @@ var sensorTheta;
 var sensorHeight;
 var skyboxMesh;
 var ground;
-if (typeof layers === 'undefined') { var layers = []; }
 var updateSpotlightPosition;
 var spotlight;
 var ambientLight;
 var target;
-var muonVectors = [];
 var acceptGroup = [];
-var localx = [];
-var localy = [];
-var geometry = [];
-var layers = [];
 var pyramid;
 var cameraPosition = [];
 var cameraRotation = [];
@@ -214,7 +208,7 @@ class triShaft {
 } // end of thiShaft class
 
 class sensor {
-  constructor (data, geometry) {
+  constructor (data) {
     this.centerx=0;
     this.centery=0;
     this.centerz=0;
@@ -224,17 +218,16 @@ class sensor {
     this.planeSpacing=height;
     this.moduleSpacing=0.1;
     if (debug3Dsensor === true) {
-		console.log("layers: ", layers);
-		console.log("geometry: ",geometry);
+		console.log("layers: ", globalThis.layers);
 	}
 	//we start from the top
-    if (layers[4].length > 0) {
-		this.gridx = layers[4].length * 4; //from the geometry
+    if (globalThis.layers[4].length > 0) {
+		this.gridx = globalThis.layers[4].length * 4; //from the geometry
 	} else {
 		this.gridx = 28;	
 	}
-	if (layers[5].length > 0) {
-		this.gridy = layers[5].length * 4; //from the geometry
+	if (globalThis.layers[5].length > 0) {
+		this.gridy = globalThis.layers[5].length * 4; //from the geometry
 	} else {
 		this.gridy = 48;
 	}    
@@ -348,17 +341,17 @@ class sensor {
   }
 } // end of sensor class
 
-function acceptanceRange(s,range) {
+function acceptanceRange(range) {
   //clear previous acceptance mesh
-  for (var i in acceptGroup) { s.group.remove(acceptGroup[i]); }
-  const plane1 = s.shafts[0]['y'];
+  for (var i in acceptGroup) { globalThis.sensor.group.remove(acceptGroup[i]); }
+  const plane1 = globalThis.sensor.shafts[0]['y'];
   const high1 = plane1[0];
   const high2 = plane1[plane1.length-1];
   const p1 = new THREE.Vector3(high1.xpos,high1.ypos+high1.size/2,high1.zpos-high2.size);
   const p2 = new THREE.Vector3(high2.xpos,high2.ypos+high2.size/2,high2.zpos);
   const p3 = new THREE.Vector3(high1.xpos+high1.length,high1.ypos+high1.size/2,high1.zpos-high2.size);
   const p4 = new THREE.Vector3(high2.xpos+high2.length,high2.ypos+high2.size/2,high2.zpos);
-  const plane2 = s.shafts[2]['x'];
+  const plane2 = globalThis.sensor.shafts[2]['x'];
   const low1 = plane2[0];
   const low2 = plane2[plane2.length-1];
   const p5 = new THREE.Vector3(low1.xpos,low1.ypos,low1.zpos);
@@ -402,7 +395,7 @@ function acceptanceRange(s,range) {
     material.opacity = 0.05;
     // Create a mesh using the BufferGeometry and material
     const mesh = new THREE.Mesh(geometry, material);
-    s.group.add(mesh);
+    globalThis.sensor.group.add(mesh);
     acceptGroup.push(mesh);
   }
   
@@ -417,7 +410,7 @@ function acceptanceRange(s,range) {
     const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
     // Create a line using the BufferGeometry and material
     const line = new THREE.Line(geometry, material);
-    s.group.add(line);
+    globalThis.sensor.group.add(line);
     acceptGroup.push(line);
   }
   //cube points at the corners of the acceptance cone
@@ -427,7 +420,7 @@ function acceptanceRange(s,range) {
     const cubeMaterial = new THREE.MeshBasicMaterial({ color: color });
     const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cubeMesh.position.copy(pos);
-    s.group.add(cubeMesh);
+    globalThis.sensor.group.add(cubeMesh);
   }
   
   cube(p1,0xFF0000);//red
@@ -462,11 +455,11 @@ function acceptanceRange(s,range) {
 } // end of acceptanceRange
 
 function clearMuons() { 
-  	for (var i in muonVectors) { 
-		s.group.remove(muonVectors[i]); 
+  	for (var i in globalThis.muonVectors) { 
+		globalThis.sensor.group.remove(globalThis.muonVectors[i]); 
 	}
-	for (let obj of s.job) {
-    	obj.faces.material.color.set(s.xcolor);
+	for (let obj of globalThis.sensor.job) {
+    	obj.faces.material.color.set(globalThis.sensor.xcolor);
     	obj.faces.material.transparent = true;
     	obj.faces.material.opacity = 0.01;
   	}
@@ -474,10 +467,10 @@ function clearMuons() {
 
 function loadIndex(eventIndex) {
 	clearMuons();
-	loadEvent(eventIndex,localx,localy,s);
+	loadEvent(eventIndex,globalThis.subtractPedX,globalThis.subtractPedY);
 } // end of loadIndex
 
-function loadEvent(eventIndex,x,y,s) {
+function loadEvent(eventIndex,x,y) {
   let eventX = x[eventIndex-1];
   let eventY = y[eventIndex-1];
   let reversed = false;
@@ -487,14 +480,14 @@ function loadEvent(eventIndex,x,y,s) {
   if (debug3Devent === true) {
     console.log(x, eventX);
 	console.log(y, eventY);
-	console.log(geometry);
+	console.log(globalThis.singleGeometry);
   }
   let x_prisms = {};
   let y_prisms = {};  
   let x_hit = {};
   let y_hit = {};
-  for (let obj of s.job) {
-    obj.faces.material.color.set(s.xcolor);
+  for (let obj of globalThis.sensor.job) {
+    obj.faces.material.color.set(globalThis.sensor.xcolor);
     obj.faces.material.transparent = true;
     obj.faces.material.opacity = 0.01;
   }
@@ -516,24 +509,24 @@ function loadEvent(eventIndex,x,y,s) {
     let x_new = {};
     let xp_new = {};
 	//check if channels are reversed
-    if (geometry[ndx][2] === "REVERSED") {
+    if (globalThis.singleGeometry[ndx][2] === "REVERSED") {
     	reversed = true;
 	} else {
 		reversed = false;
 	}    
     if (debug3Devent === true) {
-      console.log(layer,layers,reversed, eventX[layer]);
+      console.log(layer,globalThis.layers,reversed, eventX[layer]);
     }
     //need to test for reverse
     if (reversed === true) {
-	   channelPosition = ((layers[4].length-2) * 4) - 1;
+	   channelPosition = ((globalThis.layers[4].length-2) * 4) - 1;
 	   channelSensor = 0;
 	   if (debug3Devent === true) {
 	      console.log("x start: ", channelPosition);
 	   }
 	    for (let i=channelPosition; i >= 0; i--) {
 	      let lg = eventX[layer][i];
-	      let obj = s.shafts[layer]["x"][channelSensor];
+	      let obj = globalThis.sensor.shafts[layer]["x"][channelSensor];
 		  if (debug3Devent === true) {
 		      console.log(eventX[layer].length, i, lg, obj);
 		  }
@@ -551,7 +544,7 @@ function loadEvent(eventIndex,x,y,s) {
 	} else {
 	    for (let i=0; i<eventX[layer].length; i++) {
 	      let lg = eventX[layer][i];
-	      let obj = s.shafts[layer]["x"][i];
+	      let obj = globalThis.sensor.shafts[layer]["x"][i];
 		  if (debug3Devent === true) {
 		      console.log(eventX[layer].length, i, lg, obj);
 		  }
@@ -583,24 +576,24 @@ function loadEvent(eventIndex,x,y,s) {
     let y_new = {};
     let yp_new = {};
 	//check if channels are reversed
-    if (geometry[ndx][2] === "REVERSED") {
+    if (globalThis.singleGeometry[ndx][2] === "REVERSED") {
     	reversed = true;
 	} else {
 		reversed = false;
 	}    
     if (debug3Devent === true) {
-      console.log(layer, layers, reversed, eventY[layer]);
+      console.log(layer, globalThis.layers, reversed, eventY[layer]);
     }
     //need to test for reverse
 	if (reversed === true) {
-		channelPosition = ((layers[5].length - 2) * 4) - 1;	
+		channelPosition = ((globalThis.layers[5].length - 2) * 4) - 1;	
 		channelSensor = 0;	
 	   if (debug3Devent === true) {
 	      console.log("y start: ", channelPosition);
 	   }
 	    for (let i=channelPosition; i >= 0; i--) {
 	      let lg = eventY[layer][i];
-	      let obj = s.shafts[layer]["y"][channelSensor];
+	      let obj = globalThis.sensor.shafts[layer]["y"][channelSensor];
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
@@ -618,7 +611,7 @@ function loadEvent(eventIndex,x,y,s) {
 	 } else {
 	    for (let i=0; i<eventY[layer].length; i++) {
 	      let lg = eventY[layer][i];
-	      let obj = s.shafts[layer]["y"][i];
+	      let obj = globalThis.sensor.shafts[layer]["y"][i];
 		  if (debug3Devent === true) {
 		      console.log(eventY[layer].length, i, lg, obj);
 		  }
@@ -641,7 +634,7 @@ function loadEvent(eventIndex,x,y,s) {
 		ndx = globalThis.layerOrderY[layerNdx][1];
 	}
   }
-  let vectors = globalThis.calculate(scene,s,x_prisms, y_prisms, x_hit, y_hit);
+  let vectors = globalThis.calculate(scene,x_prisms, y_prisms, x_hit, y_hit);
   if (debug3Dline === true) {
       console.log("vectors:",vectors, "xprisms:", x_prisms, "yprisms", y_prisms, "xhit:",x_hit, "yhit:", y_hit);
   }  
@@ -664,23 +657,23 @@ function loadEvent(eventIndex,x,y,s) {
 	      console.log("point1:", point1, "point2:", point2, "direction:", direction, "extended:", extendVector, "startpoint:",startPoint, "endpoint:",endPoint);
 	}  
     const geometry = new THREE.BufferGeometry();
-    var positions = new Float32Array([startPoint.x-s.centerx, startPoint.y-s.centery, startPoint.z-s.centerz, endPoint.x-s.centerx, endPoint.y-s.centery, endPoint.z-s.centerz]);
+    var positions = new Float32Array([startPoint.x-globalThis.sensor.centerx, startPoint.y-globalThis.sensor.centery, startPoint.z-globalThis.sensor.centerz, endPoint.x-globalThis.sensor.centerx, endPoint.y-globalThis.sensor.centery, endPoint.z-globalThis.sensor.centerz]);
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     const material = new THREE.LineBasicMaterial({ color: 0x00ff00 });
     const line = new THREE.Line(geometry, material);
-    muonVectors.push(line);
-    s.group.add(line);
+    globalThis.muonVectors.push(line);
+    globalThis.sensor.group.add(line);
   }  
 } //end of loadEvent
 
-function loadAngle(s,x,y,z) {
-  s.group.rotation.order = 'YXZ';	
-  s.group.rotation.x = x;
-  s.group.rotation.y = y;
-  s.group.rotation.z = z;
+function loadAngle(x,y,z) {
+  globalThis.sensor.group.rotation.order = 'YXZ';	
+  globalThis.sensor.group.rotation.x = x;
+  globalThis.sensor.group.rotation.y = y;
+  globalThis.sensor.group.rotation.z = z;
 } // end of loadAngle
 
-function smoothCameraZoom(s,camera, targetPosition, duration, controls) {
+function smoothCameraZoom(camera, targetPosition, duration, controls) {
   const initialPosition = camera.position.clone();
   const startTime = Date.now();
   const zoomOutDistance = 30;
@@ -695,7 +688,7 @@ function smoothCameraZoom(s,camera, targetPosition, duration, controls) {
     const newPosition = initialPosition.clone().lerp(zoomedPosition, t);
     camera.position.copy(newPosition);
     // Look at the target position
-    camera.lookAt(targetPosition.add(new THREE.Vector3(s.centerx,s.centery,s.centerz)));
+    camera.lookAt(targetPosition.add(new THREE.Vector3(globalThis.sensor.centerx,globalThis.sensor.centery,globalThis.sensor.centerz)));
     // Continue the animation until the duration is reached
     if (t < 1) {
       requestAnimationFrame(updateCameraPosition);
@@ -704,7 +697,7 @@ function smoothCameraZoom(s,camera, targetPosition, duration, controls) {
   // Start the animation
   updateCameraPosition();
   controls.target.set(0, 0, 0); // Set the target position to the center of the scene
-  controls.target.set(s.centerx, s.centery, s.centerz);
+  controls.target.set(globalThis.sensor.centerx, globalThis.sensor.centery, globalThis.sensor.centerz);
   controls.update();
 } //end of smoothCameraZoom
 
@@ -868,44 +861,38 @@ function resetPyramidPosition() {
 	}
 }//end of resetPyramidPosition
 
-function draw3DSettings(detector, g, l, x, y, xCoord, yCoord) {
-//function draw3DSettings(detector, g, l) {
+function draw3DSettings() {
     if (debug3D === true) {		
 		console.log("3D drawings");
 	}
 	if (scene.getObjectByName("sensor") != undefined) {
 		removeObject3D(scene.getObjectByName("sensor"));
 	}
-	geometry = g;
-	layers = l;
 	if (debug3Dreverse === true) {
-		console.log("layers:",layers);
+		console.log("layers:",globalThis.layers);
 	}
 	//detector information from data file
- 	sensorX = parseFloat(detector[5]);
- 	sensorY = parseFloat(detector[6]);
- 	sensorZ = parseFloat(detector[7]);
- 	sensorTheta = Math.floor(detector[8]);
- 	sensorPhi = Math.floor(detector[9]);
- 	sensorHeight = parseFloat(detector[10]);	
-	s = new sensor(sensorHeight, geometry);
-	s.centery = sensorY;
-	s.centerx = sensorX;
-	s.centerz = sensorZ;
-	s.render();
+ 	sensorX = parseFloat(globalThis.detector[5]);
+ 	sensorY = parseFloat(globalThis.detector[6]);
+ 	sensorZ = parseFloat(globalThis.detector[7]);
+ 	sensorTheta = Math.floor(globalThis.detector[8]);
+ 	sensorPhi = Math.floor(globalThis.detector[9]);
+ 	sensorHeight = parseFloat(globalThis.detector[10]);	
+	globalThis.sensor = new sensor(sensorHeight);
+	globalThis.sensor.centery = sensorY;
+	globalThis.sensor.centerx = sensorX;
+	globalThis.sensor.centerz = sensorZ;
+	globalThis.sensor.render();
 	resetPyramidPosition();
-	camera.lookAt(s.centerx, s.centery, s.centerz);
-	acceptanceRange(s,parameters.acceptRange);
+	camera.lookAt(globalThis.sensor.centerx, globalThis.sensor.centery, globalThis.sensor.centerz);
+	acceptanceRange(parameters.acceptRange);
 	clearMuons();  
-	muonVectors = [];
-	localx = x;
-	localy = y
-	loadEvent(1,localx,localy,s);
-	//loadEvent(1, s);
-	loadAngle(s,THREE.MathUtils.degToRad(-sensorTheta),THREE.MathUtils.degToRad(sensorPhi),0);	
-    const targetPosition = new THREE.Vector3(s.centerx-10,s.centery+15,s.centerz+10); // Specify the target position
+	globalThis.muonVectors = [];
+	loadEvent(1,globalThis.subtractPedX,globalThis.subtractPedY);
+	loadAngle(THREE.MathUtils.degToRad(-sensorTheta),THREE.MathUtils.degToRad(sensorPhi),0);	
+    const targetPosition = new THREE.Vector3(globalThis.sensor.centerx-10,globalThis.sensor.centery+15,globalThis.sensor.centerz+10); // Specify the target position
     const duration = 1000; // Specify the duration in milliseconds
-    smoothCameraZoom(s, camera, targetPosition, duration, controls);
+    smoothCameraZoom(camera, targetPosition, duration, controls);
 	animate();
 }// end of draw3DSettings
 

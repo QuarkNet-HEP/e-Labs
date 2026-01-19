@@ -11,19 +11,13 @@ var inputElement4 = document.getElementById("quantity4");
 // Add an event listener to the all events input element
 inputElement.addEventListener("input", updateInputValue);
 
-var geometry = [];
-var layers = [];
-var subtractPedX = [];
-var subtractPedY = [];
-var xCoord = [];
-var yCoord = [];
-let quadPosOffset = 60;
-let pedThreshold = 10;
-let size = 35;
-let totalIntensity = 300;
-let zOffset = 20;
-let lineExtension = 80;
-let pointSize = 8;
+const quadPosOffset = 60;
+const pedThreshold = 10;
+const size = 35;
+const totalIntensity = 300;
+const zOffset = 20;
+const lineExtension = 80;
+const pointSize = 8;
 let debug2D = false;
 let debug2DLayer = false;
 let debug2DLayerMore = false;
@@ -38,7 +32,7 @@ let overallCellSize = 0;
 function updateInputValue() {
   inputValue = inputElement.value;
   if (is_numeric(inputValue)) {
-	if (inputValue > 0 && inputValue <= subtractPedX.length) {
+	if (inputValue > 0 && inputValue <= globalThis.subtractPedX.length) {
 	  draw(inputValue-1);
 	} 
   }
@@ -838,9 +832,9 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 	var ndx = layerOrder[2][1];
 	layer = layerOrder[2][2];
 	var layerNdx = 2;
-	var numQuads = (layers[ndx-1].length-2);
+	var numQuads = (globalThis.layers[ndx-1].length-2);
 	//need to check the pixel we start drawing based on the # of cells
-	if (layers[ndx-1].length-2 === 12) {
+	if (globalThis.layers[ndx-1].length-2 === 12) {
 		startPoint = 80;
 	}
 	var zPos = startPoint - 20;
@@ -848,7 +842,7 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
     if (debug2DLayerMore === true) {
 	  console.log("layer order:", layerOrder);
       console.log("canvas:", ctx);
-      console.log("layers: ", layers);
+      console.log("layers: ", globalThis.layers);
 	  console.log("startPoint", startPoint, "numQuads:", numQuads);
 	}
 	var units = 260.0 / (start - end);
@@ -875,19 +869,19 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 		  zvalue = end;
 	  }
 	  //check if we need to start with a three or a pyramid for each layer
-	  if (geometry[ndx][1] === "Tree") {
+	  if (globalThis.singleGeometry[ndx][1] === "Tree") {
     	up = false;
 	  } else {
 		up = true;
 	  }
 	  //check if channels are reversed
-	  if (geometry[ndx][2] === "REVERSED") {
+	  if (globalThis.singleGeometry[ndx][2] === "REVERSED") {
     	reversed = true;
 	  } else {
 		reversed = false;
 	  }	  
-	  var posQuadSize = geometry[ndx].length-3; //get the quad size from the geometry
-	  quadSize = geometry[ndx][posQuadSize];
+	  var posQuadSize = globalThis.singleGeometry[ndx].length-3; //get the quad size from the geometry
+	  quadSize = globalThis.singleGeometry[ndx][posQuadSize];
 	  cellSize = quadSize * size / 2.0;
 	  overallCellSize = cellSize;
 	  triangleHeight = Math.sqrt(3) * cellSize / 2;
@@ -904,9 +898,9 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 		  console.log("xpSize:", xpSize);
 	  }
 	  if (whichLayer === 'X') {
-		drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2], (layer*2));
+		drawZPosition(zPos, yp+(cellSize/2), zvalue, globalThis.singleGeometry[ndx][2], (layer*2));
 	  } else {
-		drawZPosition(zPos, yp+(cellSize/2), zvalue, geometry[ndx][2], ((layer*2)+1));		
+		drawZPosition(zPos, yp+(cellSize/2), zvalue, globalThis.singleGeometry[ndx][2], ((layer*2)+1));		
 	  }
 	  //loop and draw quads taking into account the intercell spacing and flipping
 	  var quadNo = 0;
@@ -915,16 +909,16 @@ function drawLayer(whichLayer, event, startX, startY, lineRouteBottom, lineRoute
 		  if (quadNo <= numQuads) {
 			  for (var quadMember = 0; quadMember < 2; quadMember++) {
 				  if (quadMember == 0) {
-					 drawQuadPos(up, cellSize, xp, yp, layers[ndx-1][quadNo]);
+					 drawQuadPos(up, cellSize, xp, yp, globalThis.layers[ndx-1][quadNo]);
 					 quadNo++;
 				  }
 				  if (debug2DLayer === true) {
-				  	console.log(whichLayer,event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
+				  	console.log(whichLayer,event,layer,up,cellSize,xp,yp,channel,layerAct,reversed,numQuads,globalThis.xCoord,globalThis.subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
     			  }
     			  if (whichLayer === 'X') { 				  
-				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,xCoord,subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
+				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,globalThis.xCoord,globalThis.subtractPedX,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);
 				  } else {
-				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,yCoord,subtractPedY,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);					  
+				  	channel = drawQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,globalThis.yCoord,globalThis.subtractPedY,layerQuad, quadNo,layerQuadSize,cellSize,quadGap,layerTriangle);					  
 				  }
 				  xp += cellSize;
 			  }
@@ -955,25 +949,18 @@ function draw(event){
   ctx.fillText('Y-view display - find muon track with 3 planes', canvas.width / 2, 420);
 }//end of draw
 
-//function draw2DSettings(event, g, l) {
-function draw2DSettings(event, detector, g, l, sX, sY, cX, cY){
+function draw2DSettings(event){
 	var start = new Date();
-	subtractPedX = sX;
-	subtractPedY = sY;
-	xCoord = cX;
-	yCoord = cY;
-	geometry = g;
-	layers = l;
 	if (debug2D === true) {		
 		console.clear();
 		console.log("2D drawings");
-		console.log("geometry:",g);
-		console.log("layers:",l);
+		console.log("geometry:",globalThis.singleGeometry);
+		console.log("layers:",globalThis.layers);
 	}
 	document.getElementById("quantity").value = 1;
-	document.getElementById("rundata").innerHTML = "Run: "+globalThis.globalThis.runNumber;
+	document.getElementById("rundata").innerHTML = "Run: "+globalThis.runNumber + " (" + globalThis.totalEvents + " events)";
 	document.getElementById("rundata").style.fontWeight = "bold";
-	inputElement.max = subtractPedX.length;
+	inputElement.max = globalThis.subtractPedX.length;
 	draw(event);
 	var end = new Date();
 	if (globalThis.showTime) {

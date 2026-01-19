@@ -4,6 +4,7 @@
 
 // Ensure helper functions and muon vector module load and attach globals before this module runs
 import './helperFunctions.js';
+import './dataFiles.js';
 import './muonVector.js';
 import './dataRead.js';
 // Ensure draw3D module runs so it attaches initScene to window
@@ -11,56 +12,27 @@ import './draw3D.js';
 
 globalThis.layerOrderX = [];
 globalThis.layerOrderY = [];
+globalThis.layers = [];
+globalThis.singleGeometry = [];
 globalThis.parameters = {};
 globalThis.initialTime = null;
 globalThis.endTime = null;
-let x;
-let y;
-let detector = [];
+globalThis.detector = null
+globalThis.totalEvents = 0;
+let xLength;
+let yLength;
+let xCoordLength;
+let yCoordLength;
 let run = [];
 let localGeometry;
-let singleGeometry = [];
-// Keep single shared arrays (do not reassign later) so we can expose them as globals
-let layers = [];
 let localADCmap;
 let localPedestal;
-let xCoord;
-let yCoord;
 let eventTotal = [1];
 let dataGUI;
 let debugMain = false;
 const loadingMessage = document.getElementById("loading-message");
 
-let dataFiles = [
-	'Run181_list_swap_00_01.txt',
-	'Run132_list_no_swap.txt',
-	'Run132_list_no_swap_converted.txt',
-	'Run133_list_no_swap.txt',
-	'Run167_list_no_swap.txt',
-	'Run168_list_swap_00_01.txt',
-	'Run171_list_no_swap.txt',
-	'Run172_list_no_swap.txt',
-	'Run173_list_swap_00_01.txt',
-	'Run174_list_swap_00_01.txt',
-	'Run116_list_no_swap.txt',
-	'Run142_list_swap_00_01.txt',
-	'Run151_list_no_swap.txt',
-	'Run156_list_no_swap.txt',
-	'Run158_list_swap_00_01.txt',
-	'Run161_list_swap_00_01.txt',
-	'Run167Sample.txt',
-	'Run132_list_cluster_no_swap.txt',
-	'Run133_list_cluster_no_swap.txt',
-	'Run167_list_cluster_no_swap.txt',
-	'Run168_list_cluster_swap_00_01.txt',
-	'Run171_list_cluster_no_swap.txt',
-	'Run172_list_cluster_no_swap.txt',
-	'Run173_list_cluster_swap_00_01.txt',
-	'Run174_list_cluster_swap_00_01.txt',
-	'Run181_list_cluster_swap_00_01.txt',
-			    ]
-
-// Function to get the geometry corresponding to the selected data file
+// Function to get the single geometry corresponding to the selected data file
 function getSingleGeometry() {
 	let timestamps = [];
 	let done = false;
@@ -77,23 +49,23 @@ function getSingleGeometry() {
 		}
 	}
 	//these two are global variables
-	singleGeometry = []
-	layers = [];
+	globalThis.singleGeometry = []
+	globalThis.layers = [];
 	// Instead of reassigning, clear the existing arrays so the global references remain valid
 	globalThis.layerOrderX.length = 0;
 	globalThis.layerOrderY.length = 0;
 	for (let i = 0; i < localGeometry.length; i++) {
 		//geometry needs to match detector name, date and time
 		if (localGeometry[i][0][0] === timestamps[0][0] && localGeometry[i][0][1] === timestamps[0][1] && localGeometry[i][0][2] === timestamps[0][2]) {
-			singleGeometry.push(localGeometry[i][0]);
+			globalThis.singleGeometry.push(localGeometry[i][0]);
 			for (let x = 1; x < 7; x++) {
-				singleGeometry.push(localGeometry[i][x]);
+				globalThis.singleGeometry.push(localGeometry[i][x]);
 				if (localGeometry[i][x][0].startsWith("P")) {
 					let layerDetail = [];
 					done = false;
 					for (let n = 3; n < localGeometry[i][x].length; n++) {
 						if (localGeometry[i][x][n] === "OFF") {
-							layers.push(layerDetail);
+							globalThis.layers.push(layerDetail);
 							layerDetail = []
 							done = true;
 						} else {
@@ -107,17 +79,17 @@ function getSingleGeometry() {
 	}
 	//get the layer order from the geometry
 	// push into the existing arrays so global references remain valid
-	globalThis.layerOrderX.push([parseFloat(singleGeometry[1][singleGeometry[1].length-4]),5,0]);
-	globalThis.layerOrderX.push([parseFloat(singleGeometry[3][singleGeometry[3].length-4]),3,1]);
-	globalThis.layerOrderX.push([parseFloat(singleGeometry[5][singleGeometry[5].length-4]),1,2]);
+	globalThis.layerOrderX.push([parseFloat(globalThis.singleGeometry[1][globalThis.singleGeometry[1].length-4]),5,0]);
+	globalThis.layerOrderX.push([parseFloat(globalThis.singleGeometry[3][globalThis.singleGeometry[3].length-4]),3,1]);
+	globalThis.layerOrderX.push([parseFloat(globalThis.singleGeometry[5][globalThis.singleGeometry[5].length-4]),1,2]);
 	// Sort in ascending order by the first element (preserve original behavior)
 	globalThis.layerOrderX.sort(function(a, b) {
 	  return a[0] - b[0]; 
 	});
 	//console.log(layerOrderX);
-	globalThis.layerOrderY.push([parseFloat(singleGeometry[2][singleGeometry[2].length-4]),6,0]);
-	globalThis.layerOrderY.push([parseFloat(singleGeometry[4][singleGeometry[4].length-4]),4,1]);
-	globalThis.layerOrderY.push([parseFloat(singleGeometry[6][singleGeometry[6].length-4]),2,2]);
+	globalThis.layerOrderY.push([parseFloat(globalThis.singleGeometry[2][globalThis.singleGeometry[2].length-4]),6,0]);
+	globalThis.layerOrderY.push([parseFloat(globalThis.singleGeometry[4][globalThis.singleGeometry[4].length-4]),4,1]);
+	globalThis.layerOrderY.push([parseFloat(globalThis.singleGeometry[6][globalThis.singleGeometry[6].length-4]),2,2]);
 	// Sort in ascending order by the first element (preserve original behavior)
 	globalThis.layerOrderY.sort(function(a, b) {
 	  return a[0] - b[0]; 
@@ -133,18 +105,18 @@ async function loadDataFile() {
   try {
     // retrieveData already returns a Promise; await it directly
     const data = await globalThis.retrieveData();
-
-    if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { x = globalThis.subtractPedX; }
-    if (globalThis.subtractPedY != undefined && globalThis.subtractPedY.length > 0) { y = globalThis.subtractPedY; }
-    if (globalThis.xCoord != undefined && globalThis.xCoord.length > 0) { xCoord = globalThis.xCoord; }
-    if (globalThis.yCoord != undefined && globalThis.yCoord.length > 0) { yCoord = globalThis.yCoord; }
-    if (x != undefined && y != undefined) {
-      if (x.length > 0 && y.length > 0) {
+    if (globalThis.subtractPedX != undefined && globalThis.subtractPedX.length > 0) { xLength = globalThis.subtractPedX.length; }
+    if (globalThis.subtractPedY != undefined && globalThis.subtractPedY.length > 0) { yLength = globalThis.subtractPedY.length; }
+    if (globalThis.xCoord != undefined && globalThis.xCoord.length > 0) { xCoordLength = globalThis.xCoord.length; }
+    if (globalThis.yCoord != undefined && globalThis.yCoord.length > 0) { yCoordLength = globalThis.yCoord.length; }
+    if (globalThis.subtractPedX != undefined && globalThis.subtractPedY != undefined) {
+      if (xLength > 0 && yLength > 0) {
         eventTotal = [];
         eventTotal.push(0);
-        for (let i = 0; i < x.length; i++) {
+        for (let i = 0; i < xLength; i++) {
           eventTotal.push(i+1);
         }
+		globalThis.totalEvents = eventTotal.length - 1;
         GUIupdate("update");
       } else {
         if (debugMain === true) {
@@ -157,11 +129,11 @@ async function loadDataFile() {
       }
     }
 
-    detector = document.getElementById("detector-name").value.trim().split(' ');
+    globalThis.detector = document.getElementById("detector-name").value.trim().split(' ');
     getSingleGeometry();
-    draw2DSettings(0, detector, singleGeometry, layers, x, y, xCoord, yCoord); //invoke the 2D display  
-    draw3DSettings(detector, singleGeometry, layers, x, y, xCoord, yCoord);
-    drawAnalysis(layers, singleGeometry);
+    draw2DSettings(0);
+    draw3DSettings();
+    drawCharts();
     if (debugMain === true) {
       console.log("Data and geometry are ready");
     }
@@ -226,8 +198,8 @@ function GUIinit() {
   dataGUI.open();
   const sceneGUI = gui.addFolder("Scene"); 
   const params = { clearVectors: function() { 
-		for (let i in muonVectors) { 
-			globalThis.sensor.group.remove(muonVectors[i]); 
+		for (let i in globalThis.muonVectors) { 
+			globalThis.sensor.group.remove(globalThis.muonVectors[i]); 
 		}
 		for (let obj of globalThis.sensor.job) {
     		obj.faces.material.color.set(globalThis.sensor.xcolor);
@@ -239,7 +211,7 @@ function GUIinit() {
   };
   sceneGUI.add(params, 'clearVectors').name('Clear Muon Vectors'); 
   sceneGUI.add(globalThis.parameters, 'acceptRange', 0, 20000).step(1).name("Acceptance Range").onChange(onAcceptanceRangeChange); 
-  function onAcceptanceRangeChange() { acceptanceRange(globalThis.sensor,parameters.acceptRange) }
+  function onAcceptanceRangeChange() { acceptanceRange(parameters.acceptRange) }
   sceneGUI.add(globalThis.parameters, 'showModel').name("Show Pyramid").onChange(onModelVisibilityChange);
   function onModelVisibilityChange() { loadPyramid(globalThis.parameters.showModel, globalThis.parameters.showModelWire);}  
   sceneGUI.add(globalThis.parameters, 'showModelWire').name("Show Wireframe").onChange(onModelWireframeChange);

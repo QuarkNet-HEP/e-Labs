@@ -22,7 +22,7 @@ function removeCharts() {
 	}
 }//end of removeCharts
 
-function drawAnalysis(l,g) { 
+function drawCharts(g) { 
 	// Cache DOM lookups to avoid repeated document.getElementById calls
 	const _elCache = new Map();
 	function getEl(id) {
@@ -102,10 +102,8 @@ function drawAnalysis(l,g) {
 	var Y2ADCAverage = getCtx('Y2ADCAverage');
 	var Y3ADCAverage = getCtx('Y3ADCAverage');
 
-	xLayerLength = (l[4].length - 2) * 4;
-	yLayerLength = (l[5].length - 2) * 4;
-	geometry = g;
-	layers = l;
+	xLayerLength = (globalThis.layers[4].length - 2) * 4;
+	yLayerLength = (globalThis.layers[5].length - 2) * 4;
 	if (xLayerLength == null) {
 		xLayerLength = 28;
 	}
@@ -123,7 +121,7 @@ function drawAnalysis(l,g) {
 	  yLabels.push('Channel ' + i.toString());
 	}
 	
-	var chartComments = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments;
+	var chartComments = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments+' ('+globalThis.totalEvents+' events)';
 	var options = {
 	  scales: {
 	    y: {
@@ -538,8 +536,6 @@ function drawAnalysis(l,g) {
 	    download2DArray('', 'download6DXHITSDYoriginaldata.csv');
 	});
 	
-
-	
 	//LEGO plot
 	var xx = [];
 	var yy = [];
@@ -567,13 +563,6 @@ function drawAnalysis(l,g) {
 		  end: 30,
 		  size: 1
 		},		
-		//nbinsx: 50,
-		//nbinsy: 50,
-		//colorscale: [
-		//    ['0', 'rgb(12,51,131)'],    // low end
-		//    ['0.5', 'rgb(242,211,56)'], // middle
-		//    ['1', 'rgb(217,30,30)']     // high end
-		//  ]
 		//Set the histnorm attribute to options like 'probability', 'percent', 'density', or 'probability density'.
 		histnorm: 'density', // Normalize to show probability
 		//zsmooth: 'best', // 'best' performs bi-linear interpolation
@@ -586,29 +575,7 @@ function drawAnalysis(l,g) {
 	  height: 600, // Set the desired height in pixels
 	  width: 950,  // Set the desired width in pixels
 	  // Optional: add margins, axes details, etc.
-	  //margin: { t: 50 } // Example margin to prevent title cutoff	  
 	  // Add custom shapes, e.g., a vertical line at mean of X
-	  //shapes: [{
-	  //    type: 'line',
-	  //    xref: 'x', yref: 'paper', // reference the x-axis data and paper height
-	  //    x0: 50, y0: 0,
-	  //    x1: 50, y1: 1,
-	  //    line: { color: 'black', width: 2, dash: 'dashdot' }
-	  //  }]
-	  //shapes: [{
-	  //    type: 'line',
-	  //    xref: 'x',
-	  //    yref: 'paper',
-	  //    x0: meanX, // assuming meanX is calculated
-	  //    y0: 0,
-	  //    x1: meanX,
-	  //    y1: 1,
-	  //    line: {
-	  //        color: 'red',
-	  //        width: 2,
-	  //        dash: 'dash'
-	  //    }
-	 // }]
 	};
 	Plotly.newPlot('LEGO', data, layout);	
 	

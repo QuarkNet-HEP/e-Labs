@@ -5,7 +5,6 @@
  */
  let debugTracking = false;
  let debugEventsWithTracks = false;
- var geometry = '';
  var layers = [];
  var dx = [];
  var dy = [];
@@ -19,7 +18,6 @@
  var dybottommiddlebothlayers = [];
  var dxbothlayers = [];
  var dybothlayers = [];
- let pointTolerance = 1.5;//1.5;
  var investigatePlanes = [];
  var eventMissingOnePlane = [];
  var tracking6MiddleMissedX = [];
@@ -38,6 +36,7 @@
  var tracking4TopMissing = [];
  var tracking4MiddleMissing = [];
  var tracking4BottomMissing = [];
+const pointTolerance = 1.5;//1.5;
 // Cache some global math constants to avoid repeated Math.sqrt calls in hot paths
 const SQRT3 = Math.sqrt(3);
 
@@ -909,19 +908,19 @@ function calculateAnalysisLayer(whichLayer, event) {
 	 var layerOrder = [];
 	 var startNdx = 0;
 	 if (whichLayer === 'X') { 
-		var listx = [parseFloat(geometry[1][geometry[1].length-4]),5,0];
+		var listx = [parseFloat(globalThis.singleGeometry[1][globalThis.singleGeometry[1].length-4]),5,0];
 		layerOrder.push(listx);
-		listx = [parseFloat(geometry[3][geometry[3].length-4]),3,1];
+		listx = [parseFloat(globalThis.singleGeometry[3][globalThis.singleGeometry[3].length-4]),3,1];
 		layerOrder.push(listx);
-		listx = [parseFloat(geometry[5][geometry[5].length-4]),1,2];
+		listx = [parseFloat(globalThis.singleGeometry[5][globalThis.singleGeometry[5].length-4]),1,2];
 		layerOrder.push(listx);
 		startNdx = 5;
 	 } else {
-		var listy = [parseFloat(geometry[2][geometry[2].length-4]),6,0];
+		var listy = [parseFloat(globalThis.singleGeometry[2][globalThis.singleGeometry[2].length-4]),6,0];
 		layerOrder.push(listy);
-		listy = [parseFloat(geometry[4][geometry[4].length-4]),4,1];
+		listy = [parseFloat(globalThis.singleGeometry[4][globalThis.singleGeometry[4].length-4]),4,1];
 		layerOrder.push(listy);
-		listy = [parseFloat(geometry[6][geometry[6].length-4]),2,2];
+		listy = [parseFloat(globalThis.singleGeometry[6][globalThis.singleGeometry[6].length-4]),2,2];
 		layerOrder.push(listy);
 		startNdx = 4;
 	}
@@ -939,7 +938,7 @@ function calculateAnalysisLayer(whichLayer, event) {
 	var numQuads = (layers[ndx-1].length-2);
 
 	var units = 260.0 / (start - end);
-	var firstLayer = start; //starts at the top position of the layer in the geometry
+	var firstLayer = start; //starts at the top position of the layer in the globalThis.singleGeometry
 	var secondLayer = middle;	
 	var thirdLayer = end;
 	//loop to draw the three y layers, the layers are not evenly placed so we have to calculate
@@ -957,7 +956,7 @@ function calculateAnalysisLayer(whichLayer, event) {
 		  zvalue = end;
 	  }
 	  //check if we need to start with a three or a pyramid for each layer
-	  if (geometry[ndx][1] === "Tree") {
+	  if (globalThis.singleGeometry[ndx][1] === "Tree") {
 	 	up = false;
 		layerStart.push("Tree");
 	  } else {
@@ -965,17 +964,17 @@ function calculateAnalysisLayer(whichLayer, event) {
 		layerStart.push("Pyramid");
 	  }
 	  //check if channels are reversed
-	  if (geometry[ndx][2] === "REVERSED") {
+	  if (globalThis.singleGeometry[ndx][2] === "REVERSED") {
 	 	reversed = true;
 	  } else {
 		reversed = false;
 	  }	  
-	  var posQuadSize = geometry[ndx].length-3; //get the quad size from the geometry
-	  quadSize = geometry[ndx][posQuadSize];
+	  var posQuadSize = globalThis.singleGeometry[ndx].length-3; //get the quad size from the globalThis.singleGeometry
+	  quadSize = globalThis.singleGeometry[ndx][posQuadSize];
 	  cellSize = quadSize * size / 2.0;
 	  triangleHeight = SQRT3 * cellSize / 2;
 	  quadGap =  size - cellSize; 
-	  // Calculate the real estate for the triangles based on the geometry
+	  // Calculate the real estate for the triangles based on the globalThis.singleGeometry
 	  var xpSize = ((numQuads * 2) * cellSize) + startPoint;
 	  //loop and draw quads taking into account the intercell spacing and flipping
 	  var quadNo = 0;

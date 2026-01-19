@@ -119,7 +119,7 @@ function vectorize(hits) {
   return vectors;  
 }
 
-function calculate_internal (temp1, s, x_prisms, y_prisms, x, y) {
+function calculate_internal (temp1, x_prisms, y_prisms, x, y) {
   function point(x,y,z) { return new THREE.Vector2(x,y); }
   let x_hits = {0:[],1:[],2:[]}
   //Search x-paths
@@ -142,9 +142,9 @@ function calculate_internal (temp1, s, x_prisms, y_prisms, x, y) {
         const prism = x_prisms[layer][i-1]
         //add interpolated distance to current position
         const estimatedPos = prism.size/2 + interpolate(prism.size/2,prev_lg,current_lg);
-        const startX = prism.xpos + s.centerx;
-        const startY = prism.ypos + s.centery;
-        const startZ = prism.zpos + s.centerz;
+        const startX = prism.xpos + globalThis.sensor.centerx;
+        const startY = prism.ypos + globalThis.sensor.centery;
+        const startZ = prism.zpos + globalThis.sensor.centerz;
         x_hits[layer].push( point(startX+estimatedPos,startY+prism.size/4) );
       }               
     }
@@ -175,9 +175,9 @@ function calculate_internal (temp1, s, x_prisms, y_prisms, x, y) {
         const sizeOffset = prism.size/2
         //add interpolated distance to current position
         const estimatedPos = interpolate(prism.size/2,prev_lg,current_lg) - prism.size/2;
-        const startX = prism.xpos + s.centerx;
-        const startY = prism.ypos + s.centery;
-        const startZ = prism.zpos + s.centerz;
+        const startX = prism.xpos + globalThis.sensor.centerx;
+        const startY = prism.ypos + globalThis.sensor.centery;
+        const startZ = prism.zpos + globalThis.sensor.centerz;
         y_hits[layer].push( point(startZ+estimatedPos,startY+prism.size/4) );
       }               
     }
@@ -209,8 +209,8 @@ function calculate_internal (temp1, s, x_prisms, y_prisms, x, y) {
 }
 
 // Expose a named export and also attach to globalThis for legacy code
-export function calculate(temp1, s, x_prisms, y_prisms, x, y) {
-  return calculate_internal(temp1, s, x_prisms, y_prisms, x, y);
+export function calculate(temp1, x_prisms, y_prisms, x, y) {
+  return calculate_internal(temp1, x_prisms, y_prisms, x, y);
 }
 
 if (typeof window !== 'undefined') {
