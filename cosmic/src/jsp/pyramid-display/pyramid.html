@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<script src="../include/elab.js" defer></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!-- Preconnect to common CDNs to reduce DNS/TCP latency -->
@@ -27,14 +26,61 @@
         top: 0px; /* Adjust the top position to your desired value */
         right: 0px; /* Adjust the left position to your desired value */
         z-index: 1;
-        
-      }      
+        /* Make the GUI container wider by default but keep it responsive */
+        width: 390px;
+        max-width: 40%;
+        box-sizing: border-box;
+        padding: 6px;
+      }
+
+      /* Style dat.GUI elements inside our container to increase "black" real-estate and make selects full width */
+      #gui-container .dg, #gui-container .dg * {
+        box-sizing: border-box;
+      }
+      #gui-container .dg.main {
+        width: 100% !important;
+        max-width: 100% !important;
+        background: rgba(0,0,0,0.88) !important; /* darker panel */
+        color: #000000 !important;
+        padding: 6px !important;
+        border-radius: 6px;
+      }
+      /* Make the folder/content area use the full width */
+      #gui-container .dg .cr, #gui-container .dg .cr .property, #gui-container .dg .cr .fg {
+        width: 100% !important;
+      }
+      /* Make dropdowns and text inputs expand to available width */
+      #gui-container select, #gui-container input[type="text"], #gui-container input[type="number"], #gui-container .c select, #gui-container .c input {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+      /* On small screens prefer the GUI take most of the width but with padding */
+      @media (max-width: 600px) {
+        #gui-container {
+          right: 8px;
+          width: calc(100% - 16px);
+          max-width: 90%;
+        }
+        #gui-container .dg.main { width: 100% !important; }
+      }
       #gui-container li {
         float: none;
       }
       #gui-container .title {
         color: inherit;
         font-weight: inherit;
+      }
+      /* Remove special text effects (glow/outline/filters) from the Pyramid tuning panel */
+      #pyramid-tuning-ui,
+      #pyramid-tuning-ui * {
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
+        -webkit-text-fill-color: inherit !important;
+        -webkit-filter: none !important;
+        filter: none !important;
+        mix-blend-mode: normal !important;
+        color: inherit !important; /* let the panel decide the color or inherit from parent */
       }
       #error {
         padding:0px;
@@ -58,6 +104,27 @@
 	    display: none;
 	  }
    </style>
+
+    <!-- Insert small early patch to default third-party touch listeners to passive where safe. This should run before external scripts load. -->
+    <script>
+      (function() {
+        // Preserve original
+        var _addEventListener = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function(type, listener, options) {
+          // Only change behavior for touch events added without an options object
+          if ((type === 'touchstart' || type === 'touchmove') && (options === undefined || options === false)) {
+            try {
+              // Use passive: true to avoid scroll-blocking warnings for listeners that don't call preventDefault.
+              return _addEventListener.call(this, type, listener, { passive: true });
+            } catch (e) {
+              // In case a browser doesn't support options object, fall back to original call
+              return _addEventListener.call(this, type, listener, options);
+            }
+          }
+          return _addEventListener.call(this, type, listener, options);
+        };
+      })();
+    </script>
     
 </head>
 
@@ -138,8 +205,8 @@
 			  <datalist id="4planevaluesList">
 			    <!-- Options will be added dynamically by JavaScript -->
 			  </datalist>
-		  	</div>
-	   </div>
+		   	</div>
+	   	</div>
 		  <div style="justify-content: center; align-items: center;">
 		     <canvas id="myCanvas" width="1000" height="2000" style="border: 0px solid black;"></canvas> 
 		  </div>
@@ -148,19 +215,19 @@
 
         <div class="tab-pane fade" id="tabs-3" role="tabpanel" aria-labelledby="faible-tab">           
         <div class="tab-pane fade show active" style="background-color: #ffffff;" id="faible" role="tabpanel" aria-labelledby="faible-tab">
-	 		<h1 class="title">X CAEN 0</h1>
-	 		<div style="width: 75%; margin: auto;"><canvas id="X1"></canvas></div>
-	 		<button id="downloadXCAEN0">X CAEN 0</button>
-	 		<button id="downloadXCAEN0data">X CAEN 0 Data</button>
-			<h1 class="title">X CAEN 2</h1>
-		    <div style="width: 75%; margin: auto;"><canvas id="X2"></canvas></div>
-	 		<button id="downloadXCAEN2">X CAEN 2</button>
-	 		<button id="downloadXCAEN2data">X CAEN 2 Data</button>
-			<h1 class="title">X CAEN 4</h1>
-		    <div style="width: 75%; margin: auto;"><canvas id="X3"></canvas></div>
-	 		<button id="downloadXCAEN4">X CAEN 4</button>
-	 		<button id="downloadXCAEN4data">X CAEN 4 Data</button>
-		   
+		 		<h1 class="title">X CAEN 0</h1>
+		 		<div style="width: 75%; margin: auto;"><canvas id="X1"></canvas></div>
+		 		<button id="downloadXCAEN0">X CAEN 0</button>
+		 		<button id="downloadXCAEN0data">X CAEN 0 Data</button>
+				<h1 class="title">X CAEN 2</h1>
+			    <div style="width: 75%; margin: auto;"><canvas id="X2"></canvas></div>
+		 		<button id="downloadXCAEN2">X CAEN 2</button>
+		 		<button id="downloadXCAEN2data">X CAEN 2 Data</button>
+				<h1 class="title">X CAEN 4</h1>
+			    <div style="width: 75%; margin: auto;"><canvas id="X3"></canvas></div>
+		 		<button id="downloadXCAEN4">X CAEN 4</button>
+		 		<button id="downloadXCAEN4data">X CAEN 4 Data</button>
+			   
 			<h1 class="title">Y CAEN 1</h1>
 		    <div style="width: 75%; margin: auto;"><canvas id="Y1"></canvas></div>
 	 		<button id="downloadYCAEN1">Y CAEN 1</button>
@@ -183,8 +250,8 @@
 			<h1 class="title">6 PLANE TRACKING - MIDDLE HITS WITH SINGLE CELL TOP/BOTTOM LAYERS IN Y</h1>
 			<div style="width: 75%; margin: auto;"><canvas id="6PTXYMIDDLEY"></canvas></div>
 			<button id="download6PTMHYdata">MIDDLE POINTS</button>
-			<h1 class="title">6 PLANE TRACKING - MIDDLE HITS IN XY</h1>
-			<div style="width: 75%; margin: auto;"><canvas id="6PTXYMIDDLEXY"></canvas></div>
+			<!--<h1 class="title">6 PLANE TRACKING - MIDDLE HITS IN XY</h1>
+			<div style="width: 75%; margin: auto;"><canvas id="6PTXYMIDDLEXY"></canvas></div>-->
 			<!--<button id="download6PTMHXYdata">MIDDLE POINTS</button>-->
 			<h1 class="title">6 PLANE TRACKING - DIFF BETWEEN EXPECTED AND ACTUAL POINTS IN MIDDLE X HITS</h1>
 			<div style="width: 75%; margin: auto;"><canvas id="6PDIFFMXHITS"></canvas></div>
@@ -203,13 +270,13 @@
             <h1 class="title">6 PLANE TRACKING - MISSED MIDDLE POINTS IN Y</h1>
 		 	<button id="download6PTMYdata">MISSED MIDDLE POINTS IN Y</button>
             <div style="width: 75%; margin: auto;"><canvas id="6PTMY"></canvas></div>
-            <h1 class="title">6 PLANE TRACKING - MISSED MIDDLE POINTS IN X AND Y</h1>
+            <!--<h1 class="title">6 PLANE TRACKING - MISSED MIDDLE POINTS IN X AND Y</h1>
             <div style="width: 75%; margin: auto;"><canvas id="6PTMXY"></canvas></div>
-		 	<button id="download6PTMXYdata">MISSED MIDDLE POINTS IN XY</button>
-			<h1 class="title">6 PLANE TRACKING - DIFF BETWEEN EXPECTED AND ACTUAL POINTS IN MIDDLE X</h1>
+		 	<button id="download6PTMXYdata">MISSED MIDDLE POINTS IN XY</button>-->
+			<h1 class="title">6 PLANE TRACKING - DIFF BETWEEN EXPECTED AND ACTUAL POINTS IN MIDDLE X HITS FAILS</h1>
 			<div style="width: 75%; margin: auto;"><canvas id="6PDIFFMX"></canvas></div>
 			<button id="download6PDIFFMXdata">DIFF BETWEEN POINTS IN MIDDLE X</button>
-			<h1 class="title">6 PLANE TRACKING - DIFF BETWEEN EXPECTED AND ACTUAL POINTS IN MIDDLE Y</h1>
+			<h1 class="title">6 PLANE TRACKING - DIFF BETWEEN EXPECTED AND ACTUAL POINTS IN MIDDLE Y HITS FAILS</h1>
 			<div style="width: 75%; margin: auto;"><canvas id="6PDIFFMY"></canvas></div>
 			<button id="download6PDIFFMYdata">DIFF BETWEEN POINTS IN MIDDLE Y</button>
 			
@@ -270,45 +337,45 @@
 		 	<button id="downloadDY1DBOTTOMMIDDLE">DY B-M PROJECTION</button>
 		 	<button id="downloadDY1DBOTTOMMIDDLEdata">DY B-M DATA</button>
 		 	
-            <h1 class="title">CELL HITS ON X TRACK - TOP LAYER</h1>
+            <h1 class="title">CELLS ON X TRACK - TOP LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DXT1D"></canvas></div>
-		 	<button id="downloadDXT1D">CELL HITS ON X TRACK - TOP LAYER</button>
+		 	<button id="downloadDXT1D">CELLS ON X TRACK - TOP LAYER</button>
 		 	<button id="downloadDXT1Ddata">TOP LAYER CHANNELS</button>
-		 	<button id="downloadDXTM1D">CELL HITS ON X TRACK - TOP T-M LAYER</button>
+		 	<button id="downloadDXTM1D">CELLS ON X TRACK - TOP T-M LAYER</button>
 		 	<button id="downloadDXTM1Ddata">TOP T-M LAYER CHANNELS</button>
-            <h1 class="title">CELL HITS ON X TRACK - MIDDLE LAYER</h1>
+            <h1 class="title">CELLS ON X TRACK - MIDDLE LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DXM1D"></canvas></div>
-		 	<button id="downloadDXM1D">CELL HITS ON X TRACK - MIDDLE LAYER</button>
+		 	<button id="downloadDXM1D">CELLS ON X TRACK - MIDDLE LAYER</button>
 		 	<button id="downloadDXM1Ddata">MIDDLE LAYER CHANNELS</button>
-		 	<button id="downloadDXM1DT">CELL HITS ON X TRACK - MIDDLE T-M LAYER</button>
+		 	<button id="downloadDXM1DT">CELLS ON X TRACK - MIDDLE T-M LAYER</button>
 		 	<button id="downloadDXM1DTdata">MIDDLE T-M LAYER CHANNELS</button>
-		 	<button id="downloadDXM1DB">CELL HITS ON X TRACK - MIDDLE T-B LAYER</button>
+		 	<button id="downloadDXM1DB">CELLS ON X TRACK - MIDDLE T-B LAYER</button>
 		 	<button id="downloadDXM1DBdata">MIDDLE T-B LAYER CHANNELS</button>
-            <h1 class="title">CELL HITS ON X TRACK - BOTTOM LAYER</h1>
+            <h1 class="title">CELLS ON X TRACK - BOTTOM LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DXB1D"></canvas></div>
-		 	<button id="downloadDXB1D">CELL HITS ON X TRACK - BOTTOM LAYER</button>
+		 	<button id="downloadDXB1D">CELLS ON X TRACK - BOTTOM LAYER</button>
 		 	<button id="downloadDXB1Ddata">BOTTOM LAYER CHANNELS</button>
-		 	<button id="downloadDXBM1D">CELL HITS ON X TRACK - BOTTOM B-M LAYER</button>
+		 	<button id="downloadDXBM1D">CELLS ON X TRACK - BOTTOM B-M LAYER</button>
 		 	<button id="downloadDXBM1Ddata">BOTTOM B-M LAYER CHANNELS</button>
-            <h1 class="title">CELL HITS ON Y TRACK - TOP LAYER</h1>
+            <h1 class="title">CELLS ON Y TRACK - TOP LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DYT1D"></canvas></div>
-		 	<button id="downloadDYT1D">CELL HITS ON Y TRACK - TOP LAYER</button>
+		 	<button id="downloadDYT1D">CELLS ON Y TRACK - TOP LAYER</button>
 			<button id="downloadDYT1Ddata">TOP LAYER CHANNELS</button>
-		 	<button id="downloadDYTM1D">CELL HITS ON Y TRACK - TOP T-M LAYER</button>
+		 	<button id="downloadDYTM1D">CELLS ON Y TRACK - TOP T-M LAYER</button>
 			<button id="downloadDYTM1Ddata">TOP T-M LAYER CHANNELS</button>
-            <h1 class="title">CELL HITS ON Y TRACK - MIDDLE LAYER</h1>
+            <h1 class="title">CELLS ON Y TRACK - MIDDLE LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DYM1D"></canvas></div>
-		 	<button id="downloadDYM1D">CELL HITS ON Y TRACK - MIDDLE LAYER</button>
+		 	<button id="downloadDYM1D">CELLS ON Y TRACK - MIDDLE LAYER</button>
 			<button id="downloadDYM1Ddata">MIDDLE LAYER CHANNELS</button>
-		 	<button id="downloadDYM1DT">CELL HITS ON Y TRACK - MIDDLE T-M LAYER</button>
+		 	<button id="downloadDYM1DT">CELLS ON Y TRACK - MIDDLE T-M LAYER</button>
 			<button id="downloadDYM1DTdata">MIDDLE T-M LAYER CHANNELS</button>
-		 	<button id="downloadDYM1DB">CELL HITS ON Y TRACK - MIDDLE B-M LAYER</button>
+		 	<button id="downloadDYM1DB">CELLS ON Y TRACK - MIDDLE B-M LAYER</button>
 			<button id="downloadDYM1DBdata">MIDDLE B-M LAYER CHANNELS</button>
-            <h1 class="title">CELL HITS ON Y TRACK - BOTTOM LAYER</h1>
+            <h1 class="title">CELLS ON Y TRACK - BOTTOM LAYER</h1>
             <div style="width: 75%; margin: auto;"><canvas id="DYB1D"></canvas></div>
-		 	<button id="downloadDYB1D">CELL HITS ON Y TRACK - BOTTOM LAYER</button>
+		 	<button id="downloadDYB1D">CELLS ON Y TRACK - BOTTOM LAYER</button>
 			<button id="downloadDYB1Ddata">BOTTOM LAYER CHANNELS</button>
-		 	<button id="downloadDYBM1D">CELL HITS ON Y TRACK - BOTTOM B-M LAYER</button>
+		 	<button id="downloadDYBM1D">CELLS ON Y TRACK - BOTTOM B-M LAYER</button>
 			<button id="downloadDYBM1Ddata">BOTTOM B-M LAYER CHANNELS</button>
 
             <h1 class="title">DX/DZ - DY/DZ</h1>
@@ -358,12 +425,12 @@
             <div style="width: 75%; margin: auto;"><canvas id="DT35"></canvas></div>
 			<button id="downloadDT3-5">CAEN3-5</button>
 
-            <h1 class="title"># OF TRACKS (4) TOP-MIDDLE PER MINUTE</h1>
+            <h1 class="title"># OF TRACKS (4) PER MINUTE (TOP-MIDDLE)</h1>
             <div style="width: 75%; margin: auto;"><canvas id="#TRACKS4TM"></canvas></div>
-		 	<button id="downloadTRACKS4TM"># OF TRACKS (4)TOP-MIDDLE PER MINUTE</button>
-            <h1 class="title"># OF TRACKS (4) MIDDLE-BOTTOM PER MINUTE</h1>
+		 	<button id="downloadTRACKS4TM"># OF TRACKS (4)PER MINUTE (TOP-MIDDLE)</button>
+            <h1 class="title"># OF TRACKS (4) PER MINUTE (MIDDLE-BOTTOM)</h1>
             <div style="width: 75%; margin: auto;"><canvas id="#TRACKS4MB"></canvas></div>
-		 	<button id="downloadTRACKS4MB"># OF TRACKS (4) MIDDLE-BOTTOM PER MINUTE</button>
+		 	<button id="downloadTRACKS4MB"># OF TRACKS (4) PER MINUTE (MIDDLE-BOTTOM)</button>
             <h1 class="title"># OF TRACKS (5) PER MINUTE (MIDDLE MISSING)</h1>
             <div style="width: 75%; margin: auto;"><canvas id="#TRACKS5M"></canvas></div>
 		 	<button id="downloadTRACKS5M"># OF TRACKS (5) PER MINUTE (MIDDLE MISSING)</button>
@@ -417,7 +484,6 @@
 	<input type="text" id="detector-name" name="detector-name" style="display: inline;" value="" /> 
 	<input type="text" id="loading-time" name="loading-time" style="display: inline;" value="" /> 
 	<!--<script src="js/Run116_list_no_swap.js" defer></script>-->
-	<script type="module" src="js/draw3D.js"></script>
 	<script type="module" src="js/main.js"></script>
 	<script src="js/draw2D.js" defer></script>
 	<script src="js/dataAnalysisPreparation.js" defer></script>

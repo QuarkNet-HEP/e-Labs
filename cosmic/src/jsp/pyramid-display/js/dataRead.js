@@ -38,6 +38,8 @@ function cleanFile(arr, type) {
  	for (var ndx=0; ndx < arr.length; ndx++ ) {		
 		// eliminate empty lines and comment lines
 		if (arr[ndx] != "" && !arr[ndx].startsWith("//")) {
+			//console.log(arr[ndx]);
+			//console.log(arr[ndx].substring(0, 3))
 			if (arr[ndx].substring(0, 3) === 'ATH' && type === "DATAFILE") {
 				document.getElementById("detector-name").value = arr[ndx].trim();
 				detectorName = arr[ndx].trim();
@@ -254,16 +256,20 @@ globalThis.retrieveData = function () {
 
       // Precompute ADC position and pedestal lookup tables once (big win)
       var maxMods = 6; // code references mods 0..5
-      var mapPosCache = [];
-      var pedValCache = [];
+      var mapPosCache = new Array(maxMods);
+      var pedValCache = new Array(maxMods);
+      // Use typed arrays to reduce per-element overhead. Uint16Array is enough
+      // for positions (non-negative) and Int16Array for pedestal values (can be negative in some contexts).
       for (var m = 0; m < maxMods; m++) {
-        mapPosCache[m] = new Array(layerMaxSize).fill(0);
-        pedValCache[m] = new Array(layerMaxSize).fill(0);
+        mapPosCache[m] = new Uint16Array(layerMaxSize); // initialized to 0
+        // Use Int32Array for pedestal values to avoid overflow if large pedestal values exist
+        pedValCache[m] = new Int32Array(layerMaxSize); // initialized to 0
         if (adcmap && adcmap[m]) {
           var arr = adcmap[m];
           for (var j = 0; j < arr.length; j++) {
             var v = Math.floor(arr[j]);
             if (v > 0 && (v - 1) < layerMaxSize) {
+              // store j+1 as a small positive integer in typed array
               mapPosCache[m][v - 1] = j + 1;
             }
           }
@@ -271,7 +277,12 @@ globalThis.retrieveData = function () {
         if (pedestal && pedestal[m]) {
           var parr = pedestal[m];
           for (var k = 0; k < Math.min(parr.length, layerMaxSize); k++) {
-            pedValCache[m][k] = Math.floor(parr[k]);
+            // pedestals are floored to integers; clamp to int16 safe range
+            var pv = Math.floor(parr[k]);
+            // clamp to signed 32-bit range just in case
+            if (pv > 2147483647) pv = 2147483647;
+            if (pv < -2147483648) pv = -2147483648;
+            pedValCache[m][k] = pv;
           }
         }
       }
@@ -394,6 +405,26 @@ globalThis.retrieveData = function () {
       globalThis.yCoord = y;
       globalThis.subtractPedX = subtractPedX;
       globalThis.subtractPedY = subtractPedY;
+
+      // Free large temporaries to allow GC and reduce memory footprint.
+      // These variables are not needed after the processed data is stored in globals.
+      try {
+        if (typeof df !== 'undefined' && df && df.data) {
+          df.data = null;
+        }
+      } catch (e) {
+        // ignore any unexpected errors while freeing
+      }
+      df = null;
+      dfData = null;
+      lines = null;
+      data = null;
+      mapPosCache = null;
+      pedValCache = null;
+      headerIndex = null;
+      adcmap = null;
+      pedestal = null;
+
       resolve();
       })
       .catch(function(error) {
@@ -547,3 +578,27 @@ globalThis.retrieveGeometry = function () {
       });
   });
 }//end of retrieveGeometry
+
+// Reset lightweight filters/aux data
+  try { globalThis.eventFilter6 = []; } catch (e) {}
+  try { globalThis.eventFilter5 = []; } catch (e) {}
+  try { globalThis.eventFilter4 = []; } catch (e) {}
+  // mark as unloaded
+  try { globalThis.pyramidDataLoaded = false; } catch (e) {}
+
+  // Also try to free large analysis arrays if they exist in global scope (some modules declare top-level vars)
+  // Set to empty arrays (safer for callers that expect Array) where appropriate.
+  try { if (typeof dxbothlayers !== 'undefined') dxbothlayers.length = 0; } catch (e) {}
+  try { if (typeof dybothlayers !== 'undefined') dybothlayers.length = 0; } catch (e) {}
+  try { if (typeof dxtopmiddlebothlayers !== 'undefined') dxtopmiddlebothlayers.length = 0; } catch (e) {}
+  try { if (typeof dytopmiddlebothlayers !== 'undefined') dytopmiddlebothlayers.length = 0; } catch (e) {}
+  try { if (typeof dxbottommiddlebothlayers !== 'undefined') dxbottommiddlebothlayers.length = 0; } catch (e) {}
+  try { if (typeof dybottommiddlebothlayers !== 'undefined') dybottommiddlebothlayers.length = 0; } catch (e) {}
+  try { if (typeof dxtopmiddle !== 'undefined') dxtopmiddle.length = 0; } catch (e) {}
+  try { if (typeof dytopmiddle !== 'undefined') dytopmiddle.length = 0; } catch (e) {}
+  try { if (typeof dxbottommiddle !== 'undefined') dxbottommiddle.length = 0; } catch (e) {}
+  try { if (typeof dybottommiddle !== 'undefined') dybottommiddle.length = 0; } catch (e) {}
+  try { if (typeof dx !== 'undefined') dx.length = 0; } catch (e) {}
+  try { if (typeof dy !== 'undefined') dy.length = 0; } catch (e) {}
+  try { if (typeof investigatePlanes !== 'undefined') investigatePlanes.length = 0; } catch (e) {}
+  try { if (typeof eventMissingOnePlane !== 'undefined') eventMissingOnePlane.length = 0; } catch (e) {}

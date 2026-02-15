@@ -24,6 +24,8 @@
  var tracking6MiddleMissedY = [];
  var tracking6MiddleMissedXY = [];
  var tracking6MiddleHitsXY = [];
+ var tracking6MiddleHitsOnlyX = [];
+ var tracking6MiddleHitsOnlyY = [];
  var tracking6MiddleHitsXsingleTopBottom = [];
  var tracking6MiddleHitsYsingleTopBottom = [];
  var tracking6MiddleHitsXsingleBothLayers = [];
@@ -36,9 +38,10 @@
  var tracking4TopMissing = [];
  var tracking4MiddleMissing = [];
  var tracking4BottomMissing = [];
-const pointTolerance = 1.5;//1.5;
+const pointTolerance = 3.0; // in cm, this is the tolerance we use to determine if a point is close enough to the expected point to be considered a hit, this can be adjusted based on the resolution of the detector and the expected scattering of the particles.
 // Cache some global math constants to avoid repeated Math.sqrt calls in hot paths
 const SQRT3 = Math.sqrt(3);
+const pointWidth = 2.0; // in cm.
 
 function findExpectedX(point1, point2, y3) {
  	var x3 = point1[0];
@@ -77,17 +80,20 @@ function arePointsAlmostCollinear(event, point1, point2, point3) {
 }//end of arePointsAlmostCollinear
  
 function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
- 	var eventsToTest = [];//119,120];//111,112,113,114,115,116];//64796,24066,55425];
- 	var points = []; //we'll collect x layer points first and y layer next, always top to bottom
+ 	var eventsToTest = [];//111,112,113,114,115,116];//64796,24066,55425];
+ 	// we'll collect x layer points first and y layer next, always top to bottom
+ 	// Preallocate points array size: arr.length * 3 (we push 3 items per iteration)
+ 	var points = new Array(arr.length * 3);
  	var xLayerHitCount = [];
  	var yLayerHitCount = [];
  	if (eventsToTest.includes(event)) {
  		console.log(event, arr);
  	}
- 	for (var i = 0; i < arr.length; i++) {
- 			points.push(arr[i][2]);
- 			points.push(arr[i][3]);
- 			points.push(arr[i][4]);
+ 	// fill the preallocated points array by index to avoid push allocations
+ 	for (var i = 0, p = 0; i < arr.length; i++, p += 3) {
+ 		points[p] = arr[i][2];
+ 		points[p+1] = arr[i][3];
+ 		points[p+2] = arr[i][4];
  	}
  	if (arr.length > 1) {
  		xLayerHitCount.push(arr[0][5]);
@@ -98,7 +104,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  	//console.log(event, arr);
  	var pointCount = 0;
  	for (var j = 0; j < points.length; j++) {
- 		if (typeof points[j][0] != 'undefined' && typeof points[j][1] != 'undefined') {
+ 		if (typeof points[j] != 'undefined' && typeof points[j][0] != 'undefined' && typeof points[j][1] != 'undefined') {
  			pointCount += 1;
  		}
  	}
@@ -107,7 +113,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  	var allPointsInLineY = true;
  	if (eventsToTest.includes(event)) {
  		console.log("check tracking: ", event, arr, points, xLayerHitCount, yLayerHitCount, pointCount);
- 		}		
+ 		}
 
  	if (pointCount == 6) {
  		//test if all points are in the line
@@ -115,7 +121,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  		allPointsInLineY = arePointsAlmostCollinear(event,points[3],points[5],points[4]);
  		if (eventsToTest.includes(event)) {
  			console.log("pointsCollinear?: ", event, points, allPointsInLineX, allPointsInLineY);
- 			}		
+ 			}
  		if (allPointsInLineX == false && allPointsInLineY == false) {
  			// it is a miss in X and Y
  			var expectedPointX = findExpectedX(points[0], points[2], points[1][1]);
@@ -134,7 +140,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  		} else if (allPointsInLineY == false) {
  			// it is only a miss in Y
  			var expectedPoint = findExpectedX(points[3], points[5], points[4][1]);
- 			tracking6MiddleMissedY.push([event, points, expectedPoint]);			
+ 			tracking6MiddleMissedY.push([event, points, expectedPoint]);
  			if (eventsToTest.includes(event)) {
  				console.log("y off for 6 plane tracks: ", event, points, expectedPoint);
  				}
@@ -163,20 +169,31 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  			} else {
  				//do nothing
  			}
-						
  			//get the expected point event if it passes the tolerance for a different chart
  			var expectedPointX = findExpectedX(points[0], points[2], points[1][1]);
  			var expectedPointY = findExpectedX(points[3], points[5], points[4][1]);
- 			tracking6MiddleHitsXY.push([event, points, expectedPointX, expectedPointY]);		
+ 			tracking6MiddleHitsXY.push([event, points, expectedPointX, expectedPointY]);
  			if (eventsToTest.includes(event)) {
  				console.log("expected points even if they passed the tolerance: ", event, tracking6MiddleHitsXY);
  				}
  			globalThis.eventFilter6.push(event+1);
  		}
+		if (allPointsInLineX == true) {
+			//collect only for x layer
+			//get the expected point event if it passes the tolerance for a different chart
+			var expectedPointX = findExpectedX(points[0], points[2], points[1][1]);
+			tracking6MiddleHitsOnlyX.push([event, points, expectedPointX]);
+		}
+		if (allPointsInLineY == true) {
+			//collect only for y layer
+			//get the expected point event if it passes the tolerance for a different chart
+			var expectedPointY = findExpectedX(points[3], points[5], points[4][1]);
+			tracking6MiddleHitsOnlyY.push([event, points, expectedPointY]);
+		}
  		if (debugTracking) {
  			console.log(event, pointCount, points, allPointsInLineX, allPointsInLineY);
  		}
- 	} 
+ 	}
  	var missingPointNdx = -1;
  	var expectedPoint = [];
  	var y3 = -1;
@@ -201,22 +218,22 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  			case 2:
  				y3 = globalThis.layerOrderX[0][0];
  				expectedPoint = findExpectedX(points[1], points[0], y3);
- 				tracking5BottomMissingX.push([event, points, expectedPoint]);					
+ 				tracking5BottomMissingX.push([event, points, expectedPoint]);
  				break;
  			case 3:
  				y3 = globalThis.layerOrderY[2][0];
  				expectedPoint = findExpectedX(points[4], points[5], y3);
- 				tracking5TopMissingY.push([event, points, expectedPoint]);					
+ 				tracking5TopMissingY.push([event, points, expectedPoint]);
  				break;
  			case 4:
  				y3 = globalThis.layerOrderY[1][0];
  				expectedPoint = findExpectedX(points[3], points[5], y3);
- 				tracking5MiddleMissingY.push([event, points, expectedPoint]);					
+ 				tracking5MiddleMissingY.push([event, points, expectedPoint]);
  				break;
  			case 5: 
  				y3 = globalThis.layerOrderY[0][0];
  				expectedPoint = findExpectedX(points[3], points[4], y3);
- 				tracking5BottomMissingY.push([event, points, expectedPoint]);					
+ 				tracking5BottomMissingY.push([event, points, expectedPoint]);
  				break;
  			default:
  				break;
@@ -252,7 +269,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  				yExpectedPoint = findExpectedX(points[4], points[5], y3);
  				tracking4TopMissing.push([event, xExpectedPoint, yExpectedPoint]);
  				globalThis.eventFilter4.push(event+1);
- 			}			
+ 			}
  			if (firstMissing == 1 && secondMissing == 4) {
  				//we are dealing with middle
  				y3 = globalThis.layerOrderX[1][0];
@@ -267,7 +284,7 @@ function analyzeTracking(event, arr, numberofplanes1, numberofplanes2) {
  				y3 = globalThis.layerOrderX[0][0];
  				xExpectedPoint = findExpectedX(points[1], points[0], y3);
  				y3 = globalThis.layerOrderY[0][0];
- 				yExpectedPoint = findExpectedX(points[3], points[4], y3);				
+ 				yExpectedPoint = findExpectedX(points[3], points[4], y3); 
  				tracking4BottomMissing.push([event, xExpectedPoint, yExpectedPoint]);
  				globalThis.eventFilter4.push(event+1);
  			}
@@ -287,7 +304,8 @@ function calculateAnalysisPointByPercentage(layerStart,event, x1, y1, x2, y2, pe
 	//	console.log(overallCellSize);
 	//}
 	//const x = ((x1 + (dx * percentage/100))/(size/2.0))+1;
-	const x = ((x1 + (dx * percentage/100.0))/(overallCellSize/2.0))+addOn;
+	var x = ((x1 + (dx * percentage/100.0))/(overallCellSize/2.0))+addOn;
+	x = x * pointWidth;
 	if (eventsToTest.includes(event)) {
 		//console.log("percent0:",x2, x1, x2-x1);
 		console.log("percent:",event,x);
@@ -319,6 +337,7 @@ function getAnalysisSingleSidePoint(layerStart,event, layerTriangle,eventChannel
 	var x3 = layerTriangle[4][0];
 	//var x = (((x1 + x2 + x3)/3) /(size/2.0))+1;
 	var x = (((x1 + x2 + x3)/3) /(overallCellSize/2.0))+addOn;
+	x = x * pointWidth;
 	var y = zValue;
 	//var yProjected = (y /(size/2.0))+1;
 	var yProjected = (y /(overallCellSize/2.0))+addOn;
@@ -336,22 +355,26 @@ function getAnalysisSingleSidePoint(layerStart,event, layerTriangle,eventChannel
 	return sidePoint; 
 }//end of getAnalysisSingleSidePoint
 
-
 function getAnalysisIndexesOfTwoHighest(arr) {
-  // 1. Create an array of objects with value and original index
-  const indexedArray = arr.map((value, index) => ({ value, index }));
-
-  // 2. Sort the array in descending order based on value
-  indexedArray.sort((a, b) => b.value - a.value);
-
-  // 3. Extract the indices of the top two elements
-  if (indexedArray.length >= 2) {
-    return [indexedArray[0].index, indexedArray[1].index];
-  } else if (indexedArray.length === 1) {
-    return [indexedArray[0].index]; // Return only one index if array has only one element
-  } else {
-    return []; // Return an empty array for an empty input array
+  // O(n) scan to find indices of two highest values without allocations
+  var len = arr.length;
+  if (len === 0) return [];
+  if (len === 1) return [0];
+  var max1 = -Infinity, max2 = -Infinity;
+  var idx1 = -1, idx2 = -1;
+  for (var i = 0; i < len; i++) {
+    var v = arr[i];
+    if (v > max1) {
+      max2 = max1; idx2 = idx1;
+      max1 = v; idx1 = i;
+    } else if (v > max2) {
+      max2 = v; idx2 = i;
+    }
   }
+  // return indices in descending value order similar to previous behavior
+  if (idx1 !== -1 && idx2 !== -1) return [idx1, idx2];
+  if (idx1 !== -1) return [idx1];
+  return [];
 }//end of getAnalysisIndexesOfTwoHighest
 
 function analyzeAnalysisCluster(event, x,arr, howmany) {
@@ -732,6 +755,7 @@ function calculateAnalysisTrack(whichLayer, event, layerAct, layerQuad, layerQua
 				dybottommiddle.push([event, pointX1, pointX2, pointX3, deltax, deltaz]);
 			}		
 		} else {
+			if (pointX2.x > 0 && pointX3.x > 0) {
 				var deltax = (pointX3.x - pointX2.x);
 				var deltaz = (pointX3.y - pointX2.y);
 				if (whichLayer == 'X') {
@@ -739,36 +763,33 @@ function calculateAnalysisTrack(whichLayer, event, layerAct, layerQuad, layerQua
 				} else {
 					dytopmiddle.push([event, pointX1, pointX2, pointX3, deltax, deltaz]);
 				}					
+			}
 		}
 	}
  }//end of calculateAnalysisTrack
 
 function calculateAnalysisTriangle(dir, xpos, y, channel, inten, quadMember) {
-	  var triangleCoords = [];
-	  triangleCoords.push(dir,inten);
-	  if(isNaN(inten)){
-	    inten = 0;
-	  }
-	  triangleCoords.push([xpos, y]);
-	  triangleCoords.push([xpos+size, y]);
-	  var y3 = 0;
-	  var height = 0;
-	  if (dir) {
-		  y3 = y-(SQRT3 * size / 2);
-		  height = y-((SQRT3 * size / 2)/2.0);
-		  triangleCoords.push([xpos+(size/2), y3]);
-	  } else { 
-		  y3 = y+(SQRT3 * size / 2);
-		  height = y+((SQRT3 * size / 2)/2.0);
-	      triangleCoords.push([xpos+(size/2), y3]);
-	  }
-	  if(inten == 0){
-		triangleCoords = [];
-	  } else {
-		//do nothing
-	  }   
-	  triangleCoords.push(height, quadMember);
-	return triangleCoords;
+      // If intensity is falsy (0, NaN) return early to avoid allocating the triangle array
+      if (!inten || isNaN(inten) || inten == 0) {
+        return [];
+      }
+      var triangleCoords = [];
+      triangleCoords.push(dir,inten);
+      triangleCoords.push([xpos, y]);
+      triangleCoords.push([xpos+size, y]);
+      var y3 = 0;
+      var height = 0;
+      if (dir) {
+          y3 = y-(SQRT3 * size / 2);
+          height = y-((SQRT3 * size / 2)/2.0);
+          triangleCoords.push([xpos+(size/2), y3]);
+      } else { 
+          y3 = y+(SQRT3 * size / 2);
+          height = y+((SQRT3 * size / 2)/2.0);
+          triangleCoords.push([xpos+(size/2), y3]);
+      }
+      triangleCoords.push(height, quadMember);
+    return triangleCoords;
 }//end of calculateAnalysisTriangle
 
 function calculateAnalysisQuad(event,layer,up,xp,yp,channel,layerAct,reversed,numQuads,coordArray,ped,layerQuad,quadMember,layerQuadSize,cellSize,quadGap,layerTriangle,eventChannels) {
@@ -1019,6 +1040,11 @@ function getAnalysisBothLayers() {
             dybothlayers.push(matching);
         }
     }
+	//for (var k = 0; k < dxbothlayers.length; k++) {
+	//	if (k < 10) {
+	//		console.log("both layers:", dxbothlayers[k], dybothlayers[k]);
+	//	}
+	//}
     //no need to keep these in memory
     dx = [];
     dy = [];
@@ -1037,6 +1063,11 @@ function getAnalysisTopMiddleBothLayers() {
             dytopmiddlebothlayers.push(matching);
         }
     }
+	//for (var k = 0; k < dxtopmiddlebothlayers.length; k++) {
+	//	if (k < 10) {
+	//		console.log("top middle layers:", dxtopmiddlebothlayers[k], dytopmiddlebothlayers[k]);
+	//	}
+	//}
     //no need to keep these in memory
     dxtopmiddle = [];
     dytopmiddle = [];
@@ -1055,6 +1086,11 @@ function getAnalysisBottomMiddleBothLayers() {
             dybottommiddlebothlayers.push(matching);
         }
     }
+	//for (var k = 0; k < dxbottommiddlebothlayers.length; k++) {
+	//	if (k < 10) {
+	//		console.log("bottom middle layers:", dxbottommiddlebothlayers[k], dybottommiddlebothlayers[k]);
+	//	}
+	//}	
     //no need to keep these in memory
     dxbottommiddle = [];
     dybottommiddle = [];

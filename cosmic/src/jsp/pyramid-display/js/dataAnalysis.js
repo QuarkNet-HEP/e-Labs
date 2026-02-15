@@ -29,6 +29,7 @@ function populateX(letter, layer){
         console.log("X Pedestal "+layer+letter);
         console.log("values:", vals);
     }
+	//console.log(letter, layer, vals);
     return vals;
 }// end of populateX
 
@@ -49,6 +50,7 @@ function populateY(letter, layer){
         console.log("Y Pedestal "+layer+letter);
         console.log("values:", vals);
     }
+	//console.log(letter, layer, vals);
     return vals;
 }// end of populateY
 
@@ -108,13 +110,10 @@ function get6singlepointsBothLayers(option, arr1) {
 	return vals;
 }//end of get6singlepointsBothLayer
 
-function getFrequency6ExpectedActualforHits(option, arr) {
-	//console.log(option, arr);
+
+function getFrequency6ExpectedActualforHitsSingleLayer(option, arr, interval) {
 	var diff = 0;
 	var diffCollection = [];
-	//for (var i = 0; i < arr.length; i++) {
-	//	console.log(arr[i]);
-	//}
 	if (option == 'X') {
 		for (var i = 0; i < arr.length; i++) {
 			diff = arr[i][2].x3 - arr[i][1][1][0];
@@ -123,12 +122,48 @@ function getFrequency6ExpectedActualforHits(option, arr) {
 	}
 	if (option == 'Y') {
 		for (var i = 0; i < arr.length; i++) {
-			diff = arr[i][3].x3 - arr[i][1][4][0];
+			diff = arr[i][2].x3 - arr[i][1][4][0];
 			diffCollection.push(diff);
 		}
 	}
+	var binnedData = getBinnedData(diffCollection, interval);
+	var result = [];
+	for (var i = 0; i < binnedData.length; i++) {
+		result.push({x:binnedData[i].binNum, y:binnedData[i].count});
+	}
+	//console.log("frequency for 6 plane hits: ", option, result);
+	return result;
+}// end of getFrequency6ExpectedActualforHitsSingleLayer
+
+function getFrequency6ExpectedActualforHits(option, arr) {
+	//console.log(option, arr);
+	var diff = 0;
+	var diffCollection = [];
+	var interval = 0.2;
+	//for (var i = 0; i < arr.length; i++) {
+	//	console.log(arr[i]);
+	//}
+	if (option == 'X') {
+		for (var i = 0; i < arr.length; i++) {
+			//if (i < 5) {
+			//	console.log(option, arr[i]);
+			//}
+			diff = arr[i][2].x3 - arr[i][1][1][0];
+			diffCollection.push(diff);
+		}
+	}
+	if (option == 'Y') {
+		for (var i = 0; i < arr.length; i++) {
+			//if (i < 5) {
+			//	console.log(option, arr[i]);
+			//}
+			diff = arr[i][3].x3 - arr[i][1][4][0];
+			diffCollection.push(diff);
+		}
+		interval = 1.0;
+	}
 	//console.log(option, diffCollection);
-	var binnedData = getBinnedData(diffCollection, 0.2);
+	var binnedData = getBinnedData(diffCollection, interval);
 	var result = [];
 	for (var i = 0; i < binnedData.length; i++) {
 		result.push({x:binnedData[i].binNum, y:binnedData[i].count});
@@ -212,7 +247,6 @@ function arrayMax(arr) {
 };//end of arrayMax
 
 function getBinnedData(arr, intervalSize) {
-    // Optimized to compute min/max in one pass and reduce overhead.
     var bins = [];
     if (!Array.isArray(arr) || arr.length === 0) return bins;
     var interval = intervalSize;
@@ -222,13 +256,10 @@ function getBinnedData(arr, intervalSize) {
         if (v < min) min = v;
         if (v > max) max = v;
     }
-    // Expand the range slightly to match original behavior
     var arrayMinValue = min - intervalSize;
     var arrayMaxValue = max + intervalSize;
-
-    // Setup Bins
-    // compute number of bins to avoid incremental push inside loop
     var numBins = Math.floor((arrayMaxValue - arrayMinValue) / interval) + 1;
+    // initialize bins with counts 0 and precompute min/max
     for (var b = 0; b < numBins; b++) {
         var binMin = arrayMinValue + b * interval;
         bins.push({
@@ -238,23 +269,22 @@ function getBinnedData(arr, intervalSize) {
             count: 0
         });
     }
-
-    // Loop through data and add to bin's count
+    // single pass assignment using arithmetic index
     for (var i = 0; i < arr.length; i++){
-      var item = arr[i];
-      // Only search bins until a match is found; number of bins is usually small.
-      for (var j = 0; j < bins.length; j++){
-        var bin = bins[j];
-        if(item > bin.minNum && item <= bin.maxNum){
+      var item = Number(arr[i]);
+      var idx = Math.floor((item - arrayMinValue) / interval);
+      if (idx >= 0 && idx < bins.length) {
+        // match previous inclusion: item must be > min and <= max
+        var bin = bins[idx];
+        if (item > bin.minNum && item <= bin.maxNum) {
           bin.count++;
-          break;  // An item can only be in one bin.
         }
       }
     }
     return bins;
 }//end of getBinnedData
 
-function getFrequency6ExpectedActual(option, arr1, arr2) {
+function getFrequency6ExpectedActual(option, arr1) {
 	var diff = 0;
 	var diffCollection = [];
 	if (option == 'X') {
@@ -262,20 +292,20 @@ function getFrequency6ExpectedActual(option, arr1, arr2) {
 			diff = arr1[i][2].x3 - arr1[i][1][1][0];
 			diffCollection.push(diff);
 		}
-		for (var i = 0; i < arr2.length; i++) {
-			diff = arr2[i][2].x3 - arr2[i][1][1][0];
-			diffCollection.push(diff);
-		}
+		//for (var i = 0; i < arr2.length; i++) {
+		//	diff = arr2[i][2].x3 - arr2[i][1][1][0];
+		//	diffCollection.push(diff);
+		//}
 	}
 	if (option == 'Y') {
 		for (var i = 0; i < arr1.length; i++) {
 			diff = arr1[i][2].x3 - arr1[i][1][4][0];
 			diffCollection.push(diff);
 		}
-		for (var i = 0; i < arr2.length; i++) {
-			diff = arr2[i][3].x3 - arr2[i][1][4][0];
-			diffCollection.push(diff);
-		}
+		//for (var i = 0; i < arr2.length; i++) {
+		//	diff = arr2[i][3].x3 - arr2[i][1][4][0];
+		//	diffCollection.push(diff);
+		//}
 	}
 	//console.log(option, diffCollection);
 	var binnedData = getBinnedData(diffCollection, 1.0);
@@ -470,53 +500,34 @@ function getDxDyMiddle(arrX, arrY, events) {
 	return vals;
 }//end of getDxDyMiddle
 
-function calculateDeltaXDeltaYFrequency(arr, events, binWidth) {
-    // Optimized: avoid spread operator and redundant arrays
-    var deltaValues = [];
+function calculateDeltaXDeltaYFrequency(option,arr, events, binWidth) {
     var totalEvents = arr.length;
     if (events > 0 && events <= arr.length) {
         totalEvents = events;
     }
-    for (var i = 1; i < totalEvents; i++) {
-        deltaValues.push(arr[i][4]);
-    }
-    if (deltaValues.length === 0) return [];
-
+    if (totalEvents <= 1) return []
+    // Build deltaValues in-place from arr entries index 1..totalEvents-1
     var minVal = Infinity, maxVal = -Infinity;
-    for (var i = 0; i < deltaValues.length; i++) {
-        var v = Number(deltaValues[i]);
+    for (var i = 1; i < totalEvents; i++) {
+        var v = Number(arr[i][4]);
         if (v < minVal) minVal = v;
         if (v > maxVal) maxVal = v;
     }
-
-    // Calculate bin boundaries
-    var binBoundaries = [];
-    for (var x = minVal; x <= maxVal + binWidth; x += binWidth) {
-        binBoundaries.push(x);
+    if (!isFinite(minVal) || !isFinite(maxVal)) return [];
+    var binCount = Math.floor((maxVal - minVal) / binWidth) + 1;
+    if (binCount <= 0) binCount = 1;
+    var bins = new Array(binCount).fill(0);
+    for (var i = 1; i < totalEvents; i++) {
+        var value = Number(arr[i][4]);
+        var idx = Math.floor((value - minVal) / binWidth);
+        if (idx < 0) idx = 0;
+        if (idx >= binCount) idx = binCount - 1;
+        bins[idx]++;
     }
-
-    // Initialize bins
-    var bins = [];
-    if (binBoundaries.length > 0) {
-        bins = new Array(binBoundaries.length - 1).fill(0);
-    }
-    // Populate bins
-    for (var i = 0; i < deltaValues.length; i++) {
-      var value = deltaValues[i];
-      for (var k = 0; k < binBoundaries.length - 1; k++) {
-        if (value >= binBoundaries[k] && value < binBoundaries[k + 1]) {
-          bins[k]++;
-          break;
-        }
-      }
-    }
-
     var lineChartData = [];
-    if (bins.length > 0) {
-        for (var i = 0; i < bins.length; i++) {
-          var binCenter = (binBoundaries[i] + binBoundaries[i + 1]) / 2;
-          lineChartData.push({ x: binCenter, y: bins[i] });
-        }
+    for (var i = 0; i < bins.length; i++) {
+      var binCenter = minVal + (i + 0.5) * binWidth;
+      lineChartData.push({ x: binCenter, y: bins[i] });
     }
     return lineChartData;
 }//end of calculateDeltaXDeltaYFrequency
@@ -524,14 +535,17 @@ function calculateDeltaXDeltaYFrequency(arr, events, binWidth) {
 //CHANNEL FREQUENCY
 function getFrequency(arr1) {
 	var vals = [];
-	var frequency = arr1.reduce((acc, num) => {
-	  acc.set(num, (acc.get(num) || 0) + 1);
-	  return acc;
-	}, new Map());		
-
-	for (const [n, f] of frequency.entries()) {
-		vals.push({x:n,y:f});
-	}	
+	if (!Array.isArray(arr1) || arr1.length === 0) return vals;
+	var freq = Object.create(null);
+	for (var i = 0; i < arr1.length; i++) {
+		var num = arr1[i];
+		freq[num] = (freq[num] || 0) + 1;
+	}
+	for (var key in freq) {
+		if (Object.prototype.hasOwnProperty.call(freq, key)) {
+			vals.push({x: key, y: freq[key]});
+		}
+	}
 	return vals;
 }//end of getFrequency
 
@@ -577,11 +591,15 @@ function getDxDz(events) {
 	if (events > 0 && events <= dxbothlayers.length) {
 		totalEvents = events;
 	}
+	var events6planehits = []
+	//get the events that have 6 plane hits in both layers, then only calculate dx/dz for those events
+	for (var i = 0; i < tracking6MiddleHitsXY.length; i++) {
+		events6planehits.push(tracking6MiddleHitsXY[i][0]);
+	}
 	for (var i = 0; i < totalEvents; i++) { 
-		//if (i < 5) {
-		//	console.log(dxbothlayers[i],dybothlayers[i], dxbothlayers[i][4]/dxbothlayers[i][5],dybothlayers[i][4]/dybothlayers[i][5] );
-		//}
-		vals.push({x:dxbothlayers[i][4]/dxbothlayers[i][5], y:dybothlayers[i][4]/dybothlayers[i][5]});
+		if (events6planehits.includes(dxbothlayers[i][0])) {
+			vals.push({x:dxbothlayers[i][4]/dxbothlayers[i][5], y:dybothlayers[i][4]/dybothlayers[i][5]});
+		}
 	}
 	return vals;
 }//end of getDxDz
@@ -595,6 +613,7 @@ function getDxyDzMiddle(arrX, arrY, events) {
 	for (var i = 0; i < totalEvents; i++) {
 		vals.push({x:arrX[i][4]/arrX[i][5], y:arrY[i][4]/arrY[i][5]});
 	}
+	//console.log(vals);
 	return vals;
 }//end of getDxyDzMiddle
 

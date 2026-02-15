@@ -4,8 +4,10 @@
 
 function removeCharts() {
 	canvasIDs = ['X1','X2','X3','Y1','Y2','Y3',
-		'6PTXYMIDDLE','6PTMX','6PTMY','6PTMXY','6PDIFFMX','6PDIFFMY',
-		'6PTXYMIDDLEX','6PTXYMIDDLEY','6PTXYMIDDLEXY','6PDIFFMXHITS','6PDIFFMYHITS','6DXDYHITS',//'LEGO',
+		'6PTXYMIDDLE','6PTMX','6PTMY',//'6PTMXY',
+		'6PDIFFMX','6PDIFFMY',
+		'6PTXYMIDDLEX','6PTXYMIDDLEY',//'6PTXYMIDDLEXY',
+		'6PDIFFMXHITS','6PDIFFMYHITS','6DXDYHITS','LEGO',
 		'5PTTX','5PTMX','5PTBX','5PTTY','5PTMY','5PTBY',
 		'4PTT','4PTM','4PTB','DXDY','DX1D','DY1D',
 		'DXT1D','DXM1D','DXB1D','DYT1D','DYM1D','DYB1D','DXDZDYDZ','DXDZDYDZTM','DXDZDYDZMB',
@@ -34,6 +36,40 @@ function drawCharts(g) {
 		return el ? el.getContext('2d') : null;
 	}
 	removeCharts(); // Clear existing charts before drawing new ones
+
+	// --- Safe local shadows for large global arrays ---
+	// These shadowed locals ensure drawCharts continues to work if cleanupPyramidMemory()
+	// has cleared the heavy globals. They default to empty arrays.
+	const _safe = (name, fallback) => {
+		try {
+			if (typeof globalThis !== 'undefined' && globalThis[name]) return globalThis[name];
+		} catch (e) {}
+		try {
+			if (typeof window !== 'undefined' && window[name]) return window[name];
+		} catch (e) {}
+		try {
+			if (typeof eval !== 'undefined') {
+				// eslint-disable-next-line no-eval
+				if (typeof eval(name) !== 'undefined') return eval(name);
+			}
+		} catch (e) {}
+		return fallback || [];
+	};
+
+	const subtractPedX = _safe('subtractPedX', []);
+	const subtractPedY = _safe('subtractPedY', []);
+	const dxbothlayers = _safe('dxbothlayers', []);
+	const dybothlayers = _safe('dybothlayers', []);
+	const dxtopmiddlebothlayers = _safe('dxtopmiddlebothlayers', []);
+	const dytopmiddlebothlayers = _safe('dytopmiddlebothlayers', []);
+	const dxbottommiddlebothlayers = _safe('dxbottommiddlebothlayers', []);
+	const dybottommiddlebothlayers = _safe('dybottommiddlebothlayers', []);
+	const dxtopmiddle = _safe('dxtopmiddle', []);
+	const dytopmiddle = _safe('dytopmiddle', []);
+	const dxbottommiddle = _safe('dxbottommiddle', []);
+	const dybottommiddle = _safe('dybottommiddle', []);
+	// --- End safe locals ---
+
 	var ctx1 = getCtx('X1');
 	var ctx2 = getCtx('X2');
 	var ctx3 = getCtx('X3');
@@ -43,14 +79,14 @@ function drawCharts(g) {
 	var PTXYMIDDLE6 = getCtx('6PTXYMIDDLE');
 	var PTXYMIDDLEX6 = getCtx('6PTXYMIDDLEX');
 	var PTXYMIDDLEY6 = getCtx('6PTXYMIDDLEY');
-	var PTXYMIDDLEXY6 = getCtx('6PTXYMIDDLEXY');
+	//var PTXYMIDDLEXY6 = getCtx('6PTXYMIDDLEXY');
 	var PDIFFMXHITS6 = getCtx('6PDIFFMXHITS');
 	var PDIFFMYHITS6 = getCtx('6PDIFFMYHITS');
 	var DXDYHITS6 = getCtx('6DXDYHITS');
 	//var LEGO = getCtx('LEGO');
 	var PTMX6 = getCtx('6PTMX');
 	var PTMY6 = getCtx('6PTMY');
-	var PTMXY6 = getCtx('6PTMXY');
+	//var PTMXY6 = getCtx('6PTMXY');
 	var PDIFFMX6 = getCtx('6PDIFFMX');
 	var PDIFFMY6 = getCtx('6PDIFFMY');
 	var PTTX5 = getCtx('5PTTX');
@@ -122,6 +158,7 @@ function drawCharts(g) {
 	}
 	
 	var chartComments = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments+' ('+globalThis.totalEvents+' events)';
+	var chartCommentsEntries = "Run: "+globalThis.runNumber+' '+globalThis.conversionComments+' ('+globalThis.totalEvents+' entries)';
 	var options = {
 	  scales: {
 	    y: {
@@ -306,6 +343,7 @@ function drawCharts(g) {
 	if (downloadYCAEN5data) downloadYCAEN5data.addEventListener('click', () => {
 	    download2DArray(yCAEN5Original, 'YCAEN5originaldata.csv');
 	});
+	
 	var end1 = new Date();
 	if (globalThis.showTime) {
 		console.log("CAEN analysis: "+calculateProcessTime(end1,start1)+" seconds");
@@ -362,14 +400,15 @@ function drawCharts(g) {
 	};
 	
 	//6 plane X middle hits
+	const planeMiddleHits6 = get6planemiddlehits(tracking6MiddleHitsXY);
 	var hit6middleXtotalEvents = getTotalChartEvents(tracking6MiddleHitsXY);
-	var hit6middleXComments = chartComments+' Total Events: '+hit6middleXtotalEvents;
+	var hit6middleXComments = chartComments+' Total Tracks: '+hit6middleXtotalEvents;
 	var hit6middleX = {
 	  labels: xLabels, // Array of labels for each bar on the x-axis
 	  datasets: [{
 		      label: 'Tracking: X middle hits '+hit6middleXComments,
 		      backgroundColor: 'violet',
-		      data: get6planemiddlehits(tracking6MiddleHitsXY),
+		      data: planeMiddleHits6,
 		      options: options,
 			  pointRadius: 3,
 	     },],
@@ -384,6 +423,7 @@ function drawCharts(g) {
 	});
 
 	//6 plane X layer middle hits with only one hit on top and bottom
+	const xSinglePoints6TB = get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom);
 	var hit6XsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsXsingleTopBottom);
 	var hit6XsinglepointsComments = chartComments+' Total Events: '+hit6XsinglepointsEvents;
 	var hit6Xsinglepoints = {
@@ -391,7 +431,7 @@ function drawCharts(g) {
 		datasets: [{
 		      label: 'Tracking X Layer only: middle hit with single cell top/bottom layers '+hit6XsinglepointsComments,
 		      backgroundColor: 'lightblue',
-		      data: get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom),
+		      data: xSinglePoints6TB,
 		      options: options,
 			  pointRadius: 3,
 		   },],	
@@ -402,10 +442,11 @@ function drawCharts(g) {
 	    options: pointTrackingOptions,
 	});
 	getEl('download6PTMHXdata').addEventListener('click', () => {
-	    download2DArray(get6singlepoints('X', tracking6MiddleHitsXsingleTopBottom), '6PTMHXoriginaldata.csv');
+	    download2DArray(xSinglePoints6TB, '6PTMHXoriginaldata.csv');
 	});
 	
 	//6 plane Y layer middle hits with only one hit on top and bottom	
+	const ySinglePoints6TB = get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom);
 	var hit6YsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsYsingleTopBottom);
 	var hit6YsinglepointsComments = chartComments+' Total Events: '+hit6YsinglepointsEvents;
 	var hit6Ysinglepoints = {
@@ -413,7 +454,7 @@ function drawCharts(g) {
 		datasets: [{
 		      label: 'Tracking Y Layer only: middle hit with single cell top/bottom layers '+hit6YsinglepointsComments,
 		      backgroundColor: 'lightgreen',
-			  data: get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom),
+			  data: ySinglePoints6TB,
 		      options: options,
 			  pointRadius: 3,
 		   },],			
@@ -424,10 +465,11 @@ function drawCharts(g) {
 	    options: pointTrackingOptions,
 	});
 	getEl('download6PTMHYdata').addEventListener('click', () => {
-	    download2DArray(get6singlepoints('Y', tracking6MiddleHitsYsingleTopBottom), '6PTMHYoriginaldata.csv');
+	    download2DArray(ySinglePoints6TB, '6PTMHYoriginaldata.csv');
 	});
 
 	//6 plane XY layers middle hits with only one hit on top and bottom	
+	/*
 	var hit6XYsinglepointsEvents = getTotalChartEvents(tracking6MiddleHitsXsingleBothLayers);
 	var hit6XYsinglepointsComments = chartComments+' Total Events: '+hit6XYsinglepointsEvents;
 	var hit6XYsinglepoints = {
@@ -448,7 +490,7 @@ function drawCharts(g) {
 	//document.getElementById('download6PTMHXYdata').addEventListener('click', () => {
 	//    download2DArray(get6singlepointsBothLayers('XY', tracking6MiddleHitsXsingleBothLayers), '6PTMHXYoriginaldata.csv');
 	//});
-	
+	*/
 	//6 plane tracking, frequency of difference between expected and actual points in middle X
 	var barOptions = {
 		scales: {
@@ -459,9 +501,11 @@ function drawCharts(g) {
 		  },
 		},
 	};
-	var hit6XhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsXY);
-	var hit6XhitsfrequencyComments = chartComments+' Total Events: '+hit6XhitsfrequencyEvents;
-	var hit6Xhitsfrequency = getFrequency6ExpectedActualforHits('X', tracking6MiddleHitsXY);
+
+	
+	var hit6XhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsOnlyX);
+	var hit6XhitsfrequencyComments = chartComments+' Total Tracks: '+hit6XhitsfrequencyEvents;
+	var hit6Xhitsfrequency = getFrequency6ExpectedActualforHitsSingleLayer('X',tracking6MiddleHitsOnlyX,0.2);
 	var hit6XhitsfrequencyLabels = [];
 	for (var i = 0; i < hit6Xhitsfrequency.length; i++) {
 		hit6XhitsfrequencyLabels.push(hit6Xhitsfrequency[i].x);
@@ -486,9 +530,66 @@ function drawCharts(g) {
 	    download2DArray('', '6PDIFFMXHITSoriginaldata.csv');
 	});
 
+	/*	
+	var hit6XhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsXY);
+	var hit6XhitsfrequencyComments = chartComments+' Total Tracks: '+hit6XhitsfrequencyEvents;
+	var hit6Xhitsfrequency = getFrequency6ExpectedActualforHits('X', tracking6MiddleHitsXY);
+	var hit6XhitsfrequencyLabels = [];
+	for (var i = 0; i < hit6Xhitsfrequency.length; i++) {
+		hit6XhitsfrequencyLabels.push(hit6Xhitsfrequency[i].x);
+	}
+	var hit6XhitsfrequencyValues = Object.values(hit6Xhitsfrequency);
+	var hit6Xhitsfrequency = {
+		labels: hit6XhitsfrequencyLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking 6 planes: frequency of expected vs accepted point in middle X '+hit6XhitsfrequencyComments,
+		      backgroundColor: 'red',
+			  data: hit6XhitsfrequencyValues,
+		      options: options,
+			  pointRadius: 3,
+		   },],			
+	};
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMXHITS6, { 	
+	    type: 'bar',
+	    data: hit6Xhitsfrequency,
+	    options: barOptions,
+	});
+	getEl('download6PDIFFMXHITSdata').addEventListener('click', () => {
+	    download2DArray('', '6PDIFFMXHITSoriginaldata.csv');
+	});
+	*/
+	//6 plane tracking, frequency of difference between expected and actual points in middle Y
+	var hit6YhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsOnlyY);
+	var hit6YhitsfrequencyComments = chartComments+' Total Tracks: '+hit6YhitsfrequencyEvents;
+	var hit6Yhitsfrequency = getFrequency6ExpectedActualforHitsSingleLayer('Y',tracking6MiddleHitsOnlyY,0.2);
+	var hit6YhitsfrequencyLabels = [];
+	for (var i = 0; i < hit6Yhitsfrequency.length; i++) {
+		hit6YhitsfrequencyLabels.push(hit6Yhitsfrequency[i].x);
+	}
+	var hit6YhitsfrequencyValues = Object.values(hit6Yhitsfrequency);
+	var hit6Yhitsfrequency = {
+		labels: hit6YhitsfrequencyLabels, // Array of labels for each bar on the x-axis
+		datasets: [{
+		      label: 'Tracking 6 planes: frequency of expected vs accepted point in middle Y '+hit6YhitsfrequencyComments,
+		      backgroundColor: 'blue',
+			  data: hit6YhitsfrequencyValues,
+		      options: options,
+			  pointRadius: 3,
+		   },],				
+	};
+	var pointTracking6XHitsFrequency = new Chart(PDIFFMYHITS6, { 	
+	    type: 'bar',
+	    data: hit6Yhitsfrequency,
+	    options: barOptions,
+	});
+	getEl('download6PDIFFMYHITSdata').addEventListener('click', () => {
+	    download2DArray('', '6PDIFFMYHITSoriginaldata.csv');
+	});
+	
+	/*
 	//6 plane tracking, frequency of difference between expected and actual points in middle Y
 	var hit6YhitsfrequencyEvents = getTotalChartEvents(tracking6MiddleHitsXY);
-	var hit6YhitsfrequencyComments = chartComments+' Total Events: '+hit6YhitsfrequencyEvents;
+	var hit6YhitsfrequencyComments = chartComments+' Total Tracks: '+hit6YhitsfrequencyEvents;
 	var hit6Yhitsfrequency = getFrequency6ExpectedActualforHits('Y', tracking6MiddleHitsXY);
 	var hit6YhitsfrequencyLabels = [];
 	for (var i = 0; i < hit6Yhitsfrequency.length; i++) {
@@ -513,16 +614,17 @@ function drawCharts(g) {
 	getEl('download6PDIFFMYHITSdata').addEventListener('click', () => {
 	    download2DArray('', '6PDIFFMYHITSoriginaldata.csv');
 	});
-
+	*/
 	//6 plane tracking, delta XY for middle hits			
+	const deltaXYforhits6 = getDeltaXYforhits('TB',tracking6MiddleHitsXY);
 	var dxdyhitsEvents = getTotalChartEvents(tracking6MiddleHitsXY);;
-	var dxdyhitsComments = chartComments+' Total Events: '+dxdyhitsEvents;
+	var dxdyhitsComments = chartComments+' Total Tracks: '+dxdyhitsEvents;
 	var dxdyhits = {
 		labels: xLabels, // Array of labels for each bar on the x-axis
 		datasets: [{
 		      label: 'Delta X and Y for hits '+dxdyhitsComments,
 		      backgroundColor: 'cyan',
-			  data: getDeltaXYforhits('TB',tracking6MiddleHitsXY),
+			  data: deltaXYforhits6,
 		      options: options,
 			  pointRadius: 3,
 		   },]					
@@ -533,16 +635,16 @@ function drawCharts(g) {
 	    options: pointTrackingOptions,
 	});
 	getEl('download6DXHITSDY').addEventListener('click', () => {
-	    download2DArray('', 'download6DXHITSDYoriginaldata.csv');
+	    download2DArray(deltaXYforhits6, 'download6DXHITSDYoriginaldata.csv');
 	});
 	
 	//LEGO plot
 	var xx = [];
 	var yy = [];
-	var deltaXYformiddlehits = getDeltaXYforhits('TB',tracking6MiddleHitsXY);
-	for (var i = 0; i < deltaXYformiddlehits.length; i ++) {
-		xx[i] = deltaXYformiddlehits[i].x;
-		yy[i] = deltaXYformiddlehits[i].y;
+	//var deltaXYformiddlehits = getDeltaXYforhits('TB',tracking6MiddleHitsXY);
+	for (var i = 0; i < deltaXYforhits6.length; i ++) {
+		xx[i] = deltaXYforhits6[i].x;
+		yy[i] = deltaXYforhits6[i].y;
 	}
 
 	var data = [
@@ -568,10 +670,11 @@ function drawCharts(g) {
 		//zsmooth: 'best', // 'best' performs bi-linear interpolation
 	  }
 	];
+	var legoComments = chartComments+' Total Tracks: '+dxdyhitsEvents;
 	var layout = {
-	  title: '2D Histogram of DX/DY Data '+chartComments,
-	  xaxis: { title: 'DX/DY for X Layer' },
-	  yaxis: { title: 'DX/DY for Y Layer' },
+	  title: '2D Histogram of DX/DY Data '+legoComments,
+	  xaxis: { title: 'DX for X Layer' },
+	  yaxis: { title: 'DY for Y Layer' },
 	  height: 600, // Set the desired height in pixels
 	  width: 950,  // Set the desired width in pixels
 	  // Optional: add margins, axes details, etc.
@@ -580,6 +683,7 @@ function drawCharts(g) {
 	Plotly.newPlot('LEGO', data, layout);	
 	
 	//6 plane missed X middle point
+	const track6MiddleMissedX = get6planemiddlemissed(tracking6MiddleMissedX, "X");
 	var missed6middleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX);
 	var missed6middleXComments = chartComments+' Total Events: '+missed6middleXtotalEvents;
 	var missed6middleX = {
@@ -587,7 +691,7 @@ function drawCharts(g) {
 	  datasets: [{
 		      label: 'Tracking: X middle miss '+missed6middleXComments,
 		      backgroundColor: 'red',
-		      data: get6planemiddlemissed(tracking6MiddleMissedX, "X"),
+		      data: track6MiddleMissedX,
 		      options: options,
 			  pointRadius: 3,
 	     },],
@@ -602,6 +706,7 @@ function drawCharts(g) {
 	});
 	
 	//6 plane missed Y middle point
+	const track6MiddleMissedY = get6planemiddlemissed(tracking6MiddleMissedY, "Y");
 	var missed6middleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY);
 	var missed6middleYComments = chartComments+' Total Events: '+missed6middleYtotalEvents;
 	var missed6middleY = {
@@ -609,7 +714,7 @@ function drawCharts(g) {
 	  datasets: [{
 		       label: 'Tracking: Y middle miss '+ missed6middleYComments,
 		       backgroundColor: 'green',
-		       data: get6planemiddlemissed(tracking6MiddleMissedY, "Y"),
+		       data: track6MiddleMissedY,
 		       options: options,
 		   	   pointRadius: 3,
 	     },],
@@ -624,6 +729,7 @@ function drawCharts(g) {
 	});
 	
 	//6 plane missed XY middle point
+	/** 
 	var missed6middleXYtotalEvents = getTotalChartEvents(tracking6MiddleMissedXY);
 	var missed6middleXYComments = chartComments+' Total Events: '+missed6middleXYtotalEvents;
 	var missed6middleXY = {
@@ -644,11 +750,11 @@ function drawCharts(g) {
 	getEl('download6PTMXYdata').addEventListener('click', () => {
 	    download2DArray(tracking6MiddleMissedXY, '6PTMXYHoriginaldata.csv');
 	});
-	
+	*/
 	//6 plane missed X frequency
-	var frequency6MiddleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX) + getTotalChartEvents(tracking6MiddleMissedXY);
+	var frequency6MiddleXtotalEvents = getTotalChartEvents(tracking6MiddleMissedX);// + getTotalChartEvents(tracking6MiddleMissedXY);
 	var frequency6MiddleXComments = chartComments+' Total Events: '+frequency6MiddleXtotalEvents;
-	var frequency6MiddleX = getFrequency6ExpectedActual('X',tracking6MiddleMissedX,tracking6MiddleMissedXY);
+	var frequency6MiddleX = getFrequency6ExpectedActual('X',tracking6MiddleMissedX);
 	var labels6MX = [];//Object.keys(frequency6MiddleX);
 	for (var i = 0; i < frequency6MiddleX.length; i++) {
 		labels6MX.push(frequency6MiddleX[i].x);
@@ -674,9 +780,9 @@ function drawCharts(g) {
 	});
 	
 	//6 plane missed Y frequency
-	var frequency6MiddleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY) + getTotalChartEvents(tracking6MiddleMissedXY);
+	var frequency6MiddleYtotalEvents = getTotalChartEvents(tracking6MiddleMissedY);
 	var frequency6MiddleYComments = chartComments+' Total Events: '+frequency6MiddleYtotalEvents;
-	var frequency6MiddleY = getFrequency6ExpectedActual('Y',tracking6MiddleMissedY,tracking6MiddleMissedXY);
+	var frequency6MiddleY = getFrequency6ExpectedActual('Y',tracking6MiddleMissedY);
 	var labels6MY = [];//Object.keys(frequency6MiddleY);
 	for (var i = 0; i < frequency6MiddleY.length; i++) {
 		labels6MY.push(frequency6MiddleY[i].x);
@@ -874,7 +980,7 @@ function drawCharts(g) {
 	    download2DArray(tracking5BottomMissingY, '5PTBYoriginaldata.csv');
 	});
 	end1 = new Date();
-	if (globalThis.showTime) {		
+	if (globalThis.showTime) {
 		console.log("5 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
@@ -891,8 +997,8 @@ function drawCharts(g) {
 	  datasets: [
 	        {
 	      label: 'Tracking 4 planes: top missing '+tracking4TopMissingComments,
-	       backgroundColor: 'darkyellow',
-	       data: get4planemissing(dx, "T"),
+	       backgroundColor: 'gold',
+	       data: get4planemissing(tracking4TopMissing, "T"),
 	          options: options,
 		  pointRadius: 3,
 	     },
@@ -967,7 +1073,6 @@ function drawCharts(g) {
 		console.log("4 plane tracking : "+calculateProcessTime(end1,start1)+" seconds");
 	}
 	start1 = new Date();
-
 	//delta X / delta Y
 	var deltaXdeltaYOptions = {
 		      scales: {
@@ -1062,7 +1167,7 @@ function drawCharts(g) {
 	       label: 'DX Frequency Distribution -'+deltaXFrequencyComments, // Label for the dataset
 		   //borderColor: 'gray',
 	       backgroundColor: 'blue', // Color or array of colors for the bars
-	       data: calculateDeltaXDeltaYFrequency(dxbothlayers,0,2), 
+	       data: calculateDeltaXDeltaYFrequency('BOTH',dxbothlayers,0,2), 
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1072,7 +1177,7 @@ function drawCharts(g) {
 		   label: 'DX Top/Middle Frequency Distribution -'+deltaXTopMiddleFrequencyComments, // Label for the dataset
 		   //borderColor: 'gray',
 		   backgroundColor: 'yellow', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dxtopmiddlebothlayers,0,2), // Array of numerical values for the bars
+		   data: calculateDeltaXDeltaYFrequency('TM',dxtopmiddlebothlayers,0,2), // Array of numerical values for the bars
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1082,7 +1187,7 @@ function drawCharts(g) {
 		   label: 'DX Middle/Bottom Frequency Distribution -'+deltaXMiddleBottomFrequencyComments, // Label for the dataset
 		   //borderColor: 'gray',
 		   backgroundColor: 'pink', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dxbottommiddlebothlayers,0,2), // Array of numerical values for the bars
+		   data: calculateDeltaXDeltaYFrequency('MB',dxbottommiddlebothlayers,0,2), // Array of numerical values for the bars
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1128,7 +1233,7 @@ function drawCharts(g) {
 	     {
 	       label: 'DY Frequency Distribution -'+deltaYFrequencyComments, // Label for the dataset
 	       backgroundColor: 'magenta', // Color or array of colors for the bars
-	       data: calculateDeltaXDeltaYFrequency(dybothlayers,0,2), // Array of numerical values for the bars
+	       data: calculateDeltaXDeltaYFrequency('BOTH',dybothlayers,0,2), // Array of numerical values for the bars
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1137,7 +1242,7 @@ function drawCharts(g) {
 		 {
 		   label: 'DY Top/Middle Frequency Distribution -'+deltaYTopMiddleFrequencyComments, // Label for the dataset
 		   backgroundColor: 'green', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dytopmiddlebothlayers,0,2), // Array of numerical values for the bars
+		   data: calculateDeltaXDeltaYFrequency('TM',dytopmiddlebothlayers,0,2), // Array of numerical values for the bars
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1146,7 +1251,7 @@ function drawCharts(g) {
 		 {
 		   label: 'DY Middle/Bottom Frequency Distribution -'+deltaYMiddleBottomFrequencyComments, // Label for the dataset
 		   backgroundColor: 'lightpink', // Color or array of colors for the bars
-		   data: calculateDeltaXDeltaYFrequency(dybottommiddlebothlayers,0,2), // Array of numerical values for the bars
+		   data: calculateDeltaXDeltaYFrequency('TB',dybottommiddlebothlayers,0,2), // Array of numerical values for the bars
 		   pointRadius: 3,
 		   borderWidth: 1,
 		   lineTension: 0.5,
@@ -1466,7 +1571,8 @@ function drawCharts(g) {
 	start1 = new Date();
 
 	//dx dz charts
-	var DXDZDYDZdatasetsComments = chartComments;
+	const dxdzdydzSet = getDxDz(0);
+	var DXDZDYDZdatasetsComments = chartComments + ' Total Entries: '+dxdzdydzSet.length + ' (not the total number of triggers)';
 	var DXDZDYDZdatasets = {
 	  labels: [],
 	  datasets: [
@@ -1474,7 +1580,7 @@ function drawCharts(g) {
 	       label: 'DX/DZ - DY/DZ -'+DXDZDYDZdatasetsComments,
 		   borderColor: 'gray',
 	       backgroundColor: 'cyan', // Color or array of colors for the bars
-	       data: getDxDz(0), // Array of numerical values for the bars
+	       data: dxdzdydzSet, // Array of numerical values for the bars
 		   pointRadius: 3,
 	  	 }
 	 ],
@@ -1485,7 +1591,7 @@ function drawCharts(g) {
 		    options: deltaXdeltaYOptions,
 	});
 	getEl('downloadDXDZDYDZ').addEventListener('click', () => {
-	    downloadXYdata(getDxDz(0), 'DXDZDYDZdata.csv');
+	    downloadXYdata(dxdzdydzSet, 'DXDZDYDZdata.csv');
 	});
 	getEl('downloadDXDZDYDZXdata').addEventListener('click', () => {
 	    download2DArray(dxbothlayers, 'DXDZDYDZXdata.csv');
@@ -1495,7 +1601,8 @@ function drawCharts(g) {
 	});
 
 	//dx dz top middle
-	var DXDZDYDZTMdatasetsComments = chartComments;
+	const dxdzdydzTMSet = getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0);
+	var DXDZDYDZTMdatasetsComments = chartComments + ' Total Entries: '+dxdzdydzTMSet.length;
 	var DXDZDYDZTMdatasets = {
 	  labels: [],
 	  datasets: [
@@ -1503,7 +1610,7 @@ function drawCharts(g) {
 	       label: 'DX/DZ - DY/DZ (TOP-MIDDLE) -'+DXDZDYDZTMdatasetsComments,
 		   borderColor: 'gray',
 	       backgroundColor: 'yellow', // Color or array of colors for the bars
-	       data: getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0), // Array of numerical values for the bars
+	       data: dxdzdydzTMSet, // Array of numerical values for the bars
 		   pointRadius: 3,
 	  	 }
 	 ],
@@ -1514,7 +1621,7 @@ function drawCharts(g) {
 		    options: deltaXdeltaYOptions,
 	});
 	getEl('downloadDXDZDYDZTM').addEventListener('click', () => {
-	    downloadXYdata(getDxyDzMiddle(dxtopmiddlebothlayers,dytopmiddlebothlayers, 0), 'DXDZDYDZTMdata.csv');
+	    downloadXYdata(dxdzdydzTMSet, 'DXDZDYDZTMdata.csv');
 	});
 	getEl('downloadDXDZDYDZTMXdata').addEventListener('click', () => {
 	    download2DArray(dxtopmiddlebothlayers, 'DXDZDYDZTMXdata.csv');
@@ -1524,7 +1631,8 @@ function drawCharts(g) {
 	});
 
 	//dx dz middle bottom
-	var DXDZDYDZMBdatasetsComments = chartComments;
+	const dxdzdydzMBSet = getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0);
+	var DXDZDYDZMBdatasetsComments = chartComments + ' Total Entries: '+dxdzdydzMBSet.length;
 	var DXDZDYDZMBdatasets = {
 	  labels: [],
 	  datasets: [
@@ -1532,7 +1640,7 @@ function drawCharts(g) {
 	       label: 'DX/DZ - DY/DZ (MIDDLE-BOTTOM) -'+DXDZDYDZMBdatasetsComments,
 		   borderColor: 'gray',
 	       backgroundColor: 'orange', // Color or array of colors for the bars
-	       data: getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0), // Array of numerical values for the bars
+	       data: dxdzdydzMBSet, // Array of numerical values for the bars
 		   pointRadius: 3,
 	  	 }
 	 ],
@@ -1543,7 +1651,7 @@ function drawCharts(g) {
 		    options: deltaXdeltaYOptions,
 	});
 	getEl('downloadDXDZDYDZMB').addEventListener('click', () => {
-	    downloadXYdata(getDxyDzMiddle(dxbottommiddlebothlayers,dybottommiddlebothlayers, 0), 'DXDZDYDZMBdata.csv');
+	    downloadXYdata(dxdzdydzMBSet, 'DXDZDYDZMBdata.csv');
 	});
 	getEl('downloadDXDZDYDZMBXdata').addEventListener('click', () => {
 	    download2DArray(dxbottommiddlebothlayers, 'DXDZDYDZMBXdata.csv');
@@ -1827,14 +1935,14 @@ function drawCharts(g) {
 	};
 	// 4 top middle tracks per minute
 	var eventWithTracksCount4TM = getEventsWithTracksPerMinute(4,'TM');
-	var eventWithTracksCount4TMComments = chartComments + 'Events: '+ eventWithTracksCount4TM;
+	var eventWithTracksCount4TMComments = chartCommentsEntries;
 	var labels4TM = Object.keys(eventWithTracksCount4TM);
 	var values4TM = Object.values(eventWithTracksCount4TM);
 	var numberTracks4TM = {
 	  labels: labels4TM, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events (4) top-middle with tracks (per minute) -'+eventWithTracksCount4TMComments,
+	       label: '# of tracks (4) per minute (top-middle) -'+eventWithTracksCount4TMComments,
 	       backgroundColor: 'purple',
 	       data: values4TM,
 	     },
@@ -1851,14 +1959,14 @@ function drawCharts(g) {
 	
 	// 4 middle bottom tracks per minute
 	var eventWithTracksCount4MB = getEventsWithTracksPerMinute(4,'MB');
-	var eventWithTracksCount4MBComments = chartComments + 'Events: '+ getTotalChartEvents(eventWithTracksCount4MB);
+	var eventWithTracksCount4MBComments = chartCommentsEntries;
 	var labels4MB = Object.keys(eventWithTracksCount4MB);
 	var values4MB = Object.values(eventWithTracksCount4MB);
 	var numberTracks4MB = {
 	  labels: labels4MB, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events (4) middle-bottom with tracks (per minute) -'+eventWithTracksCount4MBComments,
+	       label: '# of tracks (4) per minute (middle-bottom) -'+eventWithTracksCount4MBComments,
 	       backgroundColor: 'green',
 	       data: values4MB,
 	     },
@@ -1875,14 +1983,14 @@ function drawCharts(g) {
 	
 	// 5 middle tracks per minute
 	var eventWithTracksCount5M = getEventsWithTracksPerMinute(5,'M');
-	var eventWithTracksCount5MComments = chartComments + 'Events: '+ getTotalChartEvents(eventWithTracksCount5M);
+	var eventWithTracksCount5MComments = chartCommentsEntries;
 	var labels5M = Object.keys(eventWithTracksCount5M);
 	var values5M = Object.values(eventWithTracksCount5M);
 	var numberTracks5M = {
 	  labels: labels5M, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events (5) with tracks (per minute-MIDDLE missing) -'+eventWithTracksCount5MComments,
+	       label: '# of tracks (5) per minute (middle missing) -'+eventWithTracksCount5MComments,
 	       backgroundColor: 'pink',
 	       data: values5M,
 	     },
@@ -1899,14 +2007,14 @@ function drawCharts(g) {
 
 	// 5 top bottom tracks per minute
 	var eventWithTracksCount5TB = getEventsWithTracksPerMinute(5,'TB');
-	var eventWithTracksCount5TBComments = chartComments + 'Events: '+ getTotalChartEvents(eventWithTracksCount5TB);
+	var eventWithTracksCount5TBComments = chartCommentsEntries;
 	var labels5TB = Object.keys(eventWithTracksCount5TB);
 	var values5TB = Object.values(eventWithTracksCount5TB);
 	var numberTracks5TB = {
 	  labels: labels5TB, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events (5) with tracks (per minute-TOP or BOTTOM missing) -'+eventWithTracksCount5TBComments,
+	       label: '# of tracks(5) per minute (either top or bottom missing) -'+eventWithTracksCount5TBComments,
 	       backgroundColor: 'lightblue',
 	       data: values5TB,
 	     },
@@ -1923,14 +2031,14 @@ function drawCharts(g) {
 		
 	// 6 track count per minute		
 	var eventWithTracksCount6 = getEventsWithTracksPerMinute(6,'');
-	var eventWithTracksCount6Comments = chartComments + 'Events: '+ getTotalChartEvents(eventWithTracksCount6);
+	var eventWithTracksCount6Comments = chartCommentsEntries;
 	var labels6 = Object.keys(eventWithTracksCount6);
 	var values6 = Object.values(eventWithTracksCount6);
 	var numberTracks6 = {
 	  labels: labels6, // Array of labels for each bar on the x-axis
 	  datasets: [
 	        {
-	       label: '# of events (6) with tracks (per minute) -'+eventWithTracksCount6Comments,
+	       label: '# of tracks (6) per minute -'+eventWithTracksCount6Comments,
 	       backgroundColor: 'orange',
 	       data: values6,
 	     },
@@ -1988,7 +2096,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'X CAEN 0 Paired ADC -'+chartComments,
+            label: 'X CAEN 0 Paired ADC -'+chartCommentsEntries,
             data: popXADR(0),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2005,7 +2113,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'X CAEN 0 Paired ADC-Average -'+chartComments,
+	        label: 'X CAEN 0 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popXADRAverage(0),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points
@@ -2019,7 +2127,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'X CAEN 2 Paired ADC -'+chartComments,
+            label: 'X CAEN 2 Paired ADC -'+chartCommentsEntries,
             data: popXADR(1),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2036,7 +2144,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'X Layer 2 Paired ADC-Average -'+chartComments,
+	        label: 'X Layer 2 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popXADRAverage(1),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points
@@ -2050,7 +2158,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'X CAEN 4 Paired ADC -'+chartComments,
+            label: 'X CAEN 4 Paired ADC -'+chartCommentsEntries,
             data: popXADR(2),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2067,7 +2175,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'X CAEN 4 Paired ADC-Average -'+chartComments,
+	        label: 'X CAEN 4 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popXADRAverage(2),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points
@@ -2104,7 +2212,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'Y CAEN 1 Paired ADC -'+chartComments,
+            label: 'Y CAEN 1 Paired ADC -'+chartCommentsEntries,
             data: popYADR(0),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2121,7 +2229,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'Y CAEN 1 Paired ADC-Average -'+chartComments,
+	        label: 'Y CAEN 1 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popYADRAverage(0),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points
@@ -2135,7 +2243,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'Y CAEN 3 Paired ADC -'+chartComments,
+            label: 'Y CAEN 3 Paired ADC -'+chartCommentsEntries,
             data: popYADR(1),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2152,7 +2260,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'Y CAEN 3 Paired ADC-Average -'+chartComments,
+	        label: 'Y CAEN 3 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popYADRAverage(1),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points
@@ -2166,7 +2274,7 @@ function drawCharts(g) {
         type: 'scatter',
         data: {
           datasets: [{
-            label: 'Y CAEN 5 Paired ADC -'+chartComments,
+            label: 'Y CAEN 5 Paired ADC -'+chartCommentsEntries,
             data: popYADR(2),
             backgroundColor: 'rgba(54, 162, 235, 0.6)', // Color of the data points
             pointRadius: 3, // Size of the data points
@@ -2183,7 +2291,7 @@ function drawCharts(g) {
 	    type: 'scatter',
 	    data: {
 	      datasets: [{
-	        label: 'Y CAEN 5 Paired ADC-Average -'+chartComments,
+	        label: 'Y CAEN 5 Paired ADC-Average -'+chartCommentsEntries,
 	        data: popYADRAverage(2),
 	        backgroundColor: 'blue', // Color of the data points
 	        pointRadius: 3, // Size of the data points

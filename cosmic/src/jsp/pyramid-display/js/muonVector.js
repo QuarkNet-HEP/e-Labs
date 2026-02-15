@@ -1,67 +1,7 @@
-// Import THREE as an ES module and example helpers. Expose to window for compatibility
-import * as THREE from '../three/build/three.module.js';
-import { OrbitControls, MapControls } from '../three/examples/jsm/controls/OrbitControls.js';
-import { STLLoader } from '../three/examples/jsm/loaders/STLLoader.js';
-import { FontLoader } from '../three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from '../three/examples/jsm/geometries/TextGeometry.js';
-import { EffectComposer } from '../three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from '../three/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from '../three/examples/jsm/postprocessing/ShaderPass.js';
-import { UnrealBloomPass } from '../three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { CopyShader } from '../three/examples/jsm/shaders/CopyShader.js';
-import { LuminosityHighPassShader } from '../three/examples/jsm/shaders/LuminosityHighPassShader.js';
-
-// Expose to global for non-module scripts that still reference window.THREE
-if (typeof window !== 'undefined') {
-  try {
-    // Don't overwrite window.THREE. Instead, copy missing THREE namespace keys into window.THREE
-    const target = (typeof window.THREE !== 'undefined') ? window.THREE : window;
-    for (const key of Object.keys(THREE)) {
-      if (typeof target[key] === 'undefined') {
-        try { target[key] = THREE[key]; } catch (e) { /* ignore write failures */ }
-      }
-    }
-
-    // Attach helper classes if not already present
-    const helpers = {
-      OrbitControls,
-      MapControls,
-      STLLoader,
-      FontLoader,
-      TextGeometry,
-      EffectComposer,
-      RenderPass,
-      ShaderPass,
-      UnrealBloomPass,
-      CopyShader,
-      LuminosityHighPassShader
-    };
-    const host = (typeof window.THREE !== 'undefined') ? window.THREE : window;
-    for (const [k, v] of Object.entries(helpers)) {
-      if (typeof host[k] === 'undefined') {
-        try { host[k] = v; } catch (e) { /* ignore */ }
-      }
-    }
-  } catch (e) {
-    // fallback: try attaching helpers directly to window
-    try {
-      if (typeof window.OrbitControls === 'undefined') window.OrbitControls = OrbitControls;
-      if (typeof window.MapControls === 'undefined') window.MapControls = MapControls;
-      if (typeof window.STLLoader === 'undefined') window.STLLoader = STLLoader;
-      if (typeof window.FontLoader === 'undefined') window.FontLoader = FontLoader;
-      if (typeof window.TextGeometry === 'undefined') window.TextGeometry = TextGeometry;
-      if (typeof window.EffectComposer === 'undefined') window.EffectComposer = EffectComposer;
-      if (typeof window.RenderPass === 'undefined') window.RenderPass = RenderPass;
-      if (typeof window.ShaderPass === 'undefined') window.ShaderPass = ShaderPass;
-      if (typeof window.UnrealBloomPass === 'undefined') window.UnrealBloomPass = UnrealBloomPass;
-      if (typeof window.CopyShader === 'undefined') window.CopyShader = CopyShader;
-      if (typeof window.LuminosityHighPassShader === 'undefined') window.LuminosityHighPassShader = LuminosityHighPassShader;
-    } catch (e2) { /* ignore */ }
-  }
-}
-
-//const test is just so the linter gets annoyed at the first line
-const test = '';
+/*
+	Edit Peronja 23/10/2025: This script has functions for draw3D.js to calculate 
+	muon vectors from sensor data.
+*/
 const min = 20
 var y;
 let debugMuon = false;
@@ -100,7 +40,7 @@ function vectorize(hits) {
         
         if (nd < least_dist ){ least_dist = nd; }
       }
-      effMap[least_dist] = new THREE.Vector2(p1,p2);
+      effMap[least_dist] = new globalThis.THREE.Vector2(p1,p2);
     }
     
     //sort by efficiency
@@ -120,7 +60,7 @@ function vectorize(hits) {
 }
 
 function calculate_internal (temp1, x_prisms, y_prisms, x, y) {
-  function point(x,y,z) { return new THREE.Vector2(x,y); }
+  function point(x,y,z) { return new globalThis.THREE.Vector2(x,y); }
   let x_hits = {0:[],1:[],2:[]}
   //Search x-paths
   for (var layer in x) {
@@ -197,10 +137,10 @@ function calculate_internal (temp1, x_prisms, y_prisms, x, y) {
       const y1 = vx[j].x.y;
       const y2 = vx[j].y.y;
 
-      const point1 = new THREE.Vector3( x1,y1,z1 );
-      const point2 = new THREE.Vector3( x2,y2,z2 );
+      const point1 = new globalThis.THREE.Vector3( x1,y1,z1 );
+      const point2 = new globalThis.THREE.Vector3( x2,y2,z2 );
       
-      const final_vector = new THREE.Vector2(point1,point2);
+      const final_vector = new globalThis.THREE.Vector2(point1,point2);
       v.push(final_vector);
     }
   }
