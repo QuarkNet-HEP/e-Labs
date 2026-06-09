@@ -200,8 +200,11 @@ sub chanFunctions(){ # this is used for the performance study to set the differe
     $validChan3 = 0;
     $validChan4 = 0;
     
-    for($i = 1; $i <= 4; $i++){
-        push @options, "set style line $i lt $i lw $lineWidthSize";
+    # define explicit colors: red, green, blue, cyan
+    my @colors = ('#FF0000', '#00FF00', '#0000FF', '#00FFFF');
+    for(my $j = 1; $j <= 4; $j++){
+        my $c = $colors[$j-1];
+        push @options, "set style line $j lc rgb '$c' lw $lineWidthSize";
     }
         
     for $i (@infile){
