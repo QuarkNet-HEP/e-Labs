@@ -77,6 +77,12 @@
 							- Learn how to understand the results of a <b>Flux Study</b>.
 						</li>
 						<li>
+							<e:popup href="../content/eLabBarometricPressureCorrectionInstructionsvAPR-2026.pdf" 
+							target="" width="520" height="600">Barometric Presure Correction Instructions</e:popup>
+							and <a href="../content/eLabBarometricCorrectionAPR-2026.xlsx">Excel Example</a>
+							- Learn how to correct barometric pressure.
+						</li>						
+						<li>
 							<e:popup href="../analysis-shower/tryit.html" 
 							target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
 							and  <a href="../analysis-shower/tutorial.jsp">Tutorial</a>
