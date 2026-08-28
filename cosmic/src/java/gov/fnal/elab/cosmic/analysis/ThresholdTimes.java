@@ -156,7 +156,8 @@ public class ThresholdTimes {
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
-            retimeINT[channel] = 0;            
+            retimeINT[channel] = 0;    
+            clearChannelState(channel);
         }
 
         int decFE = Integer.parseInt(parts[indexFE], 16);
